@@ -244,6 +244,11 @@ public:
         return (1.0f + 1.5f * c) * (v[1] * b + v[2] * a)
         - 0.5f * c * (v[0] * b + v[1] + v[2] + v[3] * a);
     }
+    
+    float linear (float *v, float a)
+    {
+        return v[0] * (1 - a) + v[1] * a;
+    }
 	
 	void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
@@ -403,11 +408,11 @@ public:
                         fi += ncbuf;
                     
                     int i = (int) fi;
-                    float u = cubic (cbuf + i, fi - i);
+                    float u = linear (cbuf + i, fi - i);
                     
                     float wi = 2 + graintablesize * (g.ix / g.size);
                     i = (int) wi;
-                    float w = cubic (grain_window + i, wi - i);
+                    float w = linear (grain_window + i, wi - i);
                     
                     *out += u * w;
                     g.ix += g.ratio;
@@ -580,8 +585,8 @@ public:
             case 0:
             case 5:
             case 7:
-                voices[1].ratio = powf(2.0f,4./12.);
-                voices[2].ratio = powf(2.0f,7./12.);
+                voices[1].ratio = 1.25; //powf(2.0f,4./12.);
+                voices[2].ratio = 1.5; // powf(2.0f,7./12.);
                 break;
             case 2:
                 voices[1].ratio = powf(2.0f,5./12.);
@@ -594,12 +599,12 @@ public:
                 break;
             case 4:
             case 11:
-                voices[1].ratio = powf(2.0f,3./12.);
+                voices[1].ratio = 1.2;//powf(2.0f,3./12.);
                 voices[2].ratio = powf(2.0f,8./12.);
                 break;
             case 9:
-                voices[1].ratio = powf(2.0f,3./12.);
-                voices[2].ratio = powf(2.0f,7./12.);
+                voices[1].ratio = 1.2;//powf(2.0f,3./12.);
+                voices[2].ratio = 1.5;//powf(2.0f,7./12.);
                 break;
             case 8:
                 voices[1].ratio = powf(2.0f, 4./12.);
@@ -607,7 +612,7 @@ public:
                 break;
             case 1:
             case 6:
-                voices[1].ratio = powf(2.0f,3./12.);
+                voices[1].ratio = 1.2; //powf(2.0f,3./12.);
                 voices[2].ratio = powf(2.0f,6./12.);
                 break;
         }

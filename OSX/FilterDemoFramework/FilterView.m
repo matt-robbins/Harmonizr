@@ -209,24 +209,24 @@ static double logValueForNumber(double number, double base) {
     int pixelRatio = (int)ceil(width/frequencyCount);
     
     float dbPos = 0;
-    for (int i = 0; i < frequencies.count; i++) {
-        float dbValue = 20.0f * log10(magnitudes[i].doubleValue);
-
-        if (dbValue < -kDefaultGain)
-            dbPos = [self locationForDBValue: -kDefaultGain];
-        else if (dbValue > kDefaultGain)
-            dbPos = [self locationForDBValue: kDefaultGain];
-        else
-            dbPos = [self locationForDBValue: dbValue];
-        
-        CGPathAddLineToPoint(bezierPath, nil, location, dbPos);
-        location += pixelRatio;
-       
-        if (location > width) {
-            location = width;
-            break;
-        }
-    }
+//    for (int i = 0; i < frequencies.count; i++) {
+//        float dbValue = 20.0f * log10(magnitudes[i].doubleValue);
+//
+//        if (dbValue < -kDefaultGain)
+//            dbPos = [self locationForDBValue: -kDefaultGain];
+//        else if (dbValue > kDefaultGain)
+//            dbPos = [self locationForDBValue: kDefaultGain];
+//        else
+//            dbPos = [self locationForDBValue: dbValue];
+//
+//        CGPathAddLineToPoint(bezierPath, nil, location, dbPos);
+//        location += pixelRatio;
+//
+//        if (location > width) {
+//            location = width;
+//            break;
+//        }
+//    }
     
     CGPathAddLineToPoint(bezierPath, nil, location, 0);
     CGPathCloseSubpath(bezierPath);

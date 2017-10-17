@@ -56,6 +56,7 @@
 		92FF86A41B9F5B7B007C9389 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
 		92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF86A51B9F5D42007C9389 /* FilterView.h */; };
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
+		C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */; };
 		C9FD73F41F8BC69D00346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F31F8BC69D00346E31 /* Accelerate.framework */; };
 		C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F51F9107D300346E31 /* Accelerate.framework */; };
 		C9FD73F71F91084900346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F51F9107D300346E31 /* Accelerate.framework */; };
@@ -209,6 +210,7 @@
 		92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterDemoViewController.xib; sourceTree = "<group>"; };
 		92FF86A51B9F5D42007C9389 /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
 		92FF86A61B9F5D42007C9389 /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
+		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
 		C9FD73F31F8BC69D00346E31 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C9FD73F51F9107D300346E31 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -218,6 +220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */,
 				C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */,
 				91236D6A1B08F52E00734C5E /* FilterDemoFramework.framework in Frameworks */,
 			);
@@ -472,6 +475,7 @@
 		C9FD73F21F8BC69C00346E31 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */,
 				C9FD73F51F9107D300346E31 /* Accelerate.framework */,
 				C9FD73F31F8BC69D00346E31 /* Accelerate.framework */,
 			);

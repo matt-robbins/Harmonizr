@@ -13,6 +13,7 @@
 #import "FilterDemo-Swift.h"
 #import <CoreAudioKit/AUViewController.h>
 #import "FilterDemoViewController.h"
+#import <CoreMIDI/CoreMIDI.h>
 
 #define kMinHertz 12.0f
 #define kMaxHertz 20000.0f
@@ -29,6 +30,9 @@
     FilterDemoViewController *auV3ViewController;
     
     SimplePlayEngine *playEngine;
+    
+    MIDIClientRef midiClient;
+    MIDIPortRef inputPort;
     
     AUParameter *cutoffParameter;
     AUParameter *resonanceParameter;
@@ -86,11 +90,35 @@
     [playEngine selectAudioUnitWithComponentDescription2:desc completionHandler:^{
         [self connectParametersToControls];
     }];
+    
+    OSStatus result;
+    
+    result = MIDIClientCreate(CFSTR("Harmonizer"), midiStateCallback, NULL, &midiClient);
+    if (result != noErr) {
+        NSLog(@"Error creating MIDI client");
+    }
+    
+    result = MIDIInputPortCreate(midiClient, CFSTR("Input"), midiInputCallback, NULL, &inputPort);
 
     [cutoffSlider sendActionOn:NSLeftMouseDraggedMask | NSLeftMouseDownMask];
     [resonanceSlider sendActionOn:NSLeftMouseDraggedMask | NSLeftMouseDownMask];
     
     [self populatePresetMenu];
+}
+
+static void
+midiInputCallback (const MIDIPacketList *list,
+                   void *procRef,
+                   void *srcRef)
+{
+    NSLog(@"midiInputCallback was called");
+}
+
+static void
+midiStateCallback (const MIDINotification * msg, void * data)
+{
+    
+
 }
 
 #pragma mark -
