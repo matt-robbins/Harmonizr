@@ -99,11 +99,36 @@
     }
     
     result = MIDIInputPortCreate(midiClient, CFSTR("Input"), midiInputCallback, NULL, &inputPort);
+    
+    ItemCount n = MIDIGetNumberOfSources();
+    printf("%ld midi sources\n", n);
+    for (int i = 0; i < n; ++i) {
+        MIDIEndpointRef endPoint = MIDIGetSource(i);
+        CFStringRef endpointName = NULL;
+        checkError(MIDIObjectGetStringProperty(endPoint, kMIDIPropertyName, &endpointName), "String property not found");
+        checkError(MIDIPortConnectSource(inputPort, endPoint, NULL), "MIDI not connected");
+    }
 
     [cutoffSlider sendActionOn:NSLeftMouseDraggedMask | NSLeftMouseDownMask];
     [resonanceSlider sendActionOn:NSLeftMouseDraggedMask | NSLeftMouseDownMask];
     
     [self populatePresetMenu];
+}
+
+void checkError(OSStatus error, const char* task) {
+    if(error == noErr) return;
+    
+    char errorString[20];
+    *(UInt32 *)(errorString + 1) = CFSwapInt32BigToHost(error);
+    if(isprint(errorString[1]) && isprint(errorString[2]) && isprint(errorString[3]) && isprint(errorString[4])) {
+        errorString[0] = errorString[5] = '\'';
+        errorString[6] = '\0';
+    }
+    else
+        sprintf(errorString, "%d", (int)error);
+    
+    fprintf(stderr, "Error: %s (%s)\n", task, errorString);
+    exit(1);
 }
 
 static void
@@ -117,8 +142,7 @@ midiInputCallback (const MIDIPacketList *list,
 static void
 midiStateCallback (const MIDINotification * msg, void * data)
 {
-    
-
+    NSLog(@"midiStateCallback was called");
 }
 
 #pragma mark -

@@ -19,6 +19,8 @@ static const NSInteger kDefaultFactoryPreset = 0;
 typedef struct FactoryPresetParameters {
     AUValue cutoffValue;
     AUValue resonanceValue;
+    AUValue keycenterValue;
+    AUValue keyqualityValue;
 } FactoryPresetParameters;
 
 static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
@@ -27,18 +29,24 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
     {
         400.0f,//FilterParamCutoff,
          -5.0f,//FilterParamResonance
+        0,
+        0,
     },
     
     // preset 1
     {
         6000.0f,//FilterParamCutoff,
           15.0f,//FilterParamResonance
+        0,
+        0,
     },
     
     // preset 2
     {
         1000.0f,//FilterParamCutoff,
            5.0f,//FilterParamResonance
+        0,
+        0,
     }
 };
 
@@ -97,12 +105,20 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 			flags: kAudioUnitParameterFlag_IsReadable |
                    kAudioUnitParameterFlag_IsWritable
             valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *keycenterParam = [AUParameterTree createParameterWithIdentifier:@"keycenter" name:@"Key Center"
+            address:HarmParamKeycenter
+            min:0 max:47 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+            valueStrings:nil dependentParameters:nil];
 	
 	// Initialize default parameter values.
 	cutoffParam.value = 20000.0;
 	resonanceParam.value = 0.0;
+    keycenterParam.value = 1;
 	_kernel.setParameter(FilterParamCutoff, cutoffParam.value);
 	_kernel.setParameter(FilterParamResonance, resonanceParam.value);
+    _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
@@ -111,7 +127,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                  NewAUPreset(2, @"Third Preset")];
     
 	// Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[cutoffParam, resonanceParam]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[cutoffParam, resonanceParam, keycenterParam]];
 
 	// Create the input and output busses.
 	_inputBus.init(defaultFormat, 8);
@@ -144,6 +160,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 			
 			case FilterParamResonance:
 				return [NSString stringWithFormat:@"%.2f", value];
+                
+            case HarmParamKeycenter:
+                return [NSString stringWithFormat:@"%d", (int) value];
 			
 			default:
 				return @"?";
@@ -333,6 +352,10 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	}
 	
     return [NSArray arrayWithArray:magnitudes];
+}
+
+- (float) getCurrentNote {
+    return _kernel.note_number;
 }
 
 @end

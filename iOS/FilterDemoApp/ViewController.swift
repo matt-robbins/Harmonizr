@@ -76,13 +76,17 @@ class ViewController: UIViewController {
 			Note that this registration is local to this process.
 		*/
         AUAudioUnit.registerSubclass(AUv3FilterDemo.self, as: componentDescription, name:"Demo: Local FilterDemo", version: UInt32.max)
-
+        
 		// Instantiate and insert our audio unit effect into the chain.
 		playEngine.selectAudioUnitWithComponentDescription(componentDescription) {
 			// This is an asynchronous callback when complete. Finish audio unit setup.
 			self.connectParametersToControls()
 		}
+        
+        playEngine.startPlaying()
 	}
+    
+
 	
 	/// Called from `viewDidLoad(_:)` to embed the plug-in's view into the app's view.
 	func embedPlugInView() {
@@ -138,8 +142,8 @@ class ViewController: UIViewController {
             }
         })
         
-        updateCutoff()
-        updateResonance()
+        //updateCutoff()
+        //updateResonance()
 	}
     
     func logValueForNumber(_ number: Double)->Double {
@@ -158,21 +162,21 @@ class ViewController: UIViewController {
     
 	// Callbacks to update controls from parameters.
 	func updateCutoff() {
-		cutoffTextField.text = cutoffParameter.string(fromValue: nil)
+		//cutoffTextField.text = cutoffParameter.string(fromValue: nil)
         
         // normalize the vaue from 0-1
-        let value = Double(cutoffParameter.value)
-        var normalizedValue = (value - ViewController.defaultMinHertz)/(ViewController.defaultMaxHertz - ViewController.defaultMinHertz)
+        //let value = Double(cutoffParameter.value)
+        //var normalizedValue = (value - ViewController.defaultMinHertz)/(ViewController.defaultMaxHertz - ViewController.defaultMinHertz)
         
         // map to 2^0 - 2^9 (slider range)
-        normalizedValue = (normalizedValue * 511.0) + 1
+        //normalizedValue = (normalizedValue * 511.0) + 1
         
-		cutoffSlider.value = Float(logValueForNumber(normalizedValue))
+		//cutoffSlider.value = Float(logValueForNumber(normalizedValue))
 	}
 
 	func updateResonance() {
-		resonanceTextField.text = resonanceParameter.string(fromValue: nil)
-		resonanceSlider.value = resonanceParameter.value
+		//resonanceTextField.text = resonanceParameter.string(fromValue: nil)
+		//resonanceSlider.value = resonanceParameter.value
 	}
 
     // MARK: IBActions

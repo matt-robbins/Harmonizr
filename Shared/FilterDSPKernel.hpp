@@ -56,7 +56,9 @@ static inline float convertBadValuesToZero(float x) {
 
 enum {
 	FilterParamCutoff = 0,
-	FilterParamResonance = 1
+	FilterParamResonance = 1,
+    HarmParamKeycenter = 2,
+    HarmParamQuality = 3,
 };
 
 static inline double squared(double x) {
@@ -216,6 +218,9 @@ public:
             grains[k].gain = 1;
         }
         
+        memset(Tbuf, 0, 5*sizeof(float));
+        Tix = 0;
+        
         // create grain window with zero-padded shoulders
         grain_window = new float[graintablesize + 6];
         memset(grain_window, 0, (graintablesize + 6) * sizeof(float));
@@ -260,6 +265,9 @@ public:
             case FilterParamResonance:
                 resonanceRamper.setUIValue(clamp(value, -20.0f, 20.0f));
 				break;
+            case HarmParamKeycenter:
+                root_key = (int) clamp(value,0.f,47.f);
+                break;
         }
 	}
 
@@ -303,14 +311,14 @@ public:
             case 0x80 : { // note off
                 uint8_t note = midiEvent.data[1];
                 if (note > 127) break;
-                //remnote((int)note);
+                remnote((int)note);
                 break;
             }
             case 0x90 : { // note on
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
                 if (note > 127 || veloc > 127) break;
-                //addnote((int)note,127);
+                addnote((int)note,127);
                 break;
             }
             case 0xB0 : { // control
@@ -345,22 +353,26 @@ public:
             if (++cix >= ncbuf)
                 cix = 0;
             
-            float dp = cix - 2*maxT - pitchmark[0];
-            if (dp < 0)
-                dp += ncbuf;
-            
-            if (dp > (T + T/4))
+            if (--rcnt == 0)
             {
-                float p = estimate_pitch(pitchmark[0]);
+                rcnt = 256;
+                float p = estimate_pitch(cix - 2*maxT);
                 if (p > 0)
                 {
-                    //printf("period = %f samples\n", p);
                     T = p;
                 }
                 else
                     T = 250;
                 
                 voiced = (p != 0);
+            }
+            
+            float dp = cix - 2*maxT - pitchmark[0];
+            if (dp < 0)
+                dp += ncbuf;
+            
+            if (dp > (T + T/4))
+            {
                 
                 findmark();
                 finderror();
@@ -465,6 +477,8 @@ public:
         
         float df,cmdf,cmdf1,cmdf2, sum = 0;
         
+        float period = 0.0;
+        
         cmdf2 = cmdf1 = cmdf = 1;
         for (int k = 1; k < maxT; k++)
         {
@@ -480,11 +494,19 @@ public:
             cmdf = (df * k) / sum;
             if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.1 && k > 50)
             {
-                return (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1);;
+                period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
         }
         
-        return 0.0;
+        Tbuf[Tix++] = period;
+        
+        if (Tix >= 5)
+            Tix = 0;
+        
+        memcpy(Tsrt, Tbuf, 5 * sizeof(float));
+        vDSP_vsort(Tsrt, (vDSP_Length) 5, 1);
+        
+        return Tsrt[2];
     }
     
     void findmark (void)
@@ -572,49 +594,160 @@ public:
         voices[1].midinote = 0;
         voices[2].midinote = 0;
         
+        if (!voiced)
+            return;
+            
         float f = log2f (sampleRate / (T * 440));
         
         float note_f = f * 12.0;
         int nn = (int) round(note_f);
+        float error = (note_f - (float)nn)/12;
         
-        int interval = (nn + 69 - root_key) % 12;
+        int root = root_key % 12;
+        int quality = root_key / 12;
+        
+        int interval = (nn + 69 - root) % 12;
+        note_number = interval;
         //printf("interval = %d\n", interval);
-
-        switch (interval)
+        if (quality == 0)
         {
-            case 0:
-            case 5:
-            case 7:
-                voices[1].ratio = 1.25; //powf(2.0f,4./12.);
-                voices[2].ratio = 1.5; // powf(2.0f,7./12.);
-                break;
-            case 2:
-                voices[1].ratio = powf(2.0f,5./12.);
-                voices[2].ratio = powf(2.0f,10./12.);
-                break;
-            case 3:
-            case 10:
-                voices[1].ratio = powf(2.0f,4./12.);
-                voices[2].ratio = powf(2.0f,9./12.);
-                break;
-            case 4:
-            case 11:
-                voices[1].ratio = 1.2;//powf(2.0f,3./12.);
-                voices[2].ratio = powf(2.0f,8./12.);
-                break;
-            case 9:
-                voices[1].ratio = 1.2;//powf(2.0f,3./12.);
-                voices[2].ratio = 1.5;//powf(2.0f,7./12.);
-                break;
-            case 8:
-                voices[1].ratio = powf(2.0f, 4./12.);
-                voices[2].ratio = powf(2.0f, 8./12.);
-                break;
-            case 1:
-            case 6:
-                voices[1].ratio = 1.2; //powf(2.0f,3./12.);
-                voices[2].ratio = powf(2.0f,6./12.);
-                break;
+            switch (interval)
+            {
+                case 0:
+                case 5:
+                case 10:
+                    voices[1].ratio = powf(2.0f,4./12. - error);
+                    voices[2].ratio = powf(2.0f,7./12. - error);
+                    break;
+                case 7:
+                    voices[1].ratio = powf(2.0f,5./12. -error);
+                    voices[2].ratio = powf(2.0f,9./12. -error);
+                    break;
+                case 2:
+                    voices[1].ratio = powf(2.0f,3./12. -error);
+                    voices[2].ratio = powf(2.0f,7./12. - error);
+                    break;
+                case 17:
+                    voices[1].ratio = powf(2.0f,4./12. - error);
+                    voices[2].ratio = powf(2.0f,9./12. - error);
+                    break;
+                case 4:
+                    voices[1].ratio = powf(2.0f,3./12. - error);
+                    voices[2].ratio = powf(2.0f,8./12. - error);
+                    break;
+                case 9:
+                    voices[1].ratio = powf(2.0f,3./12. - error);
+                    voices[2].ratio = powf(2.0f,7./12. - error);
+                    break;
+                case 8:
+                    voices[1].ratio = powf(2.0f, 4./12. - error);
+                    voices[2].ratio = powf(2.0f, 8./12. - error);
+                    break;
+                case 1:
+                case 3:
+                case 6:
+                case 11:
+                    voices[1].ratio = powf(2.0f,3./12. - error);
+                    voices[2].ratio = powf(2.0f,6./12. - error);
+                    break;
+            }
+        }
+        else if (quality == 1)
+        {
+            switch (interval)
+            {
+                case 8:
+                case 10:
+                    voices[1].ratio = powf(2.0f,4./12.);
+                    voices[2].ratio = powf(2.0f,7./12.);
+                    break;
+                case 5:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,9./12.);
+                    break;
+                case 6:
+                    voices[1].ratio = powf(2.0f,6./12.);
+                    voices[2].ratio = powf(2.0f,8./12.);
+                    break;
+                case 17:
+                    voices[1].ratio = powf(2.0f,5./12.);
+                    voices[2].ratio = powf(2.0f,9./12.);
+                    break;
+                case 0:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,7./12.);
+                    break;
+                case 3:
+                    voices[1].ratio = powf(2.0f,4./12.);
+                    voices[2].ratio = powf(2.0f,9./12.);
+                    break;
+                case 7:
+                    voices[1].ratio = powf(2.0f,5./12.);
+                    voices[2].ratio = powf(2.0f,8./12.);
+                    break;
+                case 14:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,8./12.);
+                    break;
+                case 19:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,7./12.);
+                    break;
+                case 1:
+                case 2:
+                case 4:
+                case 9:
+                case 11:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,6./12.);
+                    break;
+            }
+        }
+        else if (quality == 2)
+        {
+            switch (interval)
+            {
+                case 3:
+                case 5:
+                case 6:
+                case 8:
+                case 9:
+                case 11:
+                    voices[1].ratio = powf(2.0f,4./12.);
+                    voices[2].ratio = powf(2.0f,7./12.);
+                    break;
+                case 17:
+                    voices[1].ratio = powf(2.0f,5./12.);
+                    voices[2].ratio = powf(2.0f,9./12.);
+                    break;
+                case 0:
+                    voices[1].ratio = powf(2.0f,4./12.);
+                    voices[2].ratio = powf(2.0f,10./12.);
+                    break;
+                case 2:
+                    voices[1].ratio = powf(2.0f,2./12.);
+                    voices[2].ratio = powf(2.0f,8./12.);
+                    break;
+                case 1:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,9./12.);
+                case 7:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,5./12.);
+                    break;
+                case 10:
+                    voices[1].ratio = powf(2.0f,2./12.);
+                    voices[2].ratio = powf(2.0f,6./12.);
+                    break;
+                case 19:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,7./12.);
+                    break;
+                case 4:
+                    voices[1].ratio = powf(2.0f,3./12.);
+                    voices[2].ratio = powf(2.0f,6./12.);
+                    break;
+            }
         }
     }
 	
@@ -630,8 +763,11 @@ private:
     int ncbuf = 4096;
     int cix = 0;
     int rix = 0;
-    float rcnt = 0;
+    float rcnt = 256;
     float T = 400;
+    float Tbuf[5];
+    float Tsrt[5];
+    int Tix;
     float pitchmark[3] = {0,-1,-1};
     int maxT = 600; // note nfft should be bigger than 3*maxT
     int cmask = ncbuf - 1;
@@ -641,6 +777,7 @@ private:
 	float nyquist = 0.5 * sampleRate;
 	float inverseNyquist = 1.0 / nyquist;
 	AUAudioFrameCount dezipperRampDuration;
+    int keycenter = 0;
     
     int nvoices = 8;
     int voice_ix = 1;
@@ -660,6 +797,7 @@ private:
 
 public:
 
+    float note_number;
 	// Parameters.
 	ParameterRamper cutoffRamper = 400.0 / 44100.0;
 	ParameterRamper resonanceRamper = 20.0;

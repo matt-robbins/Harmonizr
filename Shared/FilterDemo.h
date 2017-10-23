@@ -14,7 +14,7 @@
 @interface AUv3FilterDemo : AUAudioUnit
 
 - (NSArray<NSNumber *> *)magnitudesForFrequencies:(NSArray<NSNumber *> *)frequencies;
-
+- (float) getCurrentNote;
 @end
 
 #endif /* FilterDemo_h */

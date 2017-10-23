@@ -15,7 +15,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     @IBOutlet weak var filterView: FilterView!
 	@IBOutlet weak var frequencyLabel: UILabel!
 	@IBOutlet weak var resonanceLabel: UILabel!
-	
+    
     /*
 		When this view controller is instantiated within the FilterDemoApp, its 
         audio unit is created independently, and passed to the view controller here.
@@ -40,6 +40,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 	
     var cutoffParameter: AUParameter?
 	var resonanceParameter: AUParameter?
+    var keycenterParameter: AUParameter?
 	var parameterObserverToken: AUParameterObserverToken?
 
 	public override func viewDidLoad() {
@@ -49,7 +50,6 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         filterView.delegate = self
 		
         guard audioUnit != nil else { return }
-
         connectViewWithAU()
 	}
     
@@ -81,6 +81,11 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         updateFilterViewFrequencyAndMagnitudes()
     }
     
+    func filterView(_ filterView: FilterView, didChangeKeycenter keycenter: Float)
+    {
+        keycenterParameter?.value = keycenter
+    }
+    
     func filterViewDataDidChange(_ filterView: FilterView) {
         updateFilterViewFrequencyAndMagnitudes()
     }
@@ -95,6 +100,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 
 		cutoffParameter = paramTree.value(forKey: "cutoff") as? AUParameter
 		resonanceParameter = paramTree.value(forKey: "resonance") as? AUParameter
+        keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
 		
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
@@ -102,11 +108,11 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 			DispatchQueue.main.async {
 				if address == strongSelf.cutoffParameter!.address {
 					strongSelf.filterView.frequency = value
-					strongSelf.frequencyLabel.text = strongSelf.cutoffParameter!.string(fromValue: nil)
+					//strongSelf.frequencyLabel.text = strongSelf.cutoffParameter!.string(fromValue: nil)
 				}
 				else if address == strongSelf.resonanceParameter!.address {
 					strongSelf.filterView.resonance = value
-					strongSelf.resonanceLabel.text = strongSelf.resonanceParameter!.string(fromValue: nil)
+					//strongSelf.resonanceLabel.text = strongSelf.resonanceParameter!.string(fromValue: nil)
 				}
 				
 				strongSelf.updateFilterViewFrequencyAndMagnitudes()
@@ -116,9 +122,9 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         filterView.frequency = cutoffParameter!.value;
         filterView.resonance = resonanceParameter!.value;
 		
-        updateFilterViewFrequencyAndMagnitudes()
+        //updateFilterViewFrequencyAndMagnitudes()
         
-        self.resonanceLabel.text = resonanceParameter!.string(fromValue: nil)
-        self.frequencyLabel.text = cutoffParameter!.string(fromValue: nil)
+//        self.resonanceLabel.text = resonanceParameter!.string(fromValue: nil)
+//        self.frequencyLabel.text = cutoffParameter!.string(fromValue: nil)
 	}
 }
