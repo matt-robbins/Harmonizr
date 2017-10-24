@@ -23,18 +23,49 @@ typedef struct grain_s
     float ix;
     float ratio;
     float gain;
+    float pan;
 } grain_t;
 
 typedef struct voice_s
 {
     float error;
     float ratio;
+    float target_ratio;
     float formant_ratio;
     float nextgrain;
+    float pan;
     int midinote;
     int midivel;
     int lastnote;
 } voice_t;
+
+typedef struct triad_ratio_s
+{
+    float r1;
+    float r2;
+} triad_ratio_t;
+
+typedef enum triads
+{
+    TRIAD_MAJOR_R = 0,
+    TRIAD_MAJOR_1,
+    TRIAD_MAJOR_2,
+    TRIAD_MINOR_R,
+    TRIAD_MINOR_1,
+    TRIAD_MINOR_2,
+    TRIAD_DIM_R,
+    TRIAD_DIM_1,
+    TRIAD_DIM_2,
+    TRIAD_SUS4_R,
+    TRIAD_SUS4_1,
+    TRIAD_SUS4_2,
+    TRIAD_SUS2_R,
+    TRIAD_SUS2_1,
+    TRIAD_SUS2_2,
+    TRIAD_AUG,
+    TRIAD_5TH,
+    TRIAD_OCT
+} triad_t;
 
 static inline float convertBadValuesToZero(float x) {
 	/*
@@ -191,7 +222,7 @@ public:
         ncbuf = 4096;
         cbuf = (float *) calloc(ncbuf + 3, sizeof(float));
         
-        nvoices = 8;
+        nvoices = 16;
         voices = (voice_t *) calloc(nvoices, sizeof(voice_t));
         voice_ix = 1;
         
@@ -201,8 +232,12 @@ public:
             voices[k].error = 0;
             voices[k].ratio = 1;
             voices[k].formant_ratio = 1;
-            
             voices[k].nextgrain = 250;
+            
+            if (k >= 3)
+            {
+                voices[k].pan = ((float)(k - 3) / (float)(nvoices - 3)) - 1.0;
+            }
         }
         
         voices[0].midinote = 0;
@@ -229,7 +264,103 @@ public:
         {
             grain_window [3 + k] = 0.5 * (1 - cosf (2 * M_PI * k / graintablesize));
         }
+        
+        // define equal tempered interval ratios
+        for (int k = 0; k < 12; k++)
+        {
+            intervals[k] = powf(2.0, (float) (k) / 12);
+        }
+        
+        // define triad ratios
+        
+        triads[TRIAD_MAJOR_R].r1 = intervals[4];
+        triads[TRIAD_MAJOR_R].r2 = intervals[7];
+        triads[TRIAD_MAJOR_1].r1 = intervals[5];
+        triads[TRIAD_MAJOR_1].r2 = intervals[9];
+        triads[TRIAD_MAJOR_2].r1 = intervals[3];
+        triads[TRIAD_MAJOR_2].r2 = intervals[8];
+        
+        triads[TRIAD_MINOR_R].r1 = intervals[3];
+        triads[TRIAD_MINOR_R].r2 = intervals[7];
+        triads[TRIAD_MINOR_1].r1 = intervals[5];
+        triads[TRIAD_MINOR_1].r2 = intervals[8];
+        triads[TRIAD_MINOR_2].r1 = intervals[4];
+        triads[TRIAD_MINOR_2].r2 = intervals[9];
+        
+        triads[TRIAD_DIM_R].r1 = intervals[3];
+        triads[TRIAD_DIM_R].r2 = intervals[6];
+        triads[TRIAD_DIM_1].r1 = intervals[6];
+        triads[TRIAD_DIM_1].r2 = intervals[9];
+        triads[TRIAD_DIM_2].r1 = intervals[3];
+        triads[TRIAD_DIM_2].r2 = intervals[9];
+        
+        triads[TRIAD_SUS4_R].r1 = intervals[5];
+        triads[TRIAD_SUS4_R].r2 = intervals[7];
+        triads[TRIAD_SUS4_1].r1 = intervals[2];
+        triads[TRIAD_SUS4_1].r2 = intervals[7];
+        triads[TRIAD_SUS4_2].r1 = intervals[5];
+        triads[TRIAD_SUS4_2].r2 = intervals[10];
+        
+        triads[TRIAD_SUS2_R].r1 = intervals[2];
+        triads[TRIAD_SUS2_R].r2 = intervals[7];
+        
+        triads[TRIAD_SUS2_1].r1 = intervals[5];
+        triads[TRIAD_SUS2_1].r2 = intervals[10];
+        
+        triads[TRIAD_SUS2_2].r1 = intervals[5];
+        triads[TRIAD_SUS2_2].r2 = intervals[7];
+        
+        triads[TRIAD_AUG].r1 = intervals[4];
+        triads[TRIAD_AUG].r2 = intervals[8];
+        
+        triads[TRIAD_5TH].r1 = 3.0/2.0;
+        triads[TRIAD_5TH].r2 = 2.0;
+        
+        triads[TRIAD_OCT].r1 = 0.5;
+        triads[TRIAD_OCT].r2 = 2.0;
+        
+        // set up default chord tables
+        major_chord_table[0] = triads[TRIAD_MAJOR_R];
+        major_chord_table[1] = triads[TRIAD_DIM_R];
+        major_chord_table[2] = triads[TRIAD_MINOR_R];
+        major_chord_table[3] = triads[TRIAD_DIM_R];
+        major_chord_table[4] = triads[TRIAD_MAJOR_2];
+        major_chord_table[5] = triads[TRIAD_MAJOR_R];
+        major_chord_table[6] = triads[TRIAD_DIM_R];
+        major_chord_table[7] = triads[TRIAD_MAJOR_1];
+        major_chord_table[8] = triads[TRIAD_AUG];
+        major_chord_table[9] = triads[TRIAD_MINOR_R];
+        major_chord_table[10] = triads[TRIAD_MAJOR_R];
+        major_chord_table[11] = triads[TRIAD_DIM_R];
 
+        minor_chord_table[0] = triads[TRIAD_MINOR_R];
+        minor_chord_table[1] = triads[TRIAD_DIM_R];
+        minor_chord_table[2] = triads[TRIAD_DIM_R];
+        minor_chord_table[3] = triads[TRIAD_MINOR_2];
+        minor_chord_table[4] = triads[TRIAD_DIM_R];
+        minor_chord_table[5] = triads[TRIAD_DIM_2];
+        minor_chord_table[6].r1 = intervals[6]; minor_chord_table[6].r2 = intervals[8];
+        minor_chord_table[7] = triads[TRIAD_MINOR_1];
+        minor_chord_table[8] = triads[TRIAD_MAJOR_R];
+        minor_chord_table[9] = triads[TRIAD_DIM_R];
+        minor_chord_table[10] = triads[TRIAD_MAJOR_R];
+        minor_chord_table[11] = triads[TRIAD_DIM_R];
+
+        blues_chord_table[0] = triads[TRIAD_MAJOR_R]; blues_chord_table[0].r2 = intervals[10];
+        blues_chord_table[1] = triads[TRIAD_DIM_2];
+        blues_chord_table[2].r1 = intervals[2]; blues_chord_table[2].r2 = intervals[8];
+        blues_chord_table[3] = triads[TRIAD_MAJOR_R];
+        blues_chord_table[4] = triads[TRIAD_DIM_R];
+        blues_chord_table[5] = triads[TRIAD_MAJOR_R];
+        blues_chord_table[6] = triads[TRIAD_MAJOR_R];
+        blues_chord_table[7] = triads[TRIAD_MINOR_R]; blues_chord_table[7].r2 = intervals[5];
+        blues_chord_table[8] = triads[TRIAD_MAJOR_R];
+        blues_chord_table[9] = triads[TRIAD_MAJOR_R];
+        blues_chord_table[10].r1 = intervals[2]; blues_chord_table[10].r2 = intervals[6];
+        blues_chord_table[11] = triads[TRIAD_MAJOR_R];
+        
+        memset(midinotes, 0, 128 * sizeof(int));
+        
 	}
 	
 	void reset() {
@@ -305,7 +436,9 @@ public:
     virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) override {
         if (midiEvent.length != 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
-        //uint8_t channel = midiEvent.data[0] & 0x0F; // works in omni mode.
+        uint8_t channel = midiEvent.data[0] & 0x0F; // works in omni mode.
+        if (channel != 0)
+            return;
         
         switch (status) {
             case 0x80 : { // note off
@@ -318,7 +451,10 @@ public:
                 uint8_t note = midiEvent.data[1];
                 uint8_t veloc = midiEvent.data[2];
                 if (note > 127 || veloc > 127) break;
-                addnote((int)note,127);
+                if (veloc == 0)
+                    remnote((int)note);
+                else
+                    addnote((int)note,(int)veloc);
                 break;
             }
             case 0xB0 : { // control
@@ -333,7 +469,7 @@ public:
 	
 	void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
 		int channelCount = int(channelStates.size());
-		
+        
         // For each sample.
 		for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex)
         {
@@ -343,6 +479,12 @@ public:
 			
             float* in  = (float*)inBufferListPtr->mBuffers[channel].mData  + frameOffset;
             float* out = (float*)outBufferListPtr->mBuffers[channel].mData + frameOffset;
+            float* out2 = out;
+            
+            if (channelCount > 1)
+            {
+                out2 = (float*)outBufferListPtr->mBuffers[1].mData + frameOffset;
+            }
 
             cbuf[cix] = *in;
             
@@ -358,9 +500,7 @@ public:
                 rcnt = 256;
                 float p = estimate_pitch(cix - 2*maxT);
                 if (p > 0)
-                {
                     T = p;
-                }
                 else
                     T = 250;
                 
@@ -388,13 +528,20 @@ public:
                 if (voices[vix].midinote == -1)
                     continue;
                 
+                if (!voiced && vix != 0)
+                    continue;
+                
                 if (--voices[vix].nextgrain < 0)
                 {
                     grains[grain_ix].size = 2 * T;
                     grains[grain_ix].start = pitchmark[1] - voices[vix].nextgrain - T;
                     grains[grain_ix].ratio = voices[vix].formant_ratio;
                     grains[grain_ix].ix = 0;
-                    grains[grain_ix].gain = voices[vix].midivel / 127;
+                    grains[grain_ix].gain = (float) voices[vix].midivel / 127.0;
+                    grains[grain_ix].pan = voices[vix].pan;
+                    
+                    if (voices[vix].ratio < 1)
+                        grains[grain_ix].gain *= 1/voices[vix].ratio;
                     
                     voices[vix].nextgrain += (T / voices[vix].ratio);
                     
@@ -404,6 +551,7 @@ public:
             }
             
             *out = 0;
+            *out2 = 0;
             
             for (int ix = 0; ix < ngrains; ix++)
             {
@@ -426,7 +574,8 @@ public:
                     i = (int) wi;
                     float w = linear (grain_window + i, wi - i);
                     
-                    *out += u * w;
+                    *out += u * w * g.gain * (g.pan + 1.0)/2;
+                    *out2 += u * w * g.gain * (-g.pan + 1)/2;
                     g.ix += g.ratio;
                     
                     if (g.ix > g.size)
@@ -526,7 +675,7 @@ public:
         float mean = 0.0;
         float min = HUGE_VALF;
         
-        int srch_n = (int)T/4;
+        int srch_n = (int)T/2;
         
         for (int k = -srch_n; k < srch_n; k++)
         {
@@ -551,31 +700,71 @@ public:
         else if (pitchmark[0] > ncbuf - 1)
             pitchmark[0] -= ncbuf;
     }
+    
     void addnote(int note, int vel)
     {
-        printf("adding note %d\n", note);
-        for (int k = 1; k < nvoices; k++)
+        int min_dist = 127;
+        int dist;
+        int min_ix = -1;
+        
+        midinotes[note]++;
+        
+        for (int k = 3; k < nvoices; k++)
         {
-            if (voices[k].midinote == -1)
+            //printf("voice[%d] = %d\n", k, voices[k].midinote);
+            dist = abs(voices[k].lastnote - note);
+            if (dist == 0 || (voices[k].midinote == -1 && dist < min_dist))
             {
-                voices[k].lastnote = voices[k].midinote;
-                voices[k].midinote = note;
-                voices[k].midivel = vel;
-                return;
+                min_dist = dist;
+                min_ix = k;
             }
         }
+        //printf("\n");
         
-        voices[voice_ix].lastnote = voices[voice_ix].midinote;
-        voices[voice_ix].midinote = note;
-        voices[voice_ix].midinote = vel;
+        if (min_ix >= 0)
+        {
+            voices[min_ix].lastnote = voices[min_ix].midinote;
+            voices[min_ix].midinote = note;
+            voices[min_ix].midivel = vel;
+            return;
+        }
+        
+        min_dist = 127;
+        min_ix = -1;
+        for (int k = 3; k < nvoices; k++)
+        {
+            dist = abs(voices[k].midinote - note);
+            if (voices[k].midinote > 0 && dist < min_dist)
+            {
+                min_dist = dist;
+                min_ix = k;
+            }
+        }
+        printf("note %d goes to voice %d (stolen)\n", note, min_ix);
+        
+        voices[min_ix].lastnote = voices[min_ix].midinote;
+        voices[min_ix].midinote = note;
+        voices[min_ix].midivel = vel;
         
         if (++voice_ix > nvoices)
-            voice_ix = 1;
+            voice_ix = 3;
+        
+        return;
     }
     
     void remnote(int note)
     {
-        for (int k = 0; k < nvoices; k++)
+        midinotes[note]--;
+        
+        printf("removing note %d\n", note);
+        
+        for (int k = 0; k < 128; k++)
+        {
+            printf("%d, ", midinotes[k]);
+        }
+        printf("\n");
+        
+        for (int k = 3; k < nvoices; k++)
         {
             if (voices[k].midinote == note)
             {
@@ -589,165 +778,72 @@ public:
     {
         voices[0].error = 0;
         voices[0].ratio = 1.0;
+        voices[0].target_ratio = 1.0;
         voices[0].formant_ratio = 1.0;
+        voices[0].midivel = 127;
         voices[0].midinote = 0;
-        voices[1].midinote = 0;
-        voices[2].midinote = 0;
+        voices[1].midinote = -1;
+        voices[1].midivel = 127;
+        voices[1].pan = 0.5;
+        voices[2].midinote = -1;
+        voices[2].midivel = 127;
+        voices[2].pan = -0.5;
         
         if (!voiced)
             return;
+        
+        voices[1].midinote = 0;
+        voices[2].midinote = 0;
             
         float f = log2f (sampleRate / (T * 440));
         
         float note_f = f * 12.0;
         int nn = (int) round(note_f);
         float error = (note_f - (float)nn)/12;
+        float error_ratio = powf(2.0, error);
         
         int root = root_key % 12;
         int quality = root_key / 12;
         
         int interval = (nn + 69 - root) % 12;
         note_number = interval;
-        //printf("interval = %d\n", interval);
+
         if (quality == 0)
         {
-            switch (interval)
-            {
-                case 0:
-                case 5:
-                case 10:
-                    voices[1].ratio = powf(2.0f,4./12. - error);
-                    voices[2].ratio = powf(2.0f,7./12. - error);
-                    break;
-                case 7:
-                    voices[1].ratio = powf(2.0f,5./12. -error);
-                    voices[2].ratio = powf(2.0f,9./12. -error);
-                    break;
-                case 2:
-                    voices[1].ratio = powf(2.0f,3./12. -error);
-                    voices[2].ratio = powf(2.0f,7./12. - error);
-                    break;
-                case 17:
-                    voices[1].ratio = powf(2.0f,4./12. - error);
-                    voices[2].ratio = powf(2.0f,9./12. - error);
-                    break;
-                case 4:
-                    voices[1].ratio = powf(2.0f,3./12. - error);
-                    voices[2].ratio = powf(2.0f,8./12. - error);
-                    break;
-                case 9:
-                    voices[1].ratio = powf(2.0f,3./12. - error);
-                    voices[2].ratio = powf(2.0f,7./12. - error);
-                    break;
-                case 8:
-                    voices[1].ratio = powf(2.0f, 4./12. - error);
-                    voices[2].ratio = powf(2.0f, 8./12. - error);
-                    break;
-                case 1:
-                case 3:
-                case 6:
-                case 11:
-                    voices[1].ratio = powf(2.0f,3./12. - error);
-                    voices[2].ratio = powf(2.0f,6./12. - error);
-                    break;
-            }
+            voices[1].target_ratio = major_chord_table[interval].r1;
+            voices[2].target_ratio = major_chord_table[interval].r2;
         }
         else if (quality == 1)
         {
-            switch (interval)
-            {
-                case 8:
-                case 10:
-                    voices[1].ratio = powf(2.0f,4./12.);
-                    voices[2].ratio = powf(2.0f,7./12.);
-                    break;
-                case 5:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,9./12.);
-                    break;
-                case 6:
-                    voices[1].ratio = powf(2.0f,6./12.);
-                    voices[2].ratio = powf(2.0f,8./12.);
-                    break;
-                case 17:
-                    voices[1].ratio = powf(2.0f,5./12.);
-                    voices[2].ratio = powf(2.0f,9./12.);
-                    break;
-                case 0:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,7./12.);
-                    break;
-                case 3:
-                    voices[1].ratio = powf(2.0f,4./12.);
-                    voices[2].ratio = powf(2.0f,9./12.);
-                    break;
-                case 7:
-                    voices[1].ratio = powf(2.0f,5./12.);
-                    voices[2].ratio = powf(2.0f,8./12.);
-                    break;
-                case 14:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,8./12.);
-                    break;
-                case 19:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,7./12.);
-                    break;
-                case 1:
-                case 2:
-                case 4:
-                case 9:
-                case 11:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,6./12.);
-                    break;
-            }
+            voices[1].target_ratio = minor_chord_table[interval].r1;
+            voices[2].target_ratio = minor_chord_table[interval].r2;
         }
         else if (quality == 2)
         {
-            switch (interval)
-            {
-                case 3:
-                case 5:
-                case 6:
-                case 8:
-                case 9:
-                case 11:
-                    voices[1].ratio = powf(2.0f,4./12.);
-                    voices[2].ratio = powf(2.0f,7./12.);
-                    break;
-                case 17:
-                    voices[1].ratio = powf(2.0f,5./12.);
-                    voices[2].ratio = powf(2.0f,9./12.);
-                    break;
-                case 0:
-                    voices[1].ratio = powf(2.0f,4./12.);
-                    voices[2].ratio = powf(2.0f,10./12.);
-                    break;
-                case 2:
-                    voices[1].ratio = powf(2.0f,2./12.);
-                    voices[2].ratio = powf(2.0f,8./12.);
-                    break;
-                case 1:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,9./12.);
-                case 7:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,5./12.);
-                    break;
-                case 10:
-                    voices[1].ratio = powf(2.0f,2./12.);
-                    voices[2].ratio = powf(2.0f,6./12.);
-                    break;
-                case 19:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,7./12.);
-                    break;
-                case 4:
-                    voices[1].ratio = powf(2.0f,3./12.);
-                    voices[2].ratio = powf(2.0f,6./12.);
-                    break;
-            }
+            voices[1].target_ratio = blues_chord_table[interval].r1;
+            voices[2].target_ratio = blues_chord_table[interval].r2;
+        }
+        else if (quality == 3)
+        {
+            voices[1].target_ratio = 1.0;
+            voices[2].target_ratio = 1.0;
+            voices[1].midinote = -1;
+            voices[2].midinote = -1;
+        }
+        
+        for (int k = 3; k < nvoices; k++)
+        {
+            if (voices[k].midinote < 0)
+                continue;
+            
+            float error_hsteps = (voices[k].midinote - 69) - note_f;
+            
+            voices[k].target_ratio = powf(2.0, error_hsteps/12);
+        }
+        
+        for (int k = 0; k < nvoices; k++)
+        {
+            voices[k].ratio = 0.9 * voices[k].ratio + 0.1 * voices[k].target_ratio;
         }
     }
 	
@@ -779,11 +875,19 @@ private:
 	AUAudioFrameCount dezipperRampDuration;
     int keycenter = 0;
     
-    int nvoices = 8;
-    int voice_ix = 1;
+    int midinotes[128];
+    
+    int nvoices = 16;
+    int voice_ix = 3;
     int root_key = 0;
     int chord_quality = 0;
     voice_t * voices;
+    
+    float intervals[12];
+    triad_ratio_t triads[18];
+    triad_ratio_t major_chord_table[12];
+    triad_ratio_t minor_chord_table[12];
+    triad_ratio_t blues_chord_table[12];
     
     int ngrains;
     int grain_ix = 0;

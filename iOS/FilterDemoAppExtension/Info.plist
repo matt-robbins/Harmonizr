@@ -30,7 +30,7 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>FilterDemo</string>
+					<string>Harmonizer</string>
 					<key>manufacturer</key>
 					<string>Demo</string>
 					<key>name</key>
@@ -38,13 +38,13 @@
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
-					<string>fltr</string>
+					<string>harm</string>
 					<key>tags</key>
 					<array>
 						<string>Effects</string>
 					</array>
 					<key>type</key>
-					<string>aufx</string>
+					<string>aufm</string>
 					<key>version</key>
 					<integer>67072</integer>
 				</dict>

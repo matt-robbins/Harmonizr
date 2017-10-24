@@ -63,8 +63,8 @@ class ViewController: UIViewController {
         // MARK: AudioComponentDescription Important!
         // Ensure that you update the AudioComponentDescription for your AudioUnit type, manufacturer and creator type.
         var componentDescription = AudioComponentDescription()
-        componentDescription.componentType = kAudioUnitType_Effect
-        componentDescription.componentSubType = 0x666c7472 /*'fltr'*/
+        componentDescription.componentType = kAudioUnitType_MusicEffect
+        componentDescription.componentSubType = 0x6861726d /*'harm'*/
         componentDescription.componentManufacturer = 0x44656d6f /*'Demo'*/
         componentDescription.componentFlags = 0
         componentDescription.componentFlagsMask = 0
