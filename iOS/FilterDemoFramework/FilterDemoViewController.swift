@@ -41,13 +41,35 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     var cutoffParameter: AUParameter?
 	var resonanceParameter: AUParameter?
     var keycenterParameter: AUParameter?
+    var inversionParameter: AUParameter?
+    var autoParameter: AUParameter?
+    var midiParameter: AUParameter?
+    var triadParameter: AUParameter?
 	var parameterObserverToken: AUParameterObserverToken?
+    
+    var configController: ConfigViewController?
+    
+    var timer = Timer()
+    
+    func auPoller(T: Float){
+        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(updateCounting), userInfo: nil, repeats: true)
+    }
+    
+    func updateCounting()
+    {
+        guard let audioUnit = audioUnit else { return }
+        filterView.setSelectedNote(audioUnit.getCurrentNote())
+        return
+    }
 
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		// Respond to changes in the filterView (frequency and/or response changes).
         filterView.delegate = self
+        
+        auPoller(T: 0.01)
 		
         guard audioUnit != nil else { return }
         connectViewWithAU()
@@ -56,15 +78,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     // MARK: FilterViewDelegate
     
     func updateFilterViewFrequencyAndMagnitudes() {
-        guard let audioUnit = audioUnit else { return }
-        
-        // Get an array of frequencies from the view.
-        let frequencies = filterView.frequencyDataForDrawing()
-        
-        // Get the corresponding magnitudes from the AU.
-        let magnitudes = audioUnit.magnitudes(forFrequencies: frequencies as [NSNumber]!).map { $0.doubleValue }
-        
-        filterView.setMagnitudes(magnitudes)
+        return
     }
     
     func filterView(_ filterView: FilterView, didChangeResonance resonance: Float) {
@@ -86,8 +100,37 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         keycenterParameter?.value = keycenter
     }
     
+    func filterView(_ filterView: FilterView, didChangeInversion inversion: Float)
+    {
+        inversionParameter?.value = inversion
+    }
+    
+    func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
+    {
+        autoParameter?.value = enable
+    }
+    
+    func filterView(_ filterView: FilterView, didChangeTriad triad: Float)
+    {
+        triadParameter?.value = triad
+    }
+    
+    func filterView(_ filterView: FilterView, didChangeMidi midi: Float)
+    {
+        midiParameter?.value = midi
+    }
+    
     func filterViewDataDidChange(_ filterView: FilterView) {
         updateFilterViewFrequencyAndMagnitudes()
+    }
+    
+    func filterViewGetPitch(_ filterView: FilterView) -> Float {
+        return audioUnit!.getCurrentNote()
+    }
+    
+    func filterViewConfigure(_ filterView: FilterView) {
+        configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
+        self.present(configController!, animated:true, completion:nil)
     }
 	
 	/*
@@ -101,26 +144,23 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 		cutoffParameter = paramTree.value(forKey: "cutoff") as? AUParameter
 		resonanceParameter = paramTree.value(forKey: "resonance") as? AUParameter
         keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
+        inversionParameter = paramTree.value(forKey: "inversion") as? AUParameter
+        autoParameter = paramTree.value(forKey: "auto") as? AUParameter
+        midiParameter = paramTree.value(forKey: "midi") as? AUParameter
+        triadParameter = paramTree.value(forKey: "triad") as? AUParameter
 		
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
 
+            print("address = \(address)")
+            print("value = \(value)")
 			DispatchQueue.main.async {
-				if address == strongSelf.cutoffParameter!.address {
-					strongSelf.filterView.frequency = value
-					//strongSelf.frequencyLabel.text = strongSelf.cutoffParameter!.string(fromValue: nil)
-				}
-				else if address == strongSelf.resonanceParameter!.address {
-					strongSelf.filterView.resonance = value
-					//strongSelf.resonanceLabel.text = strongSelf.resonanceParameter!.string(fromValue: nil)
-				}
-				
 				strongSelf.updateFilterViewFrequencyAndMagnitudes()
 			}
 		})
         
-        filterView.frequency = cutoffParameter!.value;
-        filterView.resonance = resonanceParameter!.value;
+        filterView.keycenter = Int(keycenterParameter!.value)
+        filterView.inversion = Int(inversionParameter!.value)
 		
         //updateFilterViewFrequencyAndMagnitudes()
         

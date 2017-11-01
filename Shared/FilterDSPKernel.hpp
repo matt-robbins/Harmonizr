@@ -13,6 +13,7 @@
 #import "ParameterRamper.hpp"
 #import <vector>
 #import <cmath>
+#import <sys/time.h>
 #include <Accelerate/Accelerate.h>
 
 
@@ -37,6 +38,7 @@ typedef struct voice_s
     int midinote;
     int midivel;
     int lastnote;
+    unsigned int sample_num;
 } voice_t;
 
 typedef struct triad_ratio_s
@@ -89,7 +91,10 @@ enum {
 	FilterParamCutoff = 0,
 	FilterParamResonance = 1,
     HarmParamKeycenter = 2,
-    HarmParamQuality = 3,
+    HarmParamInversion = 3,
+    HarmParamAuto = 4,
+    HarmParamMidi = 5,
+    HarmParamTriad = 6
 };
 
 static inline double squared(double x) {
@@ -231,14 +236,19 @@ public:
             voices[k].midinote = -1;
             voices[k].error = 0;
             voices[k].ratio = 1;
+            voices[k].target_ratio = 1.0;
             voices[k].formant_ratio = 1;
             voices[k].nextgrain = 250;
             
             if (k >= 3)
             {
-                voices[k].pan = ((float)(k - 3) / (float)(nvoices - 3)) - 1.0;
+                voices[k].pan = ((float)(k - 3) / (float)(nvoices - 3)) - 0.5;
+                //voices[k].formant_ratio = ((float)(k - 3) / (float)(nvoices - 3)) + 0.5;
             }
         }
+        
+        voices[1].formant_ratio = 1.05;
+        voices[2].formant_ratio = 1.1;
         
         voices[0].midinote = 0;
         
@@ -399,6 +409,22 @@ public:
             case HarmParamKeycenter:
                 root_key = (int) clamp(value,0.f,47.f);
                 break;
+            case HarmParamInversion:
+                inversion = (int) clamp(value,0.f,2.f);
+                printf("inversion = %d, %f\n", inversion, value);
+                break;
+            case HarmParamAuto:
+                auto_enable = (int) clamp(value,0.f,1.f);
+                printf("auto_enble = %d\n", auto_enable);
+                break;
+            case HarmParamMidi:
+                midi_enable = (int) clamp(value,0.f,1.f);
+                printf("midi_enble = %d\n", midi_enable);
+                break;
+            case HarmParamTriad:
+                triad = (int) clamp(value,-1.f,30.f);
+                printf("triad override = %d\n", triad);
+                break;
         }
 	}
 
@@ -411,6 +437,17 @@ public:
 
             case FilterParamResonance:
                 return resonanceRamper.getUIValue();
+                
+            case HarmParamKeycenter:
+                return (float) keycenter;
+            case HarmParamInversion:
+                return (float) inversion;
+            case HarmParamAuto:
+                return (float) auto_enable;
+            case HarmParamMidi:
+                return (float) midi_enable;
+            case HarmParamTriad:
+                return (float) triad;
 				
 			default: return 12.0f * inverseNyquist;
         }
@@ -470,6 +507,7 @@ public:
 	void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
 		int channelCount = int(channelStates.size());
         
+        sample_count += frameCount;
         // For each sample.
 		for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex)
         {
@@ -513,9 +551,8 @@ public:
             
             if (dp > (T + T/4))
             {
-                
                 findmark();
-                finderror();
+                update_voices();
                 
                 //printf("pitchmark[0,1,2] = %.2f,%.2f,%.2f\ninput = %d\n", pitchmark[0],pitchmark[1],pitchmark[2],cix);
             }
@@ -525,23 +562,26 @@ public:
             
             for (int vix = 0; vix < nvoices; vix++)
             {
-                if (voices[vix].midinote == -1)
+                if (voices[vix].midinote == -1 || (vix > 2 && !midi_enable))
                     continue;
                 
-                if (!voiced && vix != 0)
-                    continue;
+                float unvoiced_offset = 0;
+                if (!voiced)
+                {
+                    unvoiced_offset = T * (0.5 - (float) rand() / RAND_MAX);
+                }
                 
                 if (--voices[vix].nextgrain < 0)
                 {
                     grains[grain_ix].size = 2 * T;
-                    grains[grain_ix].start = pitchmark[1] - voices[vix].nextgrain - T;
+                    grains[grain_ix].start = pitchmark[1] - voices[vix].nextgrain - T + unvoiced_offset;
                     grains[grain_ix].ratio = voices[vix].formant_ratio;
                     grains[grain_ix].ix = 0;
                     grains[grain_ix].gain = (float) voices[vix].midivel / 127.0;
                     grains[grain_ix].pan = voices[vix].pan;
                     
                     if (voices[vix].ratio < 1)
-                        grains[grain_ix].gain *= 1/voices[vix].ratio;
+                        grains[grain_ix].gain *= powf(1/voices[vix].ratio,0.5);
                     
                     voices[vix].nextgrain += (T / voices[vix].ratio);
                     
@@ -550,8 +590,8 @@ public:
                 }
             }
             
-            *out = 0;
-            *out2 = 0;
+            *out = *in;
+            *out2 = *in;
             
             for (int ix = 0; ix < ngrains; ix++)
             {
@@ -703,15 +743,16 @@ public:
     
     void addnote(int note, int vel)
     {
-        int min_dist = 127;
+        int min_dist = 129;
         int dist;
         int min_ix = -1;
+        midi_changed_sample_num = sample_count;
+        midi_changed = 1;
         
-        midinotes[note]++;
-        
+        // look for empty voice, or one with the same note and take that if we can
         for (int k = 3; k < nvoices; k++)
         {
-            //printf("voice[%d] = %d\n", k, voices[k].midinote);
+            printf("voice %d: %d\n", k, voices[k].midinote);
             dist = abs(voices[k].lastnote - note);
             if (dist == 0 || (voices[k].midinote == -1 && dist < min_dist))
             {
@@ -719,32 +760,34 @@ public:
                 min_ix = k;
             }
         }
-        //printf("\n");
-        
         if (min_ix >= 0)
         {
             voices[min_ix].lastnote = voices[min_ix].midinote;
             voices[min_ix].midinote = note;
             voices[min_ix].midivel = vel;
+            voices[min_ix].sample_num = sample_count;
+            voices[min_ix].nextgrain = 0;
             return;
         }
         
-        min_dist = 127;
+        // otherwise, we are stealing
+        min_dist = 129;
         min_ix = -1;
         for (int k = 3; k < nvoices; k++)
         {
             dist = abs(voices[k].midinote - note);
-            if (voices[k].midinote > 0 && dist < min_dist)
+            if (dist < min_dist)
             {
                 min_dist = dist;
                 min_ix = k;
             }
         }
-        printf("note %d goes to voice %d (stolen)\n", note, min_ix);
         
         voices[min_ix].lastnote = voices[min_ix].midinote;
         voices[min_ix].midinote = note;
         voices[min_ix].midivel = vel;
+        voices[min_ix].sample_num = sample_count;
+        voices[min_ix].nextgrain = 0;
         
         if (++voice_ix > nvoices)
             voice_ix = 3;
@@ -754,46 +797,121 @@ public:
     
     void remnote(int note)
     {
-        midinotes[note]--;
-        
-        printf("removing note %d\n", note);
-        
-        for (int k = 0; k < 128; k++)
-        {
-            printf("%d, ", midinotes[k]);
-        }
-        printf("\n");
-        
         for (int k = 3; k < nvoices; k++)
         {
             if (voices[k].midinote == note)
             {
-                voices[k].lastnote = voices[k].midinote;
+                voices[k].lastnote = note;
                 voices[k].midinote = -1;
-                return;
             }
         }
+        
+        midi_changed_sample_num = sample_count;
+        midi_changed = 1;
     }
-    void finderror (void)
+    
+    void analyze_harmony(void)
+    {
+        float intervals[127];
+        int octave[12];
+        
+        memset(octave, 0, 12 * sizeof(int));
+        
+        int n = 0;
+        for (int j = 3; j < nvoices; j++)
+        {
+            if (voices[j].midinote < 0)
+                continue;
+            
+            midinotes[n++] = (float) voices[j].midinote;
+            
+            octave[voices[j].midinote % 12] = 1;
+        }
+        if (n == 0)
+            return;
+        
+        vDSP_vsort(midinotes, (vDSP_Length) n, 1);
+        
+        for (int j = 0; j < n; j++)
+        {
+            // ignore doubles
+            int dbl = 0;
+            for (int k = 0; k < j; k++)
+            {
+                if (((int)(midinotes[j] - midinotes[k]) % 12) == 0)
+                {
+                    dbl = 1; break;
+                }
+            }
+            
+            if (dbl)
+                continue;
+            
+            int ix = (int) midinotes[j] % 12;
+            
+            if (octave[(ix+2)%12] && octave[(ix+6)%12])
+            {
+                printf("%d, 7\n", (ix + 2) % 12);
+            }
+            
+            if (octave[(ix+3)%12] && octave[(ix+6)%12])
+            {
+                printf("%d, diminished\n", ix);
+            }
+            
+            if (octave[(ix+3)%12] && octave[(ix+7)%12])
+            {
+                printf("%d, minor\n", ix);
+                root_key = ix + 12;
+                break;
+            }
+            
+            if (octave[(ix+4)%12] && octave[(ix+7)%12])
+            {
+                printf("%d, major\n", ix);
+                root_key = ix;
+                break;
+            }
+            
+            if (octave[(ix+4)%12] && octave[(ix+8)%12])
+            {
+                printf("%d, augmented\n", ix);
+            }
+       
+        }
+        
+        printf("\n");
+        
+    }
+    
+    void update_voices (void)
     {
         voices[0].error = 0;
         voices[0].ratio = 1.0;
         voices[0].target_ratio = 1.0;
         voices[0].formant_ratio = 1.0;
-        voices[0].midivel = 127;
-        voices[0].midinote = 0;
+        voices[0].midivel = -1;
+        voices[0].midinote = -1;
         voices[1].midinote = -1;
-        voices[1].midivel = 127;
+        voices[1].midivel = 65;
         voices[1].pan = 0.5;
         voices[2].midinote = -1;
-        voices[2].midivel = 127;
+        voices[2].midivel = 65;
         voices[2].pan = -0.5;
         
-        if (!voiced)
-            return;
+        if (midi_changed && (sample_count - midi_changed_sample_num) > (int) sampleRate / 50)
+        {
+            midi_changed = 0;
+            printf("%d samples since last midi note\n", sample_count - midi_changed_sample_num);
+            analyze_harmony();
+        }
         
-        voices[1].midinote = 0;
-        voices[2].midinote = 0;
+        
+        if (!voiced)
+        {
+            note_number = -1.0;
+            return;
+        }
             
         float f = log2f (sampleRate / (T * 440));
         
@@ -806,29 +924,50 @@ public:
         int quality = root_key / 12;
         
         int interval = (nn + 69 - root) % 12;
-        note_number = interval;
+        note_number = (nn + 69) % 12 + (note_f - nn);
 
-        if (quality == 0)
+        if (triad >= 0)
         {
-            voices[1].target_ratio = major_chord_table[interval].r1;
-            voices[2].target_ratio = major_chord_table[interval].r2;
+            voices[0].midinote = 0;
+            voices[1].midinote = 0;
+            voices[2].midinote = 0;
+            voices[1].target_ratio = voices[1].ratio = triads[triad].r1;
+            voices[2].target_ratio = voices[2].ratio = triads[triad].r2;
         }
-        else if (quality == 1)
+        
+        else if (auto_enable)
         {
-            voices[1].target_ratio = minor_chord_table[interval].r1;
-            voices[2].target_ratio = minor_chord_table[interval].r2;
-        }
-        else if (quality == 2)
-        {
-            voices[1].target_ratio = blues_chord_table[interval].r1;
-            voices[2].target_ratio = blues_chord_table[interval].r2;
-        }
-        else if (quality == 3)
-        {
-            voices[1].target_ratio = 1.0;
-            voices[2].target_ratio = 1.0;
-            voices[1].midinote = -1;
-            voices[2].midinote = -1;
+            voices[1].midinote = 0;
+            voices[2].midinote = 0;
+            voices[0].midinote = 0;
+            
+            if (quality == 0)
+            {
+                voices[1].target_ratio = major_chord_table[interval].r1;
+                voices[2].target_ratio = major_chord_table[interval].r2;
+            }
+            else if (quality == 1)
+            {
+                voices[1].target_ratio = minor_chord_table[interval].r1;
+                voices[2].target_ratio = minor_chord_table[interval].r2;
+            }
+            else if (quality == 2)
+            {
+                voices[1].target_ratio = blues_chord_table[interval].r1;
+                voices[2].target_ratio = blues_chord_table[interval].r2;
+            }
+            else if (quality == 3)
+            {
+                voices[1].target_ratio = 1.0;
+                voices[2].target_ratio = 1.0;
+                voices[1].midinote = -1;
+                voices[2].midinote = -1;
+            }
+            
+            if (inversion < 2)
+                voices[2].target_ratio *= 0.5;
+            if (inversion < 1)
+                voices[1].target_ratio *= 0.5;
         }
         
         for (int k = 3; k < nvoices; k++)
@@ -836,13 +975,16 @@ public:
             if (voices[k].midinote < 0)
                 continue;
             
+            voices[0].midinote = 0;
+            
             float error_hsteps = (voices[k].midinote - 69) - note_f;
             
             voices[k].target_ratio = powf(2.0, error_hsteps/12);
         }
-        
+    
         for (int k = 0; k < nvoices; k++)
         {
+            voices[k].target_ratio /= error_ratio;
             voices[k].ratio = 0.9 * voices[k].ratio + 0.1 * voices[k].target_ratio;
         }
     }
@@ -875,14 +1017,17 @@ private:
 	AUAudioFrameCount dezipperRampDuration;
     int keycenter = 0;
     
-    int midinotes[128];
+    float midinotes[128];
     
     int nvoices = 16;
     int voice_ix = 3;
     int root_key = 0;
     int chord_quality = 0;
     voice_t * voices;
-    
+    int inversion = 2;
+    int midi_enable = 1;
+    int auto_enable = 1;
+    int triad = -1;
     float intervals[12];
     triad_ratio_t triads[18];
     triad_ratio_t major_chord_table[12];
@@ -895,6 +1040,10 @@ private:
     
     int graintablesize = maxT;
     float * grain_window;
+    
+    unsigned int sample_count = 0;
+    unsigned int midi_changed_sample_num = 0;
+    unsigned int midi_changed = 1;
 
 	AudioBufferList* inBufferListPtr = nullptr;
 	AudioBufferList* outBufferListPtr = nullptr;

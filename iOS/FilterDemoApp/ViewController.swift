@@ -7,6 +7,7 @@
 */
 
 import UIKit
+import CoreAudioKit
 import AudioToolbox
 import FilterDemoFramework
 
@@ -15,11 +16,11 @@ class ViewController: UIViewController {
 
 	@IBOutlet var playButton: UIButton!
 
-	@IBOutlet var cutoffSlider: UISlider!
-	@IBOutlet var resonanceSlider: UISlider!
-	
-	@IBOutlet var cutoffTextField: UITextField!
-	@IBOutlet var resonanceTextField: UITextField!
+//    @IBOutlet var cutoffSlider: UISlider!
+//    @IBOutlet var resonanceSlider: UISlider!
+//
+//    @IBOutlet var cutoffTextField: UITextField!
+//    @IBOutlet var resonanceTextField: UITextField!
 
     /// Container for our custom view.
     @IBOutlet var auContainerView: UIView!
@@ -43,17 +44,21 @@ class ViewController: UIViewController {
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
 	var filterDemoViewController: FilterDemoViewController!
+    
+    var btMidiViewController: CABTMIDICentralViewController!
+    var navController: UINavigationController!
 
     // MARK: View Life Cycle
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+        self.view.backgroundColor = UIColor.darkGray
 		// Set up the plug-in's custom view.
 		embedPlugInView()
 		
 		// Create an audio file playback engine.
-		playEngine = SimplePlayEngine(componentType: kAudioUnitType_Effect)
+		playEngine = SimplePlayEngine(componentType: kAudioUnitType_MusicEffect)
 		
 		/*
 			Register the AU in-process for development/debugging.
@@ -83,7 +88,13 @@ class ViewController: UIViewController {
 			self.connectParametersToControls()
 		}
         
+        playButton.setTitle("Bluetooth", for: UIControlState())
+        playButton.setTitleColor(UIColor.white, for: UIControlState())
+        //playButton.setImage(UIImage(named: "bt_icon.svg")!, for: UIControlState())
+        // diable idle timer
+        UIApplication.shared.isIdleTimerDisabled = true
         playEngine.startPlaying()
+        
 	}
     
 
@@ -178,30 +189,41 @@ class ViewController: UIViewController {
 		//resonanceTextField.text = resonanceParameter.string(fromValue: nil)
 		//resonanceSlider.value = resonanceParameter.value
 	}
+    
+    func dismissPopover() {
+        navController.dismiss(animated: true, completion: nil)
+        navController = nil
+        btMidiViewController = nil
+    }
 
     // MARK: IBActions
 
 	/// Handles Play/Stop button touches.
     @IBAction func togglePlay(_ sender: AnyObject?) {
-		let isPlaying = playEngine.togglePlay()
-
-        let titleText = isPlaying ? "Stop" : "Play"
-
-		playButton.setTitle(titleText, for: UIControlState())
+		//let isPlaying = playEngine.togglePlay()
+        
+        btMidiViewController = CABTMIDICentralViewController()
+        navController = UINavigationController(rootViewController: btMidiViewController)
+        
+        btMidiViewController.navigationItem.rightBarButtonItem =
+            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ViewController.dismissPopover))
+        navController.modalPresentationStyle = UIModalPresentationStyle.popover
+        
+        self.present(navController, animated: true, completion: nil)
 	}
 	
-	@IBAction func changedCutoff(_ sender: AnyObject?) {
-        guard sender === cutoffSlider else { return }
-        
-        let value = frequencyValueForSliderLocation(cutoffSlider.value)
-        // Set the parameter's value from the slider's value.
-        cutoffParameter.value = value
-	}
-
-	@IBAction func changedResonance(_ sender: AnyObject?) {
-        guard sender === resonanceSlider else { return }
-
-        // Set the parameter's value from the slider's value.
-        resonanceParameter.value = resonanceSlider.value
-	}
+//    @IBAction func changedCutoff(_ sender: AnyObject?) {
+//        guard sender === cutoffSlider else { return }
+//
+//        let value = frequencyValueForSliderLocation(cutoffSlider.value)
+//        // Set the parameter's value from the slider's value.
+//        cutoffParameter.value = value
+//    }
+//
+//    @IBAction func changedResonance(_ sender: AnyObject?) {
+//        guard sender === resonanceSlider else { return }
+//
+//        // Set the parameter's value from the slider's value.
+//        resonanceParameter.value = resonanceSlider.value
+//    }
 }

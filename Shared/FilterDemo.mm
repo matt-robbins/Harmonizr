@@ -111,14 +111,47 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
             min:0 max:47 unit:kAudioUnitParameterUnit_Indexed unitName:nil
             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
             valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *inversionParam = [AUParameterTree createParameterWithIdentifier:@"inversion" name:@"Inversion"
+            address:HarmParamInversion
+            min:0 max:2 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+            valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *autoParam = [AUParameterTree createParameterWithIdentifier:@"auto" name:@"Auto"
+             address:HarmParamAuto
+             min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+             valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *midiParam = [AUParameterTree createParameterWithIdentifier:@"midi" name:@"Midi"
+            address:HarmParamMidi
+            min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+            valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *triadParam = [AUParameterTree createParameterWithIdentifier:@"triad" name:@"Triad"
+            address:HarmParamTriad
+         min:-1 max:30 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+         valueStrings:nil dependentParameters:nil];
 	
 	// Initialize default parameter values.
 	cutoffParam.value = 20000.0;
 	resonanceParam.value = 0.0;
-    keycenterParam.value = 1;
+    keycenterParam.value = 0;
+    inversionParam.value = 2;
+    autoParam.value = 1;
+    midiParam.value = 1;
+    triadParam.value = -1;
+    
 	_kernel.setParameter(FilterParamCutoff, cutoffParam.value);
 	_kernel.setParameter(FilterParamResonance, resonanceParam.value);
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
+    _kernel.setParameter(HarmParamInversion, inversionParam.value);
+    _kernel.setParameter(HarmParamAuto, autoParam.value);
+    _kernel.setParameter(HarmParamMidi, midiParam.value);
+    _kernel.setParameter(HarmParamTriad, triadParam.value);
     
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
@@ -127,7 +160,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                  NewAUPreset(2, @"Third Preset")];
     
 	// Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[cutoffParam, resonanceParam, keycenterParam]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:@[cutoffParam, resonanceParam, keycenterParam, inversionParam, autoParam, midiParam, triadParam]];
 
 	// Create the input and output busses.
 	_inputBus.init(defaultFormat, 8);

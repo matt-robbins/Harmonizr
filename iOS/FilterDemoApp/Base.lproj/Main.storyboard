@@ -21,28 +21,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZU-Ig-hQr">
+                                <rect key="frame" x="0.0" y="48" width="414" height="688"/>
+                                <connections>
+                                    <segue destination="n4r-Op-aTt" kind="embed" id="jpB-sF-DAF"/>
+                                </connections>
+                            </containerView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awX-J2-WjW">
-                                <rect key="frame" x="192" y="28" width="30" height="30"/>
+                                <rect key="frame" x="384" y="0.0" width="30" height="48"/>
                                 <state key="normal" title="Play"/>
                                 <connections>
                                     <action selector="togglePlay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L06-Zo-ks1"/>
                                 </connections>
                             </button>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZU-Ig-hQr">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                <connections>
-                                    <segue destination="n4r-Op-aTt" kind="embed" id="jpB-sF-DAF"/>
-                                </connections>
-                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="R7r-hL-ae6"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="awX-J2-WjW" secondAttribute="bottom" constant="-58" id="XTO-zT-1OB"/>
-                            <constraint firstItem="awX-J2-WjW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cDh-8H-Wf2"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="centerX" secondItem="awX-J2-WjW" secondAttribute="centerX" id="jOp-ye-psp"/>
-                            <constraint firstItem="awX-J2-WjW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="pzr-zC-F3E"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="yNi-0j-d74"/>
+                            <constraint firstAttribute="trailing" secondItem="awX-J2-WjW" secondAttribute="trailing" id="AZX-HX-v6A"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="CQx-Xb-Bt7"/>
+                            <constraint firstItem="awX-J2-WjW" firstAttribute="trailing" secondItem="oZU-Ig-hQr" secondAttribute="trailing" id="GLq-WN-r7W"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="awX-J2-WjW" secondAttribute="bottom" id="Rus-ZD-zjX"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="dAp-et-aaP"/>
+                            <constraint firstItem="awX-J2-WjW" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eBF-lL-B1v"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="28" id="kZt-0s-VLj"/>
                         </constraints>
                     </view>
                     <connections>
@@ -63,7 +64,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Sbw-5o-mga"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="pdy-KB-hsz">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="688"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>

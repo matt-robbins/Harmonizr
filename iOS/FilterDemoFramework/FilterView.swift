@@ -22,37 +22,64 @@ protocol FilterViewDelegate: class {
     func filterView(_ filterView: FilterView, didChangeFrequency frequency: Float)
     
     func filterView(_ filterView: FilterView, didChangeKeycenter keycenter: Float)
-    
+    func filterView(_ filterView: FilterView, didChangeInversion inversion: Float)
+    func filterView(_ filterView: FilterView, didChangeTriad triad: Float)
+    func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
+    func filterView(_ filterView: FilterView, didChangeMidi midi: Float)
+    func filterViewGetPitch(_ filterView: FilterView) -> Float
     func filterViewDataDidChange(_ filterView: FilterView)
+    func filterViewConfigure(_ filterView: FilterView)
+}
+
+class VerticallyCenteredTextLayer : CATextLayer {
+    
+    // REF: http://lists.apple.com/archives/quartz-dev/2008/Aug/msg00016.html
+    // CREDIT: David Hoerl - https://github.com/dhoerl
+    // USAGE: To fix the vertical alignment issue that currently exists within the CATextLayer class.
+    
+    override func draw(in ctx: CGContext) {
+        let fontSize = self.fontSize
+        let height = self.bounds.size.height
+        let deltaY = (height-fontSize)/2 - fontSize/10
+        
+        ctx.saveGState()
+        ctx.translateBy(x: 0.0, y: deltaY)
+        super.draw(in: ctx)
+        ctx.restoreGState()
+    }
 }
 
 class FilterView: UIView {
     // MARK: Properties
+
+    var enable = 1
+    var midi_enable = 1
+    var inversion: Int = 2 {
+        didSet(old_inversion) {
+            print("someone set inversion to \(inversion) from \(old_inversion)")
+        }
+    }
+    var keycenter = 0
     
-    static let defaultMinHertz: Float = 12.0
-    static let defaultMaxHertz: Float = 22050.0
-
-    let logBase = 2
-    let leftMargin:   CGFloat = 0.0
-    let rightMargin:  CGFloat = 00.0
-    let bottomMargin: CGFloat = 100.0
-    let numDBLines   = 4
-    let defaultGain  = 20
-    let gridLineCount = 11
-    let labelWidth: CGFloat = 40.0
-    let maxNumberOfResponseFrequencies = 1024
-
-    var frequencies: [Double]?
-    var dbLabels = [CATextLayer]()
-    var frequencyLabels = [CATextLayer]()
-    var dbLines = [CALayer]()
-    var freqLines = [CALayer]()
-    var controls = [CALayer]()
+    let triads = [6,15,17]
+    var lastNote = -1
+    var triad_override = false
     
     var keybuttons = [CALayer]()
+    var triadbuttons = [CALayer]()
+    var invbuttons = [CALayer]()
+    var fcnbuttons = [CALayer]()
+    var configbutton = VerticallyCenteredTextLayer()
+    var midibutton = VerticallyCenteredTextLayer()
+    var midiautobutton = CALayer()
     var containerLayer = CALayer()
+    var keysLayer = CALayer()
     var graphLayer = CALayer()
     var curveLayer: CAShapeLayer?
+    
+    var pulseAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.shadowOpacity))
+    var glowAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.shadowOpacity))
+    var redAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.backgroundColor))
     
     // The delegate to notify of paramater and size changes.
     weak var delegate: FilterViewDelegate?
@@ -60,234 +87,39 @@ class FilterView: UIView {
     var editPoint = CGPoint.zero
     var touchDown = false
     var currentKey = 0
+    var currentTriad = -1
     
-    var resonance: Float = 0.0 {
-        willSet {
-        }
+    func setSelectedNote(_ note: Float) {
+        let n = keybuttons.count
         
-        didSet {
-            // Clamp the resonance to min/max values.
-            if resonance > Float(defaultGain) {
-                resonance = Float(defaultGain)
-            }
-			else if resonance < Float(-defaultGain) {
-                resonance = Float(-defaultGain)
-            }
+        let curr_note = Int(round(note))
 
-            editPoint.y = floor(locationForDBValue(resonance))
-            
-            // Do not notify delegate that the resonance changed; that would create a feedback loop.
+        if (curr_note == lastNote)
+        {
+            return
         }
-    }
-    
-    var frequency: Float = FilterView.defaultMinHertz {
-        willSet {
+        for j in 0...n-1 {
+            if (j % 12 == curr_note)
+            {
+                CATransaction.begin()
+                CATransaction.setAnimationDuration(0.05)
+                keybuttons[j].shadowColor = UIColor.red.cgColor
+                keybuttons[j].shadowOpacity = 1.0
+                CATransaction.commit()
+            }
+            else
+            {
+                CATransaction.begin()
+                CATransaction.setAnimationDuration(1.0)
+                keybuttons[j].shadowOpacity = 0.0
+                keybuttons[j].shadowColor = UIColor.cyan.cgColor
+                CATransaction.commit()
+            }
         }
         
-        didSet {
-            if frequency > FilterView.defaultMaxHertz {
-                frequency = FilterView.defaultMaxHertz
-            }
-			else if frequency < FilterView.defaultMinHertz {
-                frequency = FilterView.defaultMinHertz
-            }
+        lastNote = curr_note
+    }
 
-            editPoint.x = floor(locationForFrequencyValue(frequency))
-            
-            // Do not notify delegate that the frequency changed; that would create a feedback loop.
-        }
-    }
-    
-    /*
-		The frequencies are plotted on a logorithmic scale. This method returns a
-		frequency value based on a fractional grid position.
-	 */
-    func valueAtGridIndex(_ index: Float) -> Float {   
-        return FilterView.defaultMinHertz * powf(Float(logBase), index)
-    }
-    
-    func logValueForNumber(_ number: Float, base: Float) -> Float {
-        return logf(number) / logf(base)
-    }
-	
-	/*
-		Prepares an array of frequencies that the AU needs to supply magnitudes for.
-		This array is cached until the view size changes (on device rotation, etc).
-	 */   
-	func frequencyDataForDrawing() -> [Double] {
-        guard frequencies == nil else { return frequencies! }
-        
-        let width = graphLayer.bounds.width
-        let rightEdge = width + leftMargin
-        
-        var pixelRatio = Int(ceil(width / CGFloat(maxNumberOfResponseFrequencies)))
-        var location = leftMargin
-        var locationsCount = maxNumberOfResponseFrequencies
-        
-        if pixelRatio <= 1 {
-            pixelRatio = 1
-            locationsCount = Int(width)
-        }
-        
-        frequencies = (0..<locationsCount).map { _ in
-            if location > rightEdge {
-                return Double(FilterView.defaultMaxHertz)
-            }
-            else {
-                var frequency = frequencyValueForLocation(location)
-                
-                if frequency > FilterView.defaultMaxHertz {
-                    frequency = FilterView.defaultMaxHertz
-                }
-                
-                location += CGFloat(pixelRatio)
-                
-                return Double(frequency)
-            }
-        }
-        
-        return frequencies!
-    }
-    
-	/*
-		Generates a bezier path from the frequency response curve data provided by 
-		the view controller. Also responsible for keeping the control point in sync.
-	 */
-    func setMagnitudes(_ magnitudeData: [Double]) {
-        
-        // If no curve layer exists, create one using the configuration closure.
-//        curveLayer = curveLayer ?? {
-//            let curveLayer = CAShapeLayer()
-//
-//            curveLayer.fillColor = UIColor(red: 0.31, green: 0.37, blue: 0.73, alpha: 0.8).cgColor
-//
-//            graphLayer.addSublayer(curveLayer)
-//
-//            return curveLayer
-//        }()
-//
-//        let bezierPath = CGMutablePath()
-//        let width = graphLayer.bounds.width
-//
-//        bezierPath.move(to: CGPoint(x: leftMargin, y: graphLayer.frame.height + bottomMargin))
-//
-//        var lastDBPos: CGFloat = 0.0
-//
-//        var location: CGFloat = leftMargin
-//
-//        let frequencyCount = frequencies?.count ?? 0
-//
-//        let pixelRatio = Int(ceil(width / CGFloat(frequencyCount)))
-//
-//        for i in 0 ..< frequencyCount {
-//            let dbValue = 20.0 * log10(magnitudeData[i])
-//            var dbPos: CGFloat = 0.0
-//
-//            switch dbValue {
-//                case let x where x < Double(-defaultGain):
-//                    dbPos = locationForDBValue(Float(-defaultGain))
-//
-//                case let x where x > Double(defaultGain):
-//                    dbPos = locationForDBValue(Float(defaultGain))
-//
-//                default:
-//                    dbPos = locationForDBValue(Float(dbValue))
-//            }
-//
-//            if fabs(lastDBPos - dbPos) >= 0.1 {
-//                bezierPath.addLine(to: CGPoint(x: location, y: dbPos))
-//            }
-//
-//            lastDBPos = dbPos
-//            location += CGFloat(pixelRatio)
-//
-//            if location > width + graphLayer.frame.origin.x {
-//                location = width + graphLayer.frame.origin.x
-//                break
-//            }
-//        }
-//
-//        bezierPath.addLine(to: CGPoint(x: location, y: graphLayer.frame.origin.y + graphLayer.frame.height + bottomMargin))
-//
-//        bezierPath.closeSubpath()
-//
-//        // Turn off implict animation on the curve layer.
-//        CATransaction.begin()
-//        CATransaction.setDisableActions(true)
-//        curveLayer!.path = bezierPath
-//        CATransaction.commit()
-//
-//        updateControls(true)
-    }
-    
-    /*
-		Calculates the pixel position on the y axis of the graph corresponding to 
-		the dB value.
-	 */
-    func locationForDBValue(_ value: Float) -> CGFloat {
-        let step = graphLayer.frame.height / CGFloat(defaultGain * 2)
-        
-        let location = (CGFloat(value) + CGFloat(defaultGain)) * step
-        
-        return graphLayer.frame.height - location + bottomMargin
-    }
-    
-    /*
-        Calculates the pixel position on the x axis of the graph corresponding to
-		the frequency value.
-     */
-    func locationForFrequencyValue(_ value: Float) -> CGFloat {
-        let pixelIncrement = graphLayer.frame.width / CGFloat(gridLineCount)
-        
-        let number = value / Float(FilterView.defaultMinHertz)
-        let location = logValueForNumber(number, base: Float(logBase)) * Float(pixelIncrement)
-        
-        return floor(CGFloat(location) + graphLayer.frame.origin.x) + 0.5
-    }
-    
-	/*
-		Calculates the dB value corresponding to a position value on the y axis of 
-		the graph.
-	 */
-    func dbValueForLocation(_ location: CGFloat) -> Float {        
-        let step = graphLayer.frame.height / CGFloat(defaultGain * 2)
-        
-        return Float(-(((location - bottomMargin) / step) - CGFloat(defaultGain)))
-    }
-    
-    /*
-		Calculates the frequency value corresponding to a position value on the x 
-		axis of the graph.
-	 */
-    func frequencyValueForLocation(_ location: CGFloat) -> Float {
-        let pixelIncrement = graphLayer.frame.width / CGFloat(gridLineCount)
-        
-        let index = (location - graphLayer.frame.origin.x) / CGFloat(pixelIncrement)
-        
-        return valueAtGridIndex(Float(index))
-    }
-    
-    /*
-		Provides a properly formatted string with an appropriate precision for the 
-		input value.
-	 */
-    func stringForValue(_ value: Float) -> String {
-       var temp = value
-        
-        if value >= 1000 {
-            temp = temp / 1000
-        }
-        
-        temp = floor((temp * 100.0) / 100.0)
-        
-        if floor(temp) == temp {
-            return String(format: "%.0f", temp)
-        }
-		else {
-            return String(format: "%.1f", temp)
-        }
-    }
-    
     override func awakeFromNib() {
         // Create all of the CALayers for the graph, lines, and labels.
         let scale = UIScreen.main.scale
@@ -300,272 +132,209 @@ class FilterView: UIView {
         containerLayer.contentsScale = scale
         layer.addSublayer(containerLayer)
         
+        pulseAnimation.duration = 1
+        pulseAnimation.fromValue = 1
+        pulseAnimation.toValue = 0.4
+        pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        pulseAnimation.speed = 3
+        pulseAnimation.autoreverses = true
+        pulseAnimation.repeatCount = .greatestFiniteMagnitude
+        
+        glowAnimation.duration = 1
+        glowAnimation.fromValue = 1
+        glowAnimation.toValue = 0
+        glowAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+        glowAnimation.speed = 1
+        glowAnimation.autoreverses = false
+        glowAnimation.repeatCount = 1
+        
+        keysLayer.name = "keys"
+        keysLayer.frame = CGRect(
+            x: 0, y: containerLayer.frame.height - 3.2 * containerLayer.frame.height/12, width: containerLayer.frame.width, height: 3.2 * containerLayer.frame.height/12)
+        keysLayer.opacity = 1.0
+        containerLayer.addSublayer(keysLayer)
+        
         let keywidth = containerLayer.frame.width / 12
         
-        for j in 0...3
+        for j in 0...2
         {
-            var h = 0.0
-            var s = 0.9
             
-            switch (j)
-            {
-            case 0:
-                s = 0.0
-            case 2:
-                h = 0
-                s = 0.8
-            case 1:
-                h = 0.6
-            case 3:
-                h = 0.3
-            
-            default:
-                s = 1.0
-            }
+            let names = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}",
+                         "G", "A\u{266D}", "A", "B\u{266D}", "B"]
             
             for i in 0...11
             {
-                let keyLayer = CALayer()
+                let keyLayer = VerticallyCenteredTextLayer()
                 let blackkeys = [1,3,6,8,10]
-                var bri = 1.0
-                if blackkeys.contains(i) {
-                    bri = 0.5
+                
+                if (j == 0)
+                {
+                    keyLayer.string = names[i]
+                }
+                else if (j == 1)
+                {
+                    keyLayer.string = "min"
+                }
+                else if (j == 2)
+                {
+                    keyLayer.string = "7"
                 }
                 
-                keyLayer.backgroundColor = UIColor(hue: CGFloat(h), saturation: CGFloat(s), brightness: CGFloat(bri), alpha: 1.0).cgColor
+                keyLayer.fontSize = 18
+                keyLayer.alignmentMode = kCAAlignmentCenter
                 
-                keyLayer.borderColor = UIColor.white.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+                var bri = 0.9
+
+                if blackkeys.contains(i) {
+                    bri = 0.1
+                }
+                
+                keyLayer.backgroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(bri), alpha: 1.0).cgColor
+                
+                keyLayer.foregroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(1-bri), alpha: 1.0).cgColor
+                
+                keyLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
                 keyLayer.borderWidth = 4
                 keyLayer.cornerRadius = 4
+                keyLayer.shadowColor = UIColor.cyan.cgColor
+                keyLayer.shadowRadius = 8
+                keyLayer.shadowOpacity = 0
+                keyLayer.shadowOffset = CGSize(width: 0, height: 0)
                 
                 let xpos = CGFloat(i) * containerLayer.frame.width / 12
                 
                 keyLayer.frame = CGRect(x: xpos, y: CGFloat(j) * keywidth, width: keywidth, height: keywidth)
 
+                if (j == 0 && i == 0)
+                {
+                    keyLayer.borderColor = UIColor.cyan.cgColor
+                    keyLayer.add(pulseAnimation, forKey:"pulse")
+                }
                 keybuttons.append(keyLayer)
 
-                containerLayer.addSublayer(keyLayer)
+                keysLayer.addSublayer(keyLayer)
                 
             }
         }
         
-//        graphLayer.name = "graph background"
-//        graphLayer.borderColor = UIColor.darkGray.cgColor
-//        graphLayer.borderWidth = 1.0
-//        graphLayer.backgroundColor = UIColor(white: 0.9, alpha: 1.0).cgColor
-//        graphLayer.bounds = CGRect(x: 0, y: 0, width: layer.frame.width - leftMargin, height: layer.frame.height - bottomMargin)
-//        graphLayer.position = CGPoint(x: leftMargin, y: 0)
-//        graphLayer.anchorPoint = CGPoint.zero
-//        graphLayer.contentsScale = scale
+        for j in 0...2
+        {
+            let invLayer = CALayer()
+            
+            invLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+            invLayer.backgroundColor = UIColor(white: 0.9, alpha: 1.0).cgColor
+            invLayer.borderWidth = 4
+            invLayer.cornerRadius = 4
+            invLayer.shadowRadius = 8
+            invLayer.shadowOpacity = 0
+            invLayer.shadowColor = UIColor.cyan.cgColor
+            
+            let xpos = CGFloat(j + 1) * containerLayer.frame.width / 12
+            
+            invLayer.frame = CGRect(x: xpos, y: containerLayer.frame.height - (CGFloat(j + 1) * keywidth), width: keywidth, height: keywidth)
+            
+            if (j == 2)
+            {
+                invLayer.shadowOpacity = 1.0
+                invLayer.borderColor = UIColor.cyan.cgColor
+            }
+            
+            invbuttons.append(invLayer)
+            containerLayer.addSublayer(invLayer)
+            
+            for k in 0...2
+            {
+                let oval = CALayer()
+                
+                oval.borderColor = UIColor.darkGray.cgColor
+                oval.borderWidth = 2
+                oval.cornerRadius = 2
+                
+                oval.shadowColor = UIColor.cyan.cgColor
+                oval.shadowOpacity = 0.0
+                oval.shadowRadius = 2.0
+                oval.shadowOffset = CGSize(width: 0, height: 0)
+                
+                if (k != j)
+                {
+                    oval.borderColor = UIColor.lightGray.cgColor
+                    oval.shadowOpacity = 0.0
+                    
+                    if (j == 2)
+                    {
+                        oval.borderColor = UIColor.cyan.cgColor
+                        oval.shadowOpacity = 0.5
+                    }
+                }
+                
+                let xpos = invLayer.frame.width / 3
+                let ypos = invLayer.frame.height * CGFloat(k+2) / 4
+            
+                oval.frame = CGRect(x: xpos, y: ypos, width: invLayer.frame.width * CGFloat(5.0/6.0), height: 4)
+                
+                invLayer.addSublayer(oval)
+            }
+        }
+        
+        for _ in 0...2
+        {
+            let triLayer = CALayer()
+            triLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+            triLayer.backgroundColor = UIColor.yellow.cgColor
+            triLayer.borderWidth = 4
+            triLayer.cornerRadius = 4
+            triLayer.shadowRadius = 8
+            triLayer.shadowOpacity = 0
+            triLayer.shadowColor = UIColor.yellow.cgColor
+            triadbuttons.append(triLayer)
+            containerLayer.addSublayer(triLayer)
+        }
+        
+        configbutton.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+        configbutton.backgroundColor = UIColor.white.cgColor
+        configbutton.foregroundColor = UIColor.black.cgColor
+        configbutton.borderWidth = 4
+        configbutton.cornerRadius = 4
+        configbutton.shadowRadius = 8
+        configbutton.shadowColor = UIColor.cyan.cgColor
+        configbutton.shadowOpacity = 0.0
+        
+        configbutton.fontSize = 28
+        configbutton.alignmentMode = kCAAlignmentCenter
+        configbutton.string = "\u{2699}"
+
+        configbutton.frame = CGRect(x: 0, y: containerLayer.frame.height - keywidth, width: keywidth, height: keywidth)
+        containerLayer.addSublayer(configbutton)
+        
+        //let midilogo = UIImage(named: "midi.png")?.cgImage
+        midibutton.string = "MIDI"
+        midibutton.fontSize = 14
+        midibutton.alignmentMode = kCAAlignmentCenter
+        midibutton.foregroundColor = UIColor.black.cgColor
+        midibutton.borderColor = UIColor.cyan.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+        midibutton.backgroundColor = UIColor.white.cgColor
+        midibutton.borderWidth = 4
+        midibutton.cornerRadius = 4
+        midibutton.shadowRadius = 8
+        midibutton.shadowColor = UIColor.cyan.cgColor
+        midibutton.shadowOpacity = 1.0
+        
+        containerLayer.addSublayer(midibutton)
+        
+//        midiautobutton.borderColor = UIColor.white.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+//        midiautobutton.backgroundColor = UIColor.lightGray.cgColor
+//        midiautobutton.borderWidth = 4
+//        midiautobutton.cornerRadius = 4
+//        midiautobutton.shadowRadius = 8
+//        midiautobutton.shadowColor = UIColor.white.cgColor
+//        midiautobutton.shadowOpacity = 1.0
 //
-//        containerLayer.addSublayer(graphLayer)
+//        containerLayer.addSublayer(midiautobutton)
         
         layer.contentsScale = scale
-		
-        createDBLabelsAndLines()
-        createFrequencyLabelsAndLines()
-        createControlPoint()
     }
     
-    /*
-		Creates the decibel label layers for the vertical axis of the graph and adds 
-		them as sublayers of the graph layer. Also creates the db Lines.
-	 */
-    func createDBLabelsAndLines() {
-//        var value: Int
-//        let scale = layer.contentsScale
-//
-//        for index in -numDBLines ... numDBLines {
-//            value = index * (defaultGain / numDBLines)
-//
-//            if index >= -numDBLines && index <= numDBLines {
-//                let labelLayer = CATextLayer()
-//
-//                // Create the label layers and set their properties.
-//                labelLayer.string = "\(value) db"
-//                labelLayer.name = String(index)
-//                labelLayer.font = UIFont.systemFont(ofSize: 14).fontName as CFTypeRef
-//                labelLayer.fontSize = 14
-//                labelLayer.contentsScale = scale
-//                labelLayer.foregroundColor = UIColor(white: 0.1, alpha: 1.0).cgColor
-//                labelLayer.alignmentMode = kCAAlignmentRight
-//
-//                dbLabels.append(labelLayer)
-//                containerLayer.addSublayer(labelLayer)
-                
-                // Create the line labels.
-//                let lineLayer = CALayer()
-//
-//                if index == 0 {
-//                    lineLayer.backgroundColor = UIColor(white: 0.65, alpha: 1.0).cgColor
-//                }
-//                else {
-//                    lineLayer.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
-//                }
-//
-//                dbLines.append(lineLayer)
-//
-//                graphLayer.addSublayer(lineLayer)
-//            }
-//        }
-    }
-    
-	/*
-		Creates the frequency label layers for the horizontal axis of the graph and
-		adds them as sublayers of the graph layer. Also creates the frequency line
-        layers.
-	 */
-    func createFrequencyLabelsAndLines() {
-//        var value: Float
-//
-//        var firstK = true
-//
-//        let scale = layer.contentsScale
-//
-//        for index in 0 ... gridLineCount {
-//            value = valueAtGridIndex(Float(index))
-//
-//            // Create the label layers and set their properties.
-//            let labelLayer = CATextLayer()
-//            labelLayer.font = UIFont.systemFont(ofSize: 14).fontName as CFTypeRef
-//            labelLayer.foregroundColor = UIColor(white: 0.1, alpha: 1.0).cgColor
-//            labelLayer.fontSize = 14
-//            labelLayer.alignmentMode = kCAAlignmentCenter
-//            labelLayer.contentsScale = scale
-//            labelLayer.anchorPoint = CGPoint.zero
-//
-//            frequencyLabels.append(labelLayer)
-//
-//            // Create the line layers.
-//            if index > 0 && index < gridLineCount {
-//                let lineLayer: CALayer = CALayer()
-//                lineLayer.backgroundColor = UIColor(white: 0.8, alpha: 1.0).cgColor
-//                freqLines.append(lineLayer)
-//                graphLayer.addSublayer(lineLayer)
-//
-//                var s = stringForValue(value)
-//
-//                if value >= 1000 && firstK {
-//                    s += "K"
-//                    firstK = false
-//                }
-//
-//                labelLayer.string = s
-//            }
-//            else if index == 0 {
-//                labelLayer.string = "\(stringForValue(value)) Hz"
-//            }
-//            else {
-//                labelLayer.string = "\(stringForValue(FilterView.defaultMaxHertz)) K"
-//            }
-//
-//            containerLayer.addSublayer(labelLayer)
-//        }
-    }
-    
-	/*
-		Creates the control point layers comprising of a horizontal and vertical 
-		line (crosshairs) and a circle at the intersection.
-	 */
-    func createControlPoint() {
-        var lineLayer = CALayer()
-        let controlColor = touchDown ? tintColor.cgColor: UIColor.darkGray.cgColor
-        
-        lineLayer.backgroundColor = controlColor
-        lineLayer.name = "x"
-        controls.append(lineLayer)
-        graphLayer.addSublayer(lineLayer)
-        
-        lineLayer = CALayer()
-        lineLayer.backgroundColor = controlColor
-        lineLayer.name = "y"
-        controls.append(lineLayer)
-        graphLayer.addSublayer(lineLayer)
-        
-        let circleLayer = CALayer()
-        circleLayer.borderColor = controlColor
-        circleLayer.borderWidth = 2.0
-        circleLayer.cornerRadius = 20.0
-        circleLayer.name = "point"
-        controls.append(circleLayer)
-        
-        graphLayer.addSublayer(circleLayer)
-    }
-    
-    /*
-        Updates the position of the control layers and the color if the refreshColor 
-        parameter is true. The controls are drawn in a blue color if the user's finger
-        is touching the graph and still down.
-     */
-    func updateControls (_ refreshColor: Bool) {
-        let color = touchDown ? tintColor.cgColor: UIColor.darkGray.cgColor
-        
-        // Turn off implicit animations for the control layers to avoid any control lag.
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        
-        for layer in controls {
-            switch layer.name! {
-                case "point":
-                    layer.frame = CGRect(x: editPoint.x - 3, y: editPoint.y-3, width: 7, height: 7).integral
-                    layer.position = editPoint
-                    
-                    if refreshColor {
-                        layer.borderColor = color
-                    }
-                
-                case "x":
-                    layer.frame = CGRect(x: graphLayer.frame.origin.x, y: floor(editPoint.y + 0.5), width: graphLayer.frame.width, height: 1.0)
-                    
-                    if refreshColor {
-                        layer.backgroundColor = color
-                    }
-                
-                case "y":
-                    layer.frame = CGRect(x: floor(editPoint.x) + 0.5, y: bottomMargin, width: 1.0, height: graphLayer.frame.height)
-                    
-                    if refreshColor {
-                        layer.backgroundColor = color
-                    }
-                
-                default:
-                    layer.frame = CGRect.zero
-            }
-        }
-        
-        CATransaction.commit()
-    }
-    
-    func updateDBLayers() {
- 		// Update the positions of the dBLine and label layers.
 
-//       for index in -numDBLines ... numDBLines {
-//            let location = floor(locationForDBValue(Float(index * (defaultGain / numDBLines))))
-//
-//            if index >= -numDBLines && index <= numDBLines {
-//                dbLines[index + 4].frame = CGRect(x: graphLayer.frame.origin.x, y: location, width: graphLayer.frame.width, height: 1.0)
-//
-//                dbLabels[index + 4].frame = CGRect(x: 0.0, y: location - bottomMargin - 8, width: leftMargin - 7.0, height: 16.0)
-//            }
-//        }
-    }
-    
-    func updateFrequencyLayers() {
-    	// Update the positions of the frequency line and label layers.
-
-//        for index in 0 ... gridLineCount {
-//            let value = valueAtGridIndex(Float(index))
-//            let location = floor(locationForFrequencyValue(value))
-//
-//            if index > 0 && index < gridLineCount {
-//                freqLines[index  - 1].frame = CGRect(x: location, y: bottomMargin, width: 1.0, height: graphLayer.frame.height)
-//
-//                frequencyLabels[index].frame = CGRect(x: location - labelWidth / 2.0, y: graphLayer.frame.height, width: labelWidth, height: 16.0)
-//            }
-//
-//            frequencyLabels[index].frame = CGRect(x: location - labelWidth / 2.0, y: graphLayer.frame.height + 6, width: labelWidth + rightMargin, height: 16.0)
-//        }
-    }
     
 	/*
 		This function positions all of the layers of the view starting with 
@@ -583,10 +352,17 @@ class FilterView: UIView {
             CATransaction.setDisableActions(true)
             
             containerLayer.bounds = layer.bounds
-            let keywidth = containerLayer.frame.width / 14
+            
+            let keywidth = containerLayer.frame.width / 13
             let spacing = containerLayer.frame.width / 12
+            
+            keysLayer.frame = CGRect(
+                x: 0, y: containerLayer.frame.height - keywidth * 4,
+                width: containerLayer.frame.width,
+                height: keywidth * 4)
+            
             let blackkeys = [1,3,6,8,10]
-            for j in 0...3 {
+            for j in 0...2 {
                 for i in 0...11 {
                     var height = CGFloat(j + 1) * spacing
                     if blackkeys.contains(i)
@@ -594,15 +370,37 @@ class FilterView: UIView {
                         height = height + keywidth * 0.25
                     }
                     
-                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing, y: containerLayer.frame.height - height, width: keywidth, height: keywidth)
+                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + 4, y: keysLayer.frame.height - height, width: keywidth, height: keywidth)
                 }
             }
+            
+            for j in 0...2
+            {
+                invbuttons[j].frame = CGRect(x: CGFloat(j+1) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
+                
+                let sublayers = invbuttons[j].sublayers!
+                let pipheight = 4
+                for l in 0...sublayers.count - 1
+                {
+                    let xpos = invbuttons[j].frame.width / 4
+                    let ypos = invbuttons[j].frame.height * CGFloat(l+2) / 6 - CGFloat(pipheight) / 2
+                    
+                    sublayers[l].frame = CGRect(x: xpos, y: ypos, width: invbuttons[j].frame.width * CGFloat(1.0/2.0), height: CGFloat(pipheight))
+                }
+            }
+            
+            for j in 0...2
+            {
+                triadbuttons[j].frame = CGRect(x: CGFloat(j+5) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
+            }
+            
+            midibutton.frame = CGRect(x: 4 + spacing * 11, y: keywidth / 4, width: keywidth, height: keywidth)
+            midiautobutton.frame = CGRect(x: 4 + spacing * 10, y: keywidth / 4, width: keywidth, height: keywidth)
+            
+            configbutton.frame = CGRect(x: 4, y: keywidth / 4, width: keywidth, height: keywidth)
+            
             CATransaction.commit()
         }
-        
-        updateControls(false)
-        
-        frequencies = nil
         
         /*
             Notify view controller that our bounds has changed -- meaning that new
@@ -616,23 +414,7 @@ class FilterView: UIView {
         as appropriate.
      */
     func updateFrequenciesAndResonance() {
-        let lastFrequency = frequencyValueForLocation(editPoint.x)
-        
-        if lastFrequency != frequency {
-            frequency = lastFrequency
-            
-            // Notify delegate that frequency changed.
-            delegate?.filterView(self, didChangeFrequency: frequency)
-        }
-        
-        let lastResonance = dbValueForLocation(editPoint.y)
-        
-        if lastResonance != resonance {
-            resonance = lastResonance
-            
-            // Notify delegate that resonance changed.
-            delegate?.filterView(self, didChangeResonance: resonance)
-        }
+       
     }
     
     // MARK: Touch Event Handling
@@ -641,64 +423,145 @@ class FilterView: UIView {
         var pointOfTouch = touches.first?.location(in: self)
         
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
-
-        var quality = floor((layer.bounds.height - pointOfTouch!.y) * 12 / layer.bounds.width)
-        if (quality > 3) { quality = 3 }
         
-        var key = floor(pointOfTouch!.x * 12 / layer.bounds.width)
-        if (key > 11){ key = 11 }
-        if (key < 0){ key = 0 }
-        
-        currentKey = Int(key) + Int(quality) * 12
-        keybuttons[currentKey].borderColor = UIColor(hue: 0.6, saturation: 0.7, brightness: 1.0, alpha: 1.0).cgColor
-        
-        // change key center parameter based on x value of touch
-        delegate?.filterView(self, didChangeKeycenter: Float(key) + 12 * Float(quality))
-        
-        if graphLayer.contains(pointOfTouch!) {
-            touchDown = true
-            editPoint = pointOfTouch!
-            
-            //updateFrequenciesAndResonance()
-         }
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        var pointOfTouch = touches.first?.location(in: self)
-        
-        pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y + bottomMargin)
-
-        if graphLayer.contains(pointOfTouch!) {
-            processTouch(pointOfTouch!)
-            
-            //updateFrequenciesAndResonance()
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        var pointOfTouch = touches.first?.location(in: self)
-        
-        for key in 0...47
+        for j in 0...2
         {
-            if (key == currentKey)
+            if (invbuttons[j].hitTest(pointOfTouch!) != nil)
             {
-                keybuttons[key].borderColor = UIColor(hue: 0.6, saturation: 1.0, brightness: 1.0, alpha: 1.0).cgColor
+                print ("inversion \(j)")
+                let light_up = inversion != j
+                if (inversion != j)
+                {
+                    delegate?.filterView(self, didChangeInversion: Float(j))
+                    delegate?.filterView(self, didChangeEnable: 1)
+                    inversion = j
+                }
+                else
+                {
+                    inversion = -1
+                    delegate?.filterView(self, didChangeEnable: 0)
+                }
+                
+                for k in 0...2
+                {
+                    let sublayers = invbuttons[k].sublayers!
+                    
+                    if (j == k) && (light_up)
+                    {
+                        invbuttons[k].shadowOpacity = 1.0
+                        invbuttons[k].borderColor = UIColor.cyan.cgColor
+                        
+                        for l in 0...sublayers.count - 1
+                        {
+                            if (l != k)
+                            {
+                                sublayers[l].borderColor = UIColor.cyan.cgColor
+                                sublayers[l].shadowOpacity = 0.5
+                            }
+                        }
+                    }
+                    else
+                    {
+                        invbuttons[k].shadowOpacity = 0.0
+                        invbuttons[k].borderColor = UIColor.darkGray.cgColor
+                        
+                        for l in 0...sublayers.count - 1
+                        {
+                            if (l != k)
+                            {
+                                sublayers[l].borderColor = UIColor.lightGray.cgColor
+                                sublayers[l].shadowOpacity = 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        for j in 0...triadbuttons.count-1
+        {
+            if (triadbuttons[j].hitTest(pointOfTouch!) != nil)
+            {
+                triadbuttons[j].borderColor = UIColor.white.cgColor
+                triadbuttons[j].shadowOpacity = 1.0
+                
+                delegate?.filterView(self, didChangeTriad: Float(triads[j]))
+                triad_override = true
+            }
+        }
+        
+        if (configbutton.hitTest(pointOfTouch!) != nil)
+        {
+            delegate?.filterViewConfigure(self)
+        }
+        
+        if (midibutton.hitTest(pointOfTouch!) != nil)
+        {
+            if (midi_enable == 1)
+            {
+                delegate?.filterView(self, didChangeMidi: 0)
+                midibutton.shadowOpacity = 0.0
+                midibutton.borderColor = UIColor.darkGray.cgColor
+                midi_enable = 0
             }
             else
             {
-                keybuttons[key].borderColor = UIColor.white.cgColor
+                delegate?.filterView(self, didChangeMidi: 1)
+                midibutton.shadowOpacity = 1.0
+                midibutton.borderColor = UIColor.cyan.cgColor
+                midi_enable = 1
             }
         }
         
-        pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y + bottomMargin)
-
-        if graphLayer.contains(pointOfTouch!) {
-            processTouch(pointOfTouch!)
+        pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y + keysLayer.frame.height - containerLayer.frame.height)
+        
+        for j in 0...35
+        {
+            if (keybuttons[j].hitTest(pointOfTouch!) != nil)
+            {
+                currentKey = Int(j)
+                keybuttons[Int(j)].add(pulseAnimation, forKey:"pulse")
+                //keybuttons[Int(j)].shadowOpacity = 1.0
+                keybuttons[Int(j)].borderColor = UIColor.cyan.cgColor
+                
+                // change key center parameter based on x value of touch
+                delegate?.filterView(self, didChangeKeycenter: Float(j))
+            }
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //var pointOfTouch = touches.first?.location(in: self)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //var pointOfTouch = touches.first?.location(in: self)
+        
+        for key in 0...35
+        {
+            if (key == currentKey)
+            {
+            }
+            else
+            {
+                keybuttons[key].removeAnimation(forKey: "pulse")
+                keybuttons[key].borderColor = UIColor.darkGray.cgColor
+                keybuttons[key].shadowOpacity = 0.0
+            }
+        }
+        
+        for j in 0...triadbuttons.count-1
+        {
+            triadbuttons[j].shadowOpacity = 0.0
+            triadbuttons[j].borderColor = UIColor.darkGray.cgColor
+        }
+        if (triad_override)
+        {
+            delegate?.filterView(self, didChangeTriad: Float(-1))
+            triad_override = false
         }
         
         touchDown = false
-        
-        //updateFrequenciesAndResonance()
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -706,28 +569,6 @@ class FilterView: UIView {
     }
     
     func processTouch(_ touchPoint: CGPoint) {
-        if touchPoint.x < 0 {
-            editPoint.x = 0
-        }
-            
-        else if touchPoint.x > graphLayer.frame.width + leftMargin {
-            editPoint.x = graphLayer.frame.width + leftMargin
-        }
-            
-        else {
-            editPoint.x = touchPoint.x
-        }
-        
-        if touchPoint.y < 0 {
-            editPoint.y = 0
-        }
-            
-        else if touchPoint.y > graphLayer.frame.height + bottomMargin {
-            editPoint.y = graphLayer.frame.height + bottomMargin
-        }
-            
-        else {
-            editPoint.y = touchPoint.y
-        }
+       
     }
 }

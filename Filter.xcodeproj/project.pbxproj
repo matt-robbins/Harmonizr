@@ -56,7 +56,12 @@
 		92FF86A41B9F5B7B007C9389 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
 		92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF86A51B9F5D42007C9389 /* FilterView.h */; };
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
+		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
 		C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */; };
+		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
+		C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
+		C9DAB90B1FA3BF8900DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
+		C9ECAD4C1FA5367500E69A2D /* bt_icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */; };
 		C9FD73F41F8BC69D00346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F31F8BC69D00346E31 /* Accelerate.framework */; };
 		C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F51F9107D300346E31 /* Accelerate.framework */; };
 		C9FD73F71F91084900346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F51F9107D300346E31 /* Accelerate.framework */; };
@@ -210,7 +215,11 @@
 		92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterDemoViewController.xib; sourceTree = "<group>"; };
 		92FF86A51B9F5D42007C9389 /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
 		92FF86A61B9F5D42007C9389 /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
+		C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
 		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
+		C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
+		C9DAB9091FA3BF8700DBB180 /* midi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = midi.png; path = ../../../../../Desktop/midi.png; sourceTree = "<group>"; };
+		C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = bt_icon.svg; path = ../../../../../Desktop/bt_icon.svg; sourceTree = "<group>"; };
 		C9FD73F31F8BC69D00346E31 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C9FD73F51F9107D300346E31 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -220,6 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */,
 				C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */,
 				C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */,
 				91236D6A1B08F52E00734C5E /* FilterDemoFramework.framework in Frameworks */,
@@ -336,6 +346,9 @@
 				164896A61C925E0C00AB781D /* Shared */,
 				91236D571B08F52D00734C5E /* FilterDemoFramework.h */,
 				9152BF241B09567700D8C6A4 /* FilterDemoViewController.swift */,
+				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
+				C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */,
+				C9DAB9091FA3BF8700DBB180 /* midi.png */,
 				91A9356A1B1269F100370383 /* FilterView.swift */,
 				91236D591B08F52D00734C5E /* Info.plist */,
 			);
@@ -475,6 +488,7 @@
 		C9FD73F21F8BC69C00346E31 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */,
 				C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */,
 				C9FD73F51F9107D300346E31 /* Accelerate.framework */,
 				C9FD73F31F8BC69D00346E31 /* Accelerate.framework */,
@@ -701,6 +715,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				91236D1A1B08F42B00734C5E /* LaunchScreen.storyboard in Resources */,
+				C9ECAD4C1FA5367500E69A2D /* bt_icon.svg in Resources */,
+				C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */,
 				30C0135B1C6D303D00F7E9B4 /* Images.xcassets in Resources */,
 				91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */,
 				91236D151B08F42B00734C5E /* Main.storyboard in Resources */,
@@ -718,6 +734,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9DAB90B1FA3BF8900DBB180 /* midi.png in Resources */,
 				916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -768,6 +785,7 @@
 				92A10D171B9529170081EA80 /* DSPKernel.mm in Sources */,
 				91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */,
 				927A95A41B1D4043007C1F90 /* FilterDemoViewController.swift in Sources */,
+				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
 				91A9356B1B1269F100370383 /* FilterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
