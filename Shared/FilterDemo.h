@@ -13,8 +13,8 @@
 
 @interface AUv3FilterDemo : AUAudioUnit
 
-- (NSArray<NSNumber *> *)magnitudesForFrequencies:(NSArray<NSNumber *> *)frequencies;
 - (float) getCurrentNote;
+- (float) getCurrentKeycenter;
 @end
 
 #endif /* FilterDemo_h */

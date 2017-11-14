@@ -17,16 +17,13 @@ import UIKit
     frequency data is available.
  */
 protocol FilterViewDelegate: class {
-    func filterView(_ filterView: FilterView, didChangeResonance resonance: Float)
-
-    func filterView(_ filterView: FilterView, didChangeFrequency frequency: Float)
-    
     func filterView(_ filterView: FilterView, didChangeKeycenter keycenter: Float)
     func filterView(_ filterView: FilterView, didChangeInversion inversion: Float)
     func filterView(_ filterView: FilterView, didChangeTriad triad: Float)
     func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
     func filterView(_ filterView: FilterView, didChangeMidi midi: Float)
     func filterViewGetPitch(_ filterView: FilterView) -> Float
+    func filterViewGetKeycenter(_ filterView: FilterView) -> Float
     func filterViewDataDidChange(_ filterView: FilterView)
     func filterViewConfigure(_ filterView: FilterView)
 }
@@ -56,10 +53,23 @@ class FilterView: UIView {
     var midi_enable = 1
     var inversion: Int = 2 {
         didSet(old_inversion) {
-            print("someone set inversion to \(inversion) from \(old_inversion)")
+            setSelectedInversion(Float(inversion))
+            //print("someone set inversion to \(inversion) from \(old_inversion)")
         }
     }
     var keycenter = 0
+    
+    var presets = [AUAudioUnitPreset]() {
+        didSet(old_presets) {
+            print(presets as Any)
+        }
+    }
+    
+    var preset: AUAudioUnitPreset? = nil {
+        didSet(old_preset) {
+            presetbutton.string = preset!.name
+        }
+    }
     
     let triads = [6,15,17]
     var lastNote = -1
@@ -71,6 +81,7 @@ class FilterView: UIView {
     var fcnbuttons = [CALayer]()
     var configbutton = VerticallyCenteredTextLayer()
     var midibutton = VerticallyCenteredTextLayer()
+    var presetbutton = VerticallyCenteredTextLayer()
     var midiautobutton = CALayer()
     var containerLayer = CALayer()
     var keysLayer = CALayer()
@@ -88,6 +99,17 @@ class FilterView: UIView {
     var touchDown = false
     var currentKey = 0
     var currentTriad = -1
+    
+    func highlight(layer: CALayer?)
+    {
+        layer!.borderColor = UIColor.cyan.cgColor
+        layer!.shadowOpacity = 1.0
+    }
+    func dehighlight(layer: CALayer?)
+    {
+        layer!.borderColor = UIColor.darkGray.cgColor
+        layer!.shadowOpacity = 0.0
+    }
     
     func setSelectedNote(_ note: Float) {
         let n = keybuttons.count
@@ -118,6 +140,66 @@ class FilterView: UIView {
         }
         
         lastNote = curr_note
+    }
+    
+    func setSelectedKeycenter(_ keycenter: Float)
+    {
+        let new_key = Int(keycenter)
+
+        for key in 0...35
+        {
+            if (keybuttons[key].borderColor != UIColor.darkGray.cgColor)
+            {
+                keybuttons[key].removeAnimation(forKey: "pulse")
+                keybuttons[key].borderColor = UIColor.darkGray.cgColor
+                keybuttons[key].shadowOpacity = 0.0
+            }
+        }
+        
+        keybuttons[new_key].add(pulseAnimation, forKey:"pulse")
+        keybuttons[new_key].shadowOpacity = 1.0
+        keybuttons[new_key].borderColor = UIColor.cyan.cgColor
+        
+        currentKey = new_key
+    }
+    
+    func setSelectedInversion(_ inversion: Float)
+    {
+        for k in 0...2
+        {
+            let sublayers = invbuttons[k].sublayers!
+            
+            if (Int(inversion) == k)
+            {
+                highlight(layer: invbuttons[k])
+                //                        invbuttons[k].shadowOpacity = 1.0
+                //                        invbuttons[k].borderColor = UIColor.cyan.cgColor
+                
+                for l in 0...sublayers.count - 1
+                {
+                    if (l != k)
+                    {
+                        sublayers[l].borderColor = UIColor.cyan.cgColor
+                        sublayers[l].shadowOpacity = 0.5
+                    }
+                }
+            }
+            else
+            {
+                dehighlight(layer: invbuttons[k])
+                //                        invbuttons[k].shadowOpacity = 0.0
+                //                        invbuttons[k].borderColor = UIColor.darkGray.cgColor
+                
+                for l in 0...sublayers.count - 1
+                {
+                    if (l != k)
+                    {
+                        sublayers[l].borderColor = UIColor.lightGray.cgColor
+                        sublayers[l].shadowOpacity = 0
+                    }
+                }
+            }
+        }
     }
 
     override func awakeFromNib() {
@@ -158,13 +240,13 @@ class FilterView: UIView {
         
         for j in 0...2
         {
-            
             let names = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}",
                          "G", "A\u{266D}", "A", "B\u{266D}", "B"]
             
             for i in 0...11
             {
                 let keyLayer = VerticallyCenteredTextLayer()
+                keyLayer.contentsScale = UIScreen.main.scale
                 let blackkeys = [1,3,6,8,10]
                 
                 if (j == 0)
@@ -204,12 +286,6 @@ class FilterView: UIView {
                 let xpos = CGFloat(i) * containerLayer.frame.width / 12
                 
                 keyLayer.frame = CGRect(x: xpos, y: CGFloat(j) * keywidth, width: keywidth, height: keywidth)
-
-                if (j == 0 && i == 0)
-                {
-                    keyLayer.borderColor = UIColor.cyan.cgColor
-                    keyLayer.add(pulseAnimation, forKey:"pulse")
-                }
                 keybuttons.append(keyLayer)
 
                 keysLayer.addSublayer(keyLayer)
@@ -298,7 +374,7 @@ class FilterView: UIView {
         configbutton.shadowRadius = 8
         configbutton.shadowColor = UIColor.cyan.cgColor
         configbutton.shadowOpacity = 0.0
-        
+        configbutton.contentsScale = UIScreen.main.scale
         configbutton.fontSize = 28
         configbutton.alignmentMode = kCAAlignmentCenter
         configbutton.string = "\u{2699}"
@@ -306,9 +382,25 @@ class FilterView: UIView {
         configbutton.frame = CGRect(x: 0, y: containerLayer.frame.height - keywidth, width: keywidth, height: keywidth)
         containerLayer.addSublayer(configbutton)
         
+        
+        presetbutton.string = "Preset"
+        presetbutton.fontSize = 14
+        presetbutton.contentsScale = UIScreen.main.scale
+        presetbutton.alignmentMode = kCAAlignmentLeft
+        presetbutton.foregroundColor = UIColor.white.cgColor
+        presetbutton.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+        presetbutton.backgroundColor = UIColor.black.cgColor
+        presetbutton.borderWidth = 4
+        presetbutton.cornerRadius = 4
+        presetbutton.shadowRadius = 8
+        presetbutton.shadowColor = UIColor.cyan.cgColor
+        presetbutton.shadowOpacity = 0.0
+        containerLayer.addSublayer(presetbutton)
+        
         //let midilogo = UIImage(named: "midi.png")?.cgImage
         midibutton.string = "MIDI"
         midibutton.fontSize = 14
+        midibutton.contentsScale = UIScreen.main.scale
         midibutton.alignmentMode = kCAAlignmentCenter
         midibutton.foregroundColor = UIColor.black.cgColor
         midibutton.borderColor = UIColor.cyan.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
@@ -397,6 +489,8 @@ class FilterView: UIView {
             midibutton.frame = CGRect(x: 4 + spacing * 11, y: keywidth / 4, width: keywidth, height: keywidth)
             midiautobutton.frame = CGRect(x: 4 + spacing * 10, y: keywidth / 4, width: keywidth, height: keywidth)
             
+            presetbutton.frame = CGRect(x: 4 + spacing * 8, y: keywidth / 4, width: keywidth*3 + 4, height: keywidth/2)
+            
             configbutton.frame = CGRect(x: 4, y: keywidth / 4, width: keywidth, height: keywidth)
             
             CATransaction.commit()
@@ -406,7 +500,7 @@ class FilterView: UIView {
             Notify view controller that our bounds has changed -- meaning that new
             frequency data is available.
         */
-        delegate?.filterViewDataDidChange(self)
+        //delegate?.filterViewDataDidChange(self)
     }
 
     /* 
@@ -416,6 +510,7 @@ class FilterView: UIView {
     func updateFrequenciesAndResonance() {
        
     }
+    
     
     // MARK: Touch Event Handling
     
@@ -429,7 +524,7 @@ class FilterView: UIView {
             if (invbuttons[j].hitTest(pointOfTouch!) != nil)
             {
                 print ("inversion \(j)")
-                let light_up = inversion != j
+                
                 if (inversion != j)
                 {
                     delegate?.filterView(self, didChangeInversion: Float(j))
@@ -442,39 +537,7 @@ class FilterView: UIView {
                     delegate?.filterView(self, didChangeEnable: 0)
                 }
                 
-                for k in 0...2
-                {
-                    let sublayers = invbuttons[k].sublayers!
-                    
-                    if (j == k) && (light_up)
-                    {
-                        invbuttons[k].shadowOpacity = 1.0
-                        invbuttons[k].borderColor = UIColor.cyan.cgColor
-                        
-                        for l in 0...sublayers.count - 1
-                        {
-                            if (l != k)
-                            {
-                                sublayers[l].borderColor = UIColor.cyan.cgColor
-                                sublayers[l].shadowOpacity = 0.5
-                            }
-                        }
-                    }
-                    else
-                    {
-                        invbuttons[k].shadowOpacity = 0.0
-                        invbuttons[k].borderColor = UIColor.darkGray.cgColor
-                        
-                        for l in 0...sublayers.count - 1
-                        {
-                            if (l != k)
-                            {
-                                sublayers[l].borderColor = UIColor.lightGray.cgColor
-                                sublayers[l].shadowOpacity = 0
-                            }
-                        }
-                    }
-                }
+                self.setSelectedInversion(Float(inversion))
             }
         }
         
@@ -519,10 +582,7 @@ class FilterView: UIView {
         {
             if (keybuttons[j].hitTest(pointOfTouch!) != nil)
             {
-                currentKey = Int(j)
-                keybuttons[Int(j)].add(pulseAnimation, forKey:"pulse")
-                //keybuttons[Int(j)].shadowOpacity = 1.0
-                keybuttons[Int(j)].borderColor = UIColor.cyan.cgColor
+                self.setSelectedKeycenter(Float(j))
                 
                 // change key center parameter based on x value of touch
                 delegate?.filterView(self, didChangeKeycenter: Float(j))
@@ -537,18 +597,18 @@ class FilterView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         //var pointOfTouch = touches.first?.location(in: self)
         
-        for key in 0...35
-        {
-            if (key == currentKey)
-            {
-            }
-            else
-            {
-                keybuttons[key].removeAnimation(forKey: "pulse")
-                keybuttons[key].borderColor = UIColor.darkGray.cgColor
-                keybuttons[key].shadowOpacity = 0.0
-            }
-        }
+//        for key in 0...35
+//        {
+//            if (key == currentKey)
+//            {
+//            }
+//            else
+//            {
+//                keybuttons[key].removeAnimation(forKey: "pulse")
+//                keybuttons[key].borderColor = UIColor.darkGray.cgColor
+//                keybuttons[key].shadowOpacity = 0.0
+//            }
+//        }
         
         for j in 0...triadbuttons.count-1
         {

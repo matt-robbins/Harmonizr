@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -28,27 +30,41 @@
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awX-J2-WjW">
-                                <rect key="frame" x="384" y="0.0" width="30" height="48"/>
+                                <rect key="frame" x="364" y="0.0" width="30" height="48"/>
                                 <state key="normal" title="Play"/>
                                 <connections>
                                     <action selector="togglePlay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L06-Zo-ks1"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="ReverbButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J0v-IL-F6q">
+                                <rect key="frame" x="20" y="0.0" width="46" height="48"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="configureReverb:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ovj-KX-BVW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="awX-J2-WjW" secondAttribute="trailing" id="AZX-HX-v6A"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="J0v-IL-F6q" secondAttribute="trailingMargin" id="3uA-Uk-UJn"/>
+                            <constraint firstItem="J0v-IL-F6q" firstAttribute="top" secondItem="awX-J2-WjW" secondAttribute="top" id="7XS-vO-6hp"/>
+                            <constraint firstItem="J0v-IL-F6q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9Nu-yf-vmc"/>
+                            <constraint firstAttribute="trailing" secondItem="awX-J2-WjW" secondAttribute="trailing" constant="20" id="AZX-HX-v6A"/>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="CQx-Xb-Bt7"/>
-                            <constraint firstItem="awX-J2-WjW" firstAttribute="trailing" secondItem="oZU-Ig-hQr" secondAttribute="trailing" id="GLq-WN-r7W"/>
+                            <constraint firstItem="awX-J2-WjW" firstAttribute="trailing" secondItem="oZU-Ig-hQr" secondAttribute="trailing" constant="-20" id="GLq-WN-r7W"/>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="awX-J2-WjW" secondAttribute="bottom" id="Rus-ZD-zjX"/>
+                            <constraint firstItem="J0v-IL-F6q" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="UqF-GM-1eD"/>
+                            <constraint firstItem="awX-J2-WjW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="VEH-qJ-d8p"/>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="dAp-et-aaP"/>
                             <constraint firstItem="awX-J2-WjW" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eBF-lL-B1v"/>
+                            <constraint firstItem="J0v-IL-F6q" firstAttribute="firstBaseline" secondItem="awX-J2-WjW" secondAttribute="baseline" id="fNx-2f-IgK"/>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="28" id="kZt-0s-VLj"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="auContainerView" destination="oZU-Ig-hQr" id="gDh-WB-t3u"/>
                         <outlet property="playButton" destination="awX-J2-WjW" id="yBe-iR-A9Z"/>
+                        <outlet property="presetButton" destination="J0v-IL-F6q" id="bf6-hC-c8l"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

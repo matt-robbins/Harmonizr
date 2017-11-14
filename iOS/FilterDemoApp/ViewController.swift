@@ -14,7 +14,8 @@ import FilterDemoFramework
 class ViewController: UIViewController {
     // MARK: Properties
 
-	@IBOutlet var playButton: UIButton!
+    @IBOutlet weak var presetButton: UIButton!
+    @IBOutlet var playButton: UIButton!
 
 //    @IBOutlet var cutoffSlider: UISlider!
 //    @IBOutlet var resonanceSlider: UISlider!
@@ -24,20 +25,9 @@ class ViewController: UIViewController {
 
     /// Container for our custom view.
     @IBOutlet var auContainerView: UIView!
-    
-    static let defaultMinHertz: Double = 12.0
-    static let defaultMaxHertz: Double = 20000.0
-    
-    let logBase = 2
 
 	/// The audio playback engine.
 	var playEngine: SimplePlayEngine!
-
-	/// The audio unit's filter cutoff frequency parameter object.
-	var cutoffParameter: AUParameter!
-
-	/// The audio unit's filter resonance parameter object.
-	var resonanceParameter: AUParameter!
 
 	/// A token for our registration to observe parameter value changes.
 	var parameterObserverToken: AUParameterObserverToken!
@@ -59,6 +49,15 @@ class ViewController: UIViewController {
 		
 		// Create an audio file playback engine.
 		playEngine = SimplePlayEngine(componentType: kAudioUnitType_MusicEffect)
+        {
+            for u in self.playEngine.availableAudioUnits
+            {
+                print(u.name)
+                print("0x\(String(u.audioComponentDescription.componentType,radix: 16))")
+                print("0x\(String(u.audioComponentDescription.componentSubType,radix: 16))")
+                print("0x\(String(u.audioComponentDescription.componentManufacturer,radix: 16))")
+            }
+        }
 		
 		/*
 			Register the AU in-process for development/debugging.
@@ -88,6 +87,8 @@ class ViewController: UIViewController {
 			self.connectParametersToControls()
 		}
         
+        presetButton.setTitle("Reverb", for: UIControlState())
+        presetButton.setTitleColor(UIColor.white, for: UIControlState())
         playButton.setTitle("Bluetooth", for: UIControlState())
         playButton.setTitleColor(UIColor.white, for: UIControlState())
         //playButton.setImage(UIImage(named: "bt_icon.svg")!, for: UIControlState())
@@ -132,62 +133,10 @@ class ViewController: UIViewController {
         guard let parameterTree = playEngine.testAudioUnit?.parameterTree else { return }
 
         let audioUnit = playEngine.testAudioUnit as! AUv3FilterDemo
+        
+        let presets = audioUnit.factoryPresets
         filterDemoViewController.audioUnit = audioUnit
-        
-        cutoffParameter = parameterTree.value(forKey: "cutoff") as? AUParameter
-        resonanceParameter = parameterTree.value(forKey: "resonance") as? AUParameter
-        
-        parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [unowned self] address, value in
-            /*
-                This is called when one of the parameter values changes.
-                
-                We can only update UI from the main queue.
-            */
-            DispatchQueue.main.async {
-                if address == self.cutoffParameter.address {
-                    self.updateCutoff()
-                }
-                else if address == self.resonanceParameter.address {
-                    self.updateResonance()
-                }
-            }
-        })
-        
-        //updateCutoff()
-        //updateResonance()
-	}
-    
-    func logValueForNumber(_ number: Double)->Double {
-        let value = log(number)/log(2);
-        return value;
-    }
-    
-    func frequencyValueForSliderLocation(_ location: Float)->Float {
-        var value = pow(2, location)
-        value = (value - 1)/511
-        
-        value *= Float(ViewController.defaultMaxHertz - ViewController.defaultMinHertz)
-        
-        return value + Float(ViewController.defaultMinHertz)
-    }
-    
-	// Callbacks to update controls from parameters.
-	func updateCutoff() {
-		//cutoffTextField.text = cutoffParameter.string(fromValue: nil)
-        
-        // normalize the vaue from 0-1
-        //let value = Double(cutoffParameter.value)
-        //var normalizedValue = (value - ViewController.defaultMinHertz)/(ViewController.defaultMaxHertz - ViewController.defaultMinHertz)
-        
-        // map to 2^0 - 2^9 (slider range)
-        //normalizedValue = (normalizedValue * 511.0) + 1
-        
-		//cutoffSlider.value = Float(logValueForNumber(normalizedValue))
-	}
-
-	func updateResonance() {
-		//resonanceTextField.text = resonanceParameter.string(fromValue: nil)
-		//resonanceSlider.value = resonanceParameter.value
+        audioUnit.currentPreset = presets?[0]
 	}
     
     func dismissPopover() {
@@ -212,18 +161,6 @@ class ViewController: UIViewController {
         self.present(navController, animated: true, completion: nil)
 	}
 	
-//    @IBAction func changedCutoff(_ sender: AnyObject?) {
-//        guard sender === cutoffSlider else { return }
-//
-//        let value = frequencyValueForSliderLocation(cutoffSlider.value)
-//        // Set the parameter's value from the slider's value.
-//        cutoffParameter.value = value
-//    }
-//
-//    @IBAction func changedResonance(_ sender: AnyObject?) {
-//        guard sender === resonanceSlider else { return }
-//
-//        // Set the parameter's value from the slider's value.
-//        resonanceParameter.value = resonanceSlider.value
-//    }
+    
+
 }

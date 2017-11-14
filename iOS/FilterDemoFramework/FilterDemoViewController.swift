@@ -38,8 +38,6 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         }
     }
 	
-    var cutoffParameter: AUParameter?
-	var resonanceParameter: AUParameter?
     var keycenterParameter: AUParameter?
     var inversionParameter: AUParameter?
     var autoParameter: AUParameter?
@@ -60,6 +58,8 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     {
         guard let audioUnit = audioUnit else { return }
         filterView.setSelectedNote(audioUnit.getCurrentNote())
+        // update visible keycenter based on computed value from midi
+        filterView.setSelectedKeycenter(audioUnit.getCurrentKeycenter())
         return
     }
 
@@ -70,7 +70,9 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         filterView.delegate = self
         
         auPoller(T: 0.01)
-		
+		configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
+        let _: UIView = configController!.view
+        
         guard audioUnit != nil else { return }
         connectViewWithAU()
 	}
@@ -78,21 +80,9 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     // MARK: FilterViewDelegate
     
     func updateFilterViewFrequencyAndMagnitudes() {
+        //guard let audioUnit = audioUnit as AUv3FilterDemo! else { return }
+        //filterView!.setSelectedKeycenter(keycenterParameter!.value)
         return
-    }
-    
-    func filterView(_ filterView: FilterView, didChangeResonance resonance: Float) {
-
-        resonanceParameter?.value = resonance
-        
-        updateFilterViewFrequencyAndMagnitudes()
-    }
-    
-    func filterView(_ filterView: FilterView, didChangeFrequency frequency: Float) {
-    
-        cutoffParameter?.value = frequency
-        
-        updateFilterViewFrequencyAndMagnitudes()
     }
     
     func filterView(_ filterView: FilterView, didChangeKeycenter keycenter: Float)
@@ -127,10 +117,25 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     func filterViewGetPitch(_ filterView: FilterView) -> Float {
         return audioUnit!.getCurrentNote()
     }
+    func filterViewGetKeycenter(_ filterView: FilterView) -> Float {
+        return keycenterParameter!.value
+    }
+    
+    func filterViewGetPreset(_ filterView: FilterView) -> String {
+        return audioUnit!.currentPreset!.name
+    }
     
     func filterViewConfigure(_ filterView: FilterView) {
-        configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
-        self.present(configController!, animated:true, completion:nil)
+        
+//        for j in 0...36 {
+//            let param = paramTree.value(forKey: "interval_\(j)") as? AUParameter
+//            param!.value = 0.0
+//        }
+        DispatchQueue.main.async {
+            self.configController!.audioUnit = self.audioUnit
+            self.configController!.refresh()
+            self.present(self.configController!, animated:true, completion:nil)
+        }
     }
 	
 	/*
@@ -140,9 +145,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 	*/
 	func connectViewWithAU() {
 		guard let paramTree = audioUnit?.parameterTree else { return }
-
-		cutoffParameter = paramTree.value(forKey: "cutoff") as? AUParameter
-		resonanceParameter = paramTree.value(forKey: "resonance") as? AUParameter
+        
         keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
         inversionParameter = paramTree.value(forKey: "inversion") as? AUParameter
         autoParameter = paramTree.value(forKey: "auto") as? AUParameter
@@ -159,12 +162,12 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 			}
 		})
         
-        filterView.keycenter = Int(keycenterParameter!.value)
-        filterView.inversion = Int(inversionParameter!.value)
-		
-        //updateFilterViewFrequencyAndMagnitudes()
+        configController!.refresh()
         
-//        self.resonanceLabel.text = resonanceParameter!.string(fromValue: nil)
-//        self.frequencyLabel.text = cutoffParameter!.string(fromValue: nil)
+        filterView.presets = (audioUnit?.factoryPresets)!
+        filterView.preset = audioUnit!.currentPreset
+        
+        filterView.setSelectedKeycenter(keycenterParameter!.value)
+        filterView.inversion = Int(inversionParameter!.value)
 	}
 }

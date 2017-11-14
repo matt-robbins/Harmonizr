@@ -13,41 +13,65 @@
 
 #pragma mark AUv3FilterDemo (Presets)
 
-static const UInt8 kNumberOfPresets = 3;
+static const UInt8 kNumberOfPresets = 4;
 static const NSInteger kDefaultFactoryPreset = 0;
 
 typedef struct FactoryPresetParameters {
-    AUValue cutoffValue;
-    AUValue resonanceValue;
     AUValue keycenterValue;
-    AUValue keyqualityValue;
+    AUValue inversionValue;
+    AUValue autoValue;
+    AUValue midiValue;
+    AUValue triadValue;
+    AUValue intervalValues[72];
 } FactoryPresetParameters;
 
 static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
 {
-    // preset 0
+    // Pop
     {
-        400.0f,//FilterParamCutoff,
-         -5.0f,//FilterParamResonance
-        0,
-        0,
+        0, //keycenter
+        2, //inversion
+        1, //autoharm
+        1, //midi
+        -1, //triad
+        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
+         3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
+         4,10, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
+        }
     },
-    
-    // preset 1
-    {
-        6000.0f,//FilterParamCutoff,
-          15.0f,//FilterParamResonance
-        0,
-        0,
+    { // Jazz
+        10, //keycenter
+        2, //inversion
+        1, //autoharm
+        1, //midi
+        -1, //triad
+        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
+            3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
+            4,7, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
+        }
     },
-    
-    // preset 2
-    {
-        1000.0f,//FilterParamCutoff,
-           5.0f,//FilterParamResonance
-        0,
-        0,
-    }
+    { // Gospel
+        7, //keycenter
+        1, //inversion
+        1, //autoharm
+        1, //midi
+        -1, //triad
+        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
+            3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
+            4,7, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
+        }
+    },
+    { // NeoSoul
+        3, //keycenter
+        2, //inversion
+        1, //autoharm
+        1, //midi
+        -1, //triad
+        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
+            3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
+            4,7, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
+        }
+    },
 };
 
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
@@ -89,22 +113,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 	// Create a DSP kernel to handle the signal processing.
 	_kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
-	
-	// Create a parameter object for the cutoff frequency.
-	AUParameter *cutoffParam = [AUParameterTree createParameterWithIdentifier:@"cutoff" name:@"Cutoff"
-			address:FilterParamCutoff
-			min:12.0 max:20000.0 unit:kAudioUnitParameterUnit_Hertz unitName:nil
-			flags: kAudioUnitParameterFlag_IsReadable |
-                   kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
-	
-	// Create a parameter object for the filter resonance.
-	AUParameter *resonanceParam = [AUParameterTree createParameterWithIdentifier:@"resonance" name:@"Resonance"
-			address:FilterParamResonance
-			min:-20.0 max:20.0 unit:kAudioUnitParameterUnit_Decibels unitName:nil
-			flags: kAudioUnitParameterFlag_IsReadable |
-                   kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *keycenterIntervals[72];
     
     AUParameter *keycenterParam = [AUParameterTree createParameterWithIdentifier:@"keycenter" name:@"Key Center"
             address:HarmParamKeycenter
@@ -135,32 +145,52 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
          min:-1 max:30 unit:kAudioUnitParameterUnit_Indexed unitName:nil
          flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
          valueStrings:nil dependentParameters:nil];
-	
+
+    NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
+    
+    [params addObject:keycenterParam];
+    [params addObject:inversionParam];
+    [params addObject:autoParam];
+    [params addObject:midiParam];
+    [params addObject:triadParam];
+    
+    for (int k = 0; k < 72; k++)
+    {
+        NSString *identifier = [NSString stringWithFormat:@"interval_%d", k];
+        NSString *name = [NSString stringWithFormat:@"Interval %d", k];
+        keycenterIntervals[k] = [AUParameterTree createParameterWithIdentifier:identifier name:name
+            address:HarmParamInterval+k
+            min:1 max:13 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                  valueStrings:nil dependentParameters:nil];
+        
+        [params addObject: keycenterIntervals[k]];
+    }
+    
 	// Initialize default parameter values.
-	cutoffParam.value = 20000.0;
-	resonanceParam.value = 0.0;
-    keycenterParam.value = 0;
+    keycenterParam.value = 5;
     inversionParam.value = 2;
     autoParam.value = 1;
     midiParam.value = 1;
     triadParam.value = -1;
     
-	_kernel.setParameter(FilterParamCutoff, cutoffParam.value);
-	_kernel.setParameter(FilterParamResonance, resonanceParam.value);
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     _kernel.setParameter(HarmParamInversion, inversionParam.value);
     _kernel.setParameter(HarmParamAuto, autoParam.value);
     _kernel.setParameter(HarmParamMidi, midiParam.value);
     _kernel.setParameter(HarmParamTriad, triadParam.value);
     
+    for (int k = 0; k < 72; k++)
+    {
+        keycenterIntervals[k].value = _kernel.getParameter(HarmParamInterval + k);
+    }
+    
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
-    _presets = @[NewAUPreset(0, @"First Preset"),
-                 NewAUPreset(1, @"Second Preset"),
-                 NewAUPreset(2, @"Third Preset")];
+    _presets = @[NewAUPreset(0, @"Pop Triads"),NewAUPreset(0, @"Jazz Triads"),NewAUPreset(0, @"Gospel Triads"),NewAUPreset(0, @"NeoSoul")];
     
 	// Create the parameter tree.
-    _parameterTree = [AUParameterTree createTreeWithChildren:@[cutoffParam, resonanceParam, keycenterParam, inversionParam, autoParam, midiParam, triadParam]];
+    _parameterTree = [AUParameterTree createTreeWithChildren:params];
 
 	// Create the input and output busses.
 	_inputBus.init(defaultFormat, 8);
@@ -185,18 +215,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	
 	// A function to provide string representations of parameter values.
 	_parameterTree.implementorStringFromValueCallback = ^(AUParameter *param, const AUValue *__nullable valuePtr) {
-		AUValue value = valuePtr == nil ? param.value : *valuePtr;
+		//AUValue value = valuePtr == nil ? param.value : *valuePtr;
 	
 		switch (param.address) {
-			case FilterParamCutoff:
-				return [NSString stringWithFormat:@"%.f", value];
-			
-			case FilterParamResonance:
-				return [NSString stringWithFormat:@"%.2f", value];
-                
-            case HarmParamKeycenter:
-                return [NSString stringWithFormat:@"%d", (int) value];
-			
 			default:
 				return @"?";
 		}
@@ -241,6 +262,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	
 	_inputBus.allocateRenderResources(self.maximumFramesToRender);
 	
+    printf("allocateRenderResources\n");
 	_kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
 	_kernel.reset();
 	
@@ -305,7 +327,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 		
 		state->setBuffers(inAudioBufferList, outAudioBufferList);
 		state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
-
+        
 		return noErr;
 	};
 }
@@ -332,12 +354,28 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         for (AUAudioUnitPreset *factoryPreset in _presets) {
             if (currentPreset.number == factoryPreset.number) {
                 
-                AUParameter *cutoffParameter = [self.parameterTree valueForKey: @"cutoff"];
-                AUParameter *resonanceParameter = [self.parameterTree valueForKey: @"resonance"];
+                AUParameter *keycenterParameter = [self.parameterTree valueForKey: @"keycenter"];
+                AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
+                AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
+                AUParameter *midiParameter = [self.parameterTree valueForKey: @"midi"];
+                AUParameter *triadParameter = [self.parameterTree valueForKey: @"triad"];
+
+                keycenterParameter.value = presetParameters[factoryPreset.number].keycenterValue;
+                inversionParameter.value = presetParameters[factoryPreset.number].inversionValue;
+                autoParameter.value = presetParameters[factoryPreset.number].autoValue;
+                midiParameter.value = presetParameters[factoryPreset.number].midiValue;
+                triadParameter.value = presetParameters[factoryPreset.number].triadValue;
                 
-                cutoffParameter.value = presetParameters[factoryPreset.number].cutoffValue;
-                resonanceParameter.value = presetParameters[factoryPreset.number].resonanceValue;
-                
+                for (int k = 0; k < 72; k++)
+                {
+                    AUParameter * p = [self.parameterTree valueForKey: [NSString stringWithFormat:@"interval_%d", k]];
+                    if (p)
+                    {
+                        p.value = presetParameters[factoryPreset.number].intervalValues[k];
+                    }
+                    p = nil;
+                }
+//                
                 // set factory preset as current
                 _currentPreset = currentPreset;
                 _currentFactoryPresetIndex = factoryPreset.number;
@@ -368,27 +406,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 #pragma mark -
 
-- (NSArray<NSNumber *> *)magnitudesForFrequencies:(NSArray<NSNumber *> *)frequencies {
-	FilterDSPKernel::BiquadCoefficients coefficients;
-
-    double inverseNyquist = 2.0 / self.outputBus.format.sampleRate;
-	
-    coefficients.calculateLopassParams(_kernel.cutoffRamper.getUIValue(), _kernel.resonanceRamper.getUIValue());
-	
-    NSMutableArray<NSNumber *> *magnitudes = [NSMutableArray arrayWithCapacity:frequencies.count];
-	
-    for (NSNumber *number in frequencies) {
-		double frequency = [number doubleValue];
-		double magnitude = coefficients.magnitudeForFrequency(frequency * inverseNyquist);
-
-        [magnitudes addObject:@(magnitude)];
-	}
-	
-    return [NSArray arrayWithArray:magnitudes];
-}
-
 - (float) getCurrentNote {
     return _kernel.note_number;
+}
+
+- (float) getCurrentKeycenter {
+    return _kernel.root_key;
 }
 
 @end

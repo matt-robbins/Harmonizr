@@ -16,7 +16,6 @@
 #import <sys/time.h>
 #include <Accelerate/Accelerate.h>
 
-
 typedef struct grain_s
 {
     float size;
@@ -69,32 +68,13 @@ typedef enum triads
     TRIAD_OCT
 } triad_t;
 
-static inline float convertBadValuesToZero(float x) {
-	/*
-		Eliminate denormals, not-a-numbers, and infinities.
-		Denormals will fail the first test (absx > 1e-15), infinities will fail 
-        the second test (absx < 1e15), and NaNs will fail both tests. Zero will
-        also fail both tests, but since it will get set to zero that is OK.
-	*/
-		
-	float absx = fabs(x);
-
-    if (absx > 1e-15 && absx < 1e15) {
-		return x;
-	}
-
-    return 0.0;
-}
-
-
 enum {
-	FilterParamCutoff = 0,
-	FilterParamResonance = 1,
-    HarmParamKeycenter = 2,
-    HarmParamInversion = 3,
-    HarmParamAuto = 4,
-    HarmParamMidi = 5,
-    HarmParamTriad = 6
+    HarmParamKeycenter = 0,
+    HarmParamInversion = 1,
+    HarmParamAuto = 2,
+    HarmParamMidi = 3,
+    HarmParamTriad = 4,
+    HarmParamInterval = 5,
 };
 
 static inline double squared(double x) {
@@ -108,107 +88,15 @@ static inline double squared(double x) {
 */
 class FilterDSPKernel : public DSPKernel {
 public:
-    // MARK: Types
-	struct FilterState {
-		float x1 = 0.0;
-		float x2 = 0.0;
-		float y1 = 0.0;
-		float y2 = 0.0;
-		
-		void clear() {
-			x1 = 0.0;
-			x2 = 0.0;
-			y1 = 0.0;
-			y2 = 0.0;
-		}
-
-		void convertBadStateValuesToZero() {
-			/*
-				These filters work by feedback. If an infinity or NaN should come 
-                into the filter input, the feedback variables can become infinity 
-                or NaN which will cause the filter to stop operating. This function
-                clears out any bad numbers in the feedback variables.
-			*/
-			x1 = convertBadValuesToZero(x1);
-			x2 = convertBadValuesToZero(x2);
-			y1 = convertBadValuesToZero(y1);
-			y2 = convertBadValuesToZero(y2);
-		}
-	};
-	
-	struct BiquadCoefficients {
-		float a1 = 0.0;
-		float a2 = 0.0;
-		float b0 = 0.0;
-		float b1 = 0.0;
-		float b2 = 0.0;
-
-		void calculateLopassParams(double frequency, double resonance) {
-			/*
-                The transcendental function calls here could be replaced with
-                interpolated table lookups or other approximations.
-            */
-            
-            // Convert from decibels to linear.
-			double r = pow(10.0, 0.05 * -resonance);
-			
-			double k  = 0.5 * r * sin(M_PI * frequency);
-			double c1 = (1.0 - k) / (1.0 + k);
-			double c2 = (1.0 + c1) * cos(M_PI * frequency);
-			double c3 = (1.0 + c1 - c2) * 0.25;
-			
-			b0 = float(c3);
-			b1 = float(2.0 * c3);
-			b2 = float(c3);
-			a1 = float(-c2);
-			a2 = float(c1);
-		}
-		
-        // Arguments in Hertz.
-		double magnitudeForFrequency( double inFreq) {
-			// Cast to Double.
-			double _b0 = double(b0);
-			double _b1 = double(b1);
-			double _b2 = double(b2);
-			double _a1 = double(a1);
-			double _a2 = double(a2);
-		
-			// Frequency on unit circle in z-plane.
-			double zReal      = cos(M_PI * inFreq);
-			double zImaginary = sin(M_PI * inFreq);
-			
-			// Zeros response.
-			double numeratorReal = (_b0 * (squared(zReal) - squared(zImaginary))) + (_b1 * zReal) + _b2;
-			double numeratorImaginary = (2.0 * _b0 * zReal * zImaginary) + (_b1 * zImaginary);
-			
-			double numeratorMagnitude = sqrt(squared(numeratorReal) + squared(numeratorImaginary));
-			
-			// Poles response.
-			double denominatorReal = squared(zReal) - squared(zImaginary) + (_a1 * zReal) + _a2;
-			double denominatorImaginary = (2.0 * zReal * zImaginary) + (_a1 * zImaginary);
-			
-			double denominatorMagnitude = sqrt(squared(denominatorReal) + squared(denominatorImaginary));
-			
-			// Total response.
-			double response = numeratorMagnitude / denominatorMagnitude;
-
-			return response;
-		}
-	};
-    
+    int n_channels = 0;
     // MARK: Member Functions
 
     FilterDSPKernel() {}
 	
 	void init(int channelCount, double inSampleRate) {
-		channelStates.resize(channelCount);
+		n_channels = channelCount;
 		
 		sampleRate = float(inSampleRate);
-		nyquist = 0.5 * sampleRate;
-		inverseNyquist = 1.0 / nyquist;
-		dezipperRampDuration = (AUAudioFrameCount)floor(0.02 * sampleRate);
-		cutoffRamper.init();
-		resonanceRamper.init();
         
         fft_s = vDSP_create_fftsetup(11, 2);
         
@@ -247,12 +135,12 @@ public:
             }
         }
         
-        voices[1].formant_ratio = 1.05;
-        voices[2].formant_ratio = 1.1;
+        voices[1].formant_ratio = 0.99;
+        voices[2].formant_ratio = 1.01;
         
         voices[0].midinote = 0;
         
-        ngrains = 16 * nvoices;
+        ngrains = 12 * nvoices;
         grains = new grain_t[ngrains];
         
         for (int k = 0; k < ngrains; k++)
@@ -329,56 +217,12 @@ public:
         triads[TRIAD_OCT].r1 = 0.5;
         triads[TRIAD_OCT].r2 = 2.0;
         
-        // set up default chord tables
-        major_chord_table[0] = triads[TRIAD_MAJOR_R];
-        major_chord_table[1] = triads[TRIAD_DIM_R];
-        major_chord_table[2] = triads[TRIAD_MINOR_R];
-        major_chord_table[3] = triads[TRIAD_DIM_R];
-        major_chord_table[4] = triads[TRIAD_MAJOR_2];
-        major_chord_table[5] = triads[TRIAD_MAJOR_R];
-        major_chord_table[6] = triads[TRIAD_DIM_R];
-        major_chord_table[7] = triads[TRIAD_MAJOR_1];
-        major_chord_table[8] = triads[TRIAD_AUG];
-        major_chord_table[9] = triads[TRIAD_MINOR_R];
-        major_chord_table[10] = triads[TRIAD_MAJOR_R];
-        major_chord_table[11] = triads[TRIAD_DIM_R];
-
-        minor_chord_table[0] = triads[TRIAD_MINOR_R];
-        minor_chord_table[1] = triads[TRIAD_DIM_R];
-        minor_chord_table[2] = triads[TRIAD_DIM_R];
-        minor_chord_table[3] = triads[TRIAD_MINOR_2];
-        minor_chord_table[4] = triads[TRIAD_DIM_R];
-        minor_chord_table[5] = triads[TRIAD_DIM_2];
-        minor_chord_table[6].r1 = intervals[6]; minor_chord_table[6].r2 = intervals[8];
-        minor_chord_table[7] = triads[TRIAD_MINOR_1];
-        minor_chord_table[8] = triads[TRIAD_MAJOR_R];
-        minor_chord_table[9] = triads[TRIAD_DIM_R];
-        minor_chord_table[10] = triads[TRIAD_MAJOR_R];
-        minor_chord_table[11] = triads[TRIAD_DIM_R];
-
-        blues_chord_table[0] = triads[TRIAD_MAJOR_R]; blues_chord_table[0].r2 = intervals[10];
-        blues_chord_table[1] = triads[TRIAD_DIM_2];
-        blues_chord_table[2].r1 = intervals[2]; blues_chord_table[2].r2 = intervals[8];
-        blues_chord_table[3] = triads[TRIAD_MAJOR_R];
-        blues_chord_table[4] = triads[TRIAD_DIM_R];
-        blues_chord_table[5] = triads[TRIAD_MAJOR_R];
-        blues_chord_table[6] = triads[TRIAD_MAJOR_R];
-        blues_chord_table[7] = triads[TRIAD_MINOR_R]; blues_chord_table[7].r2 = intervals[5];
-        blues_chord_table[8] = triads[TRIAD_MAJOR_R];
-        blues_chord_table[9] = triads[TRIAD_MAJOR_R];
-        blues_chord_table[10].r1 = intervals[2]; blues_chord_table[10].r2 = intervals[6];
-        blues_chord_table[11] = triads[TRIAD_MAJOR_R];
-        
         memset(midinotes, 0, 128 * sizeof(int));
         
 	}
 	
 	void reset() {
-		cutoffRamper.reset();
-		resonanceRamper.reset();
-		for (FilterState& state : channelStates) {
-			state.clear();
-		}
+
 	}
     
     float cubic (float *v, float a)
@@ -398,48 +242,43 @@ public:
 	
 	void setParameter(AUParameterAddress address, AUValue value) {
         switch (address) {
-            case FilterParamCutoff:
-                //cutoffRamper.setUIValue(clamp(value * inverseNyquist, 0.0f, 0.99f));
-				cutoffRamper.setUIValue(clamp(value * inverseNyquist, 0.0005444f, 0.9070295f));
-				break;
-                
-            case FilterParamResonance:
-                resonanceRamper.setUIValue(clamp(value, -20.0f, 20.0f));
-				break;
             case HarmParamKeycenter:
                 root_key = (int) clamp(value,0.f,47.f);
                 break;
             case HarmParamInversion:
                 inversion = (int) clamp(value,0.f,2.f);
-                printf("inversion = %d, %f\n", inversion, value);
                 break;
             case HarmParamAuto:
                 auto_enable = (int) clamp(value,0.f,1.f);
-                printf("auto_enble = %d\n", auto_enable);
                 break;
             case HarmParamMidi:
                 midi_enable = (int) clamp(value,0.f,1.f);
-                printf("midi_enble = %d\n", midi_enable);
                 break;
             case HarmParamTriad:
                 triad = (int) clamp(value,-1.f,30.f);
-                printf("triad override = %d\n", triad);
+                break;
+            case HarmParamInterval:
+            default:
+                int addr = (int) address - (int) HarmParamInterval;
+                int scale_degree = addr / 2;
+                
+                triad_ratio_t * table = major_chord_table;
+                if (scale_degree > 11)
+                    table = minor_chord_table;
+                if (scale_degree > 23)
+                    table = blues_chord_table;
+                
+                float * ratios = (float *) &table[scale_degree%12];
+                
+                ratios[addr & 0x1] = intervals[(int) value];
                 break;
         }
 	}
 
 	AUValue getParameter(AUParameterAddress address) {
         switch (address) {
-            case FilterParamCutoff:
-                // Return the goal. It is not thread safe to return the ramping value.
-                //return (cutoffRamper.getUIValue() * nyquist);
-                return roundf((cutoffRamper.getUIValue() * nyquist) * 100) / 100;
-
-            case FilterParamResonance:
-                return resonanceRamper.getUIValue();
-                
             case HarmParamKeycenter:
-                return (float) keycenter;
+                return (float) root_key;
             case HarmParamInversion:
                 return (float) inversion;
             case HarmParamAuto:
@@ -449,20 +288,24 @@ public:
             case HarmParamTriad:
                 return (float) triad;
 				
-			default: return 12.0f * inverseNyquist;
+            case HarmParamInterval:
+            default:
+                int addr = (int) address - (int) HarmParamInterval;
+                int scale_degree = addr / 2;
+                
+                triad_ratio_t * table = major_chord_table;
+                if (scale_degree > 11)
+                    table = minor_chord_table;
+                if (scale_degree > 23)
+                    table = blues_chord_table;
+                
+                float * ratios = (float *) &table[scale_degree%12];
+                return round(log2(ratios[addr & 0x1])*12);                
         }
 	}
 
 	void startRamp(AUParameterAddress address, AUValue value, AUAudioFrameCount duration) override {
-        switch (address) {
-			case FilterParamCutoff:
-				cutoffRamper.startRamp(clamp(value * inverseNyquist, 12.0f * inverseNyquist, 0.99f), duration);
-				break;
-			
-			case FilterParamResonance:
-				resonanceRamper.startRamp(clamp(value, -20.0f, 20.0f), duration);
-				break;
-		}
+        return;
 	}
 	
 	void setBuffers(AudioBufferList* inBufferList, AudioBufferList* outBufferList) {
@@ -496,6 +339,11 @@ public:
             }
             case 0xB0 : { // control
                 uint8_t num = midiEvent.data[1];
+                uint8_t val = midiEvent.data[2];
+                if (num == 11)
+                {
+                    midigain = (float) val / 127.0;
+                }
                 if (num == 123) { // all notes off
 
                 }
@@ -505,7 +353,7 @@ public:
     }
 	
 	void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
-		int channelCount = int(channelStates.size());
+		int channelCount = n_channels;
         
         sample_count += frameCount;
         // For each sample.
@@ -539,13 +387,13 @@ public:
                 float p = estimate_pitch(cix - 2*maxT);
                 if (p > 0)
                     T = p;
-                else
-                    T = 250;
+//                else
+//                    T = 250;
                 
                 voiced = (p != 0);
             }
             
-            float dp = cix - 2*maxT - pitchmark[0];
+            float dp = cix - 3*maxT - pitchmark[0];
             if (dp < 0)
                 dp += ncbuf;
             
@@ -568,8 +416,12 @@ public:
                 float unvoiced_offset = 0;
                 if (!voiced)
                 {
-                    unvoiced_offset = T * (0.5 - (float) rand() / RAND_MAX);
+                    //unvoiced_offset = T * (0.5 - (float) rand() / RAND_MAX);
                 }
+                
+                float midigain_local = 1.0;
+                if (vix >= 3)
+                    midigain_local = midigain;
                 
                 if (--voices[vix].nextgrain < 0)
                 {
@@ -577,7 +429,7 @@ public:
                     grains[grain_ix].start = pitchmark[1] - voices[vix].nextgrain - T + unvoiced_offset;
                     grains[grain_ix].ratio = voices[vix].formant_ratio;
                     grains[grain_ix].ix = 0;
-                    grains[grain_ix].gain = (float) voices[vix].midivel / 127.0;
+                    grains[grain_ix].gain = midigain_local * (float) voices[vix].midivel / 127.0;
                     grains[grain_ix].pan = voices[vix].pan;
                     
                     if (voices[vix].ratio < 1)
@@ -590,8 +442,8 @@ public:
                 }
             }
             
-            *out = *in;
-            *out2 = *in;
+            *out = 0;
+            *out2 = 0;
             
             for (int ix = 0; ix < ngrains; ix++)
             {
@@ -608,7 +460,8 @@ public:
                         fi += ncbuf;
                     
                     int i = (int) fi;
-                    float u = linear (cbuf + i, fi - i);
+                    float u = cbuf[i];
+                    //float u = cubic (cbuf + i, fi - i);
                     
                     float wi = 2 + graintablesize * (g.ix / g.size);
                     i = (int) wi;
@@ -681,7 +534,8 @@ public:
             sum += df;
             cmdf2 = cmdf1; cmdf1 = cmdf;
             cmdf = (df * k) / sum;
-            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.1 && k > 50)
+            
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.3 && k > 20)
             {
                 period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
@@ -689,13 +543,13 @@ public:
         
         Tbuf[Tix++] = period;
         
-        if (Tix >= 5)
+        if (Tix >= nmed)
             Tix = 0;
         
-        memcpy(Tsrt, Tbuf, 5 * sizeof(float));
-        vDSP_vsort(Tsrt, (vDSP_Length) 5, 1);
+        memcpy(Tsrt, Tbuf, nmed * sizeof(float));
+        vDSP_vsort(Tsrt, (vDSP_Length) nmed, 1);
         
-        return Tsrt[2];
+        return Tsrt[nmed/2];
     }
     
     void findmark (void)
@@ -749,23 +603,25 @@ public:
         midi_changed_sample_num = sample_count;
         midi_changed = 1;
         
-        // look for empty voice, or one with the same note and take that if we can
+        // look for one with the same note and take that if we can, or the empty one with
+        // the closest last note to the one we want
         for (int k = 3; k < nvoices; k++)
         {
-            printf("voice %d: %d\n", k, voices[k].midinote);
             dist = abs(voices[k].lastnote - note);
-            if (dist == 0 || (voices[k].midinote == -1 && dist < min_dist))
+            if ((dist < min_dist && voices[k].midinote < 0) || voices[k].midinote == note)
             {
-                min_dist = dist;
                 min_ix = k;
+                min_dist = dist;
             }
         }
-        if (min_ix >= 0)
+        
+        if (min_dist >= 0)
         {
             voices[min_ix].lastnote = voices[min_ix].midinote;
             voices[min_ix].midinote = note;
             voices[min_ix].midivel = vel;
             voices[min_ix].sample_num = sample_count;
+            //voices[min_ix].ratio = 1.0;
             voices[min_ix].nextgrain = 0;
             return;
         }
@@ -812,7 +668,7 @@ public:
     
     void analyze_harmony(void)
     {
-        float intervals[127];
+        //float intervals[127];
         int octave[12];
         
         memset(octave, 0, 12 * sizeof(int));
@@ -851,47 +707,44 @@ public:
             
             if (octave[(ix+2)%12] && octave[(ix+6)%12])
             {
-                printf("%d, 7\n", (ix + 2) % 12);
+                // 7th
             }
             
             if (octave[(ix+3)%12] && octave[(ix+6)%12])
             {
-                printf("%d, diminished\n", ix);
+                // dim
             }
             
             if (octave[(ix+3)%12] && octave[(ix+7)%12])
             {
-                printf("%d, minor\n", ix);
+                //min
                 root_key = ix + 12;
                 break;
             }
             
             if (octave[(ix+4)%12] && octave[(ix+7)%12])
             {
-                printf("%d, major\n", ix);
+                //maj
                 root_key = ix;
                 break;
             }
             
             if (octave[(ix+4)%12] && octave[(ix+8)%12])
             {
-                printf("%d, augmented\n", ix);
+                //aug
             }
        
         }
-        
-        printf("\n");
-        
     }
     
     void update_voices (void)
     {
         voices[0].error = 0;
-        voices[0].ratio = 1.0;
-        voices[0].target_ratio = 1.0;
+        voices[0].ratio = 1;
+        voices[0].target_ratio = 1;
         voices[0].formant_ratio = 1.0;
-        voices[0].midivel = -1;
-        voices[0].midinote = -1;
+        voices[0].midivel = 127;
+        voices[0].midinote = 0;
         voices[1].midinote = -1;
         voices[1].midivel = 65;
         voices[1].pan = 0.5;
@@ -902,10 +755,9 @@ public:
         if (midi_changed && (sample_count - midi_changed_sample_num) > (int) sampleRate / 50)
         {
             midi_changed = 0;
-            printf("%d samples since last midi note\n", sample_count - midi_changed_sample_num);
+            //printf("%d samples since last midi note\n", sample_count - midi_changed_sample_num);
             analyze_harmony();
         }
-        
         
         if (!voiced)
         {
@@ -925,6 +777,11 @@ public:
         
         int interval = (nn + 69 - root) % 12;
         note_number = (nn + 69) % 12 + (note_f - nn);
+        
+        if (autotune)
+        {
+            voices[0].target_ratio = 1.0/error_ratio;
+        }
 
         if (triad >= 0)
         {
@@ -969,6 +826,11 @@ public:
             if (inversion < 1)
                 voices[1].target_ratio *= 0.5;
         }
+        else
+        {
+            voices[1].ratio = voices[1].target_ratio = 1.0;
+            voices[2].ratio = voices[2].target_ratio = 1.0;
+        }
         
         for (int k = 3; k < nvoices; k++)
         {
@@ -980,20 +842,22 @@ public:
             float error_hsteps = (voices[k].midinote - 69) - note_f;
             
             voices[k].target_ratio = powf(2.0, error_hsteps/12);
+            //voices[k].ratio = voices[k].target_ratio;
         }
     
         for (int k = 0; k < nvoices; k++)
         {
-            voices[k].target_ratio /= error_ratio;
-            voices[k].ratio = 0.9 * voices[k].ratio + 0.1 * voices[k].target_ratio;
+            if (k < 3)
+                voices[k].target_ratio /= error_ratio; // for autoharm
+            
+            voices[k].ratio = 0.8 * voices[k].ratio + 0.2 * voices[k].target_ratio;
         }
     }
 	
     // MARK: Member Variables
 
 private:
-	std::vector<FilterState> channelStates;
-	BiquadCoefficients coeffs;
+	//std::vector<FilterState> channelStates;
     int nfft = 2048;
     int l2nfft = 11;
     DSPSplitComplex fft_in, fft_out, fft_out2, fft_buf;
@@ -1003,8 +867,9 @@ private:
     int rix = 0;
     float rcnt = 256;
     float T = 400;
-    float Tbuf[5];
-    float Tsrt[5];
+    int nmed = 10;
+    float Tbuf[10];
+    float Tsrt[10];
     int Tix;
     float pitchmark[3] = {0,-1,-1};
     int maxT = 600; // note nfft should be bigger than 3*maxT
@@ -1012,16 +877,15 @@ private:
     int voiced = 0;
     FFTSetup fft_s;
 	float sampleRate = 44100.0;
-	float nyquist = 0.5 * sampleRate;
-	float inverseNyquist = 1.0 / nyquist;
-	AUAudioFrameCount dezipperRampDuration;
+
     int keycenter = 0;
-    
     float midinotes[128];
+    float midigain = 1.0;
+    int autotune = 0;
     
     int nvoices = 16;
     int voice_ix = 3;
-    int root_key = 0;
+    
     int chord_quality = 0;
     voice_t * voices;
     int inversion = 2;
@@ -1051,9 +915,8 @@ private:
 public:
 
     float note_number;
-	// Parameters.
-	ParameterRamper cutoffRamper = 400.0 / 44100.0;
-	ParameterRamper resonanceRamper = 20.0;
+    int root_key = 0;
+    
 };
 
 #endif /* FilterDSPKernel_hpp */
