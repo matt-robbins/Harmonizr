@@ -29,18 +29,20 @@
                                     <segue destination="n4r-Op-aTt" kind="embed" id="jpB-sF-DAF"/>
                                 </connections>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awX-J2-WjW">
-                                <rect key="frame" x="364" y="0.0" width="30" height="48"/>
-                                <state key="normal" title="Play"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awX-J2-WjW" userLabel="Bluetooth Button">
+                                <rect key="frame" x="327" y="0.0" width="67" height="48"/>
+                                <state key="normal" title="Bluetooth"/>
                                 <connections>
                                     <action selector="togglePlay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L06-Zo-ks1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="ReverbButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J0v-IL-F6q">
-                                <rect key="frame" x="20" y="0.0" width="46" height="48"/>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="ReverbButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J0v-IL-F6q" userLabel="Reverb Button">
+                                <rect key="frame" x="20" y="0.0" width="48" height="48"/>
+                                <gestureRecognizers/>
+                                <state key="normal" title="Reverb"/>
                                 <connections>
-                                    <action selector="configureReverb:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ovj-KX-BVW"/>
+                                    <outletCollection property="gestureRecognizers" destination="j2l-fP-4rH" appends="YES" id="cZz-5n-C6c"/>
+                                    <outletCollection property="gestureRecognizers" destination="Sdp-z9-D4E" appends="YES" id="a3S-Ke-u4h"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -68,6 +70,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="j2l-fP-4rH">
+                    <connections>
+                        <action selector="toggleReverb:" destination="BYZ-38-t0r" id="Xll-Eh-iea"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+                <tapGestureRecognizer id="Sdp-z9-D4E">
+                    <connections>
+                        <action selector="configureReverb:" destination="BYZ-38-t0r" id="RG9-UU-s1z"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="302.89855072463769" y="270.6521739130435"/>
         </scene>

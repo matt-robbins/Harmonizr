@@ -426,7 +426,7 @@ public:
                 if (--voices[vix].nextgrain < 0)
                 {
                     grains[grain_ix].size = 2 * T;
-                    grains[grain_ix].start = pitchmark[1] - voices[vix].nextgrain - T + unvoiced_offset;
+                    grains[grain_ix].start = pitchmark[0] - voices[vix].nextgrain - T + unvoiced_offset;
                     grains[grain_ix].ratio = voices[vix].formant_ratio;
                     grains[grain_ix].ix = 0;
                     grains[grain_ix].gain = midigain_local * (float) voices[vix].midivel / 127.0;
@@ -460,12 +460,12 @@ public:
                         fi += ncbuf;
                     
                     int i = (int) fi;
-                    float u = cbuf[i];
-                    //float u = cubic (cbuf + i, fi - i);
+                    //float u = cbuf[i];
+                    float u = cubic (cbuf + i, fi - i);
                     
                     float wi = 2 + graintablesize * (g.ix / g.size);
                     i = (int) wi;
-                    float w = linear (grain_window + i, wi - i);
+                    float w = cubic (grain_window + i, wi - i);
                     
                     *out += u * w * g.gain * (g.pan + 1.0)/2;
                     *out2 += u * w * g.gain * (-g.pan + 1)/2;

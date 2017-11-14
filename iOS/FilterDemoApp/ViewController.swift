@@ -161,6 +161,11 @@ class ViewController: UIViewController {
         self.present(navController, animated: true, completion: nil)
 	}
 	
-    
+    @IBAction func configureReverb(_ sender: UITapGestureRecognizer) {
+        playEngine.reverbAudioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))!.value = 50.0
+    }
+    @IBAction func toggleReverb(_ sender: UILongPressGestureRecognizer) {
+        print("helloooooo!")
+    }
 
 }
