@@ -387,8 +387,8 @@ public:
                 float p = estimate_pitch(cix - 2*maxT);
                 if (p > 0)
                     T = p;
-//                else
-//                    T = 250;
+                else
+                    T = 250;
                 
                 voiced = (p != 0);
             }
@@ -425,27 +425,45 @@ public:
                 
                 if (--voices[vix].nextgrain < 0)
                 {
-                    grains[grain_ix].size = 2 * T;
-                    grains[grain_ix].start = pitchmark[0] - voices[vix].nextgrain - T + unvoiced_offset;
-                    grains[grain_ix].ratio = voices[vix].formant_ratio;
-                    grains[grain_ix].ix = 0;
-                    grains[grain_ix].gain = midigain_local * (float) voices[vix].midivel / 127.0;
-                    grains[grain_ix].pan = voices[vix].pan;
+                    // search for the first open grain
                     
-                    if (voices[vix].ratio < 1)
-                        grains[grain_ix].gain *= powf(1/voices[vix].ratio,0.5);
-                    
-                    voices[vix].nextgrain += (T / voices[vix].ratio);
-                    
-                    if (++grain_ix >= ngrains)
-                        grain_ix = 0;
+                    for (int k = 0; k < ngrains; k++)
+                    {
+                        if (grains[k].size < 0)
+                        {
+                            grains[k].size = 2 * T;
+                            grains[k].start = pitchmark[0] - voices[vix].nextgrain - T + unvoiced_offset;
+                            grains[k].ratio = voices[vix].formant_ratio;
+                            grains[k].ix = 0;
+                            grains[k].gain = midigain_local * (float) voices[vix].midivel / 127.0;
+                            grains[k].pan = voices[vix].pan;
+                            
+                            if (voices[vix].ratio < 1)
+                                grains[k].gain *= powf(1/voices[vix].ratio,0.5);
+                            
+                            voices[vix].nextgrain += (T / voices[vix].ratio);
+                            
+                            //printf("maxgrain = %d\n", maxgrain);
+                            if (k > maxgrain)
+                                maxgrain = k;
+                            
+                            break;
+                        }
+                    }
+                    for (int k = maxgrain; k > 0; k--)
+                    {
+                        if (grains[k].size >= 0)
+                            break;
+                        
+                        maxgrain = k;
+                    }
                 }
             }
             
             *out = 0;
             *out2 = 0;
             
-            for (int ix = 0; ix < ngrains; ix++)
+            for (int ix = 0; ix <= maxgrain; ix++)
             {
                 grain_t g = grains[ix];
                 
@@ -472,7 +490,10 @@ public:
                     g.ix += g.ratio;
                     
                     if (g.ix > g.size)
+                    {
                         g.size = -1;
+                        //printf("ending grain %d\n", ix);
+                    }
                     
                     grains[ix] = g;
                 }
@@ -780,6 +801,7 @@ public:
         
         if (autotune)
         {
+            // lock to nearest note
             voices[0].target_ratio = 1.0/error_ratio;
         }
 
@@ -865,6 +887,7 @@ private:
     int ncbuf = 4096;
     int cix = 0;
     int rix = 0;
+    int maxgrain = 0;
     float rcnt = 256;
     float T = 400;
     int nmed = 10;

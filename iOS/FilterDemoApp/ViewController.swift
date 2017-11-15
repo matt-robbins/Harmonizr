@@ -14,7 +14,7 @@ import FilterDemoFramework
 class ViewController: UIViewController {
     // MARK: Properties
 
-    @IBOutlet weak var presetButton: UIButton!
+    @IBOutlet weak var reverbButton: UIButton!
     @IBOutlet var playButton: UIButton!
 
 //    @IBOutlet var cutoffSlider: UISlider!
@@ -37,6 +37,11 @@ class ViewController: UIViewController {
     
     var btMidiViewController: CABTMIDICentralViewController!
     var navController: UINavigationController!
+    
+    var reverbMix: Float = 0
+    var reverbEnabled = true
+    
+    var reverbMixParam: AUParameter?
 
     // MARK: View Life Cycle
     
@@ -87,8 +92,8 @@ class ViewController: UIViewController {
 			self.connectParametersToControls()
 		}
         
-        presetButton.setTitle("Reverb", for: UIControlState())
-        presetButton.setTitleColor(UIColor.white, for: UIControlState())
+        reverbButton.setTitle("Reverb", for: UIControlState())
+        reverbButton.setTitleColor(UIColor.white, for: UIControlState())
         playButton.setTitle("Bluetooth", for: UIControlState())
         playButton.setTitleColor(UIColor.white, for: UIControlState())
         //playButton.setImage(UIImage(named: "bt_icon.svg")!, for: UIControlState())
@@ -96,7 +101,16 @@ class ViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = true
         playEngine.startPlaying()
         
+        reverbMixParam = playEngine.reverbAudioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
+        
 	}
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "mainToReverb") {
+            let vc = segue.destination as! ReverbViewController
+            vc.audioUnit = playEngine.reverbAudioUnit
+        }
+    }
     
 
 	
@@ -161,11 +175,22 @@ class ViewController: UIViewController {
         self.present(navController, animated: true, completion: nil)
 	}
 	
-    @IBAction func configureReverb(_ sender: UITapGestureRecognizer) {
-        playEngine.reverbAudioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))!.value = 50.0
+    @IBAction func toggleReverb(_ sender: UITapGestureRecognizer)
+    {
+        if reverbEnabled {
+            reverbMix = reverbMixParam!.value
+            reverbMixParam!.value = 0
+            reverbButton.setTitleColor(UIColor.gray, for: UIControlState())
+            reverbEnabled = false
+        }
+        else {
+            reverbMixParam!.value = reverbMix
+            reverbButton.setTitleColor(UIColor.white, for: UIControlState())
+            reverbEnabled = true
+        }
     }
-    @IBAction func toggleReverb(_ sender: UILongPressGestureRecognizer) {
-        print("helloooooo!")
+    @IBAction func configureReverb(_ sender: UILongPressGestureRecognizer) {
+        performSegue(withIdentifier: "mainToReverb", sender: self)
     }
 
 }
