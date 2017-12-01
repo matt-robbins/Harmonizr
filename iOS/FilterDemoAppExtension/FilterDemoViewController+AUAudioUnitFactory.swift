@@ -23,7 +23,7 @@ extension FilterDemoViewController: AUAudioUnitFactory {
         creates its audio unit.
      */
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-        audioUnit = try AUv3FilterDemo(componentDescription: componentDescription, options: [])
+        audioUnit = try AUv3Harmonizer(componentDescription: componentDescription, options: [])
         
         return audioUnit!
     }

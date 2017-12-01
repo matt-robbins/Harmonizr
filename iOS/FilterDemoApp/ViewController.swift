@@ -9,6 +9,7 @@
 import UIKit
 import CoreAudioKit
 import AudioToolbox
+import AVFoundation
 import FilterDemoFramework
 
 class ViewController: UIViewController {
@@ -33,8 +34,9 @@ class ViewController: UIViewController {
 	var parameterObserverToken: AUParameterObserverToken!
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
-	var filterDemoViewController: FilterDemoViewController!
-    
+	//var filterDemoViewController: FilterDemoViewController!
+    var filterDemoViewController: FilterDemoViewController!
+
     var btMidiViewController: CABTMIDICentralViewController!
     var navController: UINavigationController!
     
@@ -54,15 +56,15 @@ class ViewController: UIViewController {
 		
 		// Create an audio file playback engine.
 		playEngine = SimplePlayEngine(componentType: kAudioUnitType_MusicEffect)
-        {
-            for u in self.playEngine.availableAudioUnits
-            {
-                print(u.name)
-                print("0x\(String(u.audioComponentDescription.componentType,radix: 16))")
-                print("0x\(String(u.audioComponentDescription.componentSubType,radix: 16))")
-                print("0x\(String(u.audioComponentDescription.componentManufacturer,radix: 16))")
-            }
-        }
+//        {
+//            for u in self.playEngine.availableAudioUnits
+//            {
+//                print(u.name)
+//                print("0x\(String(u.audioComponentDescription.componentType,radix: 16))")
+//                print("0x\(String(u.audioComponentDescription.componentSubType,radix: 16))")
+//                print("0x\(String(u.audioComponentDescription.componentManufacturer,radix: 16))")
+//            }
+//        }
 		
 		/*
 			Register the AU in-process for development/debugging.
@@ -73,18 +75,19 @@ class ViewController: UIViewController {
         // Ensure that you update the AudioComponentDescription for your AudioUnit type, manufacturer and creator type.
         var componentDescription = AudioComponentDescription()
         componentDescription.componentType = kAudioUnitType_MusicEffect
-        componentDescription.componentSubType = 0x6861726d /*'harm'*/
-        componentDescription.componentManufacturer = 0x44656d6f /*'Demo'*/
+        componentDescription.componentSubType = 0x4861726d /*'Harm'*/
+        componentDescription.componentManufacturer = 0x4d724678 /*'MrFx'*/
         componentDescription.componentFlags = 0
         componentDescription.componentFlagsMask = 0
-		
-		/*
-			Register our `AUAudioUnit` subclass, `AUv3FilterDemo`, to make it able 
-            to be instantiated via its component description.
-			
-			Note that this registration is local to this process.
-		*/
-        AUAudioUnit.registerSubclass(AUv3FilterDemo.self, as: componentDescription, name:"Demo: Local FilterDemo", version: UInt32.max)
+        
+//
+//        /*
+//            Register our `AUAudioUnit` subclass, `AUv3FilterDemo`, to make it able
+//            to be instantiated via its component description.
+//
+//            Note that this registration is local to this process.
+//        */
+        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 50)
         
 		// Instantiate and insert our audio unit effect into the chain.
 		playEngine.selectAudioUnitWithComponentDescription(componentDescription) {
@@ -112,8 +115,6 @@ class ViewController: UIViewController {
         }
     }
     
-
-	
 	/// Called from `viewDidLoad(_:)` to embed the plug-in's view into the app's view.
 	func embedPlugInView() {
         /*
@@ -126,8 +127,9 @@ class ViewController: UIViewController {
 		let appExtensionBundle = Bundle(url: pluginURL)
 
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
-		filterDemoViewController = storyboard.instantiateInitialViewController() as! FilterDemoViewController
-        
+		//filterDemoViewController = storyboard.instantiateInitialViewController() as! FilterDemoViewController
+        filterDemoViewController = storyboard.instantiateInitialViewController() as! FilterDemoViewController
+
         // Present the view controller's view.
         if let view = filterDemoViewController.view {
             addChildViewController(filterDemoViewController)
@@ -146,7 +148,7 @@ class ViewController: UIViewController {
 		// Find our parameters by their identifiers.
         guard let parameterTree = playEngine.testAudioUnit?.parameterTree else { return }
 
-        let audioUnit = playEngine.testAudioUnit as! AUv3FilterDemo
+        let audioUnit = playEngine.testAudioUnit as! AUv3Harmonizer
         
         let presets = audioUnit.factoryPresets
         filterDemoViewController.audioUnit = audioUnit

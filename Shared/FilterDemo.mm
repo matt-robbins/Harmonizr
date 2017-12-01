@@ -11,6 +11,8 @@
 #import "FilterDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
 
+#include <dispatch/dispatch.h>
+
 #pragma mark AUv3FilterDemo (Presets)
 
 static const UInt8 kNumberOfPresets = 4;
@@ -84,7 +86,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 #pragma mark - AUv3FilterDemo : AUAudioUnit
 
-@interface AUv3FilterDemo ()
+@interface AUv3Harmonizer ()
 
 @property AUAudioUnitBus *outputBus;
 @property AUAudioUnitBusArray *inputBusArray;
@@ -92,7 +94,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 @end
 
-@implementation AUv3FilterDemo {
+@implementation AUv3Harmonizer {
 	// C++ members need to be ivars; they would be copied on access if they were properties.
     FilterDSPKernel  _kernel;
     BufferedInputBus _inputBus;
@@ -140,6 +142,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
             valueStrings:nil dependentParameters:nil];
     
+    AUParameter *bypassParam = [AUParameterTree createParameterWithIdentifier:@"bypass" name:@"Bypass"
+            address:HarmParamBypass
+            min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+            valueStrings:nil dependentParameters:nil];
+    
     AUParameter *triadParam = [AUParameterTree createParameterWithIdentifier:@"triad" name:@"Triad"
             address:HarmParamTriad
          min:-1 max:30 unit:kAudioUnitParameterUnit_Indexed unitName:nil
@@ -153,6 +161,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:autoParam];
     [params addObject:midiParam];
     [params addObject:triadParam];
+    [params addObject:bypassParam];
     
     for (int k = 0; k < 72; k++)
     {
@@ -173,12 +182,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     autoParam.value = 1;
     midiParam.value = 1;
     triadParam.value = -1;
+    bypassParam.value = 0;
     
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     _kernel.setParameter(HarmParamInversion, inversionParam.value);
     _kernel.setParameter(HarmParamAuto, autoParam.value);
     _kernel.setParameter(HarmParamMidi, midiParam.value);
     _kernel.setParameter(HarmParamTriad, triadParam.value);
+    _kernel.setParameter(HarmParamBypass, bypassParam.value);
     
     for (int k = 0; k < 72; k++)
     {
@@ -379,7 +390,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                 // set factory preset as current
                 _currentPreset = currentPreset;
                 _currentFactoryPresetIndex = factoryPreset.number;
-                NSLog(@"currentPreset Factory: %ld, %@\n", (long)_currentFactoryPresetIndex, factoryPreset.name);
+                //NSLog(@"currentPreset Factory: %ld, %@\n", (long)_currentFactoryPresetIndex, factoryPreset.name);
                 
                 break;
             }
@@ -387,9 +398,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     } else if (nil != currentPreset.name) {
         // set custom preset as current
         _currentPreset = currentPreset;
-        NSLog(@"currentPreset Custom: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
+        //NSLog(@"currentPreset Custom: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
     } else {
-        NSLog(@"setCurrentPreset not set! - invalid AUAudioUnitPreset\n");
+        //NSLog(@"setCurrentPreset not set! - invalid AUAudioUnitPreset\n");
     }
 }
 

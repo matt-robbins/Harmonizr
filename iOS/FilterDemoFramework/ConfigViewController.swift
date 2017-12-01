@@ -46,7 +46,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBOutlet weak var navBar: UINavigationBar!
     var pickerData: [String] = [String]()
     
-    public var audioUnit: AUv3FilterDemo? {
+    public var audioUnit: AUv3Harmonizer? {
         didSet {
             print("set audio unit in config view controller!")
         }

@@ -81,7 +81,7 @@
     desc.componentFlags = 0;
     desc.componentFlagsMask = 0;
     
-    [AUAudioUnit registerSubclass: AUv3FilterDemo.class
+    [AUAudioUnit registerSubclass: AUv3Harmonizer.class
            asComponentDescription: desc
                              name: @"Demo: Local AUv3"
                           version: UINT32_MAX];
@@ -176,7 +176,7 @@ midiStateCallback (const MIDINotification * msg, void * data)
 -(void) connectParametersToControls {
     AUParameterTree *parameterTree = playEngine.testAudioUnit.parameterTree;
     
-    auV3ViewController.audioUnit = (AUv3FilterDemo *)playEngine.testAudioUnit;
+    auV3ViewController.audioUnit = (AUv3Harmonizer *)playEngine.testAudioUnit;
     cutoffParameter = [parameterTree valueForKey: @"cutoff"];
     resonanceParameter = [parameterTree valueForKey: @"resonance"];
     

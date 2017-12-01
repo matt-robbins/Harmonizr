@@ -11,7 +11,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface AUv3FilterDemo : AUAudioUnit
+@interface AUv3Harmonizer : AUAudioUnit
 
 - (float) getCurrentNote;
 - (float) getCurrentKeycenter;

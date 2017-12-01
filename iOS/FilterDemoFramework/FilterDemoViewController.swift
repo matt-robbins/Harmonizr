@@ -20,7 +20,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 		When this view controller is instantiated within the FilterDemoApp, its 
         audio unit is created independently, and passed to the view controller here.
 	*/
-    public var audioUnit: AUv3FilterDemo? {
+    public var audioUnit: AUv3Harmonizer? {
         didSet {
 			/*
 				We may be on a dispatch worker queue processing an XPC request at 
@@ -43,6 +43,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     var autoParameter: AUParameter?
     var midiParameter: AUParameter?
     var triadParameter: AUParameter?
+    var bypassParameter: AUParameter?
 	var parameterObserverToken: AUParameterObserverToken?
     
     var configController: ConfigViewController?
@@ -69,7 +70,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 		// Respond to changes in the filterView (frequency and/or response changes).
         filterView.delegate = self
         
-        auPoller(T: 0.01)
+        auPoller(T: 0.1)
 		configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
         let _: UIView = configController!.view
         
@@ -108,6 +109,12 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     func filterView(_ filterView: FilterView, didChangeMidi midi: Float)
     {
         midiParameter?.value = midi
+    }
+    
+    func filterView(_ filterView: FilterView, didChangeBypass bypass: Float)
+    {
+        print(bypass)
+        bypassParameter?.value = bypass
     }
     
     func filterViewDataDidChange(_ filterView: FilterView) {
@@ -151,6 +158,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         autoParameter = paramTree.value(forKey: "auto") as? AUParameter
         midiParameter = paramTree.value(forKey: "midi") as? AUParameter
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
+        bypassParameter = paramTree.value(forKey: "bypass") as? AUParameter
 		
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
@@ -169,5 +177,6 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         
         filterView.setSelectedKeycenter(keycenterParameter!.value)
         filterView.inversion = Int(inversionParameter!.value)
+        filterView.bypass = Int(bypassParameter!.value)
 	}
 }

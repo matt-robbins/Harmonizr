@@ -22,6 +22,7 @@ protocol FilterViewDelegate: class {
     func filterView(_ filterView: FilterView, didChangeTriad triad: Float)
     func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
     func filterView(_ filterView: FilterView, didChangeMidi midi: Float)
+    func filterView(_ filterView: FilterView, didChangeBypass bypass: Float)
     func filterViewGetPitch(_ filterView: FilterView) -> Float
     func filterViewGetKeycenter(_ filterView: FilterView) -> Float
     func filterViewDataDidChange(_ filterView: FilterView)
@@ -58,6 +59,13 @@ class FilterView: UIView {
         }
     }
     var keycenter = 0
+    
+    var bypass: Int = 0 {
+        didSet(old_bypass) {
+            setBypassEnable(Float(bypass))
+            //print("someone set inversion to \(inversion) from \(old_inversion)")
+        }
+    }
     
     var presets = [AUAudioUnitPreset]() {
         didSet(old_presets) {
@@ -145,35 +153,35 @@ class FilterView: UIView {
     func setSelectedKeycenter(_ keycenter: Float)
     {
         let new_key = Int(keycenter)
-//        var root = new_key % 12
-//        let quality = new_key / 12
+        var root = new_key % 12
+        let quality = new_key / 12
         
-//        if quality == 1 //relative major
-//        {
-//            root = (root + 3) % 12
-//        }
-//        var keynames = [String]()
-//
-//        switch (root)
-//        {
-//        case 1,6:
-//            keynames = ["C", "D\u{266D}", "D", "E\u{266D}", "E", "F", "G\u{266D}","G","A\u{266D}", "A", "B\u{266D}", "C\u{266D}"]
-//        case 2:
-//            keynames = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}","G","G\u{266f}", "A", "B\u{266D}", "B"]
-//        case 3:
-//            keynames = ["C", "D\u{266D}", "D", "E\u{266D}", "E", "F", "G\u{266D}","G","A\u{266D}", "A", "B\u{266D}", "B"]
-//        case 4,9,11:
-//            keynames = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}","G","G\u{266f}", "A", "A\u{266f}", "B"]
-//        case 5,10:
-//            keynames = ["C", "D\u{266D}", "D", "E\u{266D}", "E", "F", "F\u{266f}","G","A\u{266D}", "A", "B\u{266D}", "B"]
-//        default:
-//            keynames = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}","G", "A\u{266D}", "A", "B\u{266D}", "B"]
-//        }
-//
-//        for key in 0...11
-//        {
-//            keybuttons[key].string = keynames[key]
-//        }
+        if quality == 1 //relative major
+        {
+            root = (root + 3) % 12
+        }
+        var keynames = [String]()
+
+        switch (root)
+        {
+        case 1,6:
+            keynames = ["C", "D\u{266D}", "D", "E\u{266D}", "E", "F", "G\u{266D}","G","A\u{266D}", "A", "B\u{266D}", "C\u{266D}"]
+        case 2:
+            keynames = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}","G","G\u{266f}", "A", "B\u{266D}", "B"]
+        case 3:
+            keynames = ["C", "D\u{266D}", "D", "E\u{266D}", "E", "F", "G\u{266D}","G","A\u{266D}", "A", "B\u{266D}", "B"]
+        case 4,9,11:
+            keynames = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}","G","G\u{266f}", "A", "A\u{266f}", "B"]
+        case 5,10:
+            keynames = ["C", "D\u{266D}", "D", "E\u{266D}", "E", "F", "F\u{266f}","G","A\u{266D}", "A", "B\u{266D}", "B"]
+        default:
+            keynames = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}","G", "A\u{266D}", "A", "B\u{266D}", "B"]
+        }
+
+        for key in 0...11
+        {
+            keybuttons[key].string = keynames[key]
+        }
         for key in 0...35
         {
             if (keybuttons[key].borderColor != UIColor.darkGray.cgColor)
@@ -229,6 +237,18 @@ class FilterView: UIView {
             }
         }
     }
+    
+    func setBypassEnable(_ enable: Float)
+    {
+        if Int(enable) == 1
+        {
+            highlight(layer: configbutton)
+        }
+        else
+        {
+            dehighlight(layer: configbutton)
+        }
+    }
 
     override func awakeFromNib() {
         // Create all of the CALayers for the graph, lines, and labels.
@@ -279,7 +299,7 @@ class FilterView: UIView {
                 
                 if (j == 0)
                 {
-                    keyLayer.string = "Maj"
+                    keyLayer.string = names[i]
                 }
                 else if (j == 1)
                 {
@@ -583,7 +603,8 @@ class FilterView: UIView {
         
         if (configbutton.hitTest(pointOfTouch!) != nil)
         {
-            delegate?.filterViewConfigure(self)
+            bypass = bypass == 1 ? 0 : 1
+            delegate?.filterView(self, didChangeBypass: Float(bypass))
         }
         
         if (midibutton.hitTest(pointOfTouch!) != nil)

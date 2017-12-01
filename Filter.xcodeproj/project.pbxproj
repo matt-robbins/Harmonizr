@@ -56,7 +56,10 @@
 		92FF86A41B9F5B7B007C9389 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
 		92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF86A51B9F5D42007C9389 /* FilterView.h */; };
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
+		C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163511FBCE81D00EE1762 /* HarmViewController.swift */; };
+		C93163551FBDE2D700EE1762 /* HarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163541FBDE2D700EE1762 /* HarmView.swift */; };
 		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
+		C981C4641FBF9DCB00AF8593 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */; };
 		C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */; };
 		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
 		C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
@@ -216,7 +219,11 @@
 		92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterDemoViewController.xib; sourceTree = "<group>"; };
 		92FF86A51B9F5D42007C9389 /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
 		92FF86A61B9F5D42007C9389 /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
+		C93163511FBCE81D00EE1762 /* HarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmViewController.swift; sourceTree = "<group>"; };
+		C93163541FBDE2D700EE1762 /* HarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmView.swift; sourceTree = "<group>"; };
 		C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
+		C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		C981C4651FBF9DCB00AF8593 /* FilterDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilterDemo.entitlements; sourceTree = "<group>"; };
 		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
 		C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9DAB9091FA3BF8700DBB180 /* midi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = midi.png; path = ../../../../../Desktop/midi.png; sourceTree = "<group>"; };
@@ -233,6 +240,7 @@
 			files = (
 				C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */,
 				C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */,
+				C981C4641FBF9DCB00AF8593 /* AudioToolbox.framework in Frameworks */,
 				C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */,
 				91236D6A1B08F52E00734C5E /* FilterDemoFramework.framework in Frameworks */,
 			);
@@ -354,6 +362,8 @@
 				C9DAB9091FA3BF8700DBB180 /* midi.png */,
 				91A9356A1B1269F100370383 /* FilterView.swift */,
 				91236D591B08F52D00734C5E /* Info.plist */,
+				C93163511FBCE81D00EE1762 /* HarmViewController.swift */,
+				C93163541FBDE2D700EE1762 /* HarmView.swift */,
 			);
 			name = FilterDemoFramework;
 			path = iOS/FilterDemoFramework;
@@ -392,6 +402,7 @@
 		91D3DA0B1B023C03008FFFBB = {
 			isa = PBXGroup;
 			children = (
+				C981C4651FBF9DCB00AF8593 /* FilterDemo.entitlements */,
 				3E8E032C1B16387D0011624B /* README.md */,
 				30AEE0F81BA3510D00302EB1 /* Filter (iOS) */,
 				30AEE0F91BA3513800302EB1 /* Filter (OS X) */,
@@ -491,6 +502,7 @@
 		C9FD73F21F8BC69C00346E31 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */,
 				C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */,
 				C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */,
 				C9FD73F51F9107D300346E31 /* Accelerate.framework */,
@@ -657,6 +669,14 @@
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = CK78RPQ2FV;
 						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 1;
+							};
+						};
 					};
 					91236D541B08F52D00734C5E = {
 						CreatedOnToolsVersion = 7.0;
@@ -788,6 +808,7 @@
 			files = (
 				92A10D171B9529170081EA80 /* DSPKernel.mm in Sources */,
 				91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */,
+				C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */,
 				927A95A41B1D4043007C1F90 /* FilterDemoViewController.swift in Sources */,
 				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
 				91A9356B1B1269F100370383 /* FilterView.swift in Sources */,
@@ -798,6 +819,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C93163551FBDE2D700EE1762 /* HarmView.swift in Sources */,
 				91236D921B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -921,6 +943,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = FilterDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -973,6 +996,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = FilterDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

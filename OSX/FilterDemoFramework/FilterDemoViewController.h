@@ -11,11 +11,11 @@
 
 #import <CoreAudioKit/AUViewController.h>
 
-@class AUv3FilterDemo;
+@class AUv3Harmonizer;
 
 @interface FilterDemoViewController : AUViewController
 
-@property (nonatomic)AUv3FilterDemo *audioUnit;
+@property (nonatomic)AUv3Harmonizer *audioUnit;
 
 @end
 

@@ -45,12 +45,12 @@
     [self disconnectViewWithAU];
 }
 
-#pragma mark-
-- (AUv3FilterDemo *)getAudioUnit {
+#pragma mark
+- (AUv3Harmonizer *)getAudioUnit {
     return _audioUnit;
 }
 
-- (void)setAudioUnit:(AUv3FilterDemo *)audioUnit {
+- (void)setAudioUnit:(AUv3Harmonizer *)audioUnit {
     _audioUnit = audioUnit;
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([self isViewLoaded]) {
@@ -134,11 +134,6 @@
 
 - (void) updateFilterViewFrequencyAndMagnitudes {
     if (!_audioUnit) return;
-    
-    NSArray *frequencies = [filterView frequencyDataForDrawing];
-    NSArray *magnitudes  = [_audioUnit magnitudesForFrequencies:frequencies];
-    
-    [filterView setMagnitudes: magnitudes];
 }
 
 - (void)filterViewDataDidChange:(FilterView *)sender {

@@ -32,13 +32,13 @@
 					<key>description</key>
 					<string>Harmonizer</string>
 					<key>manufacturer</key>
-					<string>Demo</string>
+					<string>MrFx</string>
 					<key>name</key>
-					<string>Demo: FilterDemo</string>
+					<string>MrFx: Harmonizer</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
-					<string>harm</string>
+					<string>Harm</string>
 					<key>tags</key>
 					<array>
 						<string>Effects</string>
@@ -46,7 +46,7 @@
 					<key>type</key>
 					<string>aumf</string>
 					<key>version</key>
-					<integer>67072</integer>
+					<integer>1</integer>
 				</dict>
 			</array>
 		</dict>

@@ -10,8 +10,8 @@
 
 @implementation FilterDemoViewController (AUAudioUnitFactory)
 
-- (AUv3FilterDemo *) createAudioUnitWithComponentDescription:(AudioComponentDescription) desc error:(NSError **)error {
-    self.audioUnit = [[AUv3FilterDemo alloc] initWithComponentDescription:desc error:error];
+- (AUv3Harmonizer *) createAudioUnitWithComponentDescription:(AudioComponentDescription) desc error:(NSError **)error {
+    self.audioUnit = [[AUv3Harmonizer alloc] initWithComponentDescription:desc error:error];
     return self.audioUnit;
 }
 

@@ -15,6 +15,7 @@
 #import <cmath>
 #import <sys/time.h>
 #include <Accelerate/Accelerate.h>
+#include <dispatch/dispatch.h>
 
 typedef struct grain_s
 {
@@ -74,7 +75,9 @@ enum {
     HarmParamAuto = 2,
     HarmParamMidi = 3,
     HarmParamTriad = 4,
-    HarmParamInterval = 5,
+    HarmParamBypass = 5,
+    HarmParamDouble = 6,
+    HarmParamInterval = 7,
 };
 
 static inline double squared(double x) {
@@ -219,6 +222,13 @@ public:
         
         memset(midinotes, 0, 128 * sizeof(int));
         
+        sem = dispatch_semaphore_create(0);
+        
+        if (NULL == sem)
+        {
+            printf("couldn't create semaphore!\n");
+        }
+        
 	}
 	
 	void reset() {
@@ -257,6 +267,10 @@ public:
             case HarmParamTriad:
                 triad = (int) clamp(value,-1.f,30.f);
                 break;
+            case HarmParamBypass:
+                bypass = (int) clamp(value,0.f,1.f);
+                printf("set bypass to %d\n", bypass);
+                break;
             case HarmParamInterval:
             default:
                 int addr = (int) address - (int) HarmParamInterval;
@@ -287,6 +301,8 @@ public:
                 return (float) midi_enable;
             case HarmParamTriad:
                 return (float) triad;
+            case HarmParamBypass:
+                return (float) bypass;
 				
             case HarmParamInterval:
             default:
@@ -354,7 +370,6 @@ public:
 	
 	void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
 		int channelCount = n_channels;
-        
         sample_count += frameCount;
         // For each sample.
 		for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex)
@@ -373,6 +388,17 @@ public:
             }
 
             cbuf[cix] = *in;
+            
+            if (bypass)
+            {
+                *out = *in;
+                *out2 = *in;
+                continue;
+            }
+            else
+            {
+                *out = *out2 = 0;
+            }
             
             if (cix < 3)
             {
@@ -393,7 +419,7 @@ public:
                 voiced = (p != 0);
             }
             
-            float dp = cix - 3*maxT - pitchmark[0];
+            float dp = cix - 2*maxT - pitchmark[0];
             if (dp < 0)
                 dp += ncbuf;
             
@@ -459,9 +485,6 @@ public:
                     }
                 }
             }
-            
-            *out = 0;
-            *out2 = 0;
             
             for (int ix = 0; ix <= maxgrain; ix++)
             {
@@ -756,6 +779,8 @@ public:
             }
        
         }
+        
+        dispatch_semaphore_signal(sem);
     }
     
     void update_voices (void)
@@ -890,9 +915,9 @@ private:
     int maxgrain = 0;
     float rcnt = 256;
     float T = 400;
-    int nmed = 10;
-    float Tbuf[10];
-    float Tsrt[10];
+    int nmed = 3;
+    float Tbuf[3];
+    float Tsrt[3];
     int Tix;
     float pitchmark[3] = {0,-1,-1};
     int maxT = 600; // note nfft should be bigger than 3*maxT
@@ -905,6 +930,7 @@ private:
     float midinotes[128];
     float midigain = 1.0;
     int autotune = 0;
+    int bypass = 0;
     
     int nvoices = 16;
     int voice_ix = 3;
@@ -939,7 +965,7 @@ public:
 
     float note_number;
     int root_key = 0;
-    
+    dispatch_semaphore_t sem;
 };
 
 #endif /* FilterDSPKernel_hpp */
