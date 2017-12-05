@@ -29,6 +29,8 @@ class ViewController: UIViewController {
 
 	/// The audio playback engine.
 	var playEngine: SimplePlayEngine!
+    var audioEngine: AudioEngine2!
+    var harmUnit: AUAudioUnit!
 
 	/// A token for our registration to observe parameter value changes.
 	var parameterObserverToken: AUParameterObserverToken!
@@ -52,10 +54,10 @@ class ViewController: UIViewController {
 		
         self.view.backgroundColor = UIColor.darkGray
 		// Set up the plug-in's custom view.
-		embedPlugInView()
+		//embedPlugInView()
 		
 		// Create an audio file playback engine.
-		playEngine = SimplePlayEngine(componentType: kAudioUnitType_MusicEffect)
+		//playEngine = SimplePlayEngine(componentType: kAudioUnitType_MusicEffect)
 //        {
 //            for u in self.playEngine.availableAudioUnits
 //            {
@@ -80,21 +82,22 @@ class ViewController: UIViewController {
         componentDescription.componentFlags = 0
         componentDescription.componentFlagsMask = 0
         
-//
-//        /*
-//            Register our `AUAudioUnit` subclass, `AUv3FilterDemo`, to make it able
-//            to be instantiated via its component description.
-//
-//            Note that this registration is local to this process.
-//        */
-        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 50)
+
+        /*
+            Register our `AUAudioUnit` subclass, `AUv3FilterDemo`, to make it able
+            to be instantiated via its component description.
+
+            Note that this registration is local to this process.
+        */
+        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 1)
         
 		// Instantiate and insert our audio unit effect into the chain.
-		playEngine.selectAudioUnitWithComponentDescription(componentDescription) {
-			// This is an asynchronous callback when complete. Finish audio unit setup.
-			self.connectParametersToControls()
-		}
-        
+//        playEngine.selectAudioUnitWithComponentDescription(componentDescription) {
+//            // This is an asynchronous callback when complete. Finish audio unit setup.
+//            self.connectParametersToControls()
+//            self.playEngine.startPlaying()
+//        }
+
         reverbButton.setTitle("Reverb", for: UIControlState())
         reverbButton.setTitleColor(UIColor.white, for: UIControlState())
         playButton.setTitle("Bluetooth", for: UIControlState())
@@ -102,16 +105,28 @@ class ViewController: UIViewController {
         //playButton.setImage(UIImage(named: "bt_icon.svg")!, for: UIControlState())
         // diable idle timer
         UIApplication.shared.isIdleTimerDisabled = true
-        playEngine.startPlaying()
         
-        reverbMixParam = playEngine.reverbAudioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
+        self.audioEngine = AudioEngine2()
         
+//        AUAudioUnit.instantiate(with: componentDescription, options: []) { (unit: AUAudioUnit?,error) in
+//            self.harmUnit.component = self.audioEngine.effectUnit!
+//        }
+        
+        self.audioEngine.loadComponent(componentDescription: componentDescription, completionHandler: {(audioUnit) in
+            self.harmUnit = audioUnit
+            self.getAUView()
+            
+        })
+        
+        reverbMixParam = audioEngine.reverbUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
+        
+        //self.audioEngine.start()
 	}
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "mainToReverb") {
             let vc = segue.destination as! ReverbViewController
-            vc.audioUnit = playEngine.reverbAudioUnit
+            vc.audioUnit = audioEngine.reverbUnit
         }
     }
     
@@ -140,19 +155,44 @@ class ViewController: UIViewController {
         }
 	}
 	
+    func getAUView()
+    {
+        harmUnit!.requestViewController { [weak self] viewController in
+            guard let strongSelf = self else { return }
+        
+            // Only update the view if the view controller has one.
+            guard let viewController = viewController else {
+
+                print("no view!!!")
+                return
+            }
+            
+            if let view = viewController.view {
+                strongSelf.addChildViewController(viewController)
+                view.frame = strongSelf.auContainerView.bounds
+                
+                strongSelf.auContainerView.addSubview(view)
+                viewController.didMove(toParentViewController: self)
+            }
+        }
+        
+        
+        let presets = harmUnit!.factoryPresets
+        //filterDemoViewController.audioUnit = audioUnit
+        harmUnit!.currentPreset = presets?[0]
+    }
+    
 	/**
         Called after instantiating our audio unit, to find the AU's parameters and
         connect them to our controls.
     */
 	func connectParametersToControls() {
 		// Find our parameters by their identifiers.
-        guard let parameterTree = playEngine.testAudioUnit?.parameterTree else { return }
-
-        let audioUnit = playEngine.testAudioUnit as! AUv3Harmonizer
+        //guard let parameterTree = playEngine.testAudioUnit?.parameterTree else { return }
         
-        let presets = audioUnit.factoryPresets
-        filterDemoViewController.audioUnit = audioUnit
-        audioUnit.currentPreset = presets?[0]
+        //let presets = audioUnit.factoryPresets
+        //filterDemoViewController.audioUnit = audioUnit
+        //audioUnit.currentPreset = presets?[0]
 	}
     
     func dismissPopover() {
@@ -190,6 +230,7 @@ class ViewController: UIViewController {
             reverbButton.setTitleColor(UIColor.white, for: UIControlState())
             reverbEnabled = true
         }
+        //self.audioEngine.start()
     }
     @IBAction func configureReverb(_ sender: UILongPressGestureRecognizer) {
         performSegue(withIdentifier: "mainToReverb", sender: self)

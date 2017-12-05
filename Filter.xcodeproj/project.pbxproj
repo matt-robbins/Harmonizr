@@ -59,8 +59,11 @@
 		C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163511FBCE81D00EE1762 /* HarmViewController.swift */; };
 		C93163551FBDE2D700EE1762 /* HarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163541FBDE2D700EE1762 /* HarmView.swift */; };
 		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
+		C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */; };
 		C981C4641FBF9DCB00AF8593 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */; };
 		C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */; };
+		C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FBD211FD206E800330691 /* AudioEngine.swift */; };
+		C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */; };
 		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
 		C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
 		C9DAB90B1FA3BF8900DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
@@ -222,9 +225,12 @@
 		C93163511FBCE81D00EE1762 /* HarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmViewController.swift; sourceTree = "<group>"; };
 		C93163541FBDE2D700EE1762 /* HarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmView.swift; sourceTree = "<group>"; };
 		C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
+		C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine2.swift; sourceTree = "<group>"; };
 		C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		C981C4651FBF9DCB00AF8593 /* FilterDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilterDemo.entitlements; sourceTree = "<group>"; };
 		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
+		C98FBD211FD206E800330691 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiReceiver.swift; sourceTree = "<group>"; };
 		C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9DAB9091FA3BF8700DBB180 /* midi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = midi.png; path = ../../../../../Desktop/midi.png; sourceTree = "<group>"; };
 		C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = bt_icon.svg; path = ../../../../../Desktop/bt_icon.svg; sourceTree = "<group>"; };
@@ -340,7 +346,10 @@
 			isa = PBXGroup;
 			children = (
 				91236D0F1B08F42B00734C5E /* AppDelegate.swift */,
+				C98FBD211FD206E800330691 /* AudioEngine.swift */,
 				91236D111B08F42B00734C5E /* ViewController.swift */,
+				C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */,
+				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
@@ -797,8 +806,11 @@
 			files = (
 				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
+				C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */,
+				C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,
 				91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */,
+				C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,6 +987,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
 		};
@@ -1015,13 +1028,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbins.DspApp;
 				PRODUCT_NAME = FilterDemo;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Release;
 		};
