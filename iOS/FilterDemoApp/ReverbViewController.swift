@@ -52,7 +52,7 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
         mix.minimumValue = (mixParam?.minValue)!
         mix.value = mixParam!.value
         
-        gainParam = audioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
+        gainParam = audioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_Gain))
         gain.maximumValue = (gainParam?.maxValue)!
         gain.minimumValue = (gainParam?.minValue)!
         gain.value = gainParam!.value

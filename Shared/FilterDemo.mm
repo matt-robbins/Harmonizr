@@ -36,8 +36,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         1, //autoharm
         1, //midi
         -1, //triad
-        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
-         3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
+        {4,7, 3,6, 5,10, 4,9, 3,8, 7,11, 6,10, 5,9, 4,8, 7,10, 6,9, 5,8, // major
+         3,7, 2,6, 5,10, 4,9, 3,8, 2,7, 6,9, 5,8, 4,7, 3,6, 2,5, 4,8, // minor
          4,10, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
         }
     },
@@ -111,7 +111,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     if (self == nil) { return nil; }
 	
 	// Initialize a default format for the busses.
-    AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100.0 channels:2];
+    AVAudioFormat *defaultFormat = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100.0 channels:1];
 
 	// Create a DSP kernel to handle the signal processing.
 	_kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
@@ -162,6 +162,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:midiParam];
     [params addObject:triadParam];
     [params addObject:bypassParam];
+    
+    NSLog(@"hi!!!!!!!!!");
     
     for (int k = 0; k < 72; k++)
     {
@@ -234,7 +236,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 		}
 	};
 
-	self.maximumFramesToRender = 512;
+	self.maximumFramesToRender = 4096;
     
     // set default preset as current
     self.currentPreset = _presets.firstObject;
@@ -257,24 +259,32 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 }
 
 - (BOOL)allocateRenderResourcesAndReturnError:(NSError **)outError {
+    NSLog(@"Allocate render resources");
 	if (![super allocateRenderResourcesAndReturnError:outError]) {
+        NSLog(@"allocateRenderResources, super failed...\n");
 		return NO;
 	}
+    
+    int maxchannels = self.outputBus.format.channelCount;
+    if (_inputBus.bus.format.channelCount > maxchannels)
+        maxchannels = _inputBus.bus.format.channelCount;
 	
-    if (self.outputBus.format.channelCount != _inputBus.bus.format.channelCount) {
-        if (outError) {
-            *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:kAudioUnitErr_FailedInitialization userInfo:nil];
-        }
-        // Notify superclass that initialization was not successful
-        self.renderResourcesAllocated = NO;
-        
-        return NO;
-    }
+//    if (self.outputBus.format.channelCount != _inputBus.bus.format.channelCount) {
+//        if (outError) {
+//            *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:kAudioUnitErr_FailedInitialization userInfo:nil];
+//        }
+//        // Notify superclass that initialization was not successful
+//        self.renderResourcesAllocated = NO;
+//
+//        NSLog(@"** can't allocate render resources, mismatched channel counts!\n");
+//
+//        return NO;
+//    }
 	
 	_inputBus.allocateRenderResources(self.maximumFramesToRender);
 	
-    printf("allocateRenderResources\n");
-	_kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
+    NSLog(@"allocateRenderResources about to actually do it\n");
+	_kernel.init(maxchannels, self.outputBus.format.sampleRate);
 	_kernel.reset();
 	
 	return YES;

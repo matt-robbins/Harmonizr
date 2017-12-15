@@ -98,6 +98,7 @@ public:
 	
 	void init(int channelCount, double inSampleRate) {
 		n_channels = channelCount;
+        fprintf(stderr,"**** init with %d channels!\n", n_channels);
 		
 		sampleRate = float(inSampleRate);
         
@@ -410,11 +411,12 @@ public:
             if (--rcnt == 0)
             {
                 rcnt = 256;
+                int oldT = T;
                 float p = estimate_pitch(cix - 2*maxT);
                 if (p > 0)
                     T = p;
                 else
-                    T = 250;
+                    T = oldT;
                 
                 voiced = (p != 0);
             }
@@ -460,12 +462,28 @@ public:
                             grains[k].size = 2 * T;
                             grains[k].start = pitchmark[0] - voices[vix].nextgrain - T + unvoiced_offset;
                             grains[k].ratio = voices[vix].formant_ratio;
+                            
                             grains[k].ix = 0;
                             grains[k].gain = midigain_local * (float) voices[vix].midivel / 127.0;
                             grains[k].pan = voices[vix].pan;
                             
-                            if (voices[vix].ratio < 1)
-                                grains[k].gain *= powf(1/voices[vix].ratio,0.5);
+                            if (!voiced)
+                            {
+                                grains[k].ratio = voices[vix].ratio;
+                            }
+                            else
+                            {
+                                // for low transpositions, increase gain
+                                if (voices[vix].ratio < 1)
+                                    grains[k].gain *= powf(1/voices[vix].ratio,0.5);
+                                
+                                // for high transpositions, start shortening the blips.
+                                if (voices[vix].ratio > 1.7)
+                                {
+                                    grains[k].ratio *= (1 + (voices[vix].ratio - 1.7)/2);
+                                    //grains[k].gain *= powf(voices[vix].ratio,0.5);
+                                }
+                            }
                             
                             voices[vix].nextgrain += (T / voices[vix].ratio);
                             
@@ -579,7 +597,7 @@ public:
             cmdf2 = cmdf1; cmdf1 = cmdf;
             cmdf = (df * k) / sum;
             
-            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.3 && k > 20)
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.35 && k > 20)
             {
                 period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
@@ -613,7 +631,7 @@ public:
         float mean = 0.0;
         float min = HUGE_VALF;
         
-        int srch_n = (int)T/2;
+        int srch_n = (int)T/4;
         
         for (int k = -srch_n; k < srch_n; k++)
         {
