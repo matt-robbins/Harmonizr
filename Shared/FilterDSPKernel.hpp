@@ -34,6 +34,9 @@ typedef struct voice_s
     float target_ratio;
     float formant_ratio;
     float nextgrain;
+    float ix1;
+    float ix2;
+    int xf_ix;
     float pan;
     int midinote;
     int midivel;
@@ -143,6 +146,9 @@ public:
         voices[2].formant_ratio = 1.01;
         
         voices[0].midinote = 0;
+        voices[0].ix1 = ncbuf/2;
+        voices[0].ix2 = 0;
+        voices[0].xf_ix = 0;
         
         ngrains = 12 * nvoices;
         grains = new grain_t[ngrains];
@@ -436,7 +442,29 @@ public:
             if (pitchmark[2] < 0)
                 continue;
             
-            for (int vix = 0; vix < nvoices; vix++)
+            // voice 0 uses simple cubic resampling instead of PSOLA (if pitch correction is used)
+            
+            int dx1 = cix - (int) voices[0].ix1;
+            if (dx1 < 0) dx1 += ncbuf;
+            
+            if (dx1 > ncbuf/2 + 256)
+                voices[0].ix1 += T;
+
+            if (dx1 < ncbuf/2 - 256)
+                voices[0].ix1 -= T;
+            
+            voices[0].ix1 += voices[0].ratio;
+            if (voices[0].ix1 >= ncbuf)
+                voices[0].ix1 -= ncbuf;
+            if (voices[0].ix1 < 0)
+                voices[0].ix1 += ncbuf;
+            
+            int ix1i = (int) voices[0].ix1;
+            *out = cubic(cbuf + ix1i, voices[0].ix1 - ix1i) /2.0;
+            
+            *out2 = *out;
+            
+            for (int vix = 1; vix < nvoices; vix++)
             {
                 if (voices[vix].midinote == -1 || (vix > 2 && !midi_enable))
                     continue;
@@ -444,6 +472,7 @@ public:
                 float unvoiced_offset = 0;
                 if (!voiced)
                 {
+                    continue;
                     //unvoiced_offset = T * (0.5 - (float) rand() / RAND_MAX);
                 }
                 
@@ -741,6 +770,9 @@ public:
             if (voices[j].midinote < 0)
                 continue;
             
+            
+            
+            
             midinotes[n++] = (float) voices[j].midinote;
             
             octave[voices[j].midinote % 12] = 1;
@@ -947,7 +979,7 @@ private:
     int keycenter = 0;
     float midinotes[128];
     float midigain = 1.0;
-    int autotune = 0;
+    int autotune = 1;
     int bypass = 0;
     
     int nvoices = 16;
