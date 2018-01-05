@@ -19,14 +19,17 @@ import UIKit
 protocol FilterViewDelegate: class {
     func filterView(_ filterView: FilterView, didChangeKeycenter keycenter: Float)
     func filterView(_ filterView: FilterView, didChangeInversion inversion: Float)
+    func filterView(_ filterView: FilterView, didChangeNvoices voices: Float)
     func filterView(_ filterView: FilterView, didChangeTriad triad: Float)
     func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
     func filterView(_ filterView: FilterView, didChangeMidi midi: Float)
     func filterView(_ filterView: FilterView, didChangeBypass bypass: Float)
+    func filterView(_ filterView: FilterView, didChangePreset preset: Int)
     func filterViewGetPitch(_ filterView: FilterView) -> Float
     func filterViewGetKeycenter(_ filterView: FilterView) -> Float
     func filterViewDataDidChange(_ filterView: FilterView)
     func filterViewConfigure(_ filterView: FilterView)
+    func filterViewSavePreset(_ filterView: FilterView)
 }
 
 class VerticallyCenteredTextLayer : CATextLayer {
@@ -54,7 +57,7 @@ class FilterView: UIView {
     var midi_enable = 1
     var inversion: Int = 2 {
         didSet(old_inversion) {
-            setSelectedInversion(Float(inversion))
+            //setSelectedInversion(Float(inversion))
             //print("someone set inversion to \(inversion) from \(old_inversion)")
         }
     }
@@ -92,6 +95,7 @@ class FilterView: UIView {
     var presetbutton = VerticallyCenteredTextLayer()
     var midiautobutton = CALayer()
     var containerLayer = CALayer()
+    var nvoicesLayer = CALayer()
     var keysLayer = CALayer()
     var graphLayer = CALayer()
     var curveLayer: CAShapeLayer?
@@ -238,6 +242,39 @@ class FilterView: UIView {
         }
     }
     
+    func setSelectedVoices(_ voices: Int, inversion: Int)
+    {
+        let sublayers = nvoicesLayer.sublayers!
+        
+        var sum = 0
+        for k in 0...voices
+        {
+            sum += k
+        }
+        
+        for k in 0...sublayers.count - 1
+        {
+            if (k < sum && k >= (sum - voices))
+            {
+                if ((k - (sum - voices)) > inversion)
+                {
+                    sublayers[k].borderColor = UIColor.cyan.cgColor
+                    sublayers[k].shadowOpacity = 1.0
+                }
+                else
+                {
+                    sublayers[k].borderColor = UIColor.yellow.cgColor
+                    sublayers[k].shadowOpacity = 1.0
+                }
+            }
+            else
+            {
+                sublayers[k].borderColor = UIColor.lightGray.cgColor
+                sublayers[k].shadowOpacity = 0.0
+            }
+        }
+    }
+    
     func setBypassEnable(_ enable: Float)
     {
         if Int(enable) == 1
@@ -341,64 +378,64 @@ class FilterView: UIView {
             }
         }
         
-        for j in 0...2
-        {
-            let invLayer = CALayer()
-            
-            invLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
-            invLayer.backgroundColor = UIColor(white: 0.9, alpha: 1.0).cgColor
-            invLayer.borderWidth = 4
-            invLayer.cornerRadius = 4
-            invLayer.shadowRadius = 8
-            invLayer.shadowOpacity = 0
-            invLayer.shadowColor = UIColor.cyan.cgColor
-            
-            let xpos = CGFloat(j + 1) * containerLayer.frame.width / 12
-            
-            invLayer.frame = CGRect(x: xpos, y: containerLayer.frame.height - (CGFloat(j + 1) * keywidth), width: keywidth, height: keywidth)
-            
-            if (j == 2)
-            {
-                invLayer.shadowOpacity = 1.0
-                invLayer.borderColor = UIColor.cyan.cgColor
-            }
-            
-            invbuttons.append(invLayer)
-            containerLayer.addSublayer(invLayer)
-            
-            for k in 0...2
-            {
-                let oval = CALayer()
-                
-                oval.borderColor = UIColor.darkGray.cgColor
-                oval.borderWidth = 2
-                oval.cornerRadius = 2
-                
-                oval.shadowColor = UIColor.cyan.cgColor
-                oval.shadowOpacity = 0.0
-                oval.shadowRadius = 2.0
-                oval.shadowOffset = CGSize(width: 0, height: 0)
-                
-                if (k != j)
-                {
-                    oval.borderColor = UIColor.lightGray.cgColor
-                    oval.shadowOpacity = 0.0
-                    
-                    if (j == 2)
-                    {
-                        oval.borderColor = UIColor.cyan.cgColor
-                        oval.shadowOpacity = 0.5
-                    }
-                }
-                
-                let xpos = invLayer.frame.width / 3
-                let ypos = invLayer.frame.height * CGFloat(k+2) / 4
-            
-                oval.frame = CGRect(x: xpos, y: ypos, width: invLayer.frame.width * CGFloat(5.0/6.0), height: 4)
-                
-                invLayer.addSublayer(oval)
-            }
-        }
+//        for j in 0...2
+//        {
+//            let invLayer = CALayer()
+//
+//            invLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+//            invLayer.backgroundColor = UIColor(white: 0.9, alpha: 1.0).cgColor
+//            invLayer.borderWidth = 4
+//            invLayer.cornerRadius = 4
+//            invLayer.shadowRadius = 8
+//            invLayer.shadowOpacity = 0
+//            invLayer.shadowColor = UIColor.cyan.cgColor
+//
+//            let xpos = CGFloat(j + 1) * containerLayer.frame.width / 12
+//
+//            invLayer.frame = CGRect(x: xpos, y: containerLayer.frame.height - (CGFloat(j + 1) * keywidth), width: keywidth, height: keywidth)
+//
+//            if (j == 2)
+//            {
+//                invLayer.shadowOpacity = 1.0
+//                invLayer.borderColor = UIColor.cyan.cgColor
+//            }
+//
+//            invbuttons.append(invLayer)
+//            containerLayer.addSublayer(invLayer)
+//
+//            for k in 0...2
+//            {
+//                let oval = CALayer()
+//
+//                oval.borderColor = UIColor.darkGray.cgColor
+//                oval.borderWidth = 2
+//                oval.cornerRadius = 2
+//
+//                oval.shadowColor = UIColor.cyan.cgColor
+//                oval.shadowOpacity = 0.0
+//                oval.shadowRadius = 2.0
+//                oval.shadowOffset = CGSize(width: 0, height: 0)
+//
+//                if (k != j)
+//                {
+//                    oval.borderColor = UIColor.lightGray.cgColor
+//                    oval.shadowOpacity = 0.0
+//
+//                    if (j == 2)
+//                    {
+//                        oval.borderColor = UIColor.cyan.cgColor
+//                        oval.shadowOpacity = 0.5
+//                    }
+//                }
+//
+//                let xpos = invLayer.frame.width / 3
+//                let ypos = invLayer.frame.height * CGFloat(k+2) / 4
+//
+//                //oval.frame = CGRect(x: xpos, y: ypos, width: invLayer.frame.width * CGFloat(5.0/6.0), height: 4)
+//
+//                invLayer.addSublayer(oval)
+//            }
+//        }
         
         for _ in 0...2
         {
@@ -434,7 +471,7 @@ class FilterView: UIView {
         presetbutton.string = "Preset"
         presetbutton.fontSize = 14
         presetbutton.contentsScale = UIScreen.main.scale
-        presetbutton.alignmentMode = kCAAlignmentLeft
+        presetbutton.alignmentMode = kCAAlignmentCenter
         presetbutton.foregroundColor = UIColor.white.cgColor
         presetbutton.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
         presetbutton.backgroundColor = UIColor.black.cgColor
@@ -460,6 +497,36 @@ class FilterView: UIView {
         midibutton.shadowOpacity = 1.0
         
         containerLayer.addSublayer(midibutton)
+        
+
+        nvoicesLayer.contentsScale = UIScreen.main.scale
+        nvoicesLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+        nvoicesLayer.backgroundColor = UIColor.black.cgColor
+        nvoicesLayer.borderWidth = 2
+        nvoicesLayer.cornerRadius = 4
+        nvoicesLayer.shadowRadius = 8
+        nvoicesLayer.shadowColor = UIColor.cyan.cgColor
+        nvoicesLayer.shadowOpacity = 0.0
+        
+        for k in 0...9
+        {
+            let oval = CALayer()
+            
+            oval.borderColor = UIColor.darkGray.cgColor
+            oval.borderWidth = 4
+            oval.cornerRadius = 4
+            
+            oval.shadowColor = UIColor.cyan.cgColor
+            oval.shadowOpacity = 0.0
+            oval.shadowRadius = 5.0
+            oval.shadowOffset = CGSize(width: 0, height: 0)
+            
+            nvoicesLayer.addSublayer(oval)
+        }
+        
+        containerLayer.addSublayer(nvoicesLayer)
+        
+        
         
 //        midiautobutton.borderColor = UIColor.white.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
 //        midiautobutton.backgroundColor = UIColor.lightGray.cgColor
@@ -514,18 +581,38 @@ class FilterView: UIView {
                 }
             }
             
-            for j in 0...2
+//            for j in 0...2
+//            {
+//                invbuttons[j].frame = CGRect(x: CGFloat(j+1) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
+//
+//                let sublayers = invbuttons[j].sublayers!
+//                let pipheight = 4
+//                for l in 0...sublayers.count - 1
+//                {
+//                    let xpos = invbuttons[j].frame.width / 4
+//                    let ypos = invbuttons[j].frame.height * CGFloat(l+2) / 6 - CGFloat(pipheight) / 2
+//
+//                    sublayers[l].frame = CGRect(x: xpos, y: ypos, width: invbuttons[j].frame.width * CGFloat(1.0/2.0), height: CGFloat(pipheight))
+//                }
+//            }
+            
+            nvoicesLayer.frame = CGRect(x: 4 + spacing, y: keywidth / 4, width: 4 * spacing - 4, height: keywidth * 2)
+            
+            let sublayers = nvoicesLayer.sublayers!
+            let pipheight = 8
+            var count = 0
+            let pad: CGFloat = 5
+            for nv in 0...3
             {
-                invbuttons[j].frame = CGRect(x: CGFloat(j+1) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
-                
-                let sublayers = invbuttons[j].sublayers!
-                let pipheight = 4
-                for l in 0...sublayers.count - 1
+                for p in 0...nv
                 {
-                    let xpos = invbuttons[j].frame.width / 4
-                    let ypos = invbuttons[j].frame.height * CGFloat(l+2) / 6 - CGFloat(pipheight) / 2
+                    let xpos = pad + CGFloat(nv) * (nvoicesLayer.frame.width - 2*pad) / 4
+                    let width: CGFloat = (nvoicesLayer.frame.width - 5 * pad) / 4
+                    let ypos = nvoicesLayer.frame.height * (1 - (CGFloat(p) + 0.5) / 4) - CGFloat(pipheight) / 2
                     
-                    sublayers[l].frame = CGRect(x: xpos, y: ypos, width: invbuttons[j].frame.width * CGFloat(1.0/2.0), height: CGFloat(pipheight))
+                    sublayers[count].frame = CGRect(x: xpos, y: ypos, width: width, height: CGFloat(pipheight))
+                    
+                    count += 1
                 }
             }
             
@@ -534,12 +621,12 @@ class FilterView: UIView {
                 triadbuttons[j].frame = CGRect(x: CGFloat(j+5) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
             }
             
-            midibutton.frame = CGRect(x: 4 + spacing * 11, y: keywidth / 4, width: keywidth, height: keywidth)
+            configbutton.frame = CGRect(x: 4 + spacing * 11, y: keywidth / 4, width: keywidth, height: keywidth)
             midiautobutton.frame = CGRect(x: 4 + spacing * 10, y: keywidth / 4, width: keywidth, height: keywidth)
             
             presetbutton.frame = CGRect(x: 4 + spacing * 8, y: keywidth / 4, width: keywidth*3 + 4, height: keywidth/2)
             
-            configbutton.frame = CGRect(x: 4, y: keywidth / 4, width: keywidth, height: keywidth)
+            midibutton.frame = CGRect(x: 4, y: keywidth / 4, width: keywidth, height: keywidth)
             
             CATransaction.commit()
         }
@@ -559,6 +646,22 @@ class FilterView: UIView {
        
     }
     
+    func processVoicesTouch(point: CGPoint) {
+        let hit = nvoicesLayer.hitTest(point)
+        if (hit != nil)
+        {
+            let p = 1 + 4*((point.x - nvoicesLayer.frame.minX) / nvoicesLayer.frame.width)
+            var inv = 4*(1 - ((point.y - nvoicesLayer.frame.minY) / nvoicesLayer.frame.height))
+            if (inv > p - 1) { inv = p - 1 }
+            print(inv)
+            delegate?.filterView(self, didChangeNvoices: Float(p))
+            delegate?.filterView(self, didChangeInversion: Float(inv))
+            self.setSelectedVoices(Int(p), inversion: Int(inv))
+            //self.setSelectedInversion(Float(inv))
+        }
+        
+    }
+    
     
     // MARK: Touch Event Handling
     
@@ -567,27 +670,27 @@ class FilterView: UIView {
         
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
         
-        for j in 0...2
-        {
-            if (invbuttons[j].hitTest(pointOfTouch!) != nil)
-            {
-                print ("inversion \(j)")
-                
-                if (inversion != j)
-                {
-                    delegate?.filterView(self, didChangeInversion: Float(j))
-                    delegate?.filterView(self, didChangeEnable: 1)
-                    inversion = j
-                }
-                else
-                {
-                    inversion = -1
-                    delegate?.filterView(self, didChangeEnable: 0)
-                }
-                
-                self.setSelectedInversion(Float(inversion))
-            }
-        }
+        processVoicesTouch(point: pointOfTouch!)
+        
+//        for j in 0...2
+//        {
+//            if (invbuttons[j].hitTest(pointOfTouch!) != nil)
+//            {
+//                if (inversion != j)
+//                {
+//                    delegate?.filterView(self, didChangeInversion: Float(j))
+//                    delegate?.filterView(self, didChangeEnable: 1)
+//                    inversion = j
+//                }
+//                else
+//                {
+//                    inversion = -1
+//                    delegate?.filterView(self, didChangeEnable: 0)
+//                }
+//
+//                self.setSelectedInversion(Float(inversion))
+//            }
+//        }
         
         for j in 0...triadbuttons.count-1
         {
@@ -596,15 +699,22 @@ class FilterView: UIView {
                 triadbuttons[j].borderColor = UIColor.white.cgColor
                 triadbuttons[j].shadowOpacity = 1.0
                 
-                delegate?.filterView(self, didChangeTriad: Float(triads[j]))
-                triad_override = true
+                delegate?.filterView(self, didChangePreset: j)
+//                delegate?.filterView(self, didChangeTriad: Float(triads[j]))
+//                triad_override = true
             }
         }
         
         if (configbutton.hitTest(pointOfTouch!) != nil)
         {
-            bypass = bypass == 1 ? 0 : 1
-            delegate?.filterView(self, didChangeBypass: Float(bypass))
+            delegate?.filterViewConfigure(self)
+//            bypass = bypass == 1 ? 0 : 1
+//            delegate?.filterView(self, didChangeBypass: Float(bypass))
+        }
+        
+        if (presetbutton.hitTest(pointOfTouch!) != nil)
+        {
+            delegate?.filterViewSavePreset(self)
         }
         
         if (midibutton.hitTest(pointOfTouch!) != nil)
@@ -640,7 +750,10 @@ class FilterView: UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //var pointOfTouch = touches.first?.location(in: self)
+        var pointOfTouch = touches.first?.location(in: self)
+        pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
+        processVoicesTouch(point: pointOfTouch!)
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

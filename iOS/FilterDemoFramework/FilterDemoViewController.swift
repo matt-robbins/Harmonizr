@@ -40,6 +40,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 	
     var keycenterParameter: AUParameter?
     var inversionParameter: AUParameter?
+    var nvoicesParameter: AUParameter?
     var autoParameter: AUParameter?
     var midiParameter: AUParameter?
     var triadParameter: AUParameter?
@@ -96,6 +97,11 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         inversionParameter?.value = inversion
     }
     
+    func filterView(_ filterView: FilterView, didChangeNvoices voices: Float)
+    {
+        nvoicesParameter?.value = voices
+    }
+    
     func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
     {
         autoParameter?.value = enable
@@ -117,6 +123,14 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         bypassParameter?.value = bypass
     }
     
+    func filterView(_ filterView: FilterView, didChangePreset preset: Int) {
+        print("setting preset index to \(preset)")
+        if (preset < self.audioUnit!.factoryPresets!.count) {
+            self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[preset]
+            filterView.preset = self.audioUnit!.currentPreset
+        }
+    }
+    
     func filterViewDataDidChange(_ filterView: FilterView) {
         updateFilterViewFrequencyAndMagnitudes()
     }
@@ -130,6 +144,37 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
     
     func filterViewGetPreset(_ filterView: FilterView) -> String {
         return audioUnit!.currentPreset!.name
+    }
+    
+    func filterViewSavePreset(_ filterVew: FilterView)
+    {
+        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        let ArchiveURL = DocumentsDirectory.appendingPathComponent("presets")
+        
+        do {
+            let fileURLs = try FileManager().contentsOfDirectory(at: DocumentsDirectory, includingPropertiesForKeys: nil)
+            
+            for f in fileURLs {
+                print(f)
+            }
+            // process files
+        } catch {
+            print("Error")
+        }
+        
+        let s = self.audioUnit!.fullState
+        self.audioUnit!.fullState = s
+        //print(s)
+        
+        let success = NSKeyedArchiver.archiveRootObject(s as Any, toFile: ArchiveURL.path)
+        if (success)
+        {
+            print("success!")
+        }
+        else
+        {
+            print("fail")
+        }
     }
     
     func filterViewConfigure(_ filterView: FilterView) {
@@ -151,10 +196,12 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         been created.
 	*/
 	func connectViewWithAU() {
-		guard let paramTree = audioUnit?.parameterTree else { return }
+        
+        guard let paramTree = audioUnit?.parameterTree else { return }
         
         keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
         inversionParameter = paramTree.value(forKey: "inversion") as? AUParameter
+        nvoicesParameter = paramTree.value(forKey: "nvoices") as? AUParameter
         autoParameter = paramTree.value(forKey: "auto") as? AUParameter
         midiParameter = paramTree.value(forKey: "midi") as? AUParameter
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
@@ -163,8 +210,6 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
 
-            print("address = \(address)")
-            print("value = \(value)")
 			DispatchQueue.main.async {
 				strongSelf.updateFilterViewFrequencyAndMagnitudes()
 			}
@@ -175,6 +220,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         filterView.presets = (audioUnit?.factoryPresets)!
         filterView.preset = audioUnit!.currentPreset
         
+        filterView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
         filterView.setSelectedKeycenter(keycenterParameter!.value)
         filterView.inversion = Int(inversionParameter!.value)
         filterView.bypass = Int(bypassParameter!.value)

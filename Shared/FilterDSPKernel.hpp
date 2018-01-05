@@ -34,10 +34,8 @@ typedef struct voice_s
     float target_ratio;
     float formant_ratio;
     float nextgrain;
-    float ix1;
-    float ix2;
-    int xf_ix;
     float pan;
+    float ix1;
     int midinote;
     int midivel;
     int lastnote;
@@ -49,6 +47,8 @@ typedef struct triad_ratio_s
     float r1;
     float r2;
 } triad_ratio_t;
+
+typedef float chord_ratio_t[4];
 
 typedef enum triads
 {
@@ -75,12 +75,13 @@ typedef enum triads
 enum {
     HarmParamKeycenter = 0,
     HarmParamInversion = 1,
-    HarmParamAuto = 2,
-    HarmParamMidi = 3,
-    HarmParamTriad = 4,
-    HarmParamBypass = 5,
-    HarmParamDouble = 6,
-    HarmParamInterval = 7,
+    HarmParamNvoices = 2,
+    HarmParamAuto = 3,
+    HarmParamMidi = 4,
+    HarmParamTriad = 5,
+    HarmParamBypass = 6,
+    HarmParamDouble = 7,
+    HarmParamInterval = 8,
 };
 
 static inline double squared(double x) {
@@ -146,9 +147,6 @@ public:
         voices[2].formant_ratio = 1.01;
         
         voices[0].midinote = 0;
-        voices[0].ix1 = ncbuf/2;
-        voices[0].ix2 = 0;
-        voices[0].xf_ix = 0;
         
         ngrains = 12 * nvoices;
         grains = new grain_t[ngrains];
@@ -174,7 +172,10 @@ public:
         }
         
         // define equal tempered interval ratios
-        for (int k = 0; k < 12; k++)
+        
+        intervals = interval_table + 24;
+        
+        for (int k = -23; k < 24; k++)
         {
             intervals[k] = powf(2.0, (float) (k) / 12);
         }
@@ -263,7 +264,10 @@ public:
                 root_key = (int) clamp(value,0.f,47.f);
                 break;
             case HarmParamInversion:
-                inversion = (int) clamp(value,0.f,2.f);
+                inversion = (int) clamp(value,0.f,3.f);
+                break;
+            case HarmParamNvoices:
+                n_auto = (int) clamp(value,1.f,4.f);
                 break;
             case HarmParamAuto:
                 auto_enable = (int) clamp(value,0.f,1.f);
@@ -281,9 +285,9 @@ public:
             case HarmParamInterval:
             default:
                 int addr = (int) address - (int) HarmParamInterval;
-                int scale_degree = addr / 2;
+                int scale_degree = addr / 4;
                 
-                triad_ratio_t * table = major_chord_table;
+                chord_ratio_t * table = major_chord_table;
                 if (scale_degree > 11)
                     table = minor_chord_table;
                 if (scale_degree > 23)
@@ -291,7 +295,8 @@ public:
                 
                 float * ratios = (float *) &table[scale_degree%12];
                 
-                ratios[addr & 0x1] = intervals[(int) value];
+                ratios[addr & 0x3] = intervals[(int) value];
+                
                 break;
         }
 	}
@@ -302,6 +307,8 @@ public:
                 return (float) root_key;
             case HarmParamInversion:
                 return (float) inversion;
+            case HarmParamNvoices:
+                return (float) n_auto;
             case HarmParamAuto:
                 return (float) auto_enable;
             case HarmParamMidi:
@@ -314,16 +321,16 @@ public:
             case HarmParamInterval:
             default:
                 int addr = (int) address - (int) HarmParamInterval;
-                int scale_degree = addr / 2;
+                int scale_degree = addr / 4;
                 
-                triad_ratio_t * table = major_chord_table;
+                chord_ratio_t * table = major_chord_table;
                 if (scale_degree > 11)
                     table = minor_chord_table;
                 if (scale_degree > 23)
                     table = blues_chord_table;
                 
                 float * ratios = (float *) &table[scale_degree%12];
-                return round(log2(ratios[addr & 0x1])*12);                
+                return round(log2(ratios[addr & 0x3])*12);
         }
 	}
 
@@ -398,8 +405,8 @@ public:
             
             if (bypass)
             {
-                *out = *in;
-                *out2 = *in;
+                *out = *in / 2;
+                *out2 = *out;
                 continue;
             }
             else
@@ -447,10 +454,10 @@ public:
             int dx1 = cix - (int) voices[0].ix1;
             if (dx1 < 0) dx1 += ncbuf;
             
-            if (dx1 > ncbuf/2 + 256)
+            if (dx1 > 512 + (int) T)
                 voices[0].ix1 += T;
-
-            if (dx1 < ncbuf/2 - 256)
+            
+            if (dx1 < 512 - (int) T)
                 voices[0].ix1 -= T;
             
             voices[0].ix1 += voices[0].ratio;
@@ -770,9 +777,6 @@ public:
             if (voices[j].midinote < 0)
                 continue;
             
-            
-            
-            
             midinotes[n++] = (float) voices[j].midinote;
             
             octave[voices[j].midinote % 12] = 1;
@@ -836,17 +840,23 @@ public:
     void update_voices (void)
     {
         voices[0].error = 0;
-        voices[0].ratio = 1;
+        //voices[0].ratio = 1;
         voices[0].target_ratio = 1;
         voices[0].formant_ratio = 1.0;
         voices[0].midivel = 127;
         voices[0].midinote = 0;
+        
         voices[1].midinote = -1;
         voices[1].midivel = 65;
         voices[1].pan = 0.5;
+        
         voices[2].midinote = -1;
         voices[2].midivel = 65;
         voices[2].pan = -0.5;
+        
+        voices[3].midinote = -1;
+        voices[3].midivel = 65;
+        voices[3].pan = -0.5;
         
         if (midi_changed && (sample_count - midi_changed_sample_num) > (int) sampleRate / 50)
         {
@@ -860,6 +870,8 @@ public:
             note_number = -1.0;
             return;
         }
+        
+        //int n_auto = 4;
             
         float f = log2f (sampleRate / (T * 440));
         
@@ -891,50 +903,41 @@ public:
         
         else if (auto_enable)
         {
-            voices[1].midinote = 0;
-            voices[2].midinote = 0;
-            voices[0].midinote = 0;
-            
-            if (quality == 0)
+            for (int k = 0; k < n_auto; k++)
             {
-                voices[1].target_ratio = major_chord_table[interval].r1;
-                voices[2].target_ratio = major_chord_table[interval].r2;
+                voices[k].midinote = 0;
+                
+                if (quality == 0)
+                {
+                    voices[k].target_ratio = major_chord_table[interval][k];
+                }
+                else if (quality == 1)
+                {
+                    voices[k].target_ratio = minor_chord_table[interval][k];
+                }
+                else if (quality == 2)
+                {
+                    voices[k].target_ratio = blues_chord_table[interval][k];
+                }
+                
+                if (k > inversion)
+                    voices[k].target_ratio *= 0.5;
             }
-            else if (quality == 1)
-            {
-                voices[1].target_ratio = minor_chord_table[interval].r1;
-                voices[2].target_ratio = minor_chord_table[interval].r2;
-            }
-            else if (quality == 2)
-            {
-                voices[1].target_ratio = blues_chord_table[interval].r1;
-                voices[2].target_ratio = blues_chord_table[interval].r2;
-            }
-            else if (quality == 3)
-            {
-                voices[1].target_ratio = 1.0;
-                voices[2].target_ratio = 1.0;
-                voices[1].midinote = -1;
-                voices[2].midinote = -1;
-            }
-            
-            if (inversion < 2)
-                voices[2].target_ratio *= 0.5;
-            if (inversion < 1)
-                voices[1].target_ratio *= 0.5;
         }
         else
         {
-            voices[1].ratio = voices[1].target_ratio = 1.0;
-            voices[2].ratio = voices[2].target_ratio = 1.0;
+            for (int k = 0; k < n_auto; k++)
+            {
+                voices[k].ratio = voices[k].target_ratio = 1.0;
+            }
         }
         
-        for (int k = 3; k < nvoices; k++)
+        for (int k = n_auto; k < nvoices; k++)
         {
             if (voices[k].midinote < 0)
                 continue;
             
-            voices[0].midinote = 0;
+            //voices[0].midinote = 0;
             
             float error_hsteps = (voices[k].midinote - 69) - note_f;
             
@@ -944,10 +947,10 @@ public:
     
         for (int k = 0; k < nvoices; k++)
         {
-            if (k < 3)
+            if (k < n_auto)
                 voices[k].target_ratio /= error_ratio; // for autoharm
             
-            voices[k].ratio = 0.8 * voices[k].ratio + 0.2 * voices[k].target_ratio;
+            voices[k].ratio = 0.9 * voices[k].ratio + 0.1 * voices[k].target_ratio;
         }
     }
 	
@@ -990,12 +993,14 @@ private:
     int inversion = 2;
     int midi_enable = 1;
     int auto_enable = 1;
+    int n_auto = 4;
     int triad = -1;
-    float intervals[12];
+    float interval_table[48];
+    float * intervals;
     triad_ratio_t triads[18];
-    triad_ratio_t major_chord_table[12];
-    triad_ratio_t minor_chord_table[12];
-    triad_ratio_t blues_chord_table[12];
+    chord_ratio_t major_chord_table[12];
+    chord_ratio_t minor_chord_table[12];
+    chord_ratio_t blues_chord_table[12];
     
     int ngrains;
     int grain_ix = 0;

@@ -25,27 +25,27 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         // This method is triggered whenever the user makes a change to the picker selection.
         // The parameter named row and component represents what was selected.
         var key: String
-        if (pickerView == interval1Chooser) {
-            key = "interval_\(2*component + keyOffset)"
+        for k in 0...nc-1 {
+            
+            if (pickerView == intervalChoosers[k]) {
+                key = "interval_\(nc*component + k + keyQuality*12*nc)"
+                let param = paramTree!.value(forKey: key) as? AUParameter
+                param!.value = Float(row - unisonOffset)
+            }
         }
-        else {
-            key = "interval_\(2*component + 1 + keyOffset)"
-        }
-        
-        let param = paramTree!.value(forKey: key) as? AUParameter
-        param!.value = Float(row)
-        
     }
     
     //MARK: Properties
     
     @IBOutlet weak var interval1Chooser: UIPickerView!
     @IBOutlet weak var interval2Chooser: UIPickerView!
+    @IBOutlet weak var interval3Chooser: UIPickerView!
+    @IBOutlet weak var interval4Chooser: UIPickerView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    
     @IBOutlet weak var navBar: UINavigationBar!
     var pickerData: [String] = [String]()
     
+    @IBOutlet var intervalChoosers: [UIPickerView]!
     public var audioUnit: AUv3Harmonizer? {
         didSet {
             print("set audio unit in config view controller!")
@@ -54,17 +54,21 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     
     var paramTree: AUParameterTree?
     
-    var keyOffset = 0
+    var keyQuality = 0
+    var unisonOffset = 2
+    var nc = 4
     
     public override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.interval1Chooser.delegate = self
-        self.interval1Chooser.dataSource = self
-        self.interval2Chooser.delegate = self
-        self.interval2Chooser.dataSource = self
-        pickerData = ["U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8"]
         
+        for k in 0...nc-1
+        {
+            self.intervalChoosers[k].delegate = self
+            self.intervalChoosers[k].dataSource = self
+        }
+
+        pickerData = ["-2","-1","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
         
         doneButton.title = "Done"
         
@@ -79,17 +83,19 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
         
         let keycenter = keycenterParam!.value
-        print(keycenter)
-        keyOffset = Int(keycenter / 12) * 24
+        
+        nc = intervalChoosers.count
+        
+        keyQuality = Int(keycenter / 12)
         
         var keytype: String = "Major"
         
-        if (keyOffset == 24)
+        if (keyQuality == 1)
         {
             keytype = "Minor"
         }
         
-        if (keyOffset == 48)
+        if (keyQuality == 2)
         {
             keytype = "Dominant"
         }
@@ -98,12 +104,12 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         for j in 0...11
         {
-            var key = "interval_\(2*j + keyOffset)"
-            var param = paramTree!.value(forKey: key) as? AUParameter
-            interval1Chooser.selectRow(Int(param!.value), inComponent: j, animated: false)
-            key = "interval_\(2*j + 1 + keyOffset)"
-            param = paramTree!.value(forKey: key) as? AUParameter
-            interval2Chooser.selectRow(Int(param!.value), inComponent: j, animated: false)
+            for k in 0...nc-1
+            {
+                let key = "interval_\(nc*j + k + keyQuality*12*nc)"
+                let param = paramTree!.value(forKey: key) as? AUParameter
+                intervalChoosers[k].selectRow(Int(param!.value)+unisonOffset, inComponent: j, animated: true)
+            }
         }
         
     }

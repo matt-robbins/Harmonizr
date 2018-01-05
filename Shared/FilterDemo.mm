@@ -15,63 +15,58 @@
 
 #pragma mark AUv3FilterDemo (Presets)
 
-static const UInt8 kNumberOfPresets = 4;
+static const UInt8 kNumberOfPresets = 3;
 static const NSInteger kDefaultFactoryPreset = 0;
 
 typedef struct FactoryPresetParameters {
     AUValue keycenterValue;
     AUValue inversionValue;
+    AUValue nvoicesValue;
     AUValue autoValue;
     AUValue midiValue;
     AUValue triadValue;
-    AUValue intervalValues[72];
+    AUValue intervalValues[144];
 } FactoryPresetParameters;
 
 static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
 {
-    // Pop
+    
+    // Chords
     {
         0, //keycenter
         2, //inversion
+        4,
         1, //autoharm
         1, //midi
         -1, //triad
-        {4,7, 3,6, 5,10, 4,9, 3,8, 7,11, 6,10, 5,9, 4,8, 7,10, 6,9, 5,8, // major
-         3,7, 2,6, 5,10, 4,9, 3,8, 2,7, 6,9, 5,8, 4,7, 3,6, 2,5, 4,8, // minor
-         4,10, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
+        {0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
+         0,3,7,12, -1,2,6,11, 1,5,10,13, 0,4,9,12, -1,3,8,11, -1,2,7,10, 1,6,9,13, 0,5,8,12, 0,4,7,11, 0,3,6,10, 0,5,9,14, 1,4,8,13, // minor
+         0,4,10,12, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
         }
     },
-    { // Jazz
-        10, //keycenter
+    // diatonic
+    {
+        0, //keycenter
         2, //inversion
+        4,
         1, //autoharm
         1, //midi
         -1, //triad
-        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
-            3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
-            4,7, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
+        {0,4,7,12, -1,3,6,11, 0,5,10,12, 1,4,9,13, 0,3,8,12, 0,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,12, 1,2,6,13, 0,1,5,12, // major
+            0,3,7,12, -1,2,6,11, 0,5,10,12, 0,4,9,12, -1,3,8,11, -2,2,7,10, 1,6,9,13, 0,5,8,12, -1,4,7,11, 0,3,6,10, 2,5,9,14, 1,4,8,13, // minor
+            0,4,7,10, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
         }
     },
-    { // Gospel
-        7, //keycenter
-        1, //inversion
-        1, //autoharm
-        1, //midi
-        -1, //triad
-        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
-            3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
-            4,7, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
-        }
-    },
-    { // NeoSoul
-        3, //keycenter
+    { // Chromatic
+        0, //keycenter
         2, //inversion
+        4,
         1, //autoharm
         1, //midi
         -1, //triad
-        {4,7, 3,6, 3,7, 3,6, 3,8, 4,7, 3,6, 5,9, 4,8, 3,8, 4,9, 3,8, // major
-            3,7, 3,6, 3,7, 4,9, 3,8, 4,9, 3,8, 5,8, 6,9, 5,8, 4,9, 4,8, // minor
-            4,7, 3,8, 5,8, 6,9, 6,8, 4,9, 4,8, 3,7, 3,6, 3,7, 4,9, 3,8, //dom
+        {0,4,7,9, 0,3,6,8, 0,3,6,9, 0,3,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,9, 0,3,6,9, 0,3,7,10, 0,4,7,10, 0,3,6,9, // major
+            0,3,7,9, 0,3,6,8, 0,3,6,9, 0,4,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,8, 0,3,6,9, 0,3,6,10, 0,4,7,10, 0,3,6,9, // minor
+            0,4,7,10, 0,3,6,9, 0,3,6,9, 0,4,7,9, 0,3,6,8, 0,3,6,9, 0,3,5,9, 0,3,5,9, 0,2,4,8, 0,1,3,7, 0,2,6,9, 0,3,6,9 //dom
         }
     },
 };
@@ -116,7 +111,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	// Create a DSP kernel to handle the signal processing.
 	_kernel.init(defaultFormat.channelCount, defaultFormat.sampleRate);
     
-    AUParameter *keycenterIntervals[72];
+    AUParameter *keycenterIntervals[144];
     
     AUParameter *keycenterParam = [AUParameterTree createParameterWithIdentifier:@"keycenter" name:@"Key Center"
             address:HarmParamKeycenter
@@ -126,10 +121,16 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     AUParameter *inversionParam = [AUParameterTree createParameterWithIdentifier:@"inversion" name:@"Inversion"
             address:HarmParamInversion
-            min:0 max:2 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            min:0 max:3 unit:kAudioUnitParameterUnit_Indexed unitName:nil
             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
             valueStrings:nil dependentParameters:nil];
     
+    AUParameter *nvoicesParam = [AUParameterTree createParameterWithIdentifier:@"nvoices" name:@"Voices"
+            address:HarmParamNvoices
+            min:1 max:4 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+            valueStrings:nil dependentParameters:nil];
+
     AUParameter *autoParam = [AUParameterTree createParameterWithIdentifier:@"auto" name:@"Auto"
              address:HarmParamAuto
              min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
@@ -158,14 +159,13 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     [params addObject:keycenterParam];
     [params addObject:inversionParam];
+    [params addObject:nvoicesParam];
     [params addObject:autoParam];
     [params addObject:midiParam];
     [params addObject:triadParam];
     [params addObject:bypassParam];
-    
-    NSLog(@"hi!!!!!!!!!");
-    
-    for (int k = 0; k < 72; k++)
+        
+    for (int k = 0; k < 144; k++)
     {
         NSString *identifier = [NSString stringWithFormat:@"interval_%d", k];
         NSString *name = [NSString stringWithFormat:@"Interval %d", k];
@@ -181,6 +181,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	// Initialize default parameter values.
     keycenterParam.value = 5;
     inversionParam.value = 2;
+    nvoicesParam.value = 4;
     autoParam.value = 1;
     midiParam.value = 1;
     triadParam.value = -1;
@@ -188,19 +189,20 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     _kernel.setParameter(HarmParamInversion, inversionParam.value);
+    _kernel.setParameter(HarmParamNvoices, nvoicesParam.value);
     _kernel.setParameter(HarmParamAuto, autoParam.value);
     _kernel.setParameter(HarmParamMidi, midiParam.value);
     _kernel.setParameter(HarmParamTriad, triadParam.value);
     _kernel.setParameter(HarmParamBypass, bypassParam.value);
     
-    for (int k = 0; k < 72; k++)
-    {
-        keycenterIntervals[k].value = _kernel.getParameter(HarmParamInterval + k);
-    }
+//    for (int k = 0; k < 144; k++)
+//    {
+//        keycenterIntervals[k].value = _kernel.getParameter(HarmParamInterval + k);
+//    }
     
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
-    _presets = @[NewAUPreset(0, @"Pop Triads"),NewAUPreset(0, @"Jazz Triads"),NewAUPreset(0, @"Gospel Triads"),NewAUPreset(0, @"NeoSoul")];
+    _presets = @[NewAUPreset(0, @"Chords"),NewAUPreset(1, @"Diatonic"),NewAUPreset(2, @"Chromatic")];
     
 	// Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:params];
@@ -375,19 +377,19 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         for (AUAudioUnitPreset *factoryPreset in _presets) {
             if (currentPreset.number == factoryPreset.number) {
                 
-                AUParameter *keycenterParameter = [self.parameterTree valueForKey: @"keycenter"];
-                AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
-                AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
-                AUParameter *midiParameter = [self.parameterTree valueForKey: @"midi"];
-                AUParameter *triadParameter = [self.parameterTree valueForKey: @"triad"];
+//                AUParameter *keycenterParameter = [self.parameterTree valueForKey: @"keycenter"];
+//                AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
+//                AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
+//                AUParameter *midiParameter = [self.parameterTree valueForKey: @"midi"];
+//                AUParameter *triadParameter = [self.parameterTree valueForKey: @"triad"];
 
-                keycenterParameter.value = presetParameters[factoryPreset.number].keycenterValue;
-                inversionParameter.value = presetParameters[factoryPreset.number].inversionValue;
-                autoParameter.value = presetParameters[factoryPreset.number].autoValue;
-                midiParameter.value = presetParameters[factoryPreset.number].midiValue;
-                triadParameter.value = presetParameters[factoryPreset.number].triadValue;
+                //keycenterParameter.value = presetParameters[factoryPreset.number].keycenterValue;
+                //inversionParameter.value = presetParameters[factoryPreset.number].inversionValue;
+                //autoParameter.value = presetParameters[factoryPreset.number].autoValue;
+                //midiParameter.value = presetParameters[factoryPreset.number].midiValue;
+                //triadParameter.value = presetParameters[factoryPreset.number].triadValue;
                 
-                for (int k = 0; k < 72; k++)
+                for (int k = 0; k < 144; k++)
                 {
                     AUParameter * p = [self.parameterTree valueForKey: [NSString stringWithFormat:@"interval_%d", k]];
                     if (p)
@@ -400,7 +402,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                 // set factory preset as current
                 _currentPreset = currentPreset;
                 _currentFactoryPresetIndex = factoryPreset.number;
-                //NSLog(@"currentPreset Factory: %ld, %@\n", (long)_currentFactoryPresetIndex, factoryPreset.name);
+                NSLog(@"currentPreset Factory: %ld, %@\n", (long)_currentFactoryPresetIndex, factoryPreset.name);
                 
                 break;
             }
@@ -408,9 +410,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     } else if (nil != currentPreset.name) {
         // set custom preset as current
         _currentPreset = currentPreset;
-        //NSLog(@"currentPreset Custom: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
+        NSLog(@"currentPreset Custom: %ld, %@\n", (long)_currentPreset.number, _currentPreset.name);
     } else {
-        //NSLog(@"setCurrentPreset not set! - invalid AUAudioUnitPreset\n");
+        NSLog(@"setCurrentPreset not set! - invalid AUAudioUnitPreset\n");
     }
 }
 

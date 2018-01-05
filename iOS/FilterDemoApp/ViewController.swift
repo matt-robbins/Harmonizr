@@ -115,11 +115,10 @@ class ViewController: UIViewController {
         self.audioEngine.loadComponent(componentDescription: componentDescription, completionHandler: {(audioUnit) in
             self.harmUnit = audioUnit
             self.getAUView()
-            if UIApplication.shared.applicationState != UIApplicationState.background {
-                print("about to start engine")
-                self.audioEngine.start()
-            }
             
+            //self.filterDemoViewController.audioUnit = audioUnit as? AUv3Harmonizer
+            
+            self.audioEngine.start()            
         })
         
         reverbMixParam = audioEngine.reverbUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
