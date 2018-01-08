@@ -208,6 +208,29 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         midiParameter = paramTree.value(forKey: "midi") as? AUParameter
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
         bypassParameter = paramTree.value(forKey: "bypass") as? AUParameter
+        
+        
+        let sem = DispatchSemaphore(value: 0)
+        
+        // set up a background queue for param change notifications
+        DispatchQueue.global(qos: .background).async {
+            var count: Int = -1
+            while (true)
+            {
+                if (sem.wait(timeout: DispatchTime(uptimeNanoseconds: 1000000)) == DispatchTimeoutResult.success)
+                {
+                    count = 1
+                }
+                else if (count > -1)
+                {
+                    if (count == 0)
+                    {
+                        self.saveState()
+                    }
+                    count -= 1
+                }
+            }
+        }
 		
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
@@ -216,7 +239,8 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
             if (true)
             {
                 DispatchQueue.main.async {
-                    strongSelf.saveState()
+                    sem.signal()
+                    //strongSelf.saveState()
                 }
             }
 		})

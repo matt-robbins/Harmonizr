@@ -894,7 +894,6 @@ public:
 //        }
         
         int start = autotune ? 0 : 1;
-        fprintf(stderr, "start: %d\n", start);
 
         if (triad >= 0)
         {
