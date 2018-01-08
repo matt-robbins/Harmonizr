@@ -66,7 +66,7 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         -1, //triad
         {0,4,7,9, 0,3,6,8, 0,3,6,9, 0,3,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,9, 0,3,6,9, 0,3,7,10, 0,4,7,10, 0,3,6,9, // major
             0,3,7,9, 0,3,6,8, 0,3,6,9, 0,4,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,8, 0,3,6,9, 0,3,6,10, 0,4,7,10, 0,3,6,9, // minor
-            0,4,7,10, 0,3,6,9, 0,3,6,9, 0,4,7,9, 0,3,6,8, 0,3,6,9, 0,3,5,9, 0,3,5,9, 0,2,4,8, 0,1,3,7, 0,2,6,9, 0,3,6,9 //dom
+            0,4,7,10, 0,3,6,9, 0,3,6,9, 0,3,6,9, 0,3,6,8, 0,3,6,9, 0,3,5,9, 0,3,5,9, 0,3,6,9, 0,3,6,9, 0,2,6,9, 0,3,6,9 //dom
         }
     },
 };
@@ -241,7 +241,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	self.maximumFramesToRender = 4096;
     
     // set default preset as current
-    self.currentPreset = _presets.firstObject;
+ //   self.currentPreset = _presets.firstObject;
 
 	return self;
 }

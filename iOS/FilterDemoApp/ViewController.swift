@@ -180,9 +180,9 @@ class ViewController: UIViewController {
         }
         
         
-        let presets = harmUnit!.factoryPresets
+        //let presets = harmUnit!.factoryPresets
         //filterDemoViewController.audioUnit = audioUnit
-        harmUnit!.currentPreset = presets?[0]
+        //harmUnit!.currentPreset = presets?[0]
     }
     
 	/**

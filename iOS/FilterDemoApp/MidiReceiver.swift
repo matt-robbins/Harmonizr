@@ -21,7 +21,7 @@ class MidiReceiver : NSObject {
     let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
     
     internal init?(audioUnit: AUAudioUnit?) {
-        guard audioUnit != nil else { print("Blam!"); return nil }
+        guard audioUnit != nil else { return nil }
         guard let theNoteBlock = audioUnit!.scheduleMIDIEventBlock else { print("Blam! schedule"); return nil }
         
         noteBlock = theNoteBlock

@@ -32,6 +32,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 			*/
 			DispatchQueue.main.async {
 				if self.isViewLoaded {
+                    self.restoreState()
 					self.connectViewWithAU()
 				}
 			}
@@ -76,7 +77,9 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         let _: UIView = configController!.view
         
         guard audioUnit != nil else { return }
+        self.restoreState()
         connectViewWithAU()
+        
 	}
     
     // MARK: FilterViewDelegate
@@ -102,7 +105,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         nvoicesParameter?.value = voices
     }
     
-    func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
+    func filterView(_ filterView: FilterView, didChangeAuto enable: Float)
     {
         autoParameter?.value = enable
     }
@@ -123,14 +126,6 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         bypassParameter?.value = bypass
     }
     
-    func filterView(_ filterView: FilterView, didChangePreset preset: Int) {
-        print("setting preset index to \(preset)")
-        if (preset < self.audioUnit!.factoryPresets!.count) {
-            self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[preset]
-            filterView.preset = self.audioUnit!.currentPreset
-        }
-    }
-    
     func filterViewDataDidChange(_ filterView: FilterView) {
         updateFilterViewFrequencyAndMagnitudes()
     }
@@ -146,35 +141,41 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         return audioUnit!.currentPreset!.name
     }
     
-    func filterViewSavePreset(_ filterVew: FilterView)
+    func stateURL() -> URL
     {
         let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        let ArchiveURL = DocumentsDirectory.appendingPathComponent("presets")
-        
-        do {
-            let fileURLs = try FileManager().contentsOfDirectory(at: DocumentsDirectory, includingPropertiesForKeys: nil)
-            
-            for f in fileURLs {
-                print(f)
-            }
-            // process files
-        } catch {
-            print("Error")
-        }
-        
+        let ArchiveURL = DocumentsDirectory.appendingPathComponent("state")
+        return ArchiveURL
+    }
+    
+    func saveState()
+    {
+        let f = stateURL()
         let s = self.audioUnit!.fullState
-        self.audioUnit!.fullState = s
-        //print(s)
-        
-        let success = NSKeyedArchiver.archiveRootObject(s as Any, toFile: ArchiveURL.path)
-        if (success)
+        NSKeyedArchiver.archiveRootObject(s as Any, toFile: f.path)
+    }
+    func restoreState()
+    {
+        let f = stateURL()
+        let s = NSKeyedUnarchiver.unarchiveObject(withFile: f.path) as? [String: Any]
+        if (s != nil)
         {
-            print("success!")
+            self.audioUnit!.fullState = s
         }
-        else
-        {
-            print("fail")
+    }
+    
+    func filterView(_ filterView: FilterView, didChangePreset preset: Int) {
+        print("setting preset index to \(preset)")
+        if (preset < self.audioUnit!.factoryPresets!.count) {
+            self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[preset]
+            filterView.preset = self.audioUnit!.currentPreset
+            saveState()
         }
+    }
+    
+    func filterViewSavePreset(_ filterVew: FilterView)
+    {
+        saveState()
     }
     
     func filterViewConfigure(_ filterView: FilterView) {
@@ -187,6 +188,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
             self.configController!.audioUnit = self.audioUnit
             self.configController!.refresh()
             self.present(self.configController!, animated:true, completion:nil)
+            
         }
     }
 	
@@ -209,10 +211,14 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
 		
         parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let strongSelf = self else { return }
-
-			DispatchQueue.main.async {
-				strongSelf.updateFilterViewFrequencyAndMagnitudes()
-			}
+            
+            print(address)
+            if (true)
+            {
+                DispatchQueue.main.async {
+                    strongSelf.saveState()
+                }
+            }
 		})
         
         configController!.refresh()
@@ -224,5 +230,7 @@ public class FilterDemoViewController: AUViewController, FilterViewDelegate {
         filterView.setSelectedKeycenter(keycenterParameter!.value)
         filterView.inversion = Int(inversionParameter!.value)
         filterView.bypass = Int(bypassParameter!.value)
+        filterView.auto_enable = Int(autoParameter!.value)
+        filterView.midi_enable = Int(midiParameter!.value)
 	}
 }

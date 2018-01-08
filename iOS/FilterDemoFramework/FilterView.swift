@@ -21,7 +21,7 @@ protocol FilterViewDelegate: class {
     func filterView(_ filterView: FilterView, didChangeInversion inversion: Float)
     func filterView(_ filterView: FilterView, didChangeNvoices voices: Float)
     func filterView(_ filterView: FilterView, didChangeTriad triad: Float)
-    func filterView(_ filterView: FilterView, didChangeEnable enable: Float)
+    func filterView(_ filterView: FilterView, didChangeAuto enable: Float)
     func filterView(_ filterView: FilterView, didChangeMidi midi: Float)
     func filterView(_ filterView: FilterView, didChangeBypass bypass: Float)
     func filterView(_ filterView: FilterView, didChangePreset preset: Int)
@@ -54,7 +54,17 @@ class FilterView: UIView {
     // MARK: Properties
 
     var enable = 1
-    var midi_enable = 1
+    var midi_enable = 1 {
+        didSet(old) {
+            setMidiEnable(Float(midi_enable))
+        }
+    }
+    var auto_enable = 1 {
+        didSet(old) {
+            setAutoEnable(Float(auto_enable))
+        }
+    }
+    
     var inversion: Int = 2 {
         didSet(old_inversion) {
             //setSelectedInversion(Float(inversion))
@@ -66,7 +76,6 @@ class FilterView: UIView {
     var bypass: Int = 0 {
         didSet(old_bypass) {
             setBypassEnable(Float(bypass))
-            //print("someone set inversion to \(inversion) from \(old_inversion)")
         }
     }
     
@@ -93,7 +102,7 @@ class FilterView: UIView {
     var configbutton = VerticallyCenteredTextLayer()
     var midibutton = VerticallyCenteredTextLayer()
     var presetbutton = VerticallyCenteredTextLayer()
-    var midiautobutton = CALayer()
+    var autobutton = CALayer()
     var containerLayer = CALayer()
     var nvoicesLayer = CALayer()
     var keysLayer = CALayer()
@@ -287,6 +296,31 @@ class FilterView: UIView {
         }
     }
 
+    func setMidiEnable(_ enable: Float)
+    {
+        if Int(enable) == 1
+        {
+            highlight(layer: midibutton)
+        }
+        else
+        {
+            dehighlight(layer: midibutton)
+        }
+    }
+    
+    func setAutoEnable(_ enable: Float)
+    {
+        if Int(enable) == 1
+        {
+            highlight(layer: autobutton)
+        }
+        else
+        {
+            dehighlight(layer: autobutton)
+        }
+    }
+    
+    
     override func awakeFromNib() {
         // Create all of the CALayers for the graph, lines, and labels.
         let scale = UIScreen.main.scale
@@ -497,7 +531,6 @@ class FilterView: UIView {
         midibutton.shadowOpacity = 1.0
         
         containerLayer.addSublayer(midibutton)
-        
 
         nvoicesLayer.contentsScale = UIScreen.main.scale
         nvoicesLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
@@ -508,7 +541,7 @@ class FilterView: UIView {
         nvoicesLayer.shadowColor = UIColor.cyan.cgColor
         nvoicesLayer.shadowOpacity = 0.0
         
-        for k in 0...9
+        for _ in 0...9
         {
             let oval = CALayer()
             
@@ -526,17 +559,15 @@ class FilterView: UIView {
         
         containerLayer.addSublayer(nvoicesLayer)
         
-        
-        
-//        midiautobutton.borderColor = UIColor.white.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
-//        midiautobutton.backgroundColor = UIColor.lightGray.cgColor
-//        midiautobutton.borderWidth = 4
-//        midiautobutton.cornerRadius = 4
-//        midiautobutton.shadowRadius = 8
-//        midiautobutton.shadowColor = UIColor.white.cgColor
-//        midiautobutton.shadowOpacity = 1.0
-//
-//        containerLayer.addSublayer(midiautobutton)
+        autobutton.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
+        autobutton.backgroundColor = UIColor.white.cgColor
+        autobutton.borderWidth = 4
+        autobutton.cornerRadius = 4
+        autobutton.shadowRadius = 8
+        autobutton.shadowColor = UIColor.cyan.cgColor
+        autobutton.shadowOpacity = 0.0
+
+        containerLayer.addSublayer(autobutton)
         
         layer.contentsScale = scale
     }
@@ -596,7 +627,7 @@ class FilterView: UIView {
 //                }
 //            }
             
-            nvoicesLayer.frame = CGRect(x: 4 + spacing, y: keywidth / 4, width: 4 * spacing - 4, height: keywidth * 2)
+            nvoicesLayer.frame = CGRect(x: 4 + spacing, y: keywidth / 4, width: 4 * spacing - 4, height: keywidth)
             
             let sublayers = nvoicesLayer.sublayers!
             let pipheight = 8
@@ -622,7 +653,7 @@ class FilterView: UIView {
             }
             
             configbutton.frame = CGRect(x: 4 + spacing * 11, y: keywidth / 4, width: keywidth, height: keywidth)
-            midiautobutton.frame = CGRect(x: 4 + spacing * 10, y: keywidth / 4, width: keywidth, height: keywidth)
+            autobutton.frame = CGRect(x: 4, y: keywidth / 4 + spacing, width: keywidth, height: keywidth)
             
             presetbutton.frame = CGRect(x: 4 + spacing * 8, y: keywidth / 4, width: keywidth*3 + 4, height: keywidth/2)
             
@@ -714,25 +745,40 @@ class FilterView: UIView {
         
         if (presetbutton.hitTest(pointOfTouch!) != nil)
         {
-            delegate?.filterViewSavePreset(self)
+            //delegate?.filterViewSavePreset(self)
+        }
+        
+        
+        if (autobutton.hitTest(pointOfTouch!) != nil)
+        {
+            if (auto_enable == 1)
+            {
+                dehighlight(layer: autobutton)
+                auto_enable = 0
+            }
+            else
+            {
+                highlight(layer: autobutton)
+                auto_enable = 1
+            }
+            
+            delegate?.filterView(self, didChangeAuto: Float(auto_enable))
         }
         
         if (midibutton.hitTest(pointOfTouch!) != nil)
         {
             if (midi_enable == 1)
             {
-                delegate?.filterView(self, didChangeMidi: 0)
-                midibutton.shadowOpacity = 0.0
-                midibutton.borderColor = UIColor.darkGray.cgColor
+                dehighlight(layer: midibutton)
                 midi_enable = 0
             }
             else
             {
-                delegate?.filterView(self, didChangeMidi: 1)
-                midibutton.shadowOpacity = 1.0
-                midibutton.borderColor = UIColor.cyan.cgColor
+                highlight(layer: midibutton)
                 midi_enable = 1
             }
+            
+            delegate?.filterView(self, didChangeMidi: Float(midi_enable))
         }
         
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y + keysLayer.frame.height - containerLayer.frame.height)

@@ -270,7 +270,8 @@ public:
                 n_auto = (int) clamp(value,1.f,4.f);
                 break;
             case HarmParamAuto:
-                auto_enable = (int) clamp(value,0.f,1.f);
+                autotune = (int) clamp(value,0.f,1.f);
+                fprintf(stderr, "autotune: %d\n", autotune);
                 break;
             case HarmParamMidi:
                 midi_enable = (int) clamp(value,0.f,1.f);
@@ -310,7 +311,7 @@ public:
             case HarmParamNvoices:
                 return (float) n_auto;
             case HarmParamAuto:
-                return (float) auto_enable;
+                return (float) autotune;
             case HarmParamMidi:
                 return (float) midi_enable;
             case HarmParamTriad:
@@ -633,7 +634,7 @@ public:
             cmdf2 = cmdf1; cmdf1 = cmdf;
             cmdf = (df * k) / sum;
             
-            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.35 && k > 20)
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.2 && k > 20)
             {
                 period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
@@ -886,11 +887,14 @@ public:
         int interval = (nn + 69 - root) % 12;
         note_number = (nn + 69) % 12 + (note_f - nn);
         
-        if (autotune)
-        {
-            // lock to nearest note
-            voices[0].target_ratio = 1.0/error_ratio;
-        }
+//        if (autotune)
+//        {
+//            // lock to nearest note
+//            voices[0].target_ratio = 1.0/error_ratio;
+//        }
+        
+        int start = autotune ? 0 : 1;
+        fprintf(stderr, "start: %d\n", start);
 
         if (triad >= 0)
         {
@@ -903,7 +907,7 @@ public:
         
         else if (auto_enable)
         {
-            for (int k = 0; k < n_auto; k++)
+            for (int k = start; k < n_auto; k++)
             {
                 voices[k].midinote = 0;
                 
@@ -947,10 +951,10 @@ public:
     
         for (int k = 0; k < nvoices; k++)
         {
-            if (k < n_auto)
+            if (k < n_auto && k >= start)
                 voices[k].target_ratio /= error_ratio; // for autoharm
             
-            voices[k].ratio = 0.9 * voices[k].ratio + 0.1 * voices[k].target_ratio;
+            voices[k].ratio = 0.8 * voices[k].ratio + 0.2 * voices[k].target_ratio;
         }
     }
 	
