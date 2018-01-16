@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Filter Demo View Controller-->
+        <!--Harmonizer View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="FilterDemoViewController" customModule="FilterDemoFramework" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HarmonizerViewController" customModule="FilterDemoFramework" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="FilterView" customModule="FilterDemoFramework">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="FilterDemoFramework">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -37,12 +37,14 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="filterView" destination="XMY-Zi-giM" id="k3y-fn-p5B"/>
+                        <outlet property="harmonizerView" destination="XMY-Zi-giM" id="k3y-fn-p5B"/>
+                        <segue destination="vG0-ai-2Nd" kind="presentation" identifier="savePreset" id="yu6-lh-fmM"/>
+                        <segue destination="G03-CJ-RWa" kind="presentation" identifier="configurePreset" id="X1h-Yx-L7K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="368" y="-44"/>
+            <point key="canvasLocation" x="425" y="-130"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Oaz-XH-b3k">
@@ -461,7 +463,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmc-0u-KBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1001.649175412294" y="-44"/>
+            <point key="canvasLocation" x="1184" y="-130"/>
         </scene>
         <!--Save Preset View Controller-->
         <scene sceneID="pxI-zg-7Wv">
@@ -490,17 +492,58 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yae-nl-6ir">
-                                <rect key="frame" x="316" y="172" width="34" height="30"/>
+                                <rect key="frame" x="350" y="172" width="52" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="save:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="UvR-PQ-M4f"/>
+                                </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7xL-VK-LXf" userLabel="Cancel Button">
+                                <rect key="frame" x="284" y="172" width="48" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="save:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="MyD-M4-p9z"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="890-VX-b1M">
+                                <rect key="frame" x="239" y="118" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="&lt;"/>
+                                <connections>
+                                    <action selector="changePreset:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="6D3-KW-JHV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CeX-m0-vb9">
+                                <rect key="frame" x="398" y="118" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="&gt;"/>
+                                <connections>
+                                    <action selector="changePreset:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="UeU-Nv-mtW"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bFk-Xi-ZJf">
+                                <rect key="frame" x="262" y="89" width="15" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="nextButton" destination="CeX-m0-vb9" id="qtH-ia-aZT"/>
+                        <outlet property="number" destination="bFk-Xi-ZJf" id="qWx-lL-Img"/>
+                        <outlet property="presetName" destination="SzF-7N-cHG" id="jDD-vD-7oa"/>
+                        <outlet property="prevButton" destination="890-VX-b1M" id="ChL-O9-cRm"/>
+                        <outlet property="saveButton" destination="yae-nl-6ir" id="EwC-sa-yY3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qeW-bf-24p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1006" y="741"/>
+            <point key="canvasLocation" x="1183" y="764"/>
         </scene>
     </scenes>
 </document>

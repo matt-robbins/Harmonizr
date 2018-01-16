@@ -102,7 +102,7 @@ public:
 	
 	void init(int channelCount, double inSampleRate) {
 		n_channels = channelCount;
-        fprintf(stderr,"**** init with %d channels!\n", n_channels);
+        fprintf(stderr,"**** init with %d channels! at %f Hz\n", n_channels, inSampleRate);
 		
 		sampleRate = float(inSampleRate);
         
@@ -268,6 +268,7 @@ public:
                 break;
             case HarmParamNvoices:
                 n_auto = (int) clamp(value,1.f,4.f);
+                fprintf(stderr, "nvoices: %d\n", n_auto);
                 break;
             case HarmParamAuto:
                 autotune = (int) clamp(value,0.f,1.f);
@@ -474,7 +475,7 @@ public:
             
             for (int vix = 1; vix < nvoices; vix++)
             {
-                if (voices[vix].midinote == -1 || (vix > 2 && !midi_enable))
+                if (voices[vix].midinote == -1 || (vix > n_auto && !midi_enable))
                     continue;
                 
                 float unvoiced_offset = 0;

@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     @IBOutlet var auContainerView: UIView!
 
 	/// The audio playback engine.
-	var playEngine: SimplePlayEngine!
+	//var playEngine: SimplePlayEngine!
     var audioEngine: AudioEngine2!
     var harmUnit: AUAudioUnit!
 
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
 	//var filterDemoViewController: FilterDemoViewController!
-    var filterDemoViewController: FilterDemoViewController!
+    var harmonizerViewController: HarmonizerViewController!
 
     var btMidiViewController: CABTMIDICentralViewController!
     var navController: UINavigationController!
@@ -82,7 +82,6 @@ class ViewController: UIViewController {
         componentDescription.componentFlags = 0
         componentDescription.componentFlagsMask = 0
         
-
         /*
             Register our `AUAudioUnit` subclass, `AUv3FilterDemo`, to make it able
             to be instantiated via its component description.
@@ -146,15 +145,15 @@ class ViewController: UIViewController {
 
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
 		//filterDemoViewController = storyboard.instantiateInitialViewController() as! FilterDemoViewController
-        filterDemoViewController = storyboard.instantiateInitialViewController() as! FilterDemoViewController
+        harmonizerViewController = storyboard.instantiateInitialViewController() as! HarmonizerViewController
 
         // Present the view controller's view.
-        if let view = filterDemoViewController.view {
-            addChildViewController(filterDemoViewController)
+        if let view = harmonizerViewController.view {
+            addChildViewController(harmonizerViewController)
             view.frame = auContainerView.bounds
             
             auContainerView.addSubview(view)
-            filterDemoViewController.didMove(toParentViewController: self)
+            harmonizerViewController.didMove(toParentViewController: self)
         }
 	}
 	
@@ -171,6 +170,7 @@ class ViewController: UIViewController {
             }
             
             if let view = viewController.view {
+                strongSelf.harmonizerViewController = viewController as? HarmonizerViewController
                 strongSelf.addChildViewController(viewController)
                 view.frame = strongSelf.auContainerView.bounds
                 

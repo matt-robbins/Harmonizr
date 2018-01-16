@@ -61,7 +61,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.AudioUnit-UI</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>FilterDemoViewController</string>
+		<string></string>
 	</dict>
 </dict>
 </plist>

@@ -10,24 +10,21 @@ import UIKit
 
 /* 
     The `HarmonizerViewDelegate` protocol is used to notify a delegate (`HarmonizerViewController`)
-
-    `filterViewDataDidChange(_:)` is called when the view size changes and new 
-    frequency data is available.
  */
 protocol HarmonizerViewDelegate: class {
-    func filterView(_ filterView: HarmonizerView, didChangeKeycenter keycenter: Float)
-    func filterView(_ filterView: HarmonizerView, didChangeInversion inversion: Float)
-    func filterView(_ filterView: HarmonizerView, didChangeNvoices voices: Float)
-    func filterView(_ filterView: HarmonizerView, didChangeTriad triad: Float)
-    func filterView(_ filterView: HarmonizerView, didChangeAuto enable: Float)
-    func filterView(_ filterView: HarmonizerView, didChangeMidi midi: Float)
-    func filterView(_ filterView: HarmonizerView, didChangeBypass bypass: Float)
-    func filterView(_ filterView: HarmonizerView, didChangePreset preset: Int)
-    func filterViewGetPitch(_ filterView: HarmonizerView) -> Float
-    func filterViewGetKeycenter(_ filterView: HarmonizerView) -> Float
-    func filterViewDataDidChange(_ filterView: HarmonizerView)
-    func filterViewConfigure(_ filterView: HarmonizerView)
-    func filterViewSavePreset(_ filterView: HarmonizerView)
+    func harmonizerView(_ view: HarmonizerView, didChangeKeycenter keycenter: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangeInversion inversion: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangeNvoices voices: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangeTriad triad: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangeAuto enable: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangeMidi midi: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangeBypass bypass: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangePreset preset: Int)
+    func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float
+    func harmonizerViewGetKeycenter(_ view: HarmonizerView) -> Float
+    func harmonizerViewGetPreset(_ view: HarmonizerView) -> String
+    func harmonizerViewConfigure(_ view: HarmonizerView)
+    func harmonizerViewSavePreset(_ view: HarmonizerView)
 }
 
 class VerticallyCenteredTextLayer : CATextLayer {
@@ -77,15 +74,9 @@ class HarmonizerView: UIView {
         }
     }
     
-    var presets = [AUAudioUnitPreset]() {
-        didSet(old_presets) {
-            print(presets as Any)
-        }
-    }
-    
-    var preset: AUAudioUnitPreset? = nil {
+    var preset: String? = nil {
         didSet(old_preset) {
-            presetbutton.string = preset!.name
+            presetbutton.string = preset!
         }
     }
     
@@ -128,6 +119,11 @@ class HarmonizerView: UIView {
     {
         layer!.borderColor = UIColor.darkGray.cgColor
         layer!.shadowOpacity = 0.0
+    }
+    
+    func configureDehighlight()
+    {
+        dehighlight(layer: configbutton)
     }
     
     func setSelectedNote(_ note: Float) {
@@ -291,6 +287,20 @@ class HarmonizerView: UIView {
         else
         {
             dehighlight(layer: configbutton)
+        }
+    }
+    
+    func setPresetEditEnable(_ enable: Bool)
+    {
+        presetbutton.foregroundColor = enable ? UIColor.cyan.cgColor : UIColor.lightGray.cgColor
+        if (enable)
+        {
+            presetbutton.foregroundColor = UIColor.cyan.cgColor
+        }
+        else
+        {
+            presetbutton.foregroundColor = UIColor.lightGray.cgColor
+            
         }
     }
 
@@ -507,7 +517,7 @@ class HarmonizerView: UIView {
         presetbutton.foregroundColor = UIColor.white.cgColor
         presetbutton.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
         presetbutton.backgroundColor = UIColor.black.cgColor
-        presetbutton.borderWidth = 4
+        presetbutton.borderWidth = 2
         presetbutton.cornerRadius = 4
         presetbutton.shadowRadius = 8
         presetbutton.shadowColor = UIColor.cyan.cgColor
@@ -653,7 +663,7 @@ class HarmonizerView: UIView {
             configbutton.frame = CGRect(x: 4 + spacing * 11, y: keywidth / 4, width: keywidth, height: keywidth)
             autobutton.frame = CGRect(x: 4, y: keywidth / 4 + spacing, width: keywidth, height: keywidth)
             
-            presetbutton.frame = CGRect(x: 4 + spacing * 8, y: keywidth / 4, width: keywidth*3 + 4, height: keywidth/2)
+            presetbutton.frame = CGRect(x: 4 + spacing * 8, y: keywidth / 4, width: keywidth*3 + 4, height: keywidth)
             
             midibutton.frame = CGRect(x: 4, y: keywidth / 4, width: keywidth, height: keywidth)
             
@@ -683,8 +693,8 @@ class HarmonizerView: UIView {
             var inv = 4*(1 - ((point.y - nvoicesLayer.frame.minY) / nvoicesLayer.frame.height))
             if (inv > p - 1) { inv = p - 1 }
             print(inv)
-            delegate?.filterView(self, didChangeNvoices: Float(p))
-            delegate?.filterView(self, didChangeInversion: Float(inv))
+            delegate?.harmonizerView(self, didChangeNvoices: Float(p))
+            delegate?.harmonizerView(self, didChangeInversion: Float(inv))
             self.setSelectedVoices(Int(p), inversion: Int(inv))
             //self.setSelectedInversion(Float(inv))
         }
@@ -728,7 +738,7 @@ class HarmonizerView: UIView {
                 triadbuttons[j].borderColor = UIColor.white.cgColor
                 triadbuttons[j].shadowOpacity = 1.0
                 
-                delegate?.filterView(self, didChangePreset: j)
+                delegate?.harmonizerView(self, didChangePreset: j)
 //                delegate?.filterView(self, didChangeTriad: Float(triads[j]))
 //                triad_override = true
             }
@@ -736,14 +746,15 @@ class HarmonizerView: UIView {
         
         if (configbutton.hitTest(pointOfTouch!) != nil)
         {
-            delegate?.filterViewConfigure(self)
+            delegate?.harmonizerViewConfigure(self)
+            highlight(layer: configbutton)
 //            bypass = bypass == 1 ? 0 : 1
 //            delegate?.filterView(self, didChangeBypass: Float(bypass))
         }
         
         if (presetbutton.hitTest(pointOfTouch!) != nil)
         {
-            delegate?.filterViewSavePreset(self)
+            delegate?.harmonizerViewSavePreset(self)
         }
         
         
@@ -760,7 +771,7 @@ class HarmonizerView: UIView {
                 auto_enable = 1
             }
             
-            delegate?.filterView(self, didChangeAuto: Float(auto_enable))
+            delegate?.harmonizerView(self, didChangeAuto: Float(auto_enable))
         }
         
         if (midibutton.hitTest(pointOfTouch!) != nil)
@@ -776,7 +787,7 @@ class HarmonizerView: UIView {
                 midi_enable = 1
             }
             
-            delegate?.filterView(self, didChangeMidi: Float(midi_enable))
+            delegate?.harmonizerView(self, didChangeMidi: Float(midi_enable))
         }
         
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y + keysLayer.frame.height - containerLayer.frame.height)
@@ -788,7 +799,7 @@ class HarmonizerView: UIView {
                 self.setSelectedKeycenter(Float(j))
                 
                 // change key center parameter based on x value of touch
-                delegate?.filterView(self, didChangeKeycenter: Float(j))
+                delegate?.harmonizerView(self, didChangeKeycenter: Float(j))
             }
         }
     }
@@ -823,7 +834,7 @@ class HarmonizerView: UIView {
         }
         if (triad_override)
         {
-            delegate?.filterView(self, didChangeTriad: Float(-1))
+            delegate?.harmonizerView(self, didChangeTriad: Float(-1))
             triad_override = false
         }
         

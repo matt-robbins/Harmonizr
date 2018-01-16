@@ -29,13 +29,13 @@
 		91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 91236D8D1B08FB0300734C5E /* FilterDemo.mm */; };
 		91236D921B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D911B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift */; };
 		916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916233C71B127A5000DBD15D /* MainInterface.storyboard */; };
-		91A9356B1B1269F100370383 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A9356A1B1269F100370383 /* FilterView.swift */; };
+		91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A9356A1B1269F100370383 /* HarmonizerView.swift */; };
 		91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
 		91E715C41B0AABAB00BD598C /* FilterDemoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */; };
 		9228D9AF1BA1EE6F00EDDEA4 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
 		923B43DD1BA0F04B0020FBB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 923B43DB1BA0F04B0020FBB4 /* Main.storyboard */; };
 		923B43DE1BA1E51F0020FBB4 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
-		927A95A41B1D4043007C1F90 /* FilterDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9152BF241B09567700D8C6A4 /* FilterDemoViewController.swift */; };
+		927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */; };
 		92A10D171B9529170081EA80 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A10CA81B951C660081EA80 /* DSPKernel.mm */; };
 		92A10D1A1B9529210081EA80 /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
 		92A10D1B1B9529240081EA80 /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
@@ -56,7 +56,8 @@
 		92FF86A41B9F5B7B007C9389 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
 		92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF86A51B9F5D42007C9389 /* FilterView.h */; };
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
-		C92389A02003C467008C76AB /* SavePresetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923899F2003C467008C76AB /* SavePresetViewController.swift */; };
+		C92389A12003CD0D008C76AB /* SavePresetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923899F2003C467008C76AB /* SavePresetViewController.swift */; };
+		C92389A620065700008C76AB /* PresetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92389A520065700008C76AB /* PresetEngine.swift */; };
 		C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163511FBCE81D00EE1762 /* HarmViewController.swift */; };
 		C93163551FBDE2D700EE1762 /* HarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163541FBDE2D700EE1762 /* HarmView.swift */; };
 		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
@@ -192,9 +193,9 @@
 		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
 		91236D8D1B08FB0300734C5E /* FilterDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterDemo.mm; sourceTree = "<group>"; };
 		91236D911B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FilterDemoViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
-		9152BF241B09567700D8C6A4 /* FilterDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterDemoViewController.swift; sourceTree = "<group>"; };
+		9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmonizerViewController.swift; sourceTree = "<group>"; };
 		916233C81B127A5000DBD15D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		91A9356A1B1269F100370383 /* FilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		91A9356A1B1269F100370383 /* HarmonizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmonizerView.swift; sourceTree = "<group>"; };
 		91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = drumLoop.caf; sourceTree = "<group>"; };
 		923B43DC1BA0F04B0020FBB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
@@ -224,6 +225,7 @@
 		92FF86A51B9F5D42007C9389 /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
 		92FF86A61B9F5D42007C9389 /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
 		C923899F2003C467008C76AB /* SavePresetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePresetViewController.swift; sourceTree = "<group>"; };
+		C92389A520065700008C76AB /* PresetEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetEngine.swift; sourceTree = "<group>"; };
 		C93163511FBCE81D00EE1762 /* HarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmViewController.swift; sourceTree = "<group>"; };
 		C93163541FBDE2D700EE1762 /* HarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmView.swift; sourceTree = "<group>"; };
 		C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 				91236D111B08F42B00734C5E /* ViewController.swift */,
 				C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */,
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
+				C92389A520065700008C76AB /* PresetEngine.swift */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
@@ -367,11 +370,11 @@
 			children = (
 				164896A61C925E0C00AB781D /* Shared */,
 				91236D571B08F52D00734C5E /* FilterDemoFramework.h */,
-				9152BF241B09567700D8C6A4 /* FilterDemoViewController.swift */,
+				9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */,
 				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
 				C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */,
 				C9DAB9091FA3BF8700DBB180 /* midi.png */,
-				91A9356A1B1269F100370383 /* FilterView.swift */,
+				91A9356A1B1269F100370383 /* HarmonizerView.swift */,
 				91236D591B08F52D00734C5E /* Info.plist */,
 				C93163511FBCE81D00EE1762 /* HarmViewController.swift */,
 				C93163541FBDE2D700EE1762 /* HarmView.swift */,
@@ -809,11 +812,11 @@
 			files = (
 				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
-				C92389A02003C467008C76AB /* SavePresetViewController.swift in Sources */,
 				C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */,
 				C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,
 				91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */,
+				C92389A620065700008C76AB /* PresetEngine.swift in Sources */,
 				C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -825,9 +828,10 @@
 				92A10D171B9529170081EA80 /* DSPKernel.mm in Sources */,
 				91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */,
 				C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */,
-				927A95A41B1D4043007C1F90 /* FilterDemoViewController.swift in Sources */,
+				927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */,
+				C92389A12003CD0D008C76AB /* SavePresetViewController.swift in Sources */,
 				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
-				91A9356B1B1269F100370383 /* FilterView.swift in Sources */,
+				91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

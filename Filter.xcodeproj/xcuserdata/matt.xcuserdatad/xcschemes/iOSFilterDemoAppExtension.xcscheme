@@ -48,9 +48,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "91236D761B08F59300734C5E"
-            BuildableName = "FilterDemoAppExtension.appex"
-            BlueprintName = "iOSFilterDemoAppExtension"
+            BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
+            BuildableName = "FilterDemo.app"
+            BlueprintName = "iOSFilterDemoApp"
             ReferencedContainer = "container:Filter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

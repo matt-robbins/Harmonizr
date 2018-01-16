@@ -271,21 +271,20 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     if (_inputBus.bus.format.channelCount > maxchannels)
         maxchannels = _inputBus.bus.format.channelCount;
 	
-//    if (self.outputBus.format.channelCount != _inputBus.bus.format.channelCount) {
-//        if (outError) {
-//            *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:kAudioUnitErr_FailedInitialization userInfo:nil];
-//        }
-//        // Notify superclass that initialization was not successful
-//        self.renderResourcesAllocated = NO;
-//
-//        NSLog(@"** can't allocate render resources, mismatched channel counts!\n");
-//
-//        return NO;
-//    }
+    if (self.outputBus.format.channelCount != _inputBus.bus.format.channelCount) {
+        if (outError) {
+            *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:kAudioUnitErr_FailedInitialization userInfo:nil];
+        }
+        // Notify superclass that initialization was not successful
+        self.renderResourcesAllocated = NO;
+
+        NSLog(@"** can't allocate render resources, mismatched channel counts!\n");
+
+        return NO;
+    }
 	
 	_inputBus.allocateRenderResources(self.maximumFramesToRender);
 	
-    NSLog(@"allocateRenderResources about to actually do it\n");
 	_kernel.init(maxchannels, self.outputBus.format.sampleRate);
 	_kernel.reset();
 	
@@ -305,6 +304,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 		Capture in locals to avoid ObjC member lookups. If "self" is captured in
         render, we're doing it wrong.
 	*/
+    NSLog(@"getting render block!");
     // Specify captured objects are mutable.
 	__block FilterDSPKernel *state = &_kernel;
 	__block BufferedInputBus *input = &_inputBus;
@@ -424,7 +424,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 // See the discussion of renderBlock.
 // Partially bridged to the v2 property kAudioUnitProperty_InPlaceProcessing, the v3 property is not settable.
 - (BOOL)canProcessInPlace {
-    return YES;
+    return NO;
 }
 
 #pragma mark -

@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AudioToolbox
 
 public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -31,6 +32,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
                 key = "interval_\(nc*component + k + keyQuality*12*nc)"
                 let param = paramTree!.value(forKey: key) as? AUParameter
                 param!.value = Float(row - unisonOffset)
+                
             }
         }
     }
@@ -57,7 +59,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     var keyQuality = 0
     var unisonOffset = 2
     var nc = 4
-    
+        
     public override func viewDidLoad()
     {
         super.viewDidLoad()
