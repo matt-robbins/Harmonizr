@@ -167,14 +167,12 @@ class AudioEngine2: NSObject {
         if (!self.engine.isRunning) {
             self.start()
         }
-        
     }
     
     func start()
     {
         self.connectNodes()
         do {
-            
             try engine.start()
         }
         catch {

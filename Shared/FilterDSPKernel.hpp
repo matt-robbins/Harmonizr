@@ -876,7 +876,7 @@ public:
        
         }
         
-        dispatch_semaphore_signal(sem);
+        //dispatch_semaphore_signal(sem);
     }
     
     void update_voices (void)
