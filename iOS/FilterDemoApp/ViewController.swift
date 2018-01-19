@@ -56,18 +56,6 @@ class ViewController: UIViewController {
 		// Set up the plug-in's custom view.
 		//embedPlugInView()
 		
-		// Create an audio file playback engine.
-		//playEngine = SimplePlayEngine(componentType: kAudioUnitType_MusicEffect)
-//        {
-//            for u in self.playEngine.availableAudioUnits
-//            {
-//                print(u.name)
-//                print("0x\(String(u.audioComponentDescription.componentType,radix: 16))")
-//                print("0x\(String(u.audioComponentDescription.componentSubType,radix: 16))")
-//                print("0x\(String(u.audioComponentDescription.componentManufacturer,radix: 16))")
-//            }
-//        }
-		
 		/*
 			Register the AU in-process for development/debugging.
 			First, build an AudioComponentDescription matching the one in our 
@@ -90,13 +78,6 @@ class ViewController: UIViewController {
         */
         AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 1)
         
-		// Instantiate and insert our audio unit effect into the chain.
-//        playEngine.selectAudioUnitWithComponentDescription(componentDescription) {
-//            // This is an asynchronous callback when complete. Finish audio unit setup.
-//            self.connectParametersToControls()
-//            self.playEngine.startPlaying()
-//        }
-
         reverbButton.setTitle("Reverb", for: UIControlState())
         reverbButton.setTitleColor(UIColor.white, for: UIControlState())
         playButton.setTitle("Bluetooth", for: UIControlState())
@@ -115,14 +96,12 @@ class ViewController: UIViewController {
             self.harmUnit = audioUnit
             self.getAUView()
             
-            //self.filterDemoViewController.audioUnit = audioUnit as? AUv3Harmonizer
+            //self.harmonizerViewController.audioUnit = self.harmUnit as? AUv3Harmonizer
             
             self.audioEngine.start()            
         })
         
         reverbMixParam = audioEngine.reverbUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
-        
-        //self.audioEngine.start()
 	}
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

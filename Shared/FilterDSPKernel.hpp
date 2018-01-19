@@ -230,17 +230,50 @@ public:
         
         memset(midinotes, 0, 128 * sizeof(int));
         
-        sem = dispatch_semaphore_create(0);
-        
-        if (NULL == sem)
-        {
-            printf("couldn't create semaphore!\n");
-        }
-        
 	}
+    
+    void fini() {
+        vDSP_destroy_fftsetup(fft_s);
+        delete grain_window;
+        delete grains;
+        free(fft_in.realp);
+        free(fft_in.imagp);
+        free(fft_out.realp);
+        free(fft_out.imagp);
+        free(fft_out2.realp);
+        free(fft_out2.imagp);
+        free(fft_buf.realp);
+        free(fft_buf.imagp);
+        free(cbuf);
+        free(voices);
+    }
 	
 	void reset() {
-
+        for (int k = 0; k < nvoices; k++)
+        {
+            voices[k].midinote = -1;
+            voices[k].error = 0;
+            voices[k].ratio = 1;
+            voices[k].target_ratio = 1.0;
+            voices[k].formant_ratio = 1;
+            voices[k].nextgrain = 250;
+            
+            if (k >= 3)
+            {
+                voices[k].pan = ((float)(k - 3) / (float)(nvoices - 3)) - 0.5;
+                //voices[k].formant_ratio = ((float)(k - 3) / (float)(nvoices - 3)) + 0.5;
+            }
+        }
+        voice_ix = 1;
+        
+        cix = 0;
+        rix = 0;
+        rcnt = 256;
+        T = 400;
+        
+        pitchmark[0] = 0;
+        pitchmark[1] = -1;
+        pitchmark[2] = -1;
 	}
     
     float cubic (float *v, float a)
@@ -387,6 +420,8 @@ public:
 	void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
 		int channelCount = n_channels;
         sample_count += frameCount;
+        //fprintf(stderr, "in = 0x%p, val = %f\n", inBufferListPtr->mBuffers[0].mData, *(float*)inBufferListPtr->mBuffers[0].mData);
+        //fprintf(stderr, "rendering! frameCount = %d, channelCount = %d\n", frameCount, n_channels);
         // For each sample.
 		for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex)
         {
@@ -687,7 +722,12 @@ public:
             sum += (cbuf[ix] - min);
         }
         
-        pitchmark[0] += (mean/sum);
+        if (sum == 0)
+            pitchmark[0] += T;
+        else
+        {
+            pitchmark[0] += (mean/sum);
+        }
         
         if (pitchmark[0] < 0)
             pitchmark[0] += ncbuf;

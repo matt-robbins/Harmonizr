@@ -261,8 +261,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 }
 
 - (BOOL)allocateRenderResourcesAndReturnError:(NSError **)outError {
-    NSLog(@"Allocate render resources");
-	if (![super allocateRenderResourcesAndReturnError:outError]) {
+
+    if (![super allocateRenderResourcesAndReturnError:outError]) {
         NSLog(@"allocateRenderResources, super failed...\n");
 		return NO;
 	}
@@ -293,7 +293,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	
 - (void)deallocateRenderResources {
 	_inputBus.deallocateRenderResources();
-    
+    _kernel.fini();
     [super deallocateRenderResources];
 }
 

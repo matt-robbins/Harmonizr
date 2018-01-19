@@ -66,11 +66,11 @@ class AudioEngine2: NSObject {
                 
                 print("connected = \(connected)")
                 print("data_size = \(data_size)")
-                //self.engine.stop()
+                self.engine.stop()
                 
                 do {
                     try AVAudioSession.sharedInstance().setActive(true)
-                    //try self.engine.start()
+                    try self.engine.start()
                 }
                 catch {
                     print("unable to start Audio Engine!!!: \(error)")
@@ -95,6 +95,17 @@ class AudioEngine2: NSObject {
         AudioOutputUnitPublish(&iaa_desc,"MrFx: Harmonizer" as CFString,1,self.engine.outputNode.audioUnit!)
     
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(String(kAudioComponentInstanceInvalidationNotification)), object: nil, queue: nil) { [weak self] notification in
+            guard let strongSelf = self else { return }
+            /*
+             If the crashed audio unit was that of our type, remove it from
+             the signal chain. Note: we should notify the UI at this point.
+             */
+            let crashedAU = notification.object as? AUAudioUnit
+            print("\(crashedAU!.audioUnitName) crashed!!!")
+        }
+        
     }
 
     func handleRouteChange(_ notification: Notification) {
@@ -105,44 +116,46 @@ class AudioEngine2: NSObject {
                 return
         }
         
-        self.engine.stop()
+        if (self.engine.isRunning)
+        {
+            self.engine.stop()
+        }
         
         let session = AVAudioSession.sharedInstance()
         
         switch reason {
         case .newDeviceAvailable:
-            print("new device!")
-            
-//            for s in session.availableInputs! {
-//                print(s)
-//                if s.portType == AVAudioSessionPortHeadsetMic {
-//                    do {
-//                        try session.setPreferredInput(s)
-//                    }
-//                    catch {
-//                        print("couldn't set preferred input")
-//                    }
-//                }
-//            }
+            for s in session.availableInputs! {
+                print(s)
+                if s.portType == AVAudioSessionPortHeadsetMic {
+                    do {
+                        try session.setPreferredInput(s)
+                    }
+                    catch {
+                        print("couldn't set preferred input")
+                    }
+                }
+            }
             
         // Handle new device available.
         case .oldDeviceUnavailable:
-            print("lost old device!")
-//            for s in session.availableInputs! {
-//                print(s)
-//                if s.portType == AVAudioSessionPortBuiltInMic {
-//                    do {
-//                        try session.setPreferredInput(s)
-//                    }
-//                    catch {
-//                        print("couldn't set preferred input")
-//                    }
-//                }
-//            }
+            for s in session.availableInputs! {
+                print(s)
+                if s.portType == AVAudioSessionPortUSBAudio {
+                    do {
+                        try session.setPreferredInput(s)
+                    }
+                    catch {
+                        print("couldn't set preferred input")
+                    }
+                }
+            }
 
         // Handle old device removed.
         default: ()
         }
+        
+        //session.currentRoute
         
         do {
             try session.setActive(true)
@@ -186,6 +199,9 @@ class AudioEngine2: NSObject {
 
             self.harmUnitNode = avAudioUnit
             self.harmUnit = avAudioUnit.auAudioUnit
+            
+            //self.harmUnit?.currentPreset = self.harmUnit?.factoryPresets?[0]
+            
             self.engine.attach(self.harmUnitNode!)
 
             self.connectNodes()
@@ -206,6 +222,9 @@ class AudioEngine2: NSObject {
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
         
         self.engine.disconnectNodeInput(self.engine.mainMixerNode)
+        self.engine.disconnectNodeInput(self.reverbUnitNode)
+        self.engine.disconnectNodeInput(self.harmUnitNode!)
+        
         self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: stereoFormat)
         
         self.engine.connect(self.engine.inputNode!, to: self.harmUnitNode!, format: stereoFormat)

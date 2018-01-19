@@ -73,7 +73,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
 			*/
 			DispatchQueue.main.async {
 				if self.isViewLoaded {
-                    self.restoreState()
 					self.connectViewWithAU()
 				}
 			}
@@ -106,11 +105,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     var timer = Timer()
     
     func auPoller(T: Float){
-        // Scheduling timer to Call the function "updateCounting" with the interval of 1 seconds
-        timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(updateCounting), userInfo: nil, repeats: true)
+        // Scheduling timer to Call the timerFunction
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(timerFunction), userInfo: nil, repeats: true)
     }
     
-    func updateCounting()
+    func timerFunction()
     {
         guard let audioUnit = audioUnit else { return }
         harmonizerView.setSelectedNote(audioUnit.getCurrentNote())
@@ -133,7 +132,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         
         saveController?.vc = self
         guard audioUnit != nil else { return }
-        self.restoreState()
+        
         connectViewWithAU()
         
 	}
@@ -208,7 +207,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     {
         loadPresets()
         
-        if (presets.count == 0)
+        if (true)
         {
             generatePresets()
             storePresets()
@@ -323,6 +322,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
         bypassParameter = paramTree.value(forKey: "bypass") as? AUParameter
         
+        self.restoreState()
         
         var pendingRequestWorkItem: DispatchWorkItem?
         
