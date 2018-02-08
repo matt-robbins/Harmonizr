@@ -18,7 +18,7 @@
                BlueprintIdentifier = "92FF86631B9A525C007C9389"
                BuildableName = "FilterDemoAppExtension.appex"
                BlueprintName = "OSXFilterDemoAppExtension"
-               ReferencedContainer = "container:Filter.xcodeproj">
+               ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -32,7 +32,7 @@
                BlueprintIdentifier = "92FF864A1B9A4D97007C9389"
                BuildableName = "FilterDemo.app"
                BlueprintName = "OSXFilterDemoApp"
-               ReferencedContainer = "container:Filter.xcodeproj">
+               ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -51,7 +51,7 @@
             BlueprintIdentifier = "92FF86631B9A525C007C9389"
             BuildableName = "FilterDemoAppExtension.appex"
             BlueprintName = "OSXFilterDemoAppExtension"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -80,7 +80,7 @@
             BlueprintIdentifier = "92FF864A1B9A4D97007C9389"
             BuildableName = "FilterDemo.app"
             BlueprintName = "OSXFilterDemoApp"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -100,7 +100,7 @@
             BlueprintIdentifier = "92FF864A1B9A4D97007C9389"
             BuildableName = "FilterDemo.app"
             BlueprintName = "OSXFilterDemoApp"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

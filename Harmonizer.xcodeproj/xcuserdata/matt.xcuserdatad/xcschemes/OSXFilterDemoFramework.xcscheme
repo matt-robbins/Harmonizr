@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "91236D541B08F52D00734C5E"
+               BlueprintIdentifier = "92FF867F1B9F4EDA007C9389"
                BuildableName = "FilterDemoFramework.framework"
-               BlueprintName = "iOSFilterDemoFramework"
-               ReferencedContainer = "container:Filter.xcodeproj">
+               BlueprintName = "OSXFilterDemoFramework"
+               ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,10 +47,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "91236D541B08F52D00734C5E"
+            BlueprintIdentifier = "92FF867F1B9F4EDA007C9389"
             BuildableName = "FilterDemoFramework.framework"
-            BlueprintName = "iOSFilterDemoFramework"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            BlueprintName = "OSXFilterDemoFramework"
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,10 +65,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "91236D541B08F52D00734C5E"
+            BlueprintIdentifier = "92FF867F1B9F4EDA007C9389"
             BuildableName = "FilterDemoFramework.framework"
-            BlueprintName = "iOSFilterDemoFramework"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            BlueprintName = "OSXFilterDemoFramework"
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

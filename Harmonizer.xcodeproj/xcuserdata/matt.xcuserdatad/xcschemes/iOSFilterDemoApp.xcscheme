@@ -17,7 +17,7 @@
                BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
                BuildableName = "FilterDemo.app"
                BlueprintName = "iOSFilterDemoApp"
-               ReferencedContainer = "container:Filter.xcodeproj">
+               ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -36,7 +36,7 @@
             BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
             BuildableName = "FilterDemo.app"
             BlueprintName = "iOSFilterDemoApp"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -60,7 +60,7 @@
             BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
             BuildableName = "FilterDemo.app"
             BlueprintName = "iOSFilterDemoApp"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -83,7 +83,7 @@
             BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
             BuildableName = "FilterDemo.app"
             BlueprintName = "iOSFilterDemoApp"
-            ReferencedContainer = "container:Filter.xcodeproj">
+            ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -61,11 +61,13 @@
 		C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163511FBCE81D00EE1762 /* HarmViewController.swift */; };
 		C93163551FBDE2D700EE1762 /* HarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163541FBDE2D700EE1762 /* HarmView.swift */; };
 		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
+		C94FC87C202C96F70009E742 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */; };
 		C981C4641FBF9DCB00AF8593 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */; };
 		C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */; };
 		C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FBD211FD206E800330691 /* AudioEngine.swift */; };
 		C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */; };
+		C9D9BC7C20191752001977BD /* HarmViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90633682018F01400412EC9 /* HarmViewController2.swift */; };
 		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
 		C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
 		C9DAB90B1FA3BF8900DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
@@ -224,11 +226,13 @@
 		92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterDemoViewController.xib; sourceTree = "<group>"; };
 		92FF86A51B9F5D42007C9389 /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
 		92FF86A61B9F5D42007C9389 /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
+		C90633682018F01400412EC9 /* HarmViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmViewController2.swift; sourceTree = "<group>"; };
 		C923899F2003C467008C76AB /* SavePresetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePresetViewController.swift; sourceTree = "<group>"; };
 		C92389A520065700008C76AB /* PresetEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetEngine.swift; sourceTree = "<group>"; };
 		C93163511FBCE81D00EE1762 /* HarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmViewController.swift; sourceTree = "<group>"; };
 		C93163541FBDE2D700EE1762 /* HarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmView.swift; sourceTree = "<group>"; };
 		C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
+		C94FC87B202C96F60009E742 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine2.swift; sourceTree = "<group>"; };
 		C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		C981C4651FBF9DCB00AF8593 /* FilterDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilterDemo.entitlements; sourceTree = "<group>"; };
@@ -355,6 +359,7 @@
 				C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */,
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				C92389A520065700008C76AB /* PresetEngine.swift */,
+				C94FC87B202C96F60009E742 /* AppIcon.appiconset */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
@@ -377,6 +382,7 @@
 				91A9356A1B1269F100370383 /* HarmonizerView.swift */,
 				91236D591B08F52D00734C5E /* Info.plist */,
 				C93163511FBCE81D00EE1762 /* HarmViewController.swift */,
+				C90633682018F01400412EC9 /* HarmViewController2.swift */,
 				C93163541FBDE2D700EE1762 /* HarmView.swift */,
 				C923899F2003C467008C76AB /* SavePresetViewController.swift */,
 			);
@@ -724,7 +730,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "Filter" */;
+			buildConfigurationList = 91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "FilterDemo" */;
 			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -756,6 +762,7 @@
 				C9ECAD4C1FA5367500E69A2D /* bt_icon.svg in Resources */,
 				C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */,
 				30C0135B1C6D303D00F7E9B4 /* Images.xcassets in Resources */,
+				C94FC87C202C96F70009E742 /* AppIcon.appiconset in Resources */,
 				91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */,
 				91236D151B08F42B00734C5E /* Main.storyboard in Resources */,
 			);
@@ -830,6 +837,7 @@
 				C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */,
 				927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */,
 				C92389A12003CD0D008C76AB /* SavePresetViewController.swift in Sources */,
+				C9D9BC7C20191752001977BD /* HarmViewController2.swift in Sources */,
 				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
 				91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */,
 			);
@@ -1666,7 +1674,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "Filter" */ = {
+		91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "FilterDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91D3DA101B023C03008FFFBB /* Debug */,
