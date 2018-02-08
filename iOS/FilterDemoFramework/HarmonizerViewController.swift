@@ -262,7 +262,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     func harmonizerView(_ filterView: HarmonizerView, didChangePreset preset: Int) {
         print("setting preset index to \(preset)")
         
-        if (preset < presets.count) {
+        if (preset < presets.count && preset >= 0) {
+            presetIx = preset
             let p = presets[preset]
             if (p.isFactory)
             {
@@ -275,6 +276,18 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
             
             filterView.preset = p.name
             presetModified = false
+        }
+    }
+    
+    func harmonizerView(_ view: HarmonizerView, didIncrementPreset preset: Int)
+    {
+        if (preset < 0 && presetIx > 0)
+        {
+            harmonizerView(view, didChangePreset: presetIx - 1)
+        }
+        if (preset > 0 && presetIx < presets.count - 1)
+        {
+            harmonizerView(view, didChangePreset: presetIx + 1)
         }
     }
     

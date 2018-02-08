@@ -241,7 +241,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	self.maximumFramesToRender = 4096;
     
     // set default preset as current
- //   self.currentPreset = _presets.firstObject;
+    self.currentPreset = _presets.firstObject;
 
 	return self;
 }

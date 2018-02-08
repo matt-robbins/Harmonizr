@@ -20,6 +20,7 @@ protocol HarmonizerViewDelegate: class {
     func harmonizerView(_ view: HarmonizerView, didChangeMidi midi: Float)
     func harmonizerView(_ view: HarmonizerView, didChangeBypass bypass: Float)
     func harmonizerView(_ view: HarmonizerView, didChangePreset preset: Int)
+    func harmonizerView(_ view: HarmonizerView, didIncrementPreset preset: Int)
     func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float
     func harmonizerViewGetKeycenter(_ view: HarmonizerView) -> Float
     func harmonizerViewGetPreset(_ view: HarmonizerView) -> String
@@ -42,6 +43,55 @@ class VerticallyCenteredTextLayer : CATextLayer {
         ctx.translateBy(x: 0.0, y: deltaY)
         super.draw(in: ctx)
         ctx.restoreGState()
+    }
+}
+
+class GlowButton: VerticallyCenteredTextLayer {
+    
+    var keycenter: Int = 0
+    
+    func configure() {
+        fontSize = 14
+        contentsScale = UIScreen.main.scale
+        alignmentMode = kCAAlignmentCenter
+        backgroundColor = UIColor.white.cgColor
+        foregroundColor = UIColor.black.cgColor
+        shadowColor = UIColor.cyan.cgColor
+        cornerRadius = 4
+        borderWidth = 4
+        borderColor = UIColor.darkGray.cgColor
+        shadowOffset = CGSize(width: 0, height: 0)
+        shadowRadius = 8
+        masksToBounds = false
+    }
+
+    override init() {
+        keycenter = 0
+        self.isSelected = false
+        super.init()
+        configure()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.isSelected = false
+        super.init(coder: aDecoder)
+        
+        // set other operations after super.init if required
+        self.configure()
+    }
+    
+    var isSelected: Bool {
+        didSet {
+            switch isSelected {
+            case true:
+                borderColor = UIColor.cyan.cgColor
+                shadowOpacity = 1.0
+                
+            case false:
+                borderColor = UIColor.darkGray.cgColor
+                shadowOpacity = 0.0
+            }
+        }
     }
 }
 
@@ -91,6 +141,10 @@ class HarmonizerView: UIView {
     var configbutton = VerticallyCenteredTextLayer()
     var midibutton = VerticallyCenteredTextLayer()
     var presetbutton = VerticallyCenteredTextLayer()
+    
+    var presetNextButton = GlowButton()
+    var presetPrevButton = GlowButton()
+    
     var autobutton = CALayer()
     var containerLayer = CALayer()
     var nvoicesLayer = CALayer()
@@ -196,12 +250,14 @@ class HarmonizerView: UIView {
                 keybuttons[key].removeAnimation(forKey: "pulse")
                 keybuttons[key].borderColor = UIColor.darkGray.cgColor
                 keybuttons[key].shadowOpacity = 0.0
+                keybuttons[key].zPosition = 0.0
             }
         }
         
         keybuttons[new_key].add(pulseAnimation, forKey:"pulse")
         keybuttons[new_key].shadowOpacity = 1.0
         keybuttons[new_key].borderColor = UIColor.cyan.cgColor
+        keybuttons[new_key].zPosition = 1.0
         
         currentKey = new_key
     }
@@ -420,65 +476,6 @@ class HarmonizerView: UIView {
             }
         }
         
-//        for j in 0...2
-//        {
-//            let invLayer = CALayer()
-//
-//            invLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
-//            invLayer.backgroundColor = UIColor(white: 0.9, alpha: 1.0).cgColor
-//            invLayer.borderWidth = 4
-//            invLayer.cornerRadius = 4
-//            invLayer.shadowRadius = 8
-//            invLayer.shadowOpacity = 0
-//            invLayer.shadowColor = UIColor.cyan.cgColor
-//
-//            let xpos = CGFloat(j + 1) * containerLayer.frame.width / 12
-//
-//            invLayer.frame = CGRect(x: xpos, y: containerLayer.frame.height - (CGFloat(j + 1) * keywidth), width: keywidth, height: keywidth)
-//
-//            if (j == 2)
-//            {
-//                invLayer.shadowOpacity = 1.0
-//                invLayer.borderColor = UIColor.cyan.cgColor
-//            }
-//
-//            invbuttons.append(invLayer)
-//            containerLayer.addSublayer(invLayer)
-//
-//            for k in 0...2
-//            {
-//                let oval = CALayer()
-//
-//                oval.borderColor = UIColor.darkGray.cgColor
-//                oval.borderWidth = 2
-//                oval.cornerRadius = 2
-//
-//                oval.shadowColor = UIColor.cyan.cgColor
-//                oval.shadowOpacity = 0.0
-//                oval.shadowRadius = 2.0
-//                oval.shadowOffset = CGSize(width: 0, height: 0)
-//
-//                if (k != j)
-//                {
-//                    oval.borderColor = UIColor.lightGray.cgColor
-//                    oval.shadowOpacity = 0.0
-//
-//                    if (j == 2)
-//                    {
-//                        oval.borderColor = UIColor.cyan.cgColor
-//                        oval.shadowOpacity = 0.5
-//                    }
-//                }
-//
-//                let xpos = invLayer.frame.width / 3
-//                let ypos = invLayer.frame.height * CGFloat(k+2) / 4
-//
-//                //oval.frame = CGRect(x: xpos, y: ypos, width: invLayer.frame.width * CGFloat(5.0/6.0), height: 4)
-//
-//                invLayer.addSublayer(oval)
-//            }
-//        }
-        
         for _ in 0...2
         {
             let triLayer = CALayer()
@@ -492,6 +489,12 @@ class HarmonizerView: UIView {
             triadbuttons.append(triLayer)
             containerLayer.addSublayer(triLayer)
         }
+        
+        presetNextButton.string = ">"
+        containerLayer.addSublayer(presetNextButton)
+        presetPrevButton.string = "<"
+        containerLayer.addSublayer(presetPrevButton)
+        
         
         configbutton.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
         configbutton.backgroundColor = UIColor.white.cgColor
@@ -599,8 +602,10 @@ class HarmonizerView: UIView {
             
             containerLayer.bounds = layer.bounds
             
-            let keywidth = containerLayer.frame.width / 13
+            //let keywidth = containerLayer.frame.width / 13
             let spacing = containerLayer.frame.width / 12
+            let keywidth = spacing * 0.95
+            let keyoffset = (spacing - keywidth)/2
             
             keysLayer.frame = CGRect(
                 x: 0, y: containerLayer.frame.height - keywidth * 4,
@@ -613,29 +618,14 @@ class HarmonizerView: UIView {
                     var height = CGFloat(j + 1) * spacing
                     if blackkeys.contains(i)
                     {
-                        height = height + keywidth * 0.25
+                        height = height + keywidth * 0.1
                     }
                     
-                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + 4, y: keysLayer.frame.height - height, width: keywidth, height: keywidth)
+                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + keyoffset, y: keysLayer.frame.height - height, width: keywidth, height: keywidth)
                 }
             }
             
-//            for j in 0...2
-//            {
-//                invbuttons[j].frame = CGRect(x: CGFloat(j+1) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
-//
-//                let sublayers = invbuttons[j].sublayers!
-//                let pipheight = 4
-//                for l in 0...sublayers.count - 1
-//                {
-//                    let xpos = invbuttons[j].frame.width / 4
-//                    let ypos = invbuttons[j].frame.height * CGFloat(l+2) / 6 - CGFloat(pipheight) / 2
-//
-//                    sublayers[l].frame = CGRect(x: xpos, y: ypos, width: invbuttons[j].frame.width * CGFloat(1.0/2.0), height: CGFloat(pipheight))
-//                }
-//            }
-            
-            nvoicesLayer.frame = CGRect(x: 4 + spacing, y: keywidth / 4, width: 4 * spacing - 4, height: keywidth)
+            nvoicesLayer.frame = CGRect(x: keyoffset + spacing * 2, y: keyoffset, width: 4 * spacing - keyoffset, height: keywidth)
             
             let sublayers = nvoicesLayer.sublayers!
             let pipheight = 8
@@ -655,17 +645,21 @@ class HarmonizerView: UIView {
                 }
             }
             
-            for j in 0...2
-            {
-                triadbuttons[j].frame = CGRect(x: CGFloat(j+5) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
-            }
+//            for j in 0...2
+//            {
+//                triadbuttons[j].frame = CGRect(x: CGFloat(j+5) * spacing + 4, y: keywidth / 4, width: keywidth, height: keywidth)
+//            }
             
-            configbutton.frame = CGRect(x: 4 + spacing * 11, y: keywidth / 4, width: keywidth, height: keywidth)
-            autobutton.frame = CGRect(x: 4, y: keywidth / 4 + spacing, width: keywidth, height: keywidth)
+           
             
-            presetbutton.frame = CGRect(x: 4 + spacing * 8, y: keywidth / 4, width: keywidth*3 + 4, height: keywidth)
+            midibutton.frame = CGRect(x: keyoffset, y: keyoffset, width: keywidth, height: keywidth)
+            autobutton.frame = CGRect(x: keyoffset + spacing, y: keyoffset, width: keywidth, height: keywidth)
             
-            midibutton.frame = CGRect(x: 4, y: keywidth / 4, width: keywidth, height: keywidth)
+            presetPrevButton.frame = CGRect(x: keyoffset + spacing * 6, y: keyoffset, width: keywidth, height: keywidth)
+            presetbutton.frame = CGRect(x: keyoffset + spacing * 7, y: keyoffset, width: spacing*3 - keyoffset, height: keywidth)
+            presetNextButton.frame = CGRect(x: keyoffset + spacing * 10, y: keyoffset, width: keywidth, height: keywidth)
+            
+            configbutton.frame = CGRect(x: keyoffset + spacing * 11, y: keyoffset, width: keywidth, height: keywidth)
             
             CATransaction.commit()
         }
@@ -698,9 +692,22 @@ class HarmonizerView: UIView {
             self.setSelectedVoices(Int(p), inversion: Int(inv))
             //self.setSelectedInversion(Float(inv))
         }
-        
     }
     
+    func processKeycenterTouch(point: CGPoint) {
+        let pointOfTouch = CGPoint(x: point.x, y: point.y + keysLayer.frame.height - containerLayer.frame.height)
+        
+        for j in 0...35
+        {
+            if (keybuttons[j].hitTest(pointOfTouch) != nil)
+            {
+                self.setSelectedKeycenter(Float(j))
+                
+                // change key center parameter based on x value of touch
+                delegate?.harmonizerView(self, didChangeKeycenter: Float(j))
+            }
+        }
+    }
     
     // MARK: Touch Event Handling
     
@@ -710,26 +717,8 @@ class HarmonizerView: UIView {
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
         
         processVoicesTouch(point: pointOfTouch!)
-        
-//        for j in 0...2
-//        {
-//            if (invbuttons[j].hitTest(pointOfTouch!) != nil)
-//            {
-//                if (inversion != j)
-//                {
-//                    delegate?.filterView(self, didChangeInversion: Float(j))
-//                    delegate?.filterView(self, didChangeEnable: 1)
-//                    inversion = j
-//                }
-//                else
-//                {
-//                    inversion = -1
-//                    delegate?.filterView(self, didChangeEnable: 0)
-//                }
-//
-//                self.setSelectedInversion(Float(inversion))
-//            }
-//        }
+        processKeycenterTouch(point: pointOfTouch!)
+
         
         for j in 0...triadbuttons.count-1
         {
@@ -742,6 +731,17 @@ class HarmonizerView: UIView {
 //                delegate?.filterView(self, didChangeTriad: Float(triads[j]))
 //                triad_override = true
             }
+        }
+        
+        if (presetPrevButton.hitTest(pointOfTouch!) != nil)
+        {
+            delegate?.harmonizerView(self, didIncrementPreset: -1)
+            //presetPrevButton.isSelected = true
+        }
+        if (presetNextButton.hitTest(pointOfTouch!) != nil)
+        {
+            delegate?.harmonizerView(self, didIncrementPreset: 1)
+            //presetNextButton.isSelected = true
         }
         
         if (configbutton.hitTest(pointOfTouch!) != nil)
@@ -790,18 +790,7 @@ class HarmonizerView: UIView {
             delegate?.harmonizerView(self, didChangeMidi: Float(midi_enable))
         }
         
-        pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y + keysLayer.frame.height - containerLayer.frame.height)
         
-        for j in 0...35
-        {
-            if (keybuttons[j].hitTest(pointOfTouch!) != nil)
-            {
-                self.setSelectedKeycenter(Float(j))
-                
-                // change key center parameter based on x value of touch
-                delegate?.harmonizerView(self, didChangeKeycenter: Float(j))
-            }
-        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -837,6 +826,9 @@ class HarmonizerView: UIView {
             delegate?.harmonizerView(self, didChangeTriad: Float(-1))
             triad_override = false
         }
+        
+        //presetNextButton.isSelected = false
+        //presetPrevButton.isSelected = false
         
         touchDown = false
     }
