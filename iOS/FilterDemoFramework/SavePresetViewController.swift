@@ -64,7 +64,7 @@ public class SavePresetViewController: UIViewController, UITextFieldDelegate
         //setPreset(vc!.presetIx)
     }
     
-    private func textFieldShouldReturn(textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.presetName.resignFirstResponder()
         return true
     }

@@ -207,17 +207,15 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     {
         loadPresets()
         
-        if (true)
-        {
-            generatePresets()
-            storePresets()
-        }
-        
         let f = stateURL()
         let s = NSKeyedUnarchiver.unarchiveObject(withFile: f.path) as? [String: Any]
         if (s != nil)
         {
             self.audioUnit!.fullState = s
+        }
+        else
+        {
+            harmonizerView.preset = audioUnit!.currentPreset?.name
         }
     }
     
@@ -229,15 +227,27 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     
     func storePresets()
     {
-        NSKeyedArchiver.archiveRootObject(presets, toFile: presetURL().path)
+        let obj = ["presets": presets,"presetIx": presetIx] as [String : Any]
+        NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
     }
     
     func loadPresets()
     {
-        let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL().path) as? [Preset]
+        let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL().path) as? [String : Any]
         if (p != nil)
         {
-            presets = p!
+            presets = p!["presets"] as! [Preset]
+            presetIx = p!["presetIx"] as! Int
+            print(p!["presetIx"])
+//            presets = (p!["presets"] as? [Preset])!
+//            presetIx = (p!["presetIx"] as? Int)!
+            //harmonizerView.preset = presets[presetIx].name
+            harmonizerView(harmonizerView, didChangePreset: presetIx)
+        }
+        else
+        {
+            generatePresets()
+            storePresets()
         }
     }
     
@@ -259,7 +269,12 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         }
     }
     
-    func harmonizerView(_ filterView: HarmonizerView, didChangePreset preset: Int) {
+    func selectPreset(preset: Int)
+    {
+        
+    }
+    
+    func harmonizerView(_ view: HarmonizerView, didChangePreset preset: Int) {
         print("setting preset index to \(preset)")
         
         if (preset < presets.count && preset >= 0) {
@@ -274,7 +289,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
                 self.audioUnit!.fullState = p.data as? [String: Any]
             }
             
-            filterView.preset = p.name
+            view.presetPrevButton.isEnabled = (presetIx > 0)
+            view.presetNextButton.isEnabled = (presetIx < presets.count - 1)
+            
+            view.preset = p.name
+            storePresets()
             presetModified = false
         }
     }
@@ -289,6 +308,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         {
             harmonizerView(view, didChangePreset: presetIx + 1)
         }
+        print(presetIx)
+        
     }
     
     func harmonizerViewSavePreset(_ filterVew: HarmonizerView)
@@ -352,7 +373,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         configController!.refresh()
         
         //harmonizerView.presets = (audioUnit?.factoryPresets)!
-        harmonizerView.preset = audioUnit!.currentPreset?.name
+        //harmonizerView.preset = audioUnit!.currentPreset?.name
         
         harmonizerView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
         harmonizerView.setSelectedKeycenter(keycenterParameter!.value)

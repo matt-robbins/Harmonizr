@@ -730,7 +730,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "FilterDemo" */;
+			buildConfigurationList = 91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "Harmonizer" */;
 			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1674,7 +1674,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "FilterDemo" */ = {
+		91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "Harmonizer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91D3DA101B023C03008FFFBB /* Debug */,

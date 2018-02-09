@@ -65,6 +65,12 @@ class GlowButton: VerticallyCenteredTextLayer {
         masksToBounds = false
     }
 
+    override init(layer: Any)
+    {
+        self.isSelected = false
+        super.init(layer: layer)
+    }
+    
     override init() {
         keycenter = 0
         self.isSelected = false
@@ -82,15 +88,20 @@ class GlowButton: VerticallyCenteredTextLayer {
     
     var isSelected: Bool {
         didSet {
-            switch isSelected {
-            case true:
-                borderColor = UIColor.cyan.cgColor
-                shadowOpacity = 1.0
-                
-            case false:
-                borderColor = UIColor.darkGray.cgColor
-                shadowOpacity = 0.0
+            if ( isSelected && isEnabled ) {
+                self.borderColor = UIColor.cyan.cgColor
+                self.shadowOpacity = 1.0
             }
+            else {
+                self.borderColor = UIColor.darkGray.cgColor
+                self.shadowOpacity = 0.0
+            }
+        }
+    }
+    
+    var isEnabled: Bool = true {
+        didSet {
+            opacity = isEnabled ? 1.0 : 0.5
         }
     }
 }
@@ -736,12 +747,12 @@ class HarmonizerView: UIView {
         if (presetPrevButton.hitTest(pointOfTouch!) != nil)
         {
             delegate?.harmonizerView(self, didIncrementPreset: -1)
-            //presetPrevButton.isSelected = true
+            presetPrevButton.isSelected = true
         }
         if (presetNextButton.hitTest(pointOfTouch!) != nil)
         {
             delegate?.harmonizerView(self, didIncrementPreset: 1)
-            //presetNextButton.isSelected = true
+            presetNextButton.isSelected = true
         }
         
         if (configbutton.hitTest(pointOfTouch!) != nil)
@@ -827,8 +838,8 @@ class HarmonizerView: UIView {
             triad_override = false
         }
         
-        //presetNextButton.isSelected = false
-        //presetPrevButton.isSelected = false
+        presetNextButton.isSelected = false
+        presetPrevButton.isSelected = false
         
         touchDown = false
     }
