@@ -808,6 +808,7 @@ class HarmonizerView: UIView {
         var pointOfTouch = touches.first?.location(in: self)
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
         processVoicesTouch(point: pointOfTouch!)
+        processKeycenterTouch(point: pointOfTouch!)
         
     }
     
