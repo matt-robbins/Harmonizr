@@ -238,7 +238,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         {
             presets = p!["presets"] as! [Preset]
             presetIx = p!["presetIx"] as! Int
-            print(p!["presetIx"])
 //            presets = (p!["presets"] as? [Preset])!
 //            presetIx = (p!["presetIx"] as? Int)!
             //harmonizerView.preset = presets[presetIx].name

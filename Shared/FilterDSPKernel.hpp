@@ -522,7 +522,7 @@ public:
                 voices[0].ix1 += ncbuf;
             
             int ix1i = (int) voices[0].ix1;
-            *out = cubic(cbuf + ix1i, voices[0].ix1 - ix1i) /2.0;
+            *out = voicegain * cubic(cbuf + ix1i, voices[0].ix1 - ix1i) /2.0;
             
             *out2 = *out;
             
@@ -617,8 +617,8 @@ public:
                     i = (int) wi;
                     float w = cubic (grain_window + i, wi - i);
                     
-                    *out += u * w * g.gain * (g.pan + 1.0)/2;
-                    *out2 += u * w * g.gain * (-g.pan + 1)/2;
+                    *out += u * w * harmgain * g.gain * (g.pan + 1.0)/2;
+                    *out2 += u * w * harmgain * g.gain * (-g.pan + 1)/2;
                     g.ix += g.ratio;
                     
                     if (g.ix > g.size)

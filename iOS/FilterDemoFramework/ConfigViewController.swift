@@ -74,8 +74,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
                       "U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
         
         doneButton.title = "Done"
-        
-        refresh()
     }
     
     public func refresh()
