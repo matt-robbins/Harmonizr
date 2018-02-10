@@ -36,6 +36,9 @@ typedef struct voice_s
     float nextgrain;
     float pan;
     float ix1;
+    float ix2;
+    int xfade_ix;
+    int xfade_dur;
     int midinote;
     int midivel;
     int lastnote;
@@ -138,6 +141,10 @@ public:
             voices[k].target_ratio = 1.0;
             voices[k].formant_ratio = 1;
             voices[k].nextgrain = 250;
+            voices[k].ix1 = 0;
+            voices[k].ix2 = 0;
+            voices[k].xfade_ix = 0;
+            voices[k].xfade_dur = 0;
             
             if (k >= 3)
             {
@@ -506,33 +513,45 @@ public:
             
             // voice 0 uses simple cubic resampling instead of PSOLA (if pitch correction is used)
             
-            int dx1 = cix - (int) voices[0].ix1;
-            if (dx1 < 0) dx1 += ncbuf;
+            int first_psola_voice = 0;
             
-            if (dx1 > 512 + (int) T)
-                voices[0].ix1 += T;
-            
-            if (dx1 < 512 - (int) T)
-                voices[0].ix1 -= T;
-            
-            voices[0].ix1 += voices[0].ratio;
-            if (voices[0].ix1 >= ncbuf)
-                voices[0].ix1 -= ncbuf;
-            if (voices[0].ix1 < 0)
-                voices[0].ix1 += ncbuf;
-            
-            int ix1i = (int) voices[0].ix1;
-            *out = voicegain * cubic(cbuf + ix1i, voices[0].ix1 - ix1i) /2.0;
-            
-            *out2 = *out;
-            
-            for (int vix = 1; vix < nvoices; vix++)
+            if (!autotune)
+            {
+                first_psola_voice = 1;
+                
+                int dx1 = cix - (int) voices[0].ix1;
+                if (dx1 < 0) dx1 += ncbuf;
+
+                if (dx1 > 512 + (int) T)
+                {
+                    voices[0].ix1 += T;
+                }
+
+                if (dx1 < 512 - (int) T)
+                {
+                    voices[0].ix1 -= T;
+                }
+
+                voices[0].ix1 += voices[0].ratio;
+
+                if (voices[0].ix1 >= ncbuf)
+                    voices[0].ix1 -= ncbuf;
+                if (voices[0].ix1 < 0)
+                    voices[0].ix1 += ncbuf;
+
+                int ix1i = (int) voices[0].ix1;
+                *out = voicegain * cubic(cbuf + ix1i, voices[0].ix1 - ix1i) / 2;
+
+                *out2 = *out;
+            }
+    
+            for (int vix = first_psola_voice; vix < nvoices; vix++)
             {
                 if (voices[vix].midinote == -1 || (vix > n_auto && !midi_enable))
                     continue;
                 
                 float unvoiced_offset = 0;
-                if (!voiced)
+                if (!voiced && vix > 0)
                 {
                     continue;
                     //unvoiced_offset = T * (0.5 - (float) rand() / RAND_MAX);
