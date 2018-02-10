@@ -39,6 +39,11 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
         audioUnit!.currentPreset = audioUnit!.factoryPresets![row]
     }
     
+    public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        
+        return NSAttributedString(string: audioUnit!.factoryPresets![row].name, attributes: [NSForegroundColorAttributeName:UIColor.white])
+    }
+    
     public override func viewDidLoad()
     {
         super.viewDidLoad()

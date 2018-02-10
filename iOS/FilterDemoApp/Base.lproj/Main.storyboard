@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,78 +23,56 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZU-Ig-hQr">
-                                <rect key="frame" x="0.0" y="28" width="667" height="347"/>
+                                <rect key="frame" x="0.0" y="32" width="667" height="343"/>
                             </containerView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="awX-J2-WjW" userLabel="Bluetooth Button">
-                                <rect key="frame" x="580" y="0.0" width="67" height="28"/>
-                                <state key="normal" title="Bluetooth">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="togglePlay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L06-Zo-ks1"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="ReverbButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J0v-IL-F6q" userLabel="Reverb Button">
-                                <rect key="frame" x="20" y="0.0" width="48" height="30"/>
-                                <gestureRecognizers/>
-                                <state key="normal" title="Reverb">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="j2l-fP-4rH" appends="YES" id="cZz-5n-C6c"/>
-                                    <outletCollection property="gestureRecognizers" destination="Sdp-z9-D4E" appends="YES" id="a3S-Ke-u4h"/>
-                                    <segue destination="n4r-Op-aTt" kind="popoverPresentation" identifier="mainToReverb" popoverAnchorView="J0v-IL-F6q" id="bnj-17-dve">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TLo-gm-uKc">
-                                <rect key="frame" x="233" y="-2" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="&lt;">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Preset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9K-zX-X7i">
-                                <rect key="frame" x="271" y="5" width="50" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="djO-xP-hn4">
-                                <rect key="frame" x="379" y="0.0" width="34" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" button="YES" notEnabled="YES"/>
-                                </accessibility>
-                                <state key="normal" title="Save">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PHT-zY-vY1">
-                                <rect key="frame" x="329" y="0.0" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="&gt;">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dpu-iJ-Adv">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="32"/>
+                                <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="Harmonizer" id="YoL-wX-Owe">
+                                        <barButtonItem key="leftBarButtonItem" style="plain" id="IrA-bn-cW2">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" restorationIdentifier="ReverbButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="J0v-IL-F6q" userLabel="Reverb Button">
+                                                <rect key="frame" x="20" y="1" width="48" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <gestureRecognizers/>
+                                                <state key="normal" title="Reverb">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="Sdp-z9-D4E" appends="YES" id="a3S-Ke-u4h"/>
+                                                    <outletCollection property="gestureRecognizers" destination="j2l-fP-4rH" appends="YES" id="cZz-5n-C6c"/>
+                                                    <segue destination="n4r-Op-aTt" kind="presentation" identifier="mainToReverb" id="bnj-17-dve"/>
+                                                </connections>
+                                            </button>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="dww-ii-zW8">
+                                            <button key="customView" opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="awX-J2-WjW" userLabel="Bluetooth Button">
+                                                <rect key="frame" x="580" y="1" width="67" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Bluetooth">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="togglePlay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L06-Zo-ks1"/>
+                                                </connections>
+                                            </button>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="J0v-IL-F6q" secondAttribute="trailingMargin" id="3uA-Uk-UJn"/>
-                            <constraint firstItem="J0v-IL-F6q" firstAttribute="top" secondItem="awX-J2-WjW" secondAttribute="top" id="7XS-vO-6hp"/>
-                            <constraint firstItem="J0v-IL-F6q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9Nu-yf-vmc"/>
-                            <constraint firstAttribute="trailing" secondItem="awX-J2-WjW" secondAttribute="trailing" constant="20" id="AZX-HX-v6A"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="CQx-Xb-Bt7"/>
-                            <constraint firstItem="awX-J2-WjW" firstAttribute="trailing" secondItem="oZU-Ig-hQr" secondAttribute="trailing" constant="-20" id="GLq-WN-r7W"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="awX-J2-WjW" secondAttribute="bottom" id="Rus-ZD-zjX"/>
-                            <constraint firstItem="J0v-IL-F6q" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="UqF-GM-1eD"/>
-                            <constraint firstItem="awX-J2-WjW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="VEH-qJ-d8p"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="dAp-et-aaP"/>
-                            <constraint firstItem="awX-J2-WjW" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eBF-lL-B1v"/>
-                            <constraint firstItem="J0v-IL-F6q" firstAttribute="firstBaseline" secondItem="awX-J2-WjW" secondAttribute="baseline" id="fNx-2f-IgK"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="28" id="kZt-0s-VLj"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="leading" secondItem="dpu-iJ-Adv" secondAttribute="leading" id="Afu-kf-2Dr"/>
+                            <constraint firstAttribute="trailing" secondItem="dpu-iJ-Adv" secondAttribute="trailing" id="I6p-TL-BuB"/>
+                            <constraint firstItem="dpu-iJ-Adv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Pkg-uF-noG"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="QTb-8t-2mh"/>
+                            <constraint firstItem="dpu-iJ-Adv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Z4K-2O-CLh"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="trailing" secondItem="dpu-iJ-Adv" secondAttribute="trailing" id="hfF-Un-o5r"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="dpu-iJ-Adv" secondAttribute="bottom" id="yAz-fr-kQj"/>
                         </constraints>
                     </view>
                     <connections>
@@ -116,7 +93,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="302.89855072463769" y="270.6521739130435"/>
+            <point key="canvasLocation" x="302.6986506746627" y="269.60000000000002"/>
         </scene>
         <!--Reverb View Controller-->
         <scene sceneID="t9P-R6-5hi">
@@ -130,19 +107,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BM2-La-Z6c">
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BM2-La-Z6c">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="32"/>
+                                <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
                                 <items>
                                     <navigationItem title="Reverb" id="WH3-Cf-EII">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="IOb-rg-kWo">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Fcx-vi-Fbg">
                                                 <rect key="frame" x="20" y="1" width="37" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Done"/>
+                                                <state key="normal" title="Done">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="done:" destination="n4r-Op-aTt" eventType="touchUpInside" id="4g7-wy-fLL"/>
                                                 </connections>
                                             </button>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
@@ -150,8 +134,9 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wtv-0h-TN6">
                                 <rect key="frame" x="20" y="32" width="627" height="343"/>
                                 <subviews>
-                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tRI-V3-Uos">
+                                    <pickerView contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="tRI-V3-Uos">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="343"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="Iio-ps-l9F"/>
                                         </constraints>
@@ -165,13 +150,13 @@
                                                     <constraint firstAttribute="width" constant="100" id="4Em-b1-kof"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beM-Z4-YUW">
                                                 <rect key="frame" x="0.0" y="171.5" width="100" height="171.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -196,7 +181,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="BM2-La-Z6c" firstAttribute="leading" secondItem="c7m-dc-X4X" secondAttribute="leading" id="8BX-Mp-Mqa"/>
                             <constraint firstItem="wtv-0h-TN6" firstAttribute="top" secondItem="BM2-La-Z6c" secondAttribute="bottom" id="BAF-5z-fLc"/>

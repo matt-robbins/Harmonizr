@@ -57,7 +57,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     var paramTree: AUParameterTree?
     
     var keyQuality = 0
-    var unisonOffset = 2
+    var unisonOffset = 12
     var nc = 4
         
     public override func viewDidLoad()
@@ -70,7 +70,8 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             self.intervalChoosers[k].dataSource = self
         }
 
-        pickerData = ["-2","-1","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
+        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1",
+                      "U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
         
         doneButton.title = "Done"
         

@@ -102,6 +102,7 @@ class ViewController: UIViewController {
         })
         
         reverbMixParam = audioEngine.reverbUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
+        reverbMixParam?.value = 5
 	}
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -194,24 +195,14 @@ class ViewController: UIViewController {
         
         btMidiViewController.navigationItem.rightBarButtonItem =
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ViewController.dismissPopover))
-        navController.modalPresentationStyle = UIModalPresentationStyle.popover
+        //navController.modalPresentationStyle = UIModalPresentationStyle.popover
         
         self.present(navController, animated: true, completion: nil)
 	}
 	
     @IBAction func toggleReverb(_ sender: UITapGestureRecognizer)
     {
-        if reverbEnabled {
-            reverbMix = reverbMixParam!.value
-            reverbMixParam!.value = 0
-            reverbButton.setTitleColor(UIColor.gray, for: UIControlState())
-            reverbEnabled = false
-        }
-        else {
-            reverbMixParam!.value = reverbMix
-            reverbButton.setTitleColor(UIColor.white, for: UIControlState())
-            reverbEnabled = true
-        }
+        performSegue(withIdentifier: "mainToReverb", sender: self)
         //self.audioEngine.start()
     }
     @IBAction func configureReverb(_ sender: UILongPressGestureRecognizer) {

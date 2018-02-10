@@ -81,7 +81,10 @@ enum {
     HarmParamTriad = 5,
     HarmParamBypass = 6,
     HarmParamDouble = 7,
-    HarmParamInterval = 8,
+    HarmParamHgain = 8,
+    HarmParamVgain = 9,
+    HarmParamSpeed = 10,
+    HarmParamInterval = 11
 };
 
 static inline double squared(double x) {
@@ -317,6 +320,15 @@ public:
                 bypass = (int) clamp(value,0.f,1.f);
                 printf("set bypass to %d\n", bypass);
                 break;
+            case HarmParamHgain:
+                harmgain = clamp(value, 0.f, 1.f);
+                break;
+            case HarmParamVgain:
+                voicegain = clamp(value, 0.f, 1.f);
+                break;
+            case HarmParamSpeed:
+                speed = clamp(value, 0.f, 1.f);
+                break;
             case HarmParamInterval:
             default:
                 int addr = (int) address - (int) HarmParamInterval;
@@ -352,6 +364,12 @@ public:
                 return (float) triad;
             case HarmParamBypass:
                 return (float) bypass;
+            case HarmParamHgain:
+                return harmgain;
+            case HarmParamVgain:
+                return voicegain;
+            case HarmParamSpeed:
+                return speed;
 				
             case HarmParamInterval:
             default:
@@ -1026,6 +1044,9 @@ private:
     int keycenter = 0;
     float midinotes[128];
     float midigain = 1.0;
+    float harmgain = 1.0;
+    float voicegain = 1.0;
+    float speed = 1.0;
     int autotune = 1;
     int bypass = 0;
     

@@ -154,6 +154,24 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
          min:-1 max:30 unit:kAudioUnitParameterUnit_Indexed unitName:nil
          flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
          valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *hgainParam = [AUParameterTree createParameterWithIdentifier:@"h_gain" name:@"Harmony Gain"
+         address:HarmParamHgain
+             min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+           flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+            valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *vgainParam = [AUParameterTree createParameterWithIdentifier:@"v_gain" name:@"Voice Gain"
+                                                                     address:HarmParamVgain
+                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *speedParam = [AUParameterTree createParameterWithIdentifier:@"speed" name:@"Speed"
+                                                                     address:HarmParamSpeed
+                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                valueStrings:nil dependentParameters:nil];
 
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
     
@@ -164,6 +182,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:midiParam];
     [params addObject:triadParam];
     [params addObject:bypassParam];
+    [params addObject:hgainParam];
+    [params addObject:vgainParam];
+    [params addObject:speedParam];
         
     for (int k = 0; k < 144; k++)
     {
@@ -186,6 +207,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     midiParam.value = 1;
     triadParam.value = -1;
     bypassParam.value = 0;
+    vgainParam.value = 1;
+    hgainParam.value = 1;
+    speedParam.value = 1;
     
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     _kernel.setParameter(HarmParamInversion, inversionParam.value);
