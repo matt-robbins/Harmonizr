@@ -71,6 +71,7 @@
 		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
 		C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
 		C9DAB90B1FA3BF8900DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
+		C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DFC5E4202F96E900CC776F /* InputViewController.swift */; };
 		C9ECAD4C1FA5367500E69A2D /* bt_icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */; };
 		C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */; };
 		C9FD73F41F8BC69D00346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F31F8BC69D00346E31 /* Accelerate.framework */; };
@@ -241,6 +242,7 @@
 		C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiReceiver.swift; sourceTree = "<group>"; };
 		C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9DAB9091FA3BF8700DBB180 /* midi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = midi.png; path = ../../../../../Desktop/midi.png; sourceTree = "<group>"; };
+		C9DFC5E4202F96E900CC776F /* InputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = bt_icon.svg; path = ../../../../../Desktop/bt_icon.svg; sourceTree = "<group>"; };
 		C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbViewController.swift; sourceTree = "<group>"; };
 		C9FD73F31F8BC69D00346E31 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -365,6 +367,7 @@
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
 				91236D1B1B08F42B00734C5E /* Info.plist */,
 				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
+				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
 			);
 			name = FilterDemoApp;
 			path = iOS/FilterDemoApp;
@@ -817,6 +820,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */,
 				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
 				C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */,
