@@ -295,6 +295,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
             storePresets()
             presetModified = false
         }
+        
+        syncView()
     }
     
     func harmonizerView(_ view: HarmonizerView, didIncrementPreset preset: Int)
@@ -368,18 +370,22 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
                                           execute: requestWorkItem)
 		})
         
-        
         configController!.refresh()
         
         //harmonizerView.presets = (audioUnit?.factoryPresets)!
         //harmonizerView.preset = audioUnit!.currentPreset?.name
         
+        syncView()
+	}
+    
+    private func syncView()
+    {
         harmonizerView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
         harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
         harmonizerView.inversion = Int(inversionParameter!.value)
         harmonizerView.bypass = Int(bypassParameter!.value)
         harmonizerView.auto_enable = Int(autoParameter!.value)
         harmonizerView.midi_enable = Int(midiParameter!.value)
-	}
+    }
     
 }

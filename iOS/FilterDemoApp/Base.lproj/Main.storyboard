@@ -242,7 +242,7 @@
                                                 <rect key="frame" x="0.0" y="28" width="216" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mex-5A-gdu" id="jt0-VS-AR2">
-                                                    <rect key="frame" x="0.0" y="0.0" width="216" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="216" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableViewCellContentView>
                                             </tableViewCell>
@@ -271,7 +271,7 @@
                                                         <rect key="frame" x="0.0" y="28" width="216" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="P56-sf-4kq" id="c0V-gT-2Ln">
-                                                            <rect key="frame" x="0.0" y="0.0" width="216" height="43.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="216" height="43"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
