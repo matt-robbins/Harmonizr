@@ -361,13 +361,13 @@
 				C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */,
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				C92389A520065700008C76AB /* PresetEngine.swift */,
+				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
+				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
 				C94FC87B202C96F60009E742 /* AppIcon.appiconset */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
 				91236D1B1B08F42B00734C5E /* Info.plist */,
-				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
-				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
 			);
 			name = FilterDemoApp;
 			path = iOS/FilterDemoApp;
