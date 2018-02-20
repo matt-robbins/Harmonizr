@@ -335,7 +335,7 @@
 		30AEE0F81BA3510D00302EB1 /* Filter (iOS) */ = {
 			isa = PBXGroup;
 			children = (
-				91236D0E1B08F42B00734C5E /* FilterDemoApp */,
+				91236D0E1B08F42B00734C5E /* HarmonizerApp */,
 				91236D561B08F52D00734C5E /* FilterDemoFramework */,
 				91236D781B08F59300734C5E /* HarmonizerExtension */,
 			);
@@ -352,7 +352,7 @@
 			name = "Filter (OS X)";
 			sourceTree = "<group>";
 		};
-		91236D0E1B08F42B00734C5E /* FilterDemoApp */ = {
+		91236D0E1B08F42B00734C5E /* HarmonizerApp */ = {
 			isa = PBXGroup;
 			children = (
 				91236D0F1B08F42B00734C5E /* AppDelegate.swift */,
@@ -369,8 +369,8 @@
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
 				91236D1B1B08F42B00734C5E /* Info.plist */,
 			);
-			name = FilterDemoApp;
-			path = iOS/FilterDemoApp;
+			name = HarmonizerApp;
+			path = iOS/HarmonizerApp;
 			sourceTree = "<group>";
 		};
 		91236D561B08F52D00734C5E /* FilterDemoFramework */ = {
