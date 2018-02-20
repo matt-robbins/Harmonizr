@@ -27,7 +27,7 @@
 		91236D811B08F59300734C5E /* FilterDemoAppExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
 		91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 91236D8D1B08FB0300734C5E /* FilterDemo.mm */; };
-		91236D921B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D911B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift */; };
+		91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D911B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift */; };
 		916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916233C71B127A5000DBD15D /* MainInterface.storyboard */; };
 		91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A9356A1B1269F100370383 /* HarmonizerView.swift */; };
 		91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
@@ -195,7 +195,7 @@
 		91236D7E1B08F59300734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
 		91236D8D1B08FB0300734C5E /* FilterDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterDemo.mm; sourceTree = "<group>"; };
-		91236D911B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FilterDemoViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
+		91236D911B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HarmonizerViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
 		9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmonizerViewController.swift; sourceTree = "<group>"; };
 		916233C81B127A5000DBD15D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		91A9356A1B1269F100370383 /* HarmonizerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmonizerView.swift; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 			children = (
 				91236D0E1B08F42B00734C5E /* FilterDemoApp */,
 				91236D561B08F52D00734C5E /* FilterDemoFramework */,
-				91236D781B08F59300734C5E /* FilterDemoAppExtension */,
+				91236D781B08F59300734C5E /* HarmonizerExtension */,
 			);
 			name = "Filter (iOS)";
 			sourceTree = "<group>";
@@ -393,15 +393,15 @@
 			path = iOS/FilterDemoFramework;
 			sourceTree = "<group>";
 		};
-		91236D781B08F59300734C5E /* FilterDemoAppExtension */ = {
+		91236D781B08F59300734C5E /* HarmonizerExtension */ = {
 			isa = PBXGroup;
 			children = (
-				91236D911B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift */,
+				91236D911B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift */,
 				916233C71B127A5000DBD15D /* MainInterface.storyboard */,
 				91236D7E1B08F59300734C5E /* Info.plist */,
 			);
-			name = FilterDemoAppExtension;
-			path = iOS/FilterDemoAppExtension;
+			name = HarmonizerExtension;
+			path = iOS/HarmonizerExtension;
 			sourceTree = "<group>";
 		};
 		91236D861B08F64600734C5E /* SimplePlayEngine */ = {
@@ -566,9 +566,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		91236D0C1B08F42B00734C5E /* iOSFilterDemoApp */ = {
+		91236D0C1B08F42B00734C5E /* iOSHarmonizerApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 91236D271B08F42B00734C5E /* Build configuration list for PBXNativeTarget "iOSFilterDemoApp" */;
+			buildConfigurationList = 91236D271B08F42B00734C5E /* Build configuration list for PBXNativeTarget "iOSHarmonizerApp" */;
 			buildPhases = (
 				91236D091B08F42B00734C5E /* Sources */,
 				91236D0A1B08F42B00734C5E /* Frameworks */,
@@ -582,14 +582,14 @@
 				91236D691B08F52E00734C5E /* PBXTargetDependency */,
 				91236D801B08F59300734C5E /* PBXTargetDependency */,
 			);
-			name = iOSFilterDemoApp;
+			name = iOSHarmonizerApp;
 			productName = "FilterDemoApp-iOS";
 			productReference = 91236D0D1B08F42B00734C5E /* FilterDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		91236D541B08F52D00734C5E /* iOSFilterDemoFramework */ = {
+		91236D541B08F52D00734C5E /* iOSHarmonizerFramework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 91236D6C1B08F52E00734C5E /* Build configuration list for PBXNativeTarget "iOSFilterDemoFramework" */;
+			buildConfigurationList = 91236D6C1B08F52E00734C5E /* Build configuration list for PBXNativeTarget "iOSHarmonizerFramework" */;
 			buildPhases = (
 				91236D501B08F52D00734C5E /* Sources */,
 				91236D511B08F52D00734C5E /* Frameworks */,
@@ -600,7 +600,7 @@
 			);
 			dependencies = (
 			);
-			name = iOSFilterDemoFramework;
+			name = iOSHarmonizerFramework;
 			productName = "FilterDemoFramework-iOS";
 			productReference = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -746,8 +746,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				91236D0C1B08F42B00734C5E /* iOSFilterDemoApp */,
-				91236D541B08F52D00734C5E /* iOSFilterDemoFramework */,
+				91236D0C1B08F42B00734C5E /* iOSHarmonizerApp */,
+				91236D541B08F52D00734C5E /* iOSHarmonizerFramework */,
 				91236D761B08F59300734C5E /* iOSFilterDemoAppExtension */,
 				92FF864A1B9A4D97007C9389 /* OSXFilterDemoApp */,
 				92FF867F1B9F4EDA007C9389 /* OSXFilterDemoFramework */,
@@ -852,7 +852,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C93163551FBDE2D700EE1762 /* HarmView.swift in Sources */,
-				91236D921B09439200734C5E /* FilterDemoViewController+AUAudioUnitFactory.swift in Sources */,
+				91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,7 +896,7 @@
 		};
 		91236D691B08F52E00734C5E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 91236D541B08F52D00734C5E /* iOSFilterDemoFramework */;
+			target = 91236D541B08F52D00734C5E /* iOSHarmonizerFramework */;
 			targetProxy = 91236D681B08F52E00734C5E /* PBXContainerItemProxy */;
 		};
 		91236D801B08F59300734C5E /* PBXTargetDependency */ = {
@@ -906,7 +906,7 @@
 		};
 		9152BF271B0957AC00D8C6A4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 91236D541B08F52D00734C5E /* iOSFilterDemoFramework */;
+			target = 91236D541B08F52D00734C5E /* iOSHarmonizerFramework */;
 			targetProxy = 9152BF261B0957AC00D8C6A4 /* PBXContainerItemProxy */;
 		};
 		92FF86731B9A525C007C9389 /* PBXTargetDependency */ = {
@@ -1002,7 +1002,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbins.DspApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
 				PRODUCT_NAME = FilterDemo;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1049,7 +1049,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbins.DspApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
 				PRODUCT_NAME = FilterDemo;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1109,7 +1109,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbins.DspAppFramework;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.HarmonizerFramework;
 				PRODUCT_NAME = FilterDemoFramework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1164,7 +1164,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbins.DspAppFramework;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.HarmonizerFramework;
 				PRODUCT_NAME = FilterDemoFramework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1214,12 +1214,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/FilterDemoAppExtension/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbins.DspApp.DspAppExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
 				PRODUCT_NAME = FilterDemoAppExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1260,11 +1260,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/FilterDemoAppExtension/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbins.DspApp.DspAppExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
 				PRODUCT_NAME = FilterDemoAppExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1653,7 +1653,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		91236D271B08F42B00734C5E /* Build configuration list for PBXNativeTarget "iOSFilterDemoApp" */ = {
+		91236D271B08F42B00734C5E /* Build configuration list for PBXNativeTarget "iOSHarmonizerApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91236D281B08F42B00734C5E /* Debug */,
@@ -1662,7 +1662,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		91236D6C1B08F52E00734C5E /* Build configuration list for PBXNativeTarget "iOSFilterDemoFramework" */ = {
+		91236D6C1B08F52E00734C5E /* Build configuration list for PBXNativeTarget "iOSHarmonizerFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91236D6D1B08F52E00734C5E /* Debug */,
