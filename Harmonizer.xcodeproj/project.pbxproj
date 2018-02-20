@@ -336,7 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				91236D0E1B08F42B00734C5E /* HarmonizerApp */,
-				91236D561B08F52D00734C5E /* FilterDemoFramework */,
+				91236D561B08F52D00734C5E /* HarmonizerFramework */,
 				91236D781B08F59300734C5E /* HarmonizerExtension */,
 			);
 			name = "Filter (iOS)";
@@ -373,7 +373,7 @@
 			path = iOS/HarmonizerApp;
 			sourceTree = "<group>";
 		};
-		91236D561B08F52D00734C5E /* FilterDemoFramework */ = {
+		91236D561B08F52D00734C5E /* HarmonizerFramework */ = {
 			isa = PBXGroup;
 			children = (
 				164896A61C925E0C00AB781D /* Shared */,
@@ -389,8 +389,8 @@
 				C93163541FBDE2D700EE1762 /* HarmView.swift */,
 				C923899F2003C467008C76AB /* SavePresetViewController.swift */,
 			);
-			name = FilterDemoFramework;
-			path = iOS/FilterDemoFramework;
+			name = HarmonizerFramework;
+			path = iOS/HarmonizerFramework;
 			sourceTree = "<group>";
 		};
 		91236D781B08F59300734C5E /* HarmonizerExtension */ = {
@@ -605,9 +605,9 @@
 			productReference = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		91236D761B08F59300734C5E /* iOSFilterDemoAppExtension */ = {
+		91236D761B08F59300734C5E /* iOSHarmonizerAppExtension */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 91236D821B08F59300734C5E /* Build configuration list for PBXNativeTarget "iOSFilterDemoAppExtension" */;
+			buildConfigurationList = 91236D821B08F59300734C5E /* Build configuration list for PBXNativeTarget "iOSHarmonizerAppExtension" */;
 			buildPhases = (
 				91236D731B08F59300734C5E /* Sources */,
 				91236D741B08F59300734C5E /* Frameworks */,
@@ -618,7 +618,7 @@
 			dependencies = (
 				9152BF271B0957AC00D8C6A4 /* PBXTargetDependency */,
 			);
-			name = iOSFilterDemoAppExtension;
+			name = iOSHarmonizerAppExtension;
 			productName = "FilterDemoAppExtension-iOS";
 			productReference = 91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -748,7 +748,7 @@
 			targets = (
 				91236D0C1B08F42B00734C5E /* iOSHarmonizerApp */,
 				91236D541B08F52D00734C5E /* iOSHarmonizerFramework */,
-				91236D761B08F59300734C5E /* iOSFilterDemoAppExtension */,
+				91236D761B08F59300734C5E /* iOSHarmonizerAppExtension */,
 				92FF864A1B9A4D97007C9389 /* OSXFilterDemoApp */,
 				92FF867F1B9F4EDA007C9389 /* OSXFilterDemoFramework */,
 				92FF86631B9A525C007C9389 /* OSXFilterDemoAppExtension */,
@@ -901,7 +901,7 @@
 		};
 		91236D801B08F59300734C5E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 91236D761B08F59300734C5E /* iOSFilterDemoAppExtension */;
+			target = 91236D761B08F59300734C5E /* iOSHarmonizerAppExtension */;
 			targetProxy = 91236D7F1B08F59300734C5E /* PBXContainerItemProxy */;
 		};
 		9152BF271B0957AC00D8C6A4 /* PBXTargetDependency */ = {
@@ -997,7 +997,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/FilterDemoApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -1045,7 +1045,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/FilterDemoApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -1103,7 +1103,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/FilterDemoFramework/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerFramework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1159,7 +1159,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = iOS/FilterDemoFramework/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerFramework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1671,7 +1671,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		91236D821B08F59300734C5E /* Build configuration list for PBXNativeTarget "iOSFilterDemoAppExtension" */ = {
+		91236D821B08F59300734C5E /* Build configuration list for PBXNativeTarget "iOSHarmonizerAppExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				91236D831B08F59300734C5E /* Debug */,

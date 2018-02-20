@@ -17,7 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "91236D761B08F59300734C5E"
                BuildableName = "FilterDemoAppExtension.appex"
-               BlueprintName = "iOSFilterDemoAppExtension"
+               BlueprintName = "iOSHarmonizerAppExtension"
                ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
