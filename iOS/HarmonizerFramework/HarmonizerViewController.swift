@@ -86,6 +86,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     var midiParameter: AUParameter?
     var triadParameter: AUParameter?
     var bypassParameter: AUParameter?
+    var speedParameter: AUParameter?
+    var gainParameter: AUParameter?
 	var parameterObserverToken: AUParameterObserverToken?
     
     var configController: ConfigViewController?
@@ -177,6 +179,14 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         bypassParameter?.value = bypass
     }
     
+    func harmonizerView(_ view: HarmonizerView, didChangeGain gain: Float)
+    {
+        gainParameter?.value = gain
+    }
+    func harmonizerView(_ view: HarmonizerView, didChangeSpeed speed: Float)
+    {
+        speedParameter?.value = speed
+    }
     
     func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float {
         return audioUnit!.getCurrentNote()
@@ -360,6 +370,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         midiParameter = paramTree.value(forKey: "midi") as? AUParameter
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
         bypassParameter = paramTree.value(forKey: "bypass") as? AUParameter
+        speedParameter = paramTree.value(forKey: "speed") as? AUParameter
+        gainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
         
         self.restoreState()
         

@@ -13,4 +13,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Properties
     
 	var window: UIWindow?
+    
+    func applicationDidEnterBackground(_ application: UIApplication)
+    {
+        print("hi")
+    }
 }

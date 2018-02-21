@@ -17,7 +17,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var reverbButton: UIButton!
     @IBOutlet var playButton: UIButton!
-
+    @IBOutlet weak var bgSwitch: UISwitch!
 //    @IBOutlet var cutoffSlider: UISlider!
 //    @IBOutlet var resonanceSlider: UISlider!
 //
@@ -103,7 +103,18 @@ class ViewController: UIViewController {
         
         reverbMixParam = audioEngine.reverbUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
         reverbMixParam?.value = 5
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
 	}
+    
+    @objc private func appMovedToBackground()
+    {
+        if (!bgSwitch.isOn)
+        {
+            self.audioEngine.stop()
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "mainToReverb") {
@@ -208,5 +219,32 @@ class ViewController: UIViewController {
     @IBAction func configureReverb(_ sender: UILongPressGestureRecognizer) {
         performSegue(withIdentifier: "mainToReverb", sender: self)
     }
+    
+    @IBAction func toggleBackgroundMode(_ sender: UISwitch)
+    {
+        let explain = "Background mode allows Harmonizr to run while you're using other apps, " +
+            "such as MIDI controllers, or if you want to use Harmonizr as an Inter-App Audio effect.  " +
+            "Leaving Backround mode on will decrease battery life."
+        if (sender === bgSwitch)
+        {
+            if (sender.isOn)
+            {
+                let alert = UIAlertController(title: "Background Mode On", message: explain, preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+                
+                self.present(alert, animated: true)
+            }
+            else
+            {
+                let alert = UIAlertController(title: "Background Mode Off", message: explain, preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+                
+                self.present(alert, animated: true)
+            }
+        }
+    }
+    
 
 }

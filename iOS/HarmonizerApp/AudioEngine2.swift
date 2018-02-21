@@ -178,7 +178,11 @@ class AudioEngine2: NSObject {
         catch {
             print("eek!")
         }
-        
+    }
+    
+    func stop()
+    {
+        self.engine.stop()
     }
     
     func loadComponent(componentDescription: AudioComponentDescription, completionHandler: @escaping ((AUAudioUnit) -> Void))

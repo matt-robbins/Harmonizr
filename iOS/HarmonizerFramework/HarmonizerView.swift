@@ -21,6 +21,8 @@ protocol HarmonizerViewDelegate: class {
     func harmonizerView(_ view: HarmonizerView, didChangeBypass bypass: Float)
     func harmonizerView(_ view: HarmonizerView, didChangePreset preset: Int)
     func harmonizerView(_ view: HarmonizerView, didIncrementPreset preset: Int)
+    func harmonizerView(_ view: HarmonizerView, didChangeGain gain: Float)
+    func harmonizerView(_ view: HarmonizerView, didChangeSpeed speed: Float)
     func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float
     func harmonizerViewGetKeycenter(_ view: HarmonizerView) -> Float
     func harmonizerViewGetPreset(_ view: HarmonizerView) -> String
@@ -156,7 +158,7 @@ class HarmonizerView: UIView {
     var presetNextButton = GlowButton()
     var presetPrevButton = GlowButton()
     
-    var autobutton = CALayer()
+    var autobutton = GlowButton()
     var containerLayer = CALayer()
     var nvoicesLayer = CALayer()
     var keysLayer = CALayer()
@@ -581,13 +583,7 @@ class HarmonizerView: UIView {
         
         containerLayer.addSublayer(nvoicesLayer)
         
-        autobutton.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
-        autobutton.backgroundColor = UIColor.white.cgColor
-        autobutton.borderWidth = 4
-        autobutton.cornerRadius = 4
-        autobutton.shadowRadius = 8
-        autobutton.shadowColor = UIColor.cyan.cgColor
-        autobutton.shadowOpacity = 0.0
+        autobutton.string = "A-T"
 
         containerLayer.addSublayer(autobutton)
         
@@ -597,11 +593,7 @@ class HarmonizerView: UIView {
 
     
 	/*
-		This function positions all of the layers of the view starting with 
-		the horizontal dbLines and lables on the y axis. Next, it positions 
-		the vertical frequency lines and labels on the x axis. Finally, it
-		positions the controls and the curve layer.
-
+		This function positions all of the layers of the view.
 		This method is also called when the orientation of the device changes
 		and the view needs to re-layout for the new view size.
 	 */
