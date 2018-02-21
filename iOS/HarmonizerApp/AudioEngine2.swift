@@ -1,6 +1,6 @@
 //
 //  AudioEngine2.swift
-//  iOSFilterDemoApp
+//  HarmonizerApp
 //
 //  Created by Matthew E Robbins on 12/4/17.
 //
@@ -48,8 +48,6 @@ class AudioEngine2: NSObject {
         }
         #endif
         
-        print(session.sampleRate)
-        
         super.init()
         
         self.reverbUnit = reverbUnitNode.auAudioUnit
@@ -64,8 +62,6 @@ class AudioEngine2: NSObject {
                 var data_size: UInt32 = 4
                 AudioUnitGetProperty(self.engine.outputNode.audioUnit!, kAudioUnitProperty_IsInterAppConnected, kAudioUnitScope_Global, AudioUnitElement(0), &connected, &data_size)
                 
-                print("connected = \(connected)")
-                print("data_size = \(data_size)")
                 self.engine.stop()
                 
                 do {
