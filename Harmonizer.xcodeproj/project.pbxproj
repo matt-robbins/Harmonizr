@@ -21,17 +21,17 @@
 		91236D121B08F42B00734C5E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D111B08F42B00734C5E /* ViewController.swift */; };
 		91236D151B08F42B00734C5E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91236D131B08F42B00734C5E /* Main.storyboard */; };
 		91236D1A1B08F42B00734C5E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91236D181B08F42B00734C5E /* LaunchScreen.storyboard */; };
-		91236D581B08F52D00734C5E /* FilterDemoFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 91236D571B08F52D00734C5E /* FilterDemoFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		91236D6A1B08F52E00734C5E /* FilterDemoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */; };
-		91236D6B1B08F52E00734C5E /* FilterDemoFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		91236D581B08F52D00734C5E /* HarmonizerFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 91236D571B08F52D00734C5E /* HarmonizerFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		91236D6A1B08F52E00734C5E /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
+		91236D6B1B08F52E00734C5E /* HarmonizerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		91236D811B08F59300734C5E /* FilterDemoAppExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
-		91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 91236D8D1B08FB0300734C5E /* FilterDemo.mm */; };
+		91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */; };
 		91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D911B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift */; };
 		916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916233C71B127A5000DBD15D /* MainInterface.storyboard */; };
 		91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A9356A1B1269F100370383 /* HarmonizerView.swift */; };
 		91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
-		91E715C41B0AABAB00BD598C /* FilterDemoFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */; };
+		91E715C41B0AABAB00BD598C /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
 		9228D9AF1BA1EE6F00EDDEA4 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
 		923B43DD1BA0F04B0020FBB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 923B43DB1BA0F04B0020FBB4 /* Main.storyboard */; };
 		923B43DE1BA1E51F0020FBB4 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
@@ -39,7 +39,7 @@
 		92A10D171B9529170081EA80 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A10CA81B951C660081EA80 /* DSPKernel.mm */; };
 		92A10D1A1B9529210081EA80 /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
 		92A10D1B1B9529240081EA80 /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
-		92AA8D601B1D28D6002C3CA1 /* FilterDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = 92AA8D5F1B1D25E6002C3CA1 /* FilterDemo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		92AA8D601B1D28D6002C3CA1 /* Harmonizer.h in Headers */ = {isa = PBXBuildFile; fileRef = 92AA8D5F1B1D25E6002C3CA1 /* Harmonizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92FF864F1B9A4D97007C9389 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF864E1B9A4D97007C9389 /* AppDelegate.m */; };
 		92FF86521B9A4D97007C9389 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86511B9A4D97007C9389 /* main.m */; };
 		92FF86541B9A4D97007C9389 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86531B9A4D97007C9389 /* Assets.xcassets */; };
@@ -69,10 +69,7 @@
 		C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */; };
 		C9D9BC7C20191752001977BD /* HarmViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90633682018F01400412EC9 /* HarmViewController2.swift */; };
 		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
-		C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
-		C9DAB90B1FA3BF8900DBB180 /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9DAB9091FA3BF8700DBB180 /* midi.png */; };
 		C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DFC5E4202F96E900CC776F /* InputViewController.swift */; };
-		C9ECAD4C1FA5367500E69A2D /* bt_icon.svg in Resources */ = {isa = PBXBuildFile; fileRef = C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */; };
 		C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */; };
 		C9FD73F41F8BC69D00346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F31F8BC69D00346E31 /* Accelerate.framework */; };
 		C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F51F9107D300346E31 /* Accelerate.framework */; };
@@ -131,7 +128,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				91236D6B1B08F52E00734C5E /* FilterDemoFramework.framework in Embed Frameworks */,
+				91236D6B1B08F52E00734C5E /* HarmonizerFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,19 +179,19 @@
 		2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		30C0135A1C6D303D00F7E9B4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3E8E032C1B16387D0011624B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		91236D0D1B08F42B00734C5E /* FilterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		91236D0D1B08F42B00734C5E /* Harmonizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmonizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91236D0F1B08F42B00734C5E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91236D111B08F42B00734C5E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		91236D141B08F42B00734C5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		91236D191B08F42B00734C5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91236D1B1B08F42B00734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		91236D551B08F52D00734C5E /* FilterDemoFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FilterDemoFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		91236D571B08F52D00734C5E /* FilterDemoFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilterDemoFramework.h; sourceTree = "<group>"; };
+		91236D551B08F52D00734C5E /* HarmonizerFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HarmonizerFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		91236D571B08F52D00734C5E /* HarmonizerFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HarmonizerFramework.h; sourceTree = "<group>"; };
 		91236D591B08F52D00734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FilterDemoAppExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		91236D7E1B08F59300734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
-		91236D8D1B08FB0300734C5E /* FilterDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterDemo.mm; sourceTree = "<group>"; };
+		91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AUv3Harmonizer.mm; sourceTree = "<group>"; };
 		91236D911B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HarmonizerViewController+AUAudioUnitFactory.swift"; sourceTree = "<group>"; };
 		9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmonizerViewController.swift; sourceTree = "<group>"; };
 		916233C81B127A5000DBD15D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
@@ -205,8 +202,8 @@
 		92A10CA71B951C660081EA80 /* DSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSPKernel.hpp; sourceTree = "<group>"; };
 		92A10CA81B951C660081EA80 /* DSPKernel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
 		92A9E2D61B1CF79900AC811E /* ParameterRamper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ParameterRamper.hpp; sourceTree = "<group>"; };
-		92AA8D5F1B1D25E6002C3CA1 /* FilterDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FilterDemo.h; sourceTree = "<group>"; };
-		92FA296E1B1D055400B701DC /* FilterDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FilterDSPKernel.hpp; sourceTree = "<group>"; };
+		92AA8D5F1B1D25E6002C3CA1 /* Harmonizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Harmonizer.h; sourceTree = "<group>"; };
+		92FA296E1B1D055400B701DC /* HarmonizerDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HarmonizerDSPKernel.hpp; sourceTree = "<group>"; };
 		92FF864B1B9A4D97007C9389 /* FilterDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilterDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92FF864D1B9A4D97007C9389 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		92FF864E1B9A4D97007C9389 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -241,9 +238,7 @@
 		C98FBD211FD206E800330691 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 		C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiReceiver.swift; sourceTree = "<group>"; };
 		C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
-		C9DAB9091FA3BF8700DBB180 /* midi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = midi.png; path = ../../../../../Desktop/midi.png; sourceTree = "<group>"; };
 		C9DFC5E4202F96E900CC776F /* InputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
-		C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = bt_icon.svg; path = ../../../../../Desktop/bt_icon.svg; sourceTree = "<group>"; };
 		C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbViewController.swift; sourceTree = "<group>"; };
 		C9FD73F31F8BC69D00346E31 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		C9FD73F51F9107D300346E31 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
@@ -258,7 +253,7 @@
 				C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */,
 				C981C4641FBF9DCB00AF8593 /* AudioToolbox.framework in Frameworks */,
 				C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */,
-				91236D6A1B08F52E00734C5E /* FilterDemoFramework.framework in Frameworks */,
+				91236D6A1B08F52E00734C5E /* HarmonizerFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +271,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91E715C41B0AABAB00BD598C /* FilterDemoFramework.framework in Frameworks */,
+				91E715C41B0AABAB00BD598C /* HarmonizerFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,9 +306,9 @@
 		164896A61C925E0C00AB781D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				92AA8D5F1B1D25E6002C3CA1 /* FilterDemo.h */,
-				91236D8D1B08FB0300734C5E /* FilterDemo.mm */,
-				92FA296E1B1D055400B701DC /* FilterDSPKernel.hpp */,
+				92AA8D5F1B1D25E6002C3CA1 /* Harmonizer.h */,
+				91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */,
+				92FA296E1B1D055400B701DC /* HarmonizerDSPKernel.hpp */,
 				92A9E2D61B1CF79900AC811E /* ParameterRamper.hpp */,
 			);
 			name = Shared;
@@ -377,11 +372,9 @@
 			isa = PBXGroup;
 			children = (
 				164896A61C925E0C00AB781D /* Shared */,
-				91236D571B08F52D00734C5E /* FilterDemoFramework.h */,
+				91236D571B08F52D00734C5E /* HarmonizerFramework.h */,
 				9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */,
 				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
-				C9ECAD4B1FA5367500E69A2D /* bt_icon.svg */,
-				C9DAB9091FA3BF8700DBB180 /* midi.png */,
 				91A9356A1B1269F100370383 /* HarmonizerView.swift */,
 				91236D591B08F52D00734C5E /* Info.plist */,
 				C93163511FBCE81D00EE1762 /* HarmViewController.swift */,
@@ -441,8 +434,8 @@
 		91D3DA171B023C1E008FFFBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				91236D0D1B08F42B00734C5E /* FilterDemo.app */,
-				91236D551B08F52D00734C5E /* FilterDemoFramework.framework */,
+				91236D0D1B08F42B00734C5E /* Harmonizer.app */,
+				91236D551B08F52D00734C5E /* HarmonizerFramework.framework */,
 				91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */,
 				92FF864B1B9A4D97007C9389 /* FilterDemo.app */,
 				92FF86641B9A525C007C9389 /* FilterDemoAppExtension.appex */,
@@ -544,8 +537,8 @@
 			files = (
 				92A10D1A1B9529210081EA80 /* DSPKernel.hpp in Headers */,
 				92A10D1B1B9529240081EA80 /* BufferedAudioBus.hpp in Headers */,
-				91236D581B08F52D00734C5E /* FilterDemoFramework.h in Headers */,
-				92AA8D601B1D28D6002C3CA1 /* FilterDemo.h in Headers */,
+				91236D581B08F52D00734C5E /* HarmonizerFramework.h in Headers */,
+				92AA8D601B1D28D6002C3CA1 /* Harmonizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,7 +577,7 @@
 			);
 			name = iOSHarmonizerApp;
 			productName = "FilterDemoApp-iOS";
-			productReference = 91236D0D1B08F42B00734C5E /* FilterDemo.app */;
+			productReference = 91236D0D1B08F42B00734C5E /* Harmonizer.app */;
 			productType = "com.apple.product-type.application";
 		};
 		91236D541B08F52D00734C5E /* iOSHarmonizerFramework */ = {
@@ -602,7 +595,7 @@
 			);
 			name = iOSHarmonizerFramework;
 			productName = "FilterDemoFramework-iOS";
-			productReference = 91236D551B08F52D00734C5E /* FilterDemoFramework.framework */;
+			productReference = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		91236D761B08F59300734C5E /* iOSHarmonizerAppExtension */ = {
@@ -762,8 +755,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				91236D1A1B08F42B00734C5E /* LaunchScreen.storyboard in Resources */,
-				C9ECAD4C1FA5367500E69A2D /* bt_icon.svg in Resources */,
-				C9DAB90A1FA3BF8800DBB180 /* midi.png in Resources */,
 				30C0135B1C6D303D00F7E9B4 /* Images.xcassets in Resources */,
 				C94FC87C202C96F70009E742 /* AppIcon.appiconset in Resources */,
 				91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */,
@@ -782,7 +773,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9DAB90B1FA3BF8900DBB180 /* midi.png in Resources */,
 				916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -837,7 +827,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92A10D171B9529170081EA80 /* DSPKernel.mm in Sources */,
-				91236D8E1B08FB0300734C5E /* FilterDemo.mm in Sources */,
+				91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */,
 				C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */,
 				927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */,
 				C92389A12003CD0D008C76AB /* SavePresetViewController.swift in Sources */,
@@ -1003,7 +993,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
-				PRODUCT_NAME = FilterDemo;
+				PRODUCT_NAME = Harmonizer;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1050,7 +1040,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
-				PRODUCT_NAME = FilterDemo;
+				PRODUCT_NAME = Harmonizer;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
@@ -1110,7 +1100,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.HarmonizerFramework;
-				PRODUCT_NAME = FilterDemoFramework;
+				PRODUCT_NAME = HarmonizerFramework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1165,7 +1155,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.HarmonizerFramework;
-				PRODUCT_NAME = FilterDemoFramework;
+				PRODUCT_NAME = HarmonizerFramework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

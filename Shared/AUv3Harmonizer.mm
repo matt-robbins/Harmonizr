@@ -6,9 +6,9 @@
 	An AUAudioUnit subclass implementing a low-pass filter with resonance. Illustrates parameter management and rendering, including in-place processing and buffer management.
 */
 
-#import "FilterDemo.h"
+#import "Harmonizer.h"
 #import <AVFoundation/AVFoundation.h>
-#import "FilterDSPKernel.hpp"
+#import "HarmonizerDSPKernel.hpp"
 #import "BufferedAudioBus.hpp"
 
 #include <dispatch/dispatch.h>
