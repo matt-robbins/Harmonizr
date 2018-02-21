@@ -311,6 +311,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         }
         print(presetIx)
         
+
+        view.presetPrevButton.isEnabled = (presetIx > 0)
+        view.presetNextButton.isEnabled = (presetIx < presets.count - 1)
+        
     }
     
     func harmonizerViewSavePreset(_ filterVew: HarmonizerView)
