@@ -7,7 +7,7 @@
 */
 
 import CoreAudioKit
-import FilterDemoFramework
+import HarmonizerFramework
 
 extension HarmonizerViewController: AUAudioUnitFactory {
     /*

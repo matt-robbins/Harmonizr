@@ -24,7 +24,7 @@
 		91236D581B08F52D00734C5E /* HarmonizerFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 91236D571B08F52D00734C5E /* HarmonizerFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		91236D6A1B08F52E00734C5E /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
 		91236D6B1B08F52E00734C5E /* HarmonizerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		91236D811B08F59300734C5E /* FilterDemoAppExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		91236D811B08F59300734C5E /* HarmonizerExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 91236D771B08F59300734C5E /* HarmonizerExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
 		91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */; };
 		91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D911B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift */; };
@@ -139,7 +139,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				91236D811B08F59300734C5E /* FilterDemoAppExtension.appex in Embed App Extensions */,
+				91236D811B08F59300734C5E /* HarmonizerExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -188,7 +188,7 @@
 		91236D551B08F52D00734C5E /* HarmonizerFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HarmonizerFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		91236D571B08F52D00734C5E /* HarmonizerFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HarmonizerFramework.h; sourceTree = "<group>"; };
 		91236D591B08F52D00734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FilterDemoAppExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		91236D771B08F59300734C5E /* HarmonizerExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HarmonizerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		91236D7E1B08F59300734C5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		91236D871B08F66200734C5E /* SimplePlayEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePlayEngine.swift; sourceTree = "<group>"; };
 		91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AUv3Harmonizer.mm; sourceTree = "<group>"; };
@@ -436,7 +436,7 @@
 			children = (
 				91236D0D1B08F42B00734C5E /* Harmonizer.app */,
 				91236D551B08F52D00734C5E /* HarmonizerFramework.framework */,
-				91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */,
+				91236D771B08F59300734C5E /* HarmonizerExtension.appex */,
 				92FF864B1B9A4D97007C9389 /* FilterDemo.app */,
 				92FF86641B9A525C007C9389 /* FilterDemoAppExtension.appex */,
 				92FF86801B9F4EDA007C9389 /* FilterDemoFramework.framework */,
@@ -613,7 +613,7 @@
 			);
 			name = iOSHarmonizerAppExtension;
 			productName = "FilterDemoAppExtension-iOS";
-			productReference = 91236D771B08F59300734C5E /* FilterDemoAppExtension.appex */;
+			productReference = 91236D771B08F59300734C5E /* HarmonizerExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		92FF864A1B9A4D97007C9389 /* OSXFilterDemoApp */ = {
@@ -1210,7 +1210,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
-				PRODUCT_NAME = FilterDemoAppExtension;
+				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1255,7 +1255,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
-				PRODUCT_NAME = FilterDemoAppExtension;
+				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

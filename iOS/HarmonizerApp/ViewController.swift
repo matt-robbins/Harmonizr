@@ -10,7 +10,7 @@ import UIKit
 import CoreAudioKit
 import AudioToolbox
 import AVFoundation
-import FilterDemoFramework
+import HarmonizerFramework
 
 class ViewController: UIViewController {
     // MARK: Properties

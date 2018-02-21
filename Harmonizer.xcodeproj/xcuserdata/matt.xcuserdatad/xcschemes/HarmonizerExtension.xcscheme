@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "91236D761B08F59300734C5E"
-               BuildableName = "FilterDemoAppExtension.appex"
+               BuildableName = "HarmonizerExtension.appex"
                BlueprintName = "iOSHarmonizerAppExtension"
                ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
@@ -30,7 +30,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
-               BuildableName = "FilterDemo.app"
+               BuildableName = "Harmonizer.app"
                BlueprintName = "iOSHarmonizerApp"
                ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
@@ -49,7 +49,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
-            BuildableName = "FilterDemo.app"
+            BuildableName = "Harmonizer.app"
             BlueprintName = "iOSHarmonizerApp"
             ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
@@ -73,7 +73,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
-            BuildableName = "FilterDemo.app"
+            BuildableName = "Harmonizer.app"
             BlueprintName = "iOSHarmonizerApp"
             ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
@@ -93,7 +93,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "91236D0C1B08F42B00734C5E"
-            BuildableName = "FilterDemo.app"
+            BuildableName = "Harmonizer.app"
             BlueprintName = "iOSHarmonizerApp"
             ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>

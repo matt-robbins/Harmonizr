@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "91236D541B08F52D00734C5E"
-               BuildableName = "FilterDemoFramework.framework"
+               BuildableName = "HarmonizerFramework.framework"
                BlueprintName = "iOSHarmonizerFramework"
                ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
@@ -48,7 +48,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "91236D541B08F52D00734C5E"
-            BuildableName = "FilterDemoFramework.framework"
+            BuildableName = "HarmonizerFramework.framework"
             BlueprintName = "iOSHarmonizerFramework"
             ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
@@ -66,7 +66,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "91236D541B08F52D00734C5E"
-            BuildableName = "FilterDemoFramework.framework"
+            BuildableName = "HarmonizerFramework.framework"
             BlueprintName = "iOSHarmonizerFramework"
             ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>

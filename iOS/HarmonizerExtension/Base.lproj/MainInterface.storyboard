@@ -14,7 +14,7 @@
         <!--Harmonizer View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="HarmonizerViewController" customModule="FilterDemoFramework" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HarmonizerViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="FilterDemoFramework">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="HarmonizerFramework">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -150,21 +150,21 @@
                                                 <rect key="frame" x="105" y="0.0" width="49" height="153.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7eH-nK-uJL">
-                                                        <rect key="frame" x="0.0" y="0.0" width="49" height="48"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="49" height="48.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="7eH-nK-uJL" secondAttribute="height" multiplier="1:1" id="Mz0-rH-hby"/>
                                                         </constraints>
                                                         <state key="normal" title="7"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1bA-Zb-azo">
-                                                        <rect key="frame" x="0.0" y="48" width="49" height="57"/>
+                                                        <rect key="frame" x="0.0" y="48.5" width="49" height="57"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="1bA-Zb-azo" secondAttribute="height" multiplier="1:1" id="dpz-WU-2I7"/>
                                                         </constraints>
                                                         <state key="normal" title="min"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lcd-E8-Lsz">
-                                                        <rect key="frame" x="0.0" y="105" width="49" height="48.5"/>
+                                                        <rect key="frame" x="0.0" y="105.5" width="49" height="48"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="Lcd-E8-Lsz" secondAttribute="height" multiplier="1:1" id="52w-Yv-jWO"/>
                                                         </constraints>
@@ -395,7 +395,7 @@
         <!--Config View Controller-->
         <scene sceneID="LXC-s0-m5X">
             <objects>
-                <viewController storyboardIdentifier="configView" id="G03-CJ-RWa" userLabel="Config View Controller" customClass="ConfigViewController" customModule="FilterDemoFramework" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="configView" id="G03-CJ-RWa" userLabel="Config View Controller" customClass="ConfigViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mD8-ED-UG4"/>
                         <viewControllerLayoutGuide type="bottom" id="Bbj-gU-iKi"/>
@@ -468,7 +468,7 @@
         <!--Save Preset View Controller-->
         <scene sceneID="pxI-zg-7Wv">
             <objects>
-                <viewController storyboardIdentifier="savePresetView" id="vG0-ai-2Nd" customClass="SavePresetViewController" customModule="FilterDemoFramework" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="savePresetView" id="vG0-ai-2Nd" customClass="SavePresetViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QpN-7i-tqf"/>
                         <viewControllerLayoutGuide type="bottom" id="OGw-vz-uqu"/>
