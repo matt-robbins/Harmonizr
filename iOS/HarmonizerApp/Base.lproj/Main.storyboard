@@ -262,6 +262,7 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="e9o-GG-vgj">
                                                 <rect key="frame" x="-2" y="28.5" width="313.5" height="70"/>
+                                                <color key="minimumTrackTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="gainChanged:" destination="Yet-wN-pz8" eventType="valueChanged" id="VQW-mc-exg"/>
                                                 </connections>
@@ -283,6 +284,7 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="EZH-Er-j1p" firstAttribute="top" secondItem="jBe-Lb-SdE" secondAttribute="top" id="Dea-TZ-c54"/>
                                 </constraints>
@@ -292,6 +294,11 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="EqP-al-hc2"/>
                                 </constraints>
+                                <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="textShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </textAttributes>
                                 <items>
                                     <navigationItem title="Input" id="VBi-n8-NwD">
                                         <barButtonItem key="leftBarButtonItem" style="plain" id="iVG-F1-Rqe">
@@ -299,12 +306,13 @@
                                                 <rect key="frame" x="20" y="1" width="50" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Done">
-                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="done:" destination="Yet-wN-pz8" eventType="touchUpInside" id="d1q-No-obF"/>
                                                 </connections>
                                             </button>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
