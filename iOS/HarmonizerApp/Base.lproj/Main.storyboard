@@ -60,7 +60,7 @@
                                                 </button>
                                             </barButtonItem>
                                             <barButtonItem style="plain" id="dww-ii-zW8">
-                                                <button key="customView" opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="awX-J2-WjW" userLabel="Bluetooth Button">
+                                                <button key="customView" opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="awX-J2-WjW" userLabel="Bluetooth Button">
                                                     <rect key="frame" x="136" y="0.0" width="67" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -74,7 +74,7 @@
                                             </barButtonItem>
                                         </leftBarButtonItems>
                                         <barButtonItem key="rightBarButtonItem" title="BG" style="plain" id="ISb-uK-bAN">
-                                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="Hep-lK-PlI" userLabel="BackgroundSwitch">
+                                            <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Hep-lK-PlI" userLabel="BackgroundSwitch">
                                                 <rect key="frame" x="596" y="0.5" width="51" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="onTintColor" red="1" green="0.37824237820000001" blue="0.36724547010000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -162,43 +162,44 @@
                                             <constraint firstAttribute="width" constant="200" id="Iio-ps-l9F"/>
                                         </constraints>
                                     </pickerView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-wY-tgB">
-                                        <rect key="frame" x="210" y="0.0" width="100" height="343"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mix" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AfG-jS-scb">
-                                                <rect key="frame" x="0.0" y="0.0" width="100" height="171.5"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="100" id="4Em-b1-kof"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beM-Z4-YUW">
-                                                <rect key="frame" x="0.0" y="171.5" width="100" height="171.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="VgZ-Av-Ck1">
-                                        <rect key="frame" x="320" y="0.0" width="307" height="343"/>
-                                        <subviews>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="KKN-1G-0o1">
-                                                <rect key="frame" x="-2" y="0.0" width="311" height="172.5"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FBJ-Nd-Vby">
+                                        <rect key="frame" x="210" y="0.0" width="417" height="343"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReverbParameterTableCell" id="PlM-7T-6Ee" customClass="AUParameterTableViewCell" customModule="Harmonizer" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="417" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PlM-7T-6Ee" id="z9C-w3-7pW">
+                                                    <rect key="frame" x="0.0" y="0.0" width="417" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gy6-bu-VzA">
+                                                            <rect key="frame" x="15" y="11" width="179" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Zq9-JS-MeL">
+                                                            <rect key="frame" x="200" y="7" width="204" height="30"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <color key="minimumTrackTintColor" red="0.046427408849999997" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <connections>
+                                                                <action selector="changeValue:" destination="n4r-Op-aTt" eventType="valueChanged" id="hk7-b4-YXn"/>
+                                                            </connections>
+                                                        </slider>
+                                                    </subviews>
+                                                </tableViewCellContentView>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <connections>
-                                                    <action selector="changeMix:" destination="n4r-Op-aTt" eventType="valueChanged" id="urG-89-c2j"/>
+                                                    <outlet property="nameLabel" destination="gy6-bu-VzA" id="9Jc-h3-qeq"/>
+                                                    <outlet property="valueSlider" destination="Zq9-JS-MeL" id="du5-Cc-SU7"/>
                                                 </connections>
-                                            </slider>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nQR-dV-FwM">
-                                                <rect key="frame" x="-2" y="171.5" width="311" height="172.5"/>
-                                                <connections>
-                                                    <action selector="changeGain:" destination="n4r-Op-aTt" eventType="valueChanged" id="8CF-OD-5Xh"/>
-                                                </connections>
-                                            </slider>
-                                        </subviews>
-                                    </stackView>
+                                            </tableViewCell>
+                                        </prototypes>
+                                    </tableView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -217,8 +218,7 @@
                     <toolbarItems/>
                     <connections>
                         <outlet property="doneButton" destination="Fcx-vi-Fbg" id="6ry-pu-sGq"/>
-                        <outlet property="gain" destination="nQR-dV-FwM" id="1NS-rI-BDB"/>
-                        <outlet property="mix" destination="KKN-1G-0o1" id="kOe-aF-3Nq"/>
+                        <outlet property="paramTable" destination="FBJ-Nd-Vby" id="Fhl-Oy-yY6"/>
                         <outlet property="presets" destination="tRI-V3-Uos" id="3PY-XA-M5u"/>
                     </connections>
                 </viewController>

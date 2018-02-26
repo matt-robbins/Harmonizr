@@ -67,6 +67,7 @@
 		C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */; };
 		C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FBD211FD206E800330691 /* AudioEngine.swift */; };
 		C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */; };
+		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
 		C9D9BC7C20191752001977BD /* HarmViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90633682018F01400412EC9 /* HarmViewController2.swift */; };
 		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
 		C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DFC5E4202F96E900CC776F /* InputViewController.swift */; };
@@ -237,6 +238,7 @@
 		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
 		C98FBD211FD206E800330691 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 		C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiReceiver.swift; sourceTree = "<group>"; };
+		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9DFC5E4202F96E900CC776F /* InputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbViewController.swift; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				C92389A520065700008C76AB /* PresetEngine.swift */,
 				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
+				C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */,
 				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
 				C94FC87B202C96F60009E742 /* AppIcon.appiconset */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
@@ -813,6 +816,7 @@
 				C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */,
 				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
+				C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */,
 				C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */,
 				C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,

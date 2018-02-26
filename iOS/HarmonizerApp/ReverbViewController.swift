@@ -9,19 +9,23 @@ import Foundation
 import UIKit
 import AudioToolbox
 
-public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
+public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDataSource {
+    
     @IBOutlet weak var presets: UIPickerView!
-    @IBOutlet weak var gain: UISlider!
-    @IBOutlet weak var mix: UISlider!
+    @IBOutlet weak var paramTable: UITableView!
     @IBOutlet weak var doneButton: UIButton!
     
     var mixParam: AUParameter?
     var gainParam: AUParameter?
     var audioUnit: AUAudioUnit?
     
+    var params = [AUParameter]()
+    
     @IBAction func done(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    //MARK: uiPickerView
     
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -37,6 +41,11 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         audioUnit!.currentPreset = audioUnit!.factoryPresets![row]
+        for p in params {
+            print(p.value)
+        }
+        self.paramTable.reloadData()
+        
     }
     
     public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
@@ -44,23 +53,48 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
         return NSAttributedString(string: audioUnit!.factoryPresets![row].name, attributes: [NSForegroundColorAttributeName:UIColor.white])
     }
     
+    //MARK: UITableView
+    
+    public func numberOfSections(in view: UITableView) -> Int {
+        return 1
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return min(params.count,2)
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = "ReverbParameterTableCell"
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AUParameterTableViewCell  else {
+            fatalError("The dequeued cell is not an instance of AUParameterTableViewCell.")
+        }
+        
+        print("Setting table stuff!")
+        
+        cell.nameLabel.text = params[indexPath.row].displayName
+        
+        cell.valueSlider.minimumValue = params[indexPath.row].minValue
+        cell.valueSlider.maximumValue = params[indexPath.row].maxValue
+        
+        cell.valueSlider.value = params[indexPath.row].value
+        cell.valueSlider.tag = indexPath.row
+        
+        return cell
+    }
+    
     public override func viewDidLoad()
     {
         super.viewDidLoad()
         self.presets.delegate = self
         self.presets.dataSource = self
+        self.paramTable.dataSource = self
         
         //self.view.backgroundColor = UIColor.darkGray
         
-        mixParam = audioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
-        mix.maximumValue = (mixParam?.maxValue)!
-        mix.minimumValue = (mixParam?.minValue)!
-        mix.value = mixParam!.value
+        params = audioUnit!.parameterTree!.allParameters
         
-        gainParam = audioUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_Gain))
-        gain.maximumValue = (gainParam?.maxValue)!
-        gain.minimumValue = (gainParam?.minValue)!
-        gain.value = gainParam!.value
+        print(params.count)
         
         var pix = 0
         
@@ -74,11 +108,10 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
         
         presets.selectRow(pix, inComponent: 0, animated: true)
     }
-    @IBAction func changeGain(_ sender: Any) {
-        gainParam!.value = gain.value
-    }
+
+    //MARK: Actions
     
-    @IBAction func changeMix(_ sender: Any) {
-        mixParam!.value = mix.value
+    @IBAction func changeValue(_ sender: UISlider) {
+        params[sender.tag].value = sender.value
     }
 }
