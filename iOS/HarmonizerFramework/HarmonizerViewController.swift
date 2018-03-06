@@ -183,6 +183,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     {
         gainParameter?.value = gain
     }
+    
     func harmonizerView(_ view: HarmonizerView, didChangeSpeed speed: Float)
     {
         speedParameter?.value = speed
@@ -193,6 +194,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     }
     func harmonizerViewGetKeycenter(_ view: HarmonizerView) -> Float {
         return keycenterParameter!.value
+    }
+    
+    func harmonizerViewGetGain(_ view: HarmonizerView) -> Float {
+        return gainParameter!.value
     }
     
     func harmonizerViewGetPreset(_ view: HarmonizerView) -> String {

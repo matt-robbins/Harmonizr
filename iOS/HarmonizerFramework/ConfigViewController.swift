@@ -18,8 +18,28 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         return pickerData.count
     }
     
-    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[row]
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        
+        var pickerLabel: UILabel?
+        if (view != nil)
+        {
+            pickerLabel = view as? UILabel
+        }
+        else
+        {
+            pickerLabel = UILabel()
+        }
+        //var titleData : String = String()
+        
+        pickerLabel!.text = pickerData[row]
+        
+        pickerLabel!.backgroundColor = UIColor.clear
+        
+        pickerLabel!.textAlignment = .center
+        
+        return pickerLabel!
+        
+        //return pickerData[row]
     }
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -28,26 +48,26 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         var key: String
         for k in 0...nc-1 {
             
-            if (pickerView == intervalChoosers[k]) {
+            if (pickerView == intervalChoosers![k]) {
                 key = "interval_\(nc*component + k + keyQuality*12*nc)"
                 let param = paramTree!.value(forKey: key) as? AUParameter
                 param!.value = Float(row - unisonOffset)
-                
             }
         }
     }
     
     //MARK: Properties
     
-    @IBOutlet weak var interval1Chooser: UIPickerView!
-    @IBOutlet weak var interval2Chooser: UIPickerView!
-    @IBOutlet weak var interval3Chooser: UIPickerView!
-    @IBOutlet weak var interval4Chooser: UIPickerView!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var navBar: UINavigationBar!
     var pickerData: [String] = [String]()
     
-    @IBOutlet var intervalChoosers: [UIPickerView]!
+    @IBOutlet weak var degreeStack: UIStackView!
+    @IBOutlet weak var intervalStack: UIStackView!
+    
+    var currInterval = 0
+    
+    var intervalChoosers: [UIPickerView]?
     public var audioUnit: AUv3Harmonizer? {
         didSet {
             print("set audio unit in config view controller!")
@@ -59,15 +79,72 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     var keyQuality = 0
     var unisonOffset = 12
     var nc = 4
+    
+    var timer = Timer()
+    
+    func auPoller(T: Float){
+        // Scheduling timer to Call the timerFunction
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(timerFunction), userInfo: nil, repeats: true)
+    }
+    
+    func timerFunction()
+    {
+        guard let audioUnit = audioUnit else { return }
+        let note = audioUnit.getCurrentNote()
+        
+        if (note == -1.0)
+        {
+            return
+        }
+        
+        let i = Int(round(note)) % 12
+        let k = Int(audioUnit.getCurrentKeycenter()) % 12
+        
+        let oldInterval = currInterval
+        currInterval = (i - k + 12) % 12
+
+        let keycenterLabels = degreeStack.arrangedSubviews
+        
+        for l in 0...keycenterLabels.count-1
+        {
+            let layer = keycenterLabels[l].layer
+            CATransaction.begin()
+            if (l == currInterval)
+            {
+                CATransaction.setAnimationDuration(0.05)
+                layer.backgroundColor = UIColor.red.cgColor
+            }
+            else
+            {
+                layer.backgroundColor = UIColor.white.cgColor
+            }
+            CATransaction.commit()
+        }
+        
+        
+//        if (oldInterval != currInterval)
+//        {
+//            for c in intervalChoosers!
+//            {
+//                c.reloadAllComponents()
+//            }
+//        }
+        
+        return
+    }
         
     public override func viewDidLoad()
     {
         super.viewDidLoad()
         
+        auPoller(T: 0.1)
+        
+        intervalChoosers = intervalStack.arrangedSubviews as? [UIPickerView]
+        
         for k in 0...nc-1
         {
-            self.intervalChoosers[k].delegate = self
-            self.intervalChoosers[k].dataSource = self
+            self.intervalChoosers![k].delegate = self
+            self.intervalChoosers![k].dataSource = self
         }
 
         pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1",
@@ -85,7 +162,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         let keycenter = keycenterParam!.value
         
-        nc = intervalChoosers.count
+        nc = (intervalChoosers?.count)!
         
         keyQuality = Int(keycenter / 12)
         
@@ -109,7 +186,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             {
                 let key = "interval_\(nc*j + k + keyQuality*12*nc)"
                 let param = paramTree!.value(forKey: key) as? AUParameter
-                intervalChoosers[k].selectRow(Int(param!.value)+unisonOffset, inComponent: j, animated: true)
+                intervalChoosers![k].selectRow(Int(param!.value)+unisonOffset, inComponent: j, animated: false)
             }
         }
         

@@ -17,6 +17,10 @@
 #include <Accelerate/Accelerate.h>
 #include <dispatch/dispatch.h>
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 typedef struct grain_s
 {
     float size;
@@ -25,6 +29,7 @@ typedef struct grain_s
     float ratio;
     float gain;
     float pan;
+    int vix;
 } grain_t;
 
 typedef struct voice_s
@@ -328,10 +333,10 @@ public:
                 printf("set bypass to %d\n", bypass);
                 break;
             case HarmParamHgain:
-                harmgain = clamp(value, 0.f, 1.f);
+                harmgain_target = clamp(value, 0.f, 2.f);
                 break;
             case HarmParamVgain:
-                voicegain = clamp(value, 0.f, 1.f);
+                voicegain = clamp(value, 0.f, 2.f);
                 break;
             case HarmParamSpeed:
                 speed = clamp(value, 0.f, 1.f);
@@ -544,6 +549,10 @@ public:
 
                 *out2 = *out;
             }
+            
+            // Ramp Gain
+            
+            harmgain += .001 * sgn(harmgain_target - harmgain);
     
             for (int vix = first_psola_voice; vix < nvoices; vix++)
             {
@@ -576,6 +585,12 @@ public:
                             grains[k].ix = 0;
                             grains[k].gain = midigain_local * (float) voices[vix].midivel / 127.0;
                             grains[k].pan = voices[vix].pan;
+                            grains[k].vix = vix;
+                            
+                            if (vix == 0)
+                            {
+                                grains[k].gain = 1.0;
+                            }
                             
                             if (!voiced)
                             {
@@ -636,8 +651,11 @@ public:
                     i = (int) wi;
                     float w = cubic (grain_window + i, wi - i);
                     
-                    *out += u * w * harmgain * g.gain * (g.pan + 1.0)/2;
-                    *out2 += u * w * harmgain * g.gain * (-g.pan + 1)/2;
+                    float hgain = g.vix ? harmgain : 1.0;
+                    
+                    *out += u * hgain * w * g.gain * (g.pan + 1.0)/2;
+                    *out2 += u * hgain * w * g.gain * (-g.pan + 1)/2;
+                    
                     g.ix += g.ratio;
                     
                     if (g.ix > g.size)
@@ -1064,6 +1082,7 @@ private:
     float midinotes[128];
     float midigain = 1.0;
     float harmgain = 1.0;
+    float harmgain_target = 1.0;
     float voicegain = 1.0;
     float speed = 1.0;
     int autotune = 1;

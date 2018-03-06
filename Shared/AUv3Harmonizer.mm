@@ -163,7 +163,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     AUParameter *vgainParam = [AUParameterTree createParameterWithIdentifier:@"v_gain" name:@"Voice Gain"
                                                                      address:HarmParamVgain
-                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+                                                                         min:0 max:2 unit:kAudioUnitParameterUnit_Percent unitName:nil
                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
                                                                 valueStrings:nil dependentParameters:nil];
     

@@ -88,6 +88,7 @@
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="leading" secondItem="dpu-iJ-Adv" secondAttribute="leading" id="Afu-kf-2Dr"/>
                             <constraint firstItem="Esp-En-WMd" firstAttribute="trailing" secondItem="dpu-iJ-Adv" secondAttribute="trailing" id="I6p-TL-BuB"/>

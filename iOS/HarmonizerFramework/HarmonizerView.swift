@@ -24,6 +24,7 @@ protocol HarmonizerViewDelegate: class {
     func harmonizerView(_ view: HarmonizerView, didChangeGain gain: Float)
     func harmonizerView(_ view: HarmonizerView, didChangeSpeed speed: Float)
     func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float
+    func harmonizerViewGetGain(_ view: HarmonizerView) -> Float
     func harmonizerViewGetKeycenter(_ view: HarmonizerView) -> Float
     func harmonizerViewGetPreset(_ view: HarmonizerView) -> String
     func harmonizerViewConfigure(_ view: HarmonizerView)
@@ -147,6 +148,9 @@ class HarmonizerView: UIView {
     var lastNote = -1
     var triad_override = false
     
+    var volumeStart: Float = 0.0
+    var currGain: Float = 0.0
+    
     var keybuttons = [VerticallyCenteredTextLayer]()
     var triadbuttons = [CALayer]()
     var invbuttons = [CALayer]()
@@ -203,22 +207,20 @@ class HarmonizerView: UIView {
             return
         }
         for j in 0...n-1 {
+            CATransaction.begin()
             if (j % 12 == curr_note)
             {
-                CATransaction.begin()
                 CATransaction.setAnimationDuration(0.05)
                 keybuttons[j].shadowColor = UIColor.red.cgColor
                 keybuttons[j].shadowOpacity = 1.0
-                CATransaction.commit()
             }
             else
             {
-                CATransaction.begin()
                 CATransaction.setAnimationDuration(1.0)
                 keybuttons[j].shadowOpacity = 0.0
                 keybuttons[j].shadowColor = UIColor.cyan.cgColor
-                CATransaction.commit()
             }
+            CATransaction.commit()
         }
         
         lastNote = curr_note
@@ -716,8 +718,17 @@ class HarmonizerView: UIView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         var pointOfTouch = touches.first?.location(in: self)
-        
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
+        
+        print(touches.count)
+        
+        // Multi touch sets volume!
+        if (touches.count > 1 || volumeStart > 0)
+        {
+            volumeStart = Float((pointOfTouch?.y)!)/Float(layer.frame.height)
+            currGain = (delegate?.harmonizerViewGetGain(self))!
+            return
+        }
         
         processVoicesTouch(point: pointOfTouch!)
         processKeycenterTouch(point: pointOfTouch!)
@@ -797,8 +808,21 @@ class HarmonizerView: UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         var pointOfTouch = touches.first?.location(in: self)
         pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
+        
+        if (touches.count > 1 || volumeStart >= 0)
+        {
+            print(Float((pointOfTouch?.y)!))
+            
+            let vol = Float((pointOfTouch?.y)!)/Float(layer.frame.height)
+            
+            delegate?.harmonizerView(self, didChangeGain: (volumeStart - vol)*4 + currGain)
+            return
+        }
+        
+        
         processVoicesTouch(point: pointOfTouch!)
         processKeycenterTouch(point: pointOfTouch!)
         
@@ -835,6 +859,7 @@ class HarmonizerView: UIView {
         presetPrevButton.isSelected = false
         
         touchDown = false
+        volumeStart = -1
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
