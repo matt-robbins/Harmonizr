@@ -28,7 +28,7 @@ class HarmButton: UIButton {
         layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowRadius = 8
         layer.masksToBounds = false
-        showsTouchWhenHighlighted = true
+        showsTouchWhenHighlighted = false
     }
     
     override init(frame: CGRect) {
@@ -45,9 +45,9 @@ class HarmButton: UIButton {
         self.configure()
     }
     
-    override var isSelected: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            switch isSelected {
+            switch isHighlighted {
             case true:
                 layer.borderColor = UIColor.cyan.cgColor
                 layer.shadowOpacity = 1.0
@@ -55,6 +55,17 @@ class HarmButton: UIButton {
             case false:
                 layer.borderColor = UIColor.darkGray.cgColor
                 layer.shadowOpacity = 0.0
+            }
+        }
+    }
+    
+    override var isEnabled: Bool {
+        didSet {
+            switch isEnabled {
+            case true:
+                self.layer.opacity = 1
+            case false:
+                self.layer.opacity = 0.5
             }
         }
     }

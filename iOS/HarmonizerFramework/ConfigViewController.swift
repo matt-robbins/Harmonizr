@@ -34,7 +34,12 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         pickerLabel!.text = pickerData[row]
         
         pickerLabel!.backgroundColor = UIColor.clear
+        pickerLabel!.textColor = UIColor.white
         
+//        if (component == currInterval)
+//        {
+//            pickerLabel!.backgroundColor = UIColor.red
+//        }
         pickerLabel!.textAlignment = .center
         
         return pickerLabel!
@@ -62,6 +67,8 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBOutlet weak var navBar: UINavigationBar!
     var pickerData: [String] = [String]()
     
+    @IBOutlet weak var qualitySeg: UISegmentedControl!
+    
     @IBOutlet weak var degreeStack: UIStackView!
     @IBOutlet weak var intervalStack: UIStackView!
     
@@ -71,12 +78,23 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     public var audioUnit: AUv3Harmonizer? {
         didSet {
             print("set audio unit in config view controller!")
+            paramTree = audioUnit!.parameterTree
+            let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
+            
+            let keycenter = keycenterParam!.value
+            
+            nc = (intervalChoosers?.count)!
+            
+            keyQuality = Int(keycenter / 12)
+            keyRoot = Int(keycenter) % 12
+            qualitySeg.selectedSegmentIndex = keyQuality
         }
     }
     
     var paramTree: AUParameterTree?
     
     var keyQuality = 0
+    var keyRoot = 0
     var unisonOffset = 12
     var nc = 4
     
@@ -112,11 +130,14 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             if (l == currInterval)
             {
                 CATransaction.setAnimationDuration(0.05)
-                layer.backgroundColor = UIColor.red.cgColor
+                layer.borderColor = UIColor.red.cgColor
+                layer.shadowColor = UIColor.red.cgColor
+                layer.shadowOpacity = 1
             }
             else
             {
-                layer.backgroundColor = UIColor.white.cgColor
+                layer.borderColor = UIColor.darkGray.cgColor
+                layer.shadowOpacity = 0
             }
             CATransaction.commit()
         }
@@ -124,9 +145,11 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
 //        if (oldInterval != currInterval)
 //        {
-//            for c in intervalChoosers!
-//            {
-//                c.reloadAllComponents()
+//            DispatchQueue.main.async {
+//                for c in self.intervalChoosers!
+//                {
+//                    c.reloadAllComponents()
+//                }
 //            }
 //        }
         
@@ -145,9 +168,29 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         {
             self.intervalChoosers![k].delegate = self
             self.intervalChoosers![k].dataSource = self
+            self.intervalChoosers![k].layer.cornerRadius = 8
+            self.intervalChoosers![k].backgroundColor = UIColor.black
+            //self.intervalChoosers![k].foregroundColor = UIColor.white
+            
+            
+        }
+        
+        let keycenterLabels = degreeStack.arrangedSubviews
+        
+        for l in 0...keycenterLabels.count-1
+        {
+            let layer = keycenterLabels[l].layer
+            keycenterLabels[l].layer.cornerRadius = 4
+            keycenterLabels[l].layer.borderWidth = 4
+            keycenterLabels[l].layer.borderColor = UIColor.darkGray.cgColor
+            keycenterLabels[l].layer.shadowColor = UIColor.darkGray.cgColor
+            keycenterLabels[l].layer.shadowRadius = 8
+            keycenterLabels[l].layer.shadowOffset = CGSize(width: 0, height: 0)
+            keycenterLabels[l].layer.shadowOpacity = 0
+            keycenterLabels[l].layer.backgroundColor = UIColor.white.cgColor
         }
 
-        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1",
+        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2",
                       "U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
         
         doneButton.title = "Done"
@@ -157,28 +200,13 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     {
         guard audioUnit != nil else { return }
         
-        paramTree = audioUnit!.parameterTree
+        
+        keyQuality = qualitySeg.selectedSegmentIndex
+        qualitySeg!.selectedSegmentIndex = keyQuality
+        
         let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
         
-        let keycenter = keycenterParam!.value
-        
-        nc = (intervalChoosers?.count)!
-        
-        keyQuality = Int(keycenter / 12)
-        
-        var keytype: String = "Major"
-        
-        if (keyQuality == 1)
-        {
-            keytype = "Minor"
-        }
-        
-        if (keyQuality == 2)
-        {
-            keytype = "Dominant"
-        }
-        
-        navBar.topItem?.title = "Configure (\(keytype))"
+        keycenterParam!.value = Float(keyQuality * 12 + keyRoot)
         
         for j in 0...11
         {
@@ -186,7 +214,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             {
                 let key = "interval_\(nc*j + k + keyQuality*12*nc)"
                 let param = paramTree!.value(forKey: key) as? AUParameter
-                intervalChoosers![k].selectRow(Int(param!.value)+unisonOffset, inComponent: j, animated: false)
+                intervalChoosers![k].selectRow(Int(param!.value)+unisonOffset, inComponent: j, animated: true)
             }
         }
         
@@ -195,5 +223,10 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBAction func done(_ sender: AnyObject?)
     {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func setQuality(_ sender: UISegmentedControl?)
+    {
+        refresh()
     }
 }

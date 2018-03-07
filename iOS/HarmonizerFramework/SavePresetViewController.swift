@@ -64,6 +64,17 @@ public class SavePresetViewController: UIViewController, UITextFieldDelegate
         //setPreset(vc!.presetIx)
     }
     
+    public override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        presetName.layer.borderColor = UIColor.darkGray.cgColor
+        presetName.layer.borderWidth = 2
+        presetName.layer.cornerRadius = 4
+        
+        prevButton.setTitleColor(.black, for: UIControlState())
+        nextButton.setTitleColor(.black, for: UIControlState())
+    }
+    
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.presetName.resignFirstResponder()
         return true

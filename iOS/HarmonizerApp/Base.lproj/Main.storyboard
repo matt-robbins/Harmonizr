@@ -43,7 +43,7 @@
                                                     <connections>
                                                         <outletCollection property="gestureRecognizers" destination="Sdp-z9-D4E" appends="YES" id="a3S-Ke-u4h"/>
                                                         <outletCollection property="gestureRecognizers" destination="j2l-fP-4rH" appends="YES" id="cZz-5n-C6c"/>
-                                                        <segue destination="n4r-Op-aTt" kind="presentation" identifier="mainToReverb" id="bnj-17-dve"/>
+                                                        <segue destination="n4r-Op-aTt" kind="presentation" identifier="mainToReverb" animates="NO" id="bnj-17-dve"/>
                                                     </connections>
                                                 </button>
                                             </barButtonItem>
@@ -55,7 +55,7 @@
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="Yet-wN-pz8" kind="presentation" id="Tha-up-brg"/>
+                                                        <segue destination="Yet-wN-pz8" kind="presentation" animates="NO" id="Tha-up-brg"/>
                                                     </connections>
                                                 </button>
                                             </barButtonItem>

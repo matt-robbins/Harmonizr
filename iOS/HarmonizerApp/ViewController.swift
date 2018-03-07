@@ -208,7 +208,7 @@ class ViewController: UIViewController {
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ViewController.dismissPopover))
         //navController.modalPresentationStyle = UIModalPresentationStyle.popover
         
-        self.present(navController, animated: true, completion: nil)
+        self.present(navController, animated: false, completion: nil)
 	}
 	
     @IBAction func toggleReverb(_ sender: UITapGestureRecognizer)

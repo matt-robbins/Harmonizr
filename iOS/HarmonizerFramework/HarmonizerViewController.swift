@@ -345,18 +345,16 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     
     func harmonizerViewConfigure(_ filterView: HarmonizerView) {
         
-//        for j in 0...36 {
-//            let param = paramTree.value(forKey: "interval_\(j)") as? AUParameter
-//            param!.value = 0.0
-//        }
-        DispatchQueue.main.async {
-            self.configController!.audioUnit = self.audioUnit
+        self.configController!.audioUnit = self.audioUnit
+
+        //performSegue(withIdentifier: "configurePreset", sender: self)
+//
+        self.present(self.configController!, animated:true, completion:
+        {
+            self.presetModified=true; self.harmonizerView.configureDehighlight();
             self.configController!.refresh()
-            self.present(self.configController!, animated:true, completion:
-            {
-                self.presetModified=true; self.harmonizerView.configureDehighlight();
-            })
-        }
+        })
+        
     }
     
 	/*
