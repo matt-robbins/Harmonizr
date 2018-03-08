@@ -262,14 +262,14 @@ class HarmonizerView: UIView {
         {
             if (keybuttons[key].borderColor != UIColor.darkGray.cgColor)
             {
-                keybuttons[key].removeAnimation(forKey: "pulse")
+                //keybuttons[key].removeAnimation(forKey: "pulse")
                 keybuttons[key].borderColor = UIColor.darkGray.cgColor
                 keybuttons[key].shadowOpacity = 0.0
                 keybuttons[key].zPosition = 0.0
             }
         }
         
-        keybuttons[new_key].add(pulseAnimation, forKey:"pulse")
+        //keybuttons[new_key].add(pulseAnimation, forKey:"pulse")
         keybuttons[new_key].shadowOpacity = 1.0
         keybuttons[new_key].borderColor = UIColor.cyan.cgColor
         keybuttons[new_key].zPosition = 1.0

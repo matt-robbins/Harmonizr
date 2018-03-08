@@ -129,7 +129,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             CATransaction.begin()
             if (l == currInterval)
             {
-                CATransaction.setAnimationDuration(0.05)
+                CATransaction.setAnimationDuration(0.5)
                 layer.borderColor = UIColor.red.cgColor
                 layer.shadowColor = UIColor.red.cgColor
                 layer.shadowOpacity = 1
@@ -171,8 +171,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             self.intervalChoosers![k].layer.cornerRadius = 8
             self.intervalChoosers![k].backgroundColor = UIColor.black
             //self.intervalChoosers![k].foregroundColor = UIColor.white
-            
-            
         }
         
         let keycenterLabels = degreeStack.arrangedSubviews
@@ -200,7 +198,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     {
         guard audioUnit != nil else { return }
         
-        
         keyQuality = qualitySeg.selectedSegmentIndex
         qualitySeg!.selectedSegmentIndex = keyQuality
         
@@ -217,7 +214,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
                 intervalChoosers![k].selectRow(Int(param!.value)+unisonOffset, inComponent: j, animated: true)
             }
         }
-        
     }
     
     @IBAction func done(_ sender: AnyObject?)

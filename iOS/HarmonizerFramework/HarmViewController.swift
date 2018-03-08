@@ -15,9 +15,23 @@ enum tags
     
 }
 
+@IBDesignable
 class HarmButton: UIButton {
     
     var keycenter: Int = 0
+    
+    @IBInspectable var cornerRadius: CGFloat = 0 {
+        didSet {
+            layer.cornerRadius = cornerRadius
+        }
+    }
+    
+    @IBInspectable var highlightColor: CGColor = UIColor.cyan.cgColor {
+        didSet {
+            layer.borderColor = highlightColor
+            layer.shadowColor = highlightColor
+        }
+    }
     
     func configure() {
         backgroundColor = .white
@@ -49,7 +63,7 @@ class HarmButton: UIButton {
         didSet {
             switch isHighlighted {
             case true:
-                layer.borderColor = UIColor.cyan.cgColor
+                layer.borderColor = highlightColor
                 layer.shadowOpacity = 1.0
                 superview?.bringSubview(toFront: self)
             case false:

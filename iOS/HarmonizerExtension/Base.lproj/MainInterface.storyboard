@@ -622,7 +622,9 @@
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CeX-m0-vb9" customClass="HarmButton" customModule="HarmonizerFramework">
                                 <rect key="frame" x="325" y="72" width="30" height="30"/>
-                                <state key="normal" title="&gt;"/>
+                                <state key="normal" title="&gt;">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="changePreset:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="UeU-Nv-mtW"/>
                                 </connections>
@@ -667,7 +669,14 @@
                             </navigationBar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="890-VX-b1M" customClass="HarmButton" customModule="HarmonizerFramework">
                                 <rect key="frame" x="124.5" y="72" width="30" height="30"/>
-                                <state key="normal" title="&lt;"/>
+                                <state key="normal" title="&lt;">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="changePreset:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="6D3-KW-JHV"/>
                                 </connections>
@@ -696,7 +705,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qeW-bf-24p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1051" y="1014"/>
+            <point key="canvasLocation" x="1121" y="789"/>
         </scene>
     </scenes>
 </document>
