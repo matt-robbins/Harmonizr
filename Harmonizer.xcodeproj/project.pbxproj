@@ -56,6 +56,7 @@
 		92FF86A41B9F5B7B007C9389 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
 		92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF86A51B9F5D42007C9389 /* FilterView.h */; };
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
+		C91216C3206998D200E6BB57 /* PresetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91216C2206998D200E6BB57 /* PresetController.swift */; };
 		C92389A12003CD0D008C76AB /* SavePresetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923899F2003C467008C76AB /* SavePresetViewController.swift */; };
 		C92389A620065700008C76AB /* PresetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92389A520065700008C76AB /* PresetEngine.swift */; };
 		C92AB161205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */; };
@@ -229,6 +230,7 @@
 		92FF86A51B9F5D42007C9389 /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
 		92FF86A61B9F5D42007C9389 /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
 		C90633682018F01400412EC9 /* HarmViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HarmViewController2.swift; sourceTree = "<group>"; };
+		C91216C2206998D200E6BB57 /* PresetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetController.swift; sourceTree = "<group>"; };
 		C923899F2003C467008C76AB /* SavePresetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePresetViewController.swift; sourceTree = "<group>"; };
 		C92389A520065700008C76AB /* PresetEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetEngine.swift; sourceTree = "<group>"; };
 		C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonizerVoicesView.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				164896A61C925E0C00AB781D /* Shared */,
 				91236D571B08F52D00734C5E /* HarmonizerFramework.h */,
 				9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */,
+				C91216C2206998D200E6BB57 /* PresetController.swift */,
 				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
 				C9EC31E52065B97D007835AB /* PresetFavoriteViewController.swift */,
 				91A9356A1B1269F100370383 /* HarmonizerView.swift */,
@@ -846,6 +849,7 @@
 				C92AB161205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,
 				C9D9BC7C20191752001977BD /* HarmViewController2.swift in Sources */,
 				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
+				C91216C3206998D200E6BB57 /* PresetController.swift in Sources */,
 				91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -341,7 +341,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         
         harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
         
-        
         presetPrevButton.isEnabled = (presetIx > 0)
         presetNextButton.isEnabled = (presetIx < presets.count - 1)
         
@@ -393,6 +392,14 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     }
     
     @IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
+        guard let button = sender.view as! HarmButton?
+        else
+        {
+            return
+        }
+        print(button.keycenter)
+        
+        performSegue(withIdentifier: "fastPreset", sender:self)
     }
     
 }

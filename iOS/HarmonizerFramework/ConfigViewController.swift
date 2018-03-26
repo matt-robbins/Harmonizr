@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 import AudioToolbox
 
+protocol PresetSaveDelegate: class {
+    func configViewController(_ controller: ConfigViewController, didChangeKeycenter keycenter: Float)
+    func configViewControllerGetPresets(_ controller: ConfigViewController) -> [String]
+}
+
 public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return nc
@@ -63,6 +68,12 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBOutlet weak var rootStack: UIStackView!
     
     @IBOutlet weak var intervalPicker: UIPickerView!
+    
+    @IBOutlet weak var presetName: UITextField!
+    @IBOutlet weak var presetPrevButton: HarmButton!
+    @IBOutlet weak var presetNextButton: HarmButton!
+    
+    weak var delegate: PresetSaveDelegate?
     
     var currInterval = 0
     
