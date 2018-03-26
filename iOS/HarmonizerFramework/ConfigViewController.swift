@@ -11,7 +11,7 @@ import AudioToolbox
 
 public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 12
+        return nc
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -29,36 +29,26 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         {
             pickerLabel = UILabel()
         }
-        //var titleData : String = String()
         
         pickerLabel!.text = pickerData[row]
         
         pickerLabel!.backgroundColor = UIColor.clear
         pickerLabel!.textColor = UIColor.white
         
-//        if (component == currInterval)
-//        {
-//            pickerLabel!.backgroundColor = UIColor.red
-//        }
         pickerLabel!.textAlignment = .center
         
-        return pickerLabel!
-        
-        //return pickerData[row]
+        return pickerLabel!        
     }
     
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // This method is triggered whenever the user makes a change to the picker selection.
         // The parameter named row and component represents what was selected.
         var key: String
-        for k in 0...nc-1 {
-            
-            if (pickerView == intervalChoosers![k]) {
-                key = "interval_\(nc*component + k + keyQuality*12*nc)"
-                let param = paramTree!.value(forKey: key) as? AUParameter
-                param!.value = Float(row - unisonOffset)
-            }
-        }
+        
+        key = "interval_\(nc*scaleDegree + component + keyQuality*12*nc)"
+        let param = paramTree!.value(forKey: key) as? AUParameter
+        param!.value = Float(row - unisonOffset)
+        
     }
     
     //MARK: Properties
@@ -70,11 +60,12 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBOutlet weak var qualitySeg: UISegmentedControl!
     
     @IBOutlet weak var degreeStack: UIStackView!
-    @IBOutlet weak var intervalStack: UIStackView!
+    @IBOutlet weak var rootStack: UIStackView!
+    
+    @IBOutlet weak var intervalPicker: UIPickerView!
     
     var currInterval = 0
     
-    var intervalChoosers: [UIPickerView]?
     public var audioUnit: AUv3Harmonizer? {
         didSet {
             print("set audio unit in config view controller!")
@@ -83,11 +74,16 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             
             let keycenter = keycenterParam!.value
             
-            nc = (intervalChoosers?.count)!
-            
             keyQuality = Int(keycenter / 12)
             keyRoot = Int(keycenter) % 12
             qualitySeg.selectedSegmentIndex = keyQuality
+            
+            let buttons = rootStack.arrangedSubviews as! [HarmButton]
+            for c in 0...buttons.count - 1
+            {
+                buttons[c].isSelected = (c == keyRoot)
+            }
+            
         }
     }
     
@@ -95,6 +91,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     
     var keyQuality = 0
     var keyRoot = 0
+    var scaleDegree = 0
     var unisonOffset = 12
     var nc = 4
     
@@ -112,46 +109,43 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         if (note == -1.0)
         {
-            return
+            currInterval = -1
         }
-        
-        let i = Int(round(note)) % 12
-        let k = Int(audioUnit.getCurrentKeycenter()) % 12
-        
-        let oldInterval = currInterval
-        currInterval = (i - k + 12) % 12
-
-        let keycenterLabels = degreeStack.arrangedSubviews
-        
-        for l in 0...keycenterLabels.count-1
+        else
         {
-            let layer = keycenterLabels[l].layer
+            let i = Int(round(note)) % 12
+            let k = Int(audioUnit.getCurrentKeycenter()) % 12
+            
+            currInterval = (i - k + 12) % 12
+        }
+
+        let buttons = degreeStack.arrangedSubviews as! [HarmButton]
+        
+        for d in 0...buttons.count-1
+        {
+            let b = buttons[d]
             CATransaction.begin()
-            if (l == currInterval)
+            if (d == currInterval)
             {
-                CATransaction.setAnimationDuration(0.5)
-                layer.borderColor = UIColor.red.cgColor
-                layer.shadowColor = UIColor.red.cgColor
-                layer.shadowOpacity = 1
+                b.isBeingPlayed = true
             }
             else
             {
-                layer.borderColor = UIColor.darkGray.cgColor
-                layer.shadowOpacity = 0
+                b.isBeingPlayed = false
             }
             CATransaction.commit()
         }
         
-        
-//        if (oldInterval != currInterval)
-//        {
-//            DispatchQueue.main.async {
-//                for c in self.intervalChoosers!
-//                {
-//                    c.reloadAllComponents()
-//                }
-//            }
-//        }
+        if (currInterval == scaleDegree)
+        {
+            intervalPicker!.layer.shadowOpacity = 1.0
+            intervalPicker!.layer.borderColor = UIColor.cyan.cgColor
+        }
+        else
+        {
+            intervalPicker!.layer.shadowOpacity = 0.0
+            intervalPicker!.layer.borderColor = UIColor.darkGray.cgColor
+        }
         
         return
     }
@@ -162,37 +156,22 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         auPoller(T: 0.1)
         
-        intervalChoosers = intervalStack.arrangedSubviews as? [UIPickerView]
+        intervalPicker!.delegate = self
+        intervalPicker!.dataSource = self
+        intervalPicker!.layer.cornerRadius = 8
+        intervalPicker!.backgroundColor = UIColor.black
+        intervalPicker!.layer.borderWidth = 4
+        intervalPicker!.layer.borderColor = UIColor.darkGray.cgColor
+        intervalPicker!.layer.shadowColor = UIColor.cyan.cgColor
+        intervalPicker!.layer.shadowRadius = 8
+        intervalPicker!.layer.shadowOffset = CGSize(width: 0, height: 0)
+        intervalPicker!.layer.shadowOpacity = 0
         
-        for k in 0...nc-1
-        {
-            self.intervalChoosers![k].delegate = self
-            self.intervalChoosers![k].dataSource = self
-            self.intervalChoosers![k].layer.cornerRadius = 8
-            self.intervalChoosers![k].backgroundColor = UIColor.black
-            //self.intervalChoosers![k].foregroundColor = UIColor.white
-        }
-        
-        let keycenterLabels = degreeStack.arrangedSubviews
-        
-        for l in 0...keycenterLabels.count-1
-        {
-            let layer = keycenterLabels[l].layer
-            keycenterLabels[l].layer.cornerRadius = 4
-            keycenterLabels[l].layer.borderWidth = 4
-            keycenterLabels[l].layer.borderColor = UIColor.darkGray.cgColor
-            keycenterLabels[l].layer.shadowColor = UIColor.darkGray.cgColor
-            keycenterLabels[l].layer.shadowRadius = 8
-            keycenterLabels[l].layer.shadowOffset = CGSize(width: 0, height: 0)
-            keycenterLabels[l].layer.shadowOpacity = 0
-            keycenterLabels[l].layer.backgroundColor = UIColor.white.cgColor
-        }
+        let d = degreeStack.arrangedSubviews[0] as! HarmButton
+        d.isSelected = true
 
-        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2",
-                      "U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
-        
-        doneButton.title = "Done"
-    }
+        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
+        }
     
     public func refresh()
     {
@@ -205,17 +184,16 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         keycenterParam!.value = Float(keyQuality * 12 + keyRoot)
         
-        for j in 0...11
+        for k in 0...nc-1
         {
-            for k in 0...nc-1
-            {
-                let key = "interval_\(nc*j + k + keyQuality*12*nc)"
-                let param = paramTree!.value(forKey: key) as? AUParameter
-                intervalChoosers![k].selectRow(Int(param!.value)+unisonOffset, inComponent: j, animated: true)
-            }
+            let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
+            let param = paramTree!.value(forKey: key) as? AUParameter
+            intervalPicker!.selectRow(Int(param!.value)+unisonOffset, inComponent: k, animated: true)
         }
+        
     }
     
+    //MARK: Actions
     @IBAction func done(_ sender: AnyObject?)
     {
         self.dismiss(animated: true, completion: nil)
@@ -223,6 +201,47 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     
     @IBAction func setQuality(_ sender: UISegmentedControl?)
     {
+        refresh()
+    }
+    
+    @IBAction func setRoot(_ sender: HarmButton?)
+    {
+        //let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
+        
+        var r = 0
+        for b in rootStack.arrangedSubviews as! [HarmButton]
+        {
+            if (b == sender)
+            {
+                keyRoot = r
+                b.isSelected = true
+            }
+            else
+            {
+                b.isSelected = false
+            }
+            r = r + 1
+        }
+        refresh()
+    }
+    
+    @IBAction func setDegree(_ sender: HarmButton?)
+    {
+        var degree = 0
+        for b in degreeStack.arrangedSubviews as! [HarmButton]
+        {
+            if (b == sender)
+            {
+                scaleDegree = degree
+                b.isSelected = true
+            }
+            else
+            {
+                b.isSelected = false
+            }
+            degree = degree + 1
+        }
+        
         refresh()
     }
 }

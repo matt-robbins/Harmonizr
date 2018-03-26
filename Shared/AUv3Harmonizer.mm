@@ -15,7 +15,7 @@
 
 #pragma mark AUv3FilterDemo (Presets)
 
-static const UInt8 kNumberOfPresets = 3;
+static const UInt8 kNumberOfPresets = 6;
 static const NSInteger kDefaultFactoryPreset = 0;
 
 typedef struct FactoryPresetParameters {
@@ -30,7 +30,6 @@ typedef struct FactoryPresetParameters {
 
 static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
 {
-    
     // Chords
     {
         0, //keycenter
@@ -57,18 +56,55 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
             0,4,7,10, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
         }
     },
-    { // Chromatic
+    { // Barbershop
         0, //keycenter
-        2, //inversion
+        1, //inversion
         4,
+        0, //autoharm
+        1, //midi
+        -1, //triad
+        {0,4,7,12, 0,3,6,8, 0,3,6,9, 0,3,6,9, 0,3,5,8, 0,4,7,9, 0,3,6,10, 0,2,5,9, 0,3,6,9, 0,3,7,10, 0,4,7,10, 0,4,7,12, // major
+            0,3,7,12, 0,3,6,8, 0,3,6,9, 0,4,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,8, 0,3,6,9, 0,3,6,10, 0,4,7,10, 0,3,6,9, // minor
+            0,4,7,10, 0,3,6,9, 0,3,6,9, 0,3,6,9, 0,3,6,8, 0,3,6,9, 0,3,5,9, 0,3,5,9, 0,3,6,9, 0,3,6,9, 0,2,6,9, 0,4,7,10 //dom
+        }
+    },
+    { // Bohemian?
+        0, //keycenter
+        3, //inversion
+        4,
+        0, //autoharm
+        1, //midi
+        -1, //triad
+        {0,4,7,9, 0,3,6,8, 0,3,7,10, 0,3,6,9, 0,3,5,8, 0,4,7,9, 0,3,6,9, 0,2,5,9, 0,3,6,9, 0,3,5,8, 0,2,6,9, 0,1,5,8, // major
+            0,3,7,10, 0,3,6,8, 0,3,6,9, 0,4,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,8, 0,3,6,9, 0,3,6,10, 0,4,7,10, 0,3,6,9, // minor
+            0,4,7,10, 0,3,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,8, 0,2,5,9, 0,3,5,9, 0,3,5,9, 0,2,6,9, 0,1,5,8, 0,2,6,9, 0,3,6,9 //dom
+        }
+    },
+    { // Bass!
+        0, //keycenter
+        1, //inversion
+        1,
         1, //autoharm
         1, //midi
         -1, //triad
-        {0,4,7,9, 0,3,6,8, 0,3,6,9, 0,3,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,9, 0,3,6,9, 0,3,7,10, 0,4,7,10, 0,3,6,9, // major
-            0,3,7,9, 0,3,6,8, 0,3,6,9, 0,4,6,9, 0,3,5,8, 0,3,6,9, 0,3,6,9, 0,2,5,8, 0,3,6,9, 0,3,6,10, 0,4,7,10, 0,3,6,9, // minor
-            0,4,7,10, 0,3,6,9, 0,3,6,9, 0,3,6,9, 0,3,6,8, 0,3,6,9, 0,3,5,9, 0,3,5,9, 0,3,6,9, 0,3,6,9, 0,2,6,9, 0,3,6,9 //dom
+        {-12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "major"
+            -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "minor"
+            -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "dom"
         }
     },
+    { // Modes
+        0, //keycenter
+        3, //inversion
+        4,
+        0, //autoharm
+        1, //midi
+        -1, //triad
+        {0,4,7,11, 0,3,6,10, 0,3,7,10, 0,3,6,9, 0,3,7,10, 0,4,7,11, 0,3,6,10, 0,4,7,10, 0,4,8,11, 0,3,7,10, 0,4,7,11, 0,3,6,10, // major
+            0,3,7,11, 0,3,7,10, 0,3,7,10, 0,4,8,11, 0,4,7,10, 0,4,7,10, 0,4,7,10, 0,4,7,10, 0,4,7,11, 0,3,6,10, 0,3,6,10, 0,3,6,10, // minor
+            0,4,7,10, 0,3,7,10, 0,3,7,10, 0,3,6,10, 0,3,6,10, 0,4,7,11, 0,3,7,10, 0,3,7,10, 0,3,7,10, 0,3,7,10, 0,4,7,11, 0,4,7,10 //dom
+        }
+    },
+    
 };
 
 static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
@@ -226,7 +262,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
-    _presets = @[NewAUPreset(0, @"Chords"),NewAUPreset(1, @"Diatonic"),NewAUPreset(2, @"Chromatic")];
+    _presets = @[NewAUPreset(0, @"Chords"),NewAUPreset(1, @"Diatonic"),NewAUPreset(2, @"Barbershop"),NewAUPreset(3, @"Bohemian?"),NewAUPreset(4, @"Bass!"),NewAUPreset(5, @"Modes")];
     
 	// Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:params];
@@ -402,14 +438,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
             if (currentPreset.number == factoryPreset.number) {
                 
 //                AUParameter *keycenterParameter = [self.parameterTree valueForKey: @"keycenter"];
-//                AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
-//                AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
+                AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
+                AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
 //                AUParameter *midiParameter = [self.parameterTree valueForKey: @"midi"];
 //                AUParameter *triadParameter = [self.parameterTree valueForKey: @"triad"];
 
                 //keycenterParameter.value = presetParameters[factoryPreset.number].keycenterValue;
-                //inversionParameter.value = presetParameters[factoryPreset.number].inversionValue;
-                //autoParameter.value = presetParameters[factoryPreset.number].autoValue;
+                inversionParameter.value = presetParameters[factoryPreset.number].inversionValue;
+                autoParameter.value = presetParameters[factoryPreset.number].autoValue;
                 //midiParameter.value = presetParameters[factoryPreset.number].midiValue;
                 //triadParameter.value = presetParameters[factoryPreset.number].triadValue;
                 

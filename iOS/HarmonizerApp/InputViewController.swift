@@ -76,9 +76,10 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let row = (indexPath as NSIndexPath).row
         
+        let session = AVAudioSession.sharedInstance()
+        
         if (tableView === inputTable)
         {
-            let session = AVAudioSession.sharedInstance()
             do {
                 try session.setPreferredInput(data[row])
             }
@@ -86,16 +87,22 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
                 print("oopsie!")
             }
             
+            refresh()
+            
             updateGainSlider()
-//            dataSources = AVAudioSession.sharedInstance().inputDataSources?
-//
-//            if (dataSources != nil)
-//            {
-//                self.inputDataSourceTable.reloadData()
-//            }
+            
+        }
+        if (tableView === inputDataSourceTable)
+        {
+            print("setting data source")
+            do {
+                try session.preferredInput?.setPreferredDataSource(dataSources[row])
+            }
+            catch {
+                print("unable to set data source!")
+            }
         }
         
-        print(row)
         return
     }
     
@@ -116,37 +123,81 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
         
         inputTable.delegate = self
         inputTable.dataSource = self
+        inputDataSourceTable.delegate = self
+        inputDataSourceTable.dataSource = self
         
-        let session = AVAudioSession.sharedInstance()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
         
-        var current_row = 0
-        
-        for s in session.availableInputs! {
-            data.append(s)
-            if (s == session.preferredInput)
-            {
-                current_row = data.index(of: s)!
-            }
-            //
-        }
-        self.inputTable.reloadData()
+        refresh()
         
         updateGainSlider()
         
-        let indexPath = IndexPath(row: current_row, section: 0);
-        self.inputTable.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
         //self.tableView(self.tableView, didSelectRowAt: indexPath)
     }
     
+    private func refresh()
+    {
+        DispatchQueue.main.async {
+            
+            let session = AVAudioSession.sharedInstance()
+            
+            print(session.currentRoute.inputs.first)
+            var current_row = 0
+            var current_source_ix = 0
+            
+            self.data = [AVAudioSessionPortDescription]()
+            self.dataSources = [AVAudioSessionDataSourceDescription]()
+            
+            for s in session.availableInputs! {
+                
+                self.data.append(s)
+                
+                if (s.portName == session.currentRoute.inputs.first?.portName)
+                {
+                    current_row = self.data.index(of: s)!
+                    
+                    if ((s.dataSources) != nil)
+                    {
+                        for sr in (s.dataSources)!
+                        {
+                            self.dataSources.append(sr)
+                            
+                            if (sr.dataSourceName == s.selectedDataSource?.dataSourceName)
+                            {
+                                current_source_ix = self.dataSources.index(of: sr)!
+                            }
+                        }
+                    }
+                }
+            }
+            
+            self.inputTable.reloadData()
+            self.inputDataSourceTable.reloadData()
+            
+            var indexPath = IndexPath(row: current_source_ix, section: 0)
+            self.inputDataSourceTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+            
+            indexPath = IndexPath(row: current_row, section: 0)
+            self.inputTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+        }
+    }
     
     private func updateGainSlider()
     {
-        let session = AVAudioSession.sharedInstance()
-        self.inputGainSlider.isEnabled =  session.isInputGainSettable
-        if (session.isInputGainSettable)
-        {
-            inputGainSlider.value = session.inputGain
+        DispatchQueue.main.async {
+            let session = AVAudioSession.sharedInstance()
+            self.inputGainSlider.isEnabled = session.isInputGainSettable
+            if (session.isInputGainSettable)
+            {
+                self.inputGainSlider.value = session.inputGain
+            }
         }
+    }
+    
+    @objc private func handleRouteChange()
+    {
+        refresh()
+        updateGainSlider()
     }
 }
 

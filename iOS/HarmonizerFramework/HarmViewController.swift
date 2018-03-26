@@ -18,7 +18,7 @@ enum tags
 @IBDesignable
 class HarmButton: UIButton {
     
-    var keycenter: Int = 0
+    @IBInspectable var keycenter: Int = 0
     
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
@@ -34,7 +34,15 @@ class HarmButton: UIButton {
     }
     
     func configure() {
-        backgroundColor = .white
+        //backgroundColor = .white
+        if (backgroundColor == .white)
+        {
+            setTitleColor(.black, for: UIControlState())
+        }
+        else if (backgroundColor == .black)
+        {
+            setTitleColor(.white, for: UIControlState())
+        }
         layer.shadowColor = UIColor.cyan.cgColor
         layer.cornerRadius = 4
         layer.borderWidth = 4
@@ -42,7 +50,7 @@ class HarmButton: UIButton {
         layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowRadius = 8
         layer.masksToBounds = false
-        showsTouchWhenHighlighted = false
+        showsTouchWhenHighlighted = true
     }
     
     override init(frame: CGRect) {
@@ -59,10 +67,24 @@ class HarmButton: UIButton {
         self.configure()
     }
     
-    override var isHighlighted: Bool {
+//    override var isHighlighted: Bool {
+//        didSet {
+//            switch isHighlighted {
+//            case true:
+//                layer.borderColor = highlightColor
+//                layer.shadowOpacity = 1.0
+//                superview?.bringSubview(toFront: self)
+//            case false:
+//                layer.borderColor = UIColor.darkGray.cgColor
+//                layer.shadowOpacity = 0.0
+//            }
+//        }
+//    }
+    override var isSelected: Bool {
         didSet {
-            switch isHighlighted {
+            switch isSelected {
             case true:
+                layer.shadowColor = highlightColor
                 layer.borderColor = highlightColor
                 layer.shadowOpacity = 1.0
                 superview?.bringSubview(toFront: self)
@@ -80,6 +102,22 @@ class HarmButton: UIButton {
                 self.layer.opacity = 1
             case false:
                 self.layer.opacity = 0.5
+            }
+        }
+    }
+    
+    public var isBeingPlayed: Bool = false {
+        didSet {
+            switch isBeingPlayed {
+            case true:
+                //layer.borderColor = UIColor.red.cgColor
+                setTitleColor(.red, for: UIControlState())
+                layer.shadowColor = UIColor.red.cgColor
+                layer.shadowOpacity = 1.0
+                superview?.bringSubview(toFront: self)
+            case false:
+                isSelected = isSelected && true
+                setTitleColor(.black, for: UIControlState())
             }
         }
     }
@@ -230,7 +268,7 @@ public class HarmViewController: AUViewController {
     {
         view.backgroundColor = UIColor.black
         let hview: HarmView = view as! HarmView
-        
+        print("HI!")
         for k in 0...n_keys-1 {
             let v = KeyglowView()
             v.keycenter = k

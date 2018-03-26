@@ -42,7 +42,7 @@ public class SavePresetViewController: UIViewController, UITextFieldDelegate
             vc!.presets[vc!.presetIx].name = presetName.text
             vc!.presets[vc!.presetIx].data = presetData!
             vc!.presetModified = false
-            vc!.harmonizerView.preset = vc!.presets[vc!.presetIx].name
+            vc!.presetLabel.text = vc!.presets[vc!.presetIx].name
             vc!.storePresets()
         }
         self.dismiss(animated: true, completion: nil)

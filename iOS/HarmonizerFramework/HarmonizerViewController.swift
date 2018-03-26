@@ -52,13 +52,24 @@ public class Preset: NSObject, NSCoding {
 }
 
 
-public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate {
+public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate {
     // MARK: Properties
 
     @IBOutlet weak var harmonizerView: HarmonizerView!
+    @IBOutlet weak var voicesView: HarmonizerVoicesView!
+    
+    @IBOutlet weak var midiButton: HarmButton!
+    @IBOutlet weak var autoButton: HarmButton!
+    
+    @IBOutlet weak var presetPrevButton: HarmButton!
+    @IBOutlet weak var presetNextButton: HarmButton!
+    @IBOutlet weak var presetEditButton: HarmButton!
+    @IBOutlet weak var presetLabel: UILabel!
+    
+    @IBOutlet var presetFavorites: [HarmButton]!
     
     /*
-		When this view controller is instantiated within the FilterDemoApp, its 
+		When this view controller is instantiated within the app, its
         audio unit is created independently, and passed to the view controller here.
 	*/
     public var audioUnit: AUv3Harmonizer? {
@@ -97,10 +108,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     var presetIx: Int = 0
     var presetModified: Bool = false {
         didSet {
-            if (harmonizerView != nil)
-            {
-                harmonizerView.setPresetEditEnable(presetModified)
-            }
+
         }
     }
 
@@ -125,6 +133,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
 		
 		// Respond to changes in the filterView (frequency and/or response changes).
         harmonizerView.delegate = self
+        voicesView.delegate = self
         
         auPoller(T: 0.1)
 		configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
@@ -139,70 +148,37 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         
 	}
     
-    // MARK: FilterViewDelegate
-
+    //MARK: VoicesViewDelegate
+    
+    func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float)
+    {
+        inversionParameter?.value = inversion
+        presetModified = true
+    }
+    
+    func voicesView(_ view: HarmonizerVoicesView, didChangeNvoices voices: Float)
+    {
+        nvoicesParameter?.value = voices
+        presetModified = true
+    }
+    
+    
+    //MARK: HarmonizerViewDelegate
     
     func harmonizerView(_ view: HarmonizerView, didChangeKeycenter keycenter: Float)
     {
         keycenterParameter?.value = keycenter
     }
     
-    func harmonizerView(_ view: HarmonizerView, didChangeInversion inversion: Float)
-    {
-        inversionParameter?.value = inversion
-        presetModified = true
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangeNvoices voices: Float)
-    {
-        nvoicesParameter?.value = voices
-        presetModified = true
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangeAuto enable: Float)
-    {
-        autoParameter?.value = enable
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangeTriad triad: Float)
-    {
-        triadParameter?.value = triad
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangeMidi midi: Float)
-    {
-        midiParameter?.value = midi
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangeBypass bypass: Float)
-    {
-        bypassParameter?.value = bypass
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangeGain gain: Float)
-    {
-        gainParameter?.value = gain
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangeSpeed speed: Float)
-    {
-        speedParameter?.value = speed
-    }
-    
     func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float {
         return audioUnit!.getCurrentNote()
     }
+    
     func harmonizerViewGetKeycenter(_ view: HarmonizerView) -> Float {
         return keycenterParameter!.value
     }
     
-    func harmonizerViewGetGain(_ view: HarmonizerView) -> Float {
-        return gainParameter!.value
-    }
-    
-    func harmonizerViewGetPreset(_ view: HarmonizerView) -> String {
-        return audioUnit!.currentPreset!.name
-    }
+    //MARK: preset save/load
     
     func stateURL() -> URL
     {
@@ -230,7 +206,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
         }
         else
         {
-            harmonizerView.preset = audioUnit!.currentPreset?.name
         }
     }
     
@@ -256,7 +231,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
 //            presets = (p!["presets"] as? [Preset])!
 //            presetIx = (p!["presetIx"] as? Int)!
             //harmonizerView.preset = presets[presetIx].name
-            harmonizerView(harmonizerView, didChangePreset: presetIx)
+            //harmonizerView(harmonizerView, didChangePreset: presetIx)
         }
         else
         {
@@ -285,12 +260,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     
     func selectPreset(preset: Int)
     {
-        
-    }
-    
-    func harmonizerView(_ view: HarmonizerView, didChangePreset preset: Int) {
-        print("setting preset index to \(preset)")
-        
         if (preset < presets.count && preset >= 0) {
             presetIx = preset
             let p = presets[preset]
@@ -303,58 +272,24 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
                 self.audioUnit!.fullState = p.data as? [String: Any]
             }
             
-            view.presetPrevButton.isEnabled = (presetIx > 0)
-            view.presetNextButton.isEnabled = (presetIx < presets.count - 1)
-            
-            view.preset = p.name
             storePresets()
             presetModified = false
+            presetLabel.text = p.name
         }
         
         syncView()
     }
     
-    func harmonizerView(_ view: HarmonizerView, didIncrementPreset preset: Int)
+    func incrementPreset(inc: Int)
     {
-        if (preset < 0 && presetIx > 0)
+        if (inc < 0 && presetIx > 0)
         {
-            harmonizerView(view, didChangePreset: presetIx - 1)
+            selectPreset(preset: presetIx - 1)
         }
-        if (preset > 0 && presetIx < presets.count - 1)
+        if (inc > 0 && presetIx < presets.count - 1)
         {
-            harmonizerView(view, didChangePreset: presetIx + 1)
+            selectPreset(preset: presetIx + 1)
         }
-        print(presetIx)
-        
-
-        view.presetPrevButton.isEnabled = (presetIx > 0)
-        view.presetNextButton.isEnabled = (presetIx < presets.count - 1)
-        
-    }
-    
-    func harmonizerViewSavePreset(_ filterVew: HarmonizerView)
-    {
-        //performSegue(withIdentifier: "savePreset", sender: self)
-        
-        self.saveController!.presetData = self.audioUnit!.fullState
-        DispatchQueue.main.async {
-            self.present(self.saveController!, animated:true, completion: nil)
-        }
-        //saveState()
-    }
-    
-    func harmonizerViewConfigure(_ filterView: HarmonizerView) {
-        
-        self.configController!.audioUnit = self.audioUnit
-
-        //performSegue(withIdentifier: "configurePreset", sender: self)
-//
-        self.present(self.configController!, animated:true, completion:
-        {
-            self.presetModified=true; self.harmonizerView.configureDehighlight();
-            self.configController!.refresh()
-        })
-        
     }
     
 	/*
@@ -399,12 +334,65 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate 
     
     private func syncView()
     {
-        harmonizerView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
+        midiButton.isSelected = (midiParameter!.value == 1)
+        autoButton.isSelected = (autoParameter!.value == 1)
+        
+        voicesView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
+        
         harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
-        harmonizerView.inversion = Int(inversionParameter!.value)
-        harmonizerView.bypass = Int(bypassParameter!.value)
-        harmonizerView.auto_enable = Int(autoParameter!.value)
-        harmonizerView.midi_enable = Int(midiParameter!.value)
+        
+        
+        presetPrevButton.isEnabled = (presetIx > 0)
+        presetNextButton.isEnabled = (presetIx < presets.count - 1)
+        
+        presetLabel.text = presets[presetIx].name
+    }
+    
+    //MARK: Actions
+    
+    @IBAction func toggleAuto(_ sender: Any) {
+        autoParameter!.value = autoParameter!.value == 0 ? 1 : 0
+        autoButton.isSelected = autoParameter!.value == 1
+    }
+    
+    @IBAction func toggleMidi(_ sender: Any) {
+        midiParameter!.value = midiParameter!.value == 0 ? 1 : 0
+        midiButton.isSelected = midiParameter!.value == 1
+    }
+    
+    @IBAction func presetPrev(_ sender: Any) {
+        incrementPreset(inc: -1)
+    }
+    
+    @IBAction func presetNext(_ sender: Any) {
+        incrementPreset(inc: 1)
+    }
+    
+    
+    @IBAction func setPreset(_ sender: HarmButton) {
+        for b in presetFavorites {
+            if (b === sender)
+            {
+                selectPreset(preset: b.keycenter)
+            }
+        }
+    }
+    
+    @IBAction func presetConf(_ sender: HarmButton) {
+        self.configController!.audioUnit = self.audioUnit
+        sender.isSelected = true
+        
+        //performSegue(withIdentifier: "configurePreset", sender: self)
+        //
+        self.present(self.configController!, animated:true, completion:
+            {
+                self.presetModified=true
+                self.configController!.refresh()
+                sender.isSelected = false
+        })
+    }
+    
+    @IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
     }
     
 }

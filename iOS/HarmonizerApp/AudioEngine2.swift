@@ -37,8 +37,9 @@ class AudioEngine2: NSObject {
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
         do {
-            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.mixWithOthers])
-            try session.setMode(AVAudioSessionModeMeasurement)
+            //try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.mixWithOthers])
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP, .mixWithOthers])
+            //try session.setMode(AVAudioSessionModeMeasurement)
             try session.setPreferredIOBufferDuration(0.005)
             try session.setPreferredSampleRate(44100.0)
             try session.setActive(true)
