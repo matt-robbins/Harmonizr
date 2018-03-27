@@ -19,51 +19,6 @@ public class SavePresetViewController: UIViewController, UITextFieldDelegate
     public var vc: HarmonizerViewController?
     
     
-    @IBAction func changePreset(_ sender: UIButton)
-    {
-        print(vc!.presetIx)
-        if (sender == nextButton && sender.isEnabled)
-        {
-            vc!.presetIx += 1
-        }
-        if (sender == prevButton && sender.isEnabled)
-        {
-            vc!.presetIx -= 1
-        }
-        
-        presetName.text = vc!.presets[vc!.presetIx].name
-        
-        enableButtons()
-    }
-    @IBAction func save(_ sender: UIButton) {
-        if (sender == saveButton)
-        {
-            print(presetName.text ?? "(Nil)")
-            vc!.presets[vc!.presetIx].name = presetName.text
-            vc!.presets[vc!.presetIx].data = presetData!
-            vc!.presetModified = false
-            vc!.presetLabel.text = vc!.presets[vc!.presetIx].name
-            vc!.storePresets()
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func enableButtons()
-    {
-        prevButton.isEnabled = vc!.presetIx != 0
-        nextButton.isEnabled = vc!.presetIx < vc!.presets.count - 1
-        saveButton.isEnabled = !vc!.presets[vc!.presetIx].isFactory
-    }
-    
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presetName.delegate = self
-        presetName.text = vc!.presets[vc!.presetIx].name
-        enableButtons()
-        //saveButton.isEnabled = false
-        //setPreset(vc!.presetIx)
-    }
-    
     public override func viewDidLoad()
     {
         super.viewDidLoad()

@@ -67,19 +67,20 @@ class HarmButton: UIButton {
         self.configure()
     }
     
-//    override var isHighlighted: Bool {
-//        didSet {
-//            switch isHighlighted {
-//            case true:
-//                layer.borderColor = highlightColor
-//                layer.shadowOpacity = 1.0
-//                superview?.bringSubview(toFront: self)
-//            case false:
-//                layer.borderColor = UIColor.darkGray.cgColor
-//                layer.shadowOpacity = 0.0
-//            }
-//        }
-//    }
+    override var isHighlighted: Bool {
+        didSet {
+            switch isHighlighted {
+            case true:
+                layer.borderColor = highlightColor
+                layer.shadowOpacity = 1.0
+                superview?.bringSubview(toFront: self)
+            case false:
+                if isSelected { return }
+                layer.borderColor = UIColor.darkGray.cgColor
+                layer.shadowOpacity = 0.0
+            }
+        }
+    }
     override var isSelected: Bool {
         didSet {
             switch isSelected {
