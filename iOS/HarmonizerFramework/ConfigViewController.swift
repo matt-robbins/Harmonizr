@@ -215,6 +215,31 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         presetName.delegate = self
         saveButton.isEnabled = false
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification)
+    {
+        var info = notification.userInfo!
+        let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size
+        
+        let frame = presetName.convert(presetName.frame, from:self.view)
+        print(self.view.frame.height)
+        print(frame.minY)
+        print(keyboardSize!.height)
+        let scrollHeight = (self.view.frame.height + frame.minY - keyboardSize!.height)
+        
+        if (scrollHeight < 0)
+        {
+            self.view.window?.frame.origin.y = scrollHeight - 20
+        }
+        
+    }
+    @objc func keyboardWillHide(notification: NSNotification)
+    {
+        self.view.window?.frame.origin.y = 0
     }
     
     public override func viewWillAppear(_ animated: Bool)
