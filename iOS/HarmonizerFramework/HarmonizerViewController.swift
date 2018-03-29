@@ -109,6 +109,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         
 	}
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //syncView()
+    }
+    
     //MARK: VoicesViewDelegate
     
     func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float)
@@ -122,7 +127,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         nvoicesParameter?.value = voices
         presetModified = true
     }
-    
     
     //MARK: HarmonizerViewDelegate
     
@@ -174,25 +178,30 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         
         configController!.refresh()
         
-        //harmonizerView.presets = (audioUnit?.factoryPresets)!
-        //harmonizerView.preset = audioUnit!.currentPreset?.name
-        
         syncView()
 	}
     
     private func syncView()
     {
-        midiButton.isSelected = (midiParameter!.value == 1)
-        autoButton.isSelected = (autoParameter!.value == 1)
+        if (audioUnit != nil)
+        {
+            midiButton.isSelected = (midiParameter!.value == 1)
+            autoButton.isSelected = (autoParameter!.value == 1)
+            
+            voicesView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
+            
+            harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
+        }
         
-        voicesView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
         
-        harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
         
-        presetPrevButton.isEnabled = (presetController!.canDecrement())
-        presetNextButton.isEnabled = (presetController!.canIncrement())
-        
-        presetLabel.text = presetController!.currentPreset().name
+        if ((presetController) != nil)
+        {
+            presetPrevButton.isEnabled = (presetController!.canDecrement())
+            presetNextButton.isEnabled = (presetController!.canIncrement())
+            
+            presetLabel.text = presetController!.currentPreset().name
+        }
     }
     
     //MARK: Actions
@@ -224,13 +233,17 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
             {
                 presetController?.selectPreset(preset: b.keycenter)
                 syncView()
-                
             }
         }
     }
     
     @IBAction func presetConf(_ sender: HarmButton) {
         self.configController!.audioUnit = self.audioUnit
+        self.configController!.presetController = self.presetController
+        self.configController!.doneFcn = {
+            self.syncView()
+        }
+        
         sender.isSelected = true
         
         //performSegue(withIdentifier: "configurePreset", sender: self)

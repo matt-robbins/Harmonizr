@@ -141,7 +141,6 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             
             let session = AVAudioSession.sharedInstance()
             
-            print(session.currentRoute.inputs.first)
             var current_row = 0
             var current_source_ix = 0
             

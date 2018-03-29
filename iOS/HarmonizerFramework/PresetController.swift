@@ -98,6 +98,25 @@ class PresetController: NSObject {
         NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
     }
     
+    func getPreset() -> [String: Any]?
+    {
+        return audioUnit!.fullState
+    }
+    
+    func writePreset(name: String, ix: Int)
+    {
+        if (ix < 0 || ix > presets.count - 1)
+        {
+            return
+        }
+        presets[ix].name = name
+        presets[ix].data = getPreset()
+        
+        presetIx = ix
+        
+        storePresets()
+    }
+    
     func loadPresets()
     {
         let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL().path) as? [String : Any]
@@ -115,6 +134,12 @@ class PresetController: NSObject {
             generatePresets()
             storePresets()
         }
+    }
+    
+    func isPresetModified() -> Bool
+    {
+        
+        return false
     }
     
     func generatePresets()

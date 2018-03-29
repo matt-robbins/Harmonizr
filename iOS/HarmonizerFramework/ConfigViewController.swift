@@ -10,11 +10,11 @@ import UIKit
 import AudioToolbox
 
 protocol PresetSaveDelegate: class {
-    func configViewController(_ controller: ConfigViewController, didChangeKeycenter keycenter: Float)
+    func configViewControllerGetPresetIx(_ controller: ConfigViewController) -> Int
     func configViewControllerGetPresets(_ controller: ConfigViewController) -> [String]
 }
 
-public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
+public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return nc
     }
@@ -54,6 +54,9 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         let param = paramTree!.value(forKey: key) as? AUParameter
         param!.value = Float(row - unisonOffset)
         
+        print("changed!")
+        presetNeedsSave = true
+        syncPresetButtons()
     }
     
     //MARK: Properties
@@ -73,7 +76,24 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBOutlet weak var presetPrevButton: HarmButton!
     @IBOutlet weak var presetNextButton: HarmButton!
     
-    weak var delegate: PresetSaveDelegate?
+    @IBOutlet weak var liveSwitch: UISwitch!
+    
+    @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var revertButton: HarmButton!
+    
+    var preset: Preset?
+    
+    var doneFcn: (() -> Void)?
+    
+    var presetIx: Int = 0
+    var presetController: PresetController? {
+        didSet {
+            presetName!.text = presetController!.currentPreset().name
+            presetName!.isEnabled = !presetController!.currentPreset().isFactory
+            
+            presetIx = presetController!.presetIx
+        }
+    }
     
     var currInterval = 0
     
@@ -94,6 +114,11 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             {
                 buttons[c].isSelected = (c == keyRoot)
             }
+        }
+    }
+    
+    var presetNeedsSave: Bool = false {
+        didSet {
             
         }
     }
@@ -136,14 +161,21 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         {
             let b = buttons[d]
             CATransaction.begin()
+            
             if (d == currInterval)
             {
+                if (liveSwitch.isOn && !b.isBeingPlayed)
+                {
+                    setDegree(b)
+                }
+                
                 b.isBeingPlayed = true
             }
             else
             {
                 b.isBeingPlayed = false
             }
+            
             CATransaction.commit()
         }
         
@@ -165,13 +197,11 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     {
         super.viewDidLoad()
         
-        auPoller(T: 0.1)
-        
         intervalPicker!.delegate = self
         intervalPicker!.dataSource = self
         intervalPicker!.layer.cornerRadius = 8
         intervalPicker!.backgroundColor = UIColor.black
-        intervalPicker!.layer.borderWidth = 4
+        intervalPicker!.layer.borderWidth = 2
         intervalPicker!.layer.borderColor = UIColor.darkGray.cgColor
         intervalPicker!.layer.shadowColor = UIColor.cyan.cgColor
         intervalPicker!.layer.shadowRadius = 8
@@ -182,7 +212,24 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         d.isSelected = true
 
         pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
-        }
+        
+        presetName.delegate = self
+        saveButton.isEnabled = false
+    }
+    
+    public override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        syncPresetButtons()
+        preset = Preset(name: "current",data: presetController!.getPreset(), isFactory: false)
+        auPoller(T: 0.1)
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        timer.invalidate()
+    }
     
     public func refresh()
     {
@@ -207,6 +254,16 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     //MARK: Actions
     @IBAction func done(_ sender: AnyObject?)
     {
+        if (presetNeedsSave)
+        {
+            savePreset(saveButton)
+        }
+        
+        if (doneFcn != nil)
+        {
+            doneFcn!()
+        }
+        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -255,4 +312,60 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         refresh()
     }
+    @IBAction func presetNext(_ sender: Any) {
+        if (presetIx < presetController!.presets.count - 1)
+        {
+            presetIx = presetIx + 1
+            presetNeedsSave = true
+            syncPresetButtons()
+        }
+    }
+    
+    @IBAction func presetPrev(_ sender: Any) {
+        if (presetIx > 0)
+        {
+            presetIx = presetIx - 1
+            presetNeedsSave = true
+            syncPresetButtons()
+        }
+    }
+    
+    @IBAction func changePresetName(_ sender: UITextField) {
+        presetNeedsSave = true
+        presetController!.presets[presetIx].name = sender.text
+        syncPresetButtons()
+    }
+    
+    @IBAction func savePreset(_ sender: Any) {
+        presetController?.writePreset(name: presetName.text!, ix: presetIx)
+        presetNeedsSave = false
+        syncPresetButtons()
+    }
+    
+    @IBAction func revertPreset(_ sender: HarmButton) {
+        presetNeedsSave = false
+        presetController!.restoreState()
+        syncPresetButtons()
+    }
+    
+    func syncPresetButtons()
+    {
+        presetName!.text = presetController!.presets[presetIx].name
+        presetName!.isEnabled = !presetController!.presets[presetIx].isFactory
+        
+        presetName!.textColor = presetName.isEnabled ? UIColor.white : UIColor.lightGray
+
+        presetPrevButton.isEnabled = (presetIx > 0)
+        presetNextButton.isEnabled = (presetIx < presetController!.presets.count - 1)
+        
+        saveButton.isEnabled = presetNeedsSave && presetName!.isEnabled
+        revertButton.isEnabled = saveButton.isEnabled
+        doneButton.title = saveButton.isEnabled ? "Save" : "Done"
+    }
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.presetName.resignFirstResponder()
+        return true
+    }
+    
 }
