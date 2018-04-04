@@ -354,7 +354,6 @@
                         <outletCollection property="presetFavorites" destination="jTD-LV-0od" collectionClass="NSMutableArray" id="pSV-W1-why"/>
                         <outletCollection property="presetFavorites" destination="Ku9-Sh-8cc" collectionClass="NSMutableArray" id="wGT-oj-CE6"/>
                         <outletCollection property="presetFavorites" destination="CwY-aX-8vc" collectionClass="NSMutableArray" id="d8C-GG-X6l"/>
-                        <segue destination="vG0-ai-2Nd" kind="presentation" identifier="savePreset" id="yu6-lh-fmM"/>
                         <segue destination="G03-CJ-RWa" kind="presentation" identifier="configurePreset" id="X1h-Yx-L7K"/>
                         <segue destination="Kq0-Be-39z" kind="presentation" identifier="fastPreset" id="Gmc-6Y-6WB"/>
                     </connections>
@@ -392,96 +391,6 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="432" y="-1"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="Oaz-XH-b3k">
-            <objects>
-                <viewController id="90d-DV-Ydb" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="eJA-YU-7MJ">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="bottom" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="udM-8W-yNd">
-                                <rect key="frame" x="44" y="0.0" width="724" height="354"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ib2-96-9Pi">
-                                        <rect key="frame" x="0.0" y="0.0" width="724" height="60.333333333333336"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yJ-AT-BNX">
-                                                <rect key="frame" x="0.0" y="0.0" width="357" height="60.333333333333336"/>
-                                                <state key="normal" title="MIDI"/>
-                                            </button>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0tL-R4-XJy" customClass="HarmonizerVoicesView" customModule="HarmonizerExtension" customModuleProvider="target">
-                                                <rect key="frame" x="365" y="0.0" width="240" height="60.333333333333336"/>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pcy-XJ-VKd">
-                                                <rect key="frame" x="613" y="0.0" width="46" height="60.333333333333336"/>
-                                                <state key="normal" title="Button"/>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMS-G7-Gds">
-                                                <rect key="frame" x="667" y="0.0" width="57" height="60.333333333333336"/>
-                                                <state key="normal" title="Settings"/>
-                                            </button>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="Ib2-96-9Pi" secondAttribute="height" multiplier="12:1" id="AlU-Hw-uZV"/>
-                                        </constraints>
-                                    </stackView>
-                                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="840-vz-u1t">
-                                        <rect key="frame" x="0.0" y="64.333333333333343" width="724" height="289.66666666666663"/>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="Ib2-96-9Pi" firstAttribute="leading" secondItem="udM-8W-yNd" secondAttribute="leading" id="2pR-62-Ial"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ib2-96-9Pi" secondAttribute="trailing" id="mLL-z2-uw1"/>
-                                    <constraint firstItem="Ib2-96-9Pi" firstAttribute="top" secondItem="udM-8W-yNd" secondAttribute="top" id="str-WK-qT7"/>
-                                </constraints>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="JaE-ew-I9t" firstAttribute="bottom" secondItem="udM-8W-yNd" secondAttribute="bottom" id="0n0-Eq-dFf"/>
-                            <constraint firstItem="JaE-ew-I9t" firstAttribute="trailing" secondItem="udM-8W-yNd" secondAttribute="trailing" id="DH6-hA-aPm"/>
-                            <constraint firstItem="udM-8W-yNd" firstAttribute="leading" secondItem="JaE-ew-I9t" secondAttribute="leading" id="O70-1a-HdY"/>
-                            <constraint firstItem="udM-8W-yNd" firstAttribute="top" secondItem="JaE-ew-I9t" secondAttribute="top" id="PLW-sn-loc"/>
-                            <constraint firstItem="JaE-ew-I9t" firstAttribute="bottom" secondItem="udM-8W-yNd" secondAttribute="bottom" id="ug3-MZ-Tq7"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="JaE-ew-I9t"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g0U-N1-LLE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="390" y="841"/>
-        </scene>
-        <!--Harm View Controller-->
-        <scene sceneID="gDw-et-Tdq">
-            <objects>
-                <viewController id="bPu-OP-R3r" customClass="HarmViewController" customModule="FilterDemoFramework" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="l4o-ZM-Nug" customClass="HarmView" customModule="FilterDemoFramework">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <viewLayoutGuide key="safeArea" id="NV8-hT-DzJ"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OKk-yw-xTF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-286" y="524"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="2uz-Xi-ZgE">
-            <objects>
-                <navigationController id="xFp-5e-dBi" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="715-ln-bdY">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="32"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Nog-ZG-Vtl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-132" y="-311"/>
         </scene>
         <!--Config View Controller-->
         <scene sceneID="LXC-s0-m5X">
@@ -847,7 +756,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKF-sV-FFi" customClass="HarmButton" customModule="HarmonizerFramework">
                                                         <rect key="frame" x="292" y="5" width="60" height="30"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="60" id="5zr-mA-4gT"/>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="5zr-mA-4gT"/>
                                                         </constraints>
                                                         <state key="normal" title="Revert"/>
                                                         <connections>
@@ -858,6 +767,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstItem="h92-Z2-OOz" firstAttribute="leading" secondItem="XKn-mI-m46" secondAttribute="leading" id="7fn-Yz-CEI"/>
+                                                    <constraint firstItem="OKF-sV-FFi" firstAttribute="leading" secondItem="XKn-mI-m46" secondAttribute="leading" constant="292" id="EQH-Al-sH0"/>
                                                     <constraint firstItem="OKF-sV-FFi" firstAttribute="top" secondItem="h92-Z2-OOz" secondAttribute="top" id="awp-Fc-N5h"/>
                                                     <constraint firstItem="h92-Z2-OOz" firstAttribute="top" secondItem="XKn-mI-m46" secondAttribute="top" constant="5" id="ckr-8x-UX3"/>
                                                     <constraint firstItem="OKF-sV-FFi" firstAttribute="bottom" secondItem="h92-Z2-OOz" secondAttribute="bottom" id="ndF-fr-rd3"/>
@@ -865,7 +775,7 @@
                                             </view>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="pPX-HI-rEn" firstAttribute="trailing" secondItem="OKF-sV-FFi" secondAttribute="trailing" id="NxX-rc-xbm"/>
+                                            <constraint firstItem="pPX-HI-rEn" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OKF-sV-FFi" secondAttribute="trailing" id="NxX-rc-xbm"/>
                                             <constraint firstItem="h92-Z2-OOz" firstAttribute="trailing" secondItem="eS3-Fk-3LD" secondAttribute="trailing" multiplier="2" id="lJf-mI-uYU"/>
                                         </constraints>
                                     </stackView>
@@ -880,7 +790,7 @@
                                 <color key="onTintColor" red="0.046427408849999997" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live Select" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIz-mZ-0SE">
-                                <rect key="frame" x="569" y="87.333333333333329" width="83.333333333333371" height="20.333333333333329"/>
+                                <rect key="frame" x="569" y="87.666666666666671" width="83.333333333333371" height="20.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -892,6 +802,7 @@
                             <constraint firstItem="KOK-53-HvF" firstAttribute="trailing" secondItem="JLh-5x-zpw" secondAttribute="trailing" id="AhJ-E2-bDH"/>
                             <constraint firstItem="g3K-gd-69G" firstAttribute="leading" secondItem="VZC-le-WaV" secondAttribute="leading" constant="10" id="FpV-8O-hzt"/>
                             <constraint firstItem="KOK-53-HvF" firstAttribute="top" secondItem="HP1-ly-ZSM" secondAttribute="top" id="GSB-i7-V9s"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="KIz-mZ-0SE" secondAttribute="trailing" constant="20" symbolic="YES" id="H4X-wt-dpu"/>
                             <constraint firstItem="1WB-TF-npZ" firstAttribute="leading" secondItem="VZC-le-WaV" secondAttribute="leading" id="K1o-v9-aV4"/>
                             <constraint firstItem="VZC-le-WaV" firstAttribute="bottom" secondItem="udL-3a-8cH" secondAttribute="bottom" id="PhH-Lx-hFY"/>
                             <constraint firstItem="KOK-53-HvF" firstAttribute="centerY" secondItem="KIz-mZ-0SE" secondAttribute="centerY" id="Rzj-ZR-bzR"/>
@@ -930,112 +841,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmc-0u-KBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1072" y="-2"/>
-        </scene>
-        <!--Save Preset View Controller-->
-        <scene sceneID="pxI-zg-7Wv">
-            <objects>
-                <viewController storyboardIdentifier="savePresetView" id="vG0-ai-2Nd" customClass="SavePresetViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="OtJ-Ny-zri">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="New Preset" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SzF-7N-cHG">
-                                <rect key="frame" x="331" y="72" width="150" height="30"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="tintColor" red="0.046427408849999997" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="agx-rM-oDG"/>
-                                </constraints>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CeX-m0-vb9" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="491" y="72" width="30" height="30"/>
-                                <state key="normal" title="&gt;">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="changePreset:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="UeU-Nv-mtW"/>
-                                </connections>
-                            </button>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lXa-qn-KXu">
-                                <rect key="frame" x="44" y="0.0" width="724" height="32"/>
-                                <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="Save Preset" id="pDf-DB-pbW">
-                                        <barButtonItem key="leftBarButtonItem" style="plain" id="z8n-WK-l86">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7xL-VK-LXf" userLabel="Cancel Button">
-                                                <rect key="frame" x="20" y="1" width="48" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Cancel">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="save:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="MyD-M4-p9z"/>
-                                                </connections>
-                                            </button>
-                                        </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" style="plain" id="MDe-C7-FOR">
-                                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yae-nl-6ir">
-                                                <rect key="frame" x="652" y="1" width="52" height="30"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Save">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <state key="disabled">
-                                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="save:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="UvR-PQ-M4f"/>
-                                                </connections>
-                                            </button>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="890-VX-b1M" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="290.33333333333331" y="72" width="30" height="30"/>
-                                <state key="normal" title="&lt;">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="changePreset:" destination="vG0-ai-2Nd" eventType="touchUpInside" id="6D3-KW-JHV"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="SzF-7N-cHG" firstAttribute="leading" secondItem="890-VX-b1M" secondAttribute="trailing" constant="10" id="3jp-bJ-N2k"/>
-                            <constraint firstItem="CeX-m0-vb9" firstAttribute="leading" secondItem="SzF-7N-cHG" secondAttribute="trailing" constant="10" id="AlS-26-u3D"/>
-                            <constraint firstItem="SzF-7N-cHG" firstAttribute="top" secondItem="lXa-qn-KXu" secondAttribute="bottom" constant="40" id="Vdf-vR-J5r"/>
-                            <constraint firstItem="CeX-m0-vb9" firstAttribute="centerY" secondItem="SzF-7N-cHG" secondAttribute="centerY" id="cMM-h7-2Uy"/>
-                            <constraint firstItem="lXa-qn-KXu" firstAttribute="leading" secondItem="Uin-lN-soZ" secondAttribute="leading" id="gSV-qq-boU"/>
-                            <constraint firstItem="lXa-qn-KXu" firstAttribute="trailing" secondItem="Uin-lN-soZ" secondAttribute="trailing" id="jcj-78-eXT"/>
-                            <constraint firstItem="lXa-qn-KXu" firstAttribute="top" secondItem="Uin-lN-soZ" secondAttribute="top" id="q1A-01-5a4"/>
-                            <constraint firstItem="SzF-7N-cHG" firstAttribute="centerY" secondItem="890-VX-b1M" secondAttribute="centerY" id="t1n-tc-Eso"/>
-                            <constraint firstItem="SzF-7N-cHG" firstAttribute="centerX" secondItem="OtJ-Ny-zri" secondAttribute="centerX" id="xdw-Mm-9d6"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="Uin-lN-soZ"/>
-                    </view>
-                    <connections>
-                        <outlet property="nextButton" destination="CeX-m0-vb9" id="qtH-ia-aZT"/>
-                        <outlet property="presetName" destination="SzF-7N-cHG" id="jDD-vD-7oa"/>
-                        <outlet property="prevButton" destination="890-VX-b1M" id="ChL-O9-cRm"/>
-                        <outlet property="saveButton" destination="yae-nl-6ir" id="EwC-sa-yY3"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qeW-bf-24p" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1121" y="789"/>
         </scene>
     </scenes>
 </document>

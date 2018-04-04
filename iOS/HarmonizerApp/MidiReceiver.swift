@@ -128,7 +128,7 @@ class MidiReceiver : NSObject {
         
         let status = packet.data.0
         let d1 = packet.data.1
-        let d2 = packet.data.2
+        //let d2 = packet.data.2
         let rawStatus = status & 0xF0 // without channel
         let channel = status & 0x0F
         

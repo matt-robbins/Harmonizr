@@ -317,11 +317,11 @@ public class HarmViewController: AUViewController {
         let b: HarmButton = view.viewWithTag(Int(keycenterParameter!.value) + 1) as! HarmButton
         b.isSelected = true
         
-        parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
-            //guard let strongSelf = self else { return }
-            
-            print("address = \(address)")
-            print("value = \(value)")
-        })
+//        parameterObserverToken = paramTree.token(byAddingParameterObserver: { [weak self] address, value in
+//            //guard let strongSelf = self else { return }
+//            
+//            print("address = \(address)")
+//            print("value = \(value)")
+//        })
     }
 }

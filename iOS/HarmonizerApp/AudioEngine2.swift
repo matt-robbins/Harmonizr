@@ -93,16 +93,16 @@ class AudioEngine2: NSObject {
     
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(String(kAudioComponentInstanceInvalidationNotification)), object: nil, queue: nil) { [weak self] notification in
-            //guard let strongSelf = self else { return }
-            /*
-             If the crashed audio unit was that of our type, remove it from
-             the signal chain. Note: we should notify the UI at this point.
-             */
-            let crashedAU = notification.object as? AUAudioUnit
-            print(notification)
-            print("\(crashedAU!.audioUnitName) crashed!!!")
-        }
+//        NotificationCenter.default.addObserver(forName: NSNotification.Name(String(kAudioComponentInstanceInvalidationNotification)), object: nil, queue: nil) { [weak self] notification in
+//            //guard let strongSelf = self else { return }
+//            /*
+//             If the crashed audio unit was that of our type, remove it from
+//             the signal chain. Note: we should notify the UI at this point.
+//             */
+//            let crashedAU = notification.object as? AUAudioUnit
+//            print(notification)
+//            print("\(String(describing: crashedAU!.audioUnitName)) crashed!!!")
+//        }
         
     }
 

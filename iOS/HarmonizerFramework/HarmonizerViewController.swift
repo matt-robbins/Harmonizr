@@ -60,8 +60,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 	var parameterObserverToken: AUParameterObserverToken?
     
     var configController: ConfigViewController?
-    var saveController: SavePresetViewController?
-    
     var presetController: PresetController?
     
     var presetModified: Bool = false {
@@ -99,13 +97,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 		configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
         let _: UIView = configController!.view
         
-        saveController = self.storyboard?.instantiateViewController(withIdentifier: "savePresetView") as? SavePresetViewController
-        
-        saveController?.vc = self
-        guard audioUnit != nil else { return }
-        
         connectViewWithAU()
-        
 	}
     
     public override func viewWillAppear(_ animated: Bool) {
