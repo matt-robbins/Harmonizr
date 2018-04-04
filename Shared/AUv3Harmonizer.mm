@@ -15,7 +15,7 @@
 
 #pragma mark AUv3FilterDemo (Presets)
 
-static const UInt8 kNumberOfPresets = 6;
+static const UInt8 kNumberOfPresets = 7;
 static const NSInteger kDefaultFactoryPreset = 0;
 
 typedef struct FactoryPresetParameters {
@@ -54,6 +54,19 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         {0,4,7,12, -1,3,6,11, 0,5,10,12, 1,4,9,13, 0,3,8,12, 0,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,12, 1,2,6,13, 0,1,5,12, // major
             0,3,7,12, -1,2,6,11, 0,5,10,12, 0,4,9,12, -1,3,8,11, -2,2,7,10, 1,6,9,13, 0,5,8,12, -1,4,7,11, 0,3,6,10, 2,5,9,14, 1,4,8,13, // minor
             0,4,7,10, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+        }
+    },
+    // chromatic
+    {
+        0, //keycenter
+        2, //inversion
+        3,
+        1, //autoharm
+        1, //midi
+        -1, //triad
+        {0,4,7,12, 0,3,6,12, 0,3,7,12, 0,3,9,12, 0,3,8,12, 0,4,7,12, 0,3,9,12, 0,5,9,12, 0,4,8,12, 0,5,8,12, 0,4,7,12, 0,3,6,12, // major
+            0,3,7,12, 0,4,7,12, 0,3,9,12, 0,4,9,12, 0,3,8,12, 0,3,7,12, 0,6,9,12, 0,4,7,12, 0,4,7,12, 0,3,6,12, 0,5,9,12, 0,3,7,12, // minor
+            0,4,7,12, 0,3,9,12, 0,2,8,12, 0,4,7,12, 0,3,6,12, 0,5,7,12, 0,4,6,12, 0,3,5,12, 0,2,4,12, 0,3,7,12, 0,2,6,12, 0,1,5,12, //dom
         }
     },
     { // Barbershop
@@ -259,11 +272,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 //    {
 //        keycenterIntervals[k].value = _kernel.getParameter(HarmParamInterval + k);
 //    }
-    fprintf(stdout,"HI!\n");
     
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
-    _presets = @[NewAUPreset(0, @"Chords"),NewAUPreset(1, @"Diatonic"),NewAUPreset(2, @"Barbershop"),NewAUPreset(3, @"Bohemian?"),NewAUPreset(4, @"Bass!"),NewAUPreset(5, @"Modes")];
+    _presets = @[NewAUPreset(0, @"Chords"),NewAUPreset(1, @"Diatonic"),NewAUPreset(2, @"Chromatic"),
+                 NewAUPreset(3, @"Barbershop"),NewAUPreset(4, @"Bohemian?"),NewAUPreset(5, @"Bass!"),NewAUPreset(6, @"Modes")];
     
 	// Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:params];

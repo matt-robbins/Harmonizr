@@ -110,6 +110,11 @@ class PresetController: NSObject {
         {
             return
         }
+        
+        if (presets[ix].isFactory)
+        {
+            return
+        }
         presets[ix].name = name
         presets[ix].data = getPreset()
         

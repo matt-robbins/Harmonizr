@@ -725,7 +725,7 @@ public:
             cmdf2 = cmdf1; cmdf1 = cmdf;
             cmdf = (df * k) / sum;
             
-            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.2 && k > 20)
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.25 && k > 20)
             {
                 period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
