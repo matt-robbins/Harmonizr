@@ -49,6 +49,18 @@ class ViewController: UIViewController {
 
     // MARK: View Life Cycle
     
+    override func viewDidAppear(_ animated: Bool)
+    {
+        if audioEngine.bluetoothAudioConnected()
+        {
+            let explain = "There will be significant delay. For the best experience, please connect wired headphones or an external audio device."
+            
+            let alert = UIAlertController(title: "Bluetooth Connected", message: explain, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Gotcha", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+    }
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		

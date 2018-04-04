@@ -105,6 +105,18 @@ class AudioEngine2: NSObject {
 //        }
         
     }
+    
+    public func bluetoothAudioConnected() -> Bool{
+        let outputs = AVAudioSession.sharedInstance().currentRoute.outputs
+        print(outputs)
+        for output in outputs{
+            if output.portType == AVAudioSessionPortBluetoothA2DP || output.portType == AVAudioSessionPortBluetoothHFP || output.portType == AVAudioSessionPortBluetoothLE
+            {
+                return true
+            }
+        }
+        return false
+    }
 
     @objc func handleRouteChange(_ notification: Notification) {
         
