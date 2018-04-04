@@ -32,7 +32,7 @@
                                 <items>
                                     <navigationItem title="Harmonizer" id="YoL-wX-Owe">
                                         <leftBarButtonItems>
-                                            <barButtonItem style="plain" id="IrA-bn-cW2">
+                                            <barButtonItem id="IrA-bn-cW2">
                                                 <button key="customView" opaque="NO" contentMode="scaleToFill" restorationIdentifier="ReverbButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="J0v-IL-F6q" userLabel="Reverb Button">
                                                     <rect key="frame" x="20" y="1" width="50" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -47,7 +47,7 @@
                                                     </connections>
                                                 </button>
                                             </barButtonItem>
-                                            <barButtonItem style="plain" id="DrD-Kf-lme">
+                                            <barButtonItem id="DrD-Kf-lme">
                                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Cih-zX-Fed">
                                                     <rect key="frame" x="78" y="1" width="50" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -59,7 +59,7 @@
                                                     </connections>
                                                 </button>
                                             </barButtonItem>
-                                            <barButtonItem style="plain" id="dww-ii-zW8">
+                                            <barButtonItem id="dww-ii-zW8">
                                                 <button key="customView" opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="awX-J2-WjW" userLabel="Bluetooth Button">
                                                     <rect key="frame" x="136" y="0.0" width="67" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -137,7 +137,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Reverb" id="WH3-Cf-EII">
-                                        <barButtonItem key="leftBarButtonItem" style="plain" id="IOb-rg-kWo">
+                                        <barButtonItem key="leftBarButtonItem" id="IOb-rg-kWo">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Fcx-vi-Fbg">
                                                 <rect key="frame" x="20" y="1" width="37" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -312,7 +312,7 @@
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="Input" id="VBi-n8-NwD">
-                                        <barButtonItem key="leftBarButtonItem" style="plain" id="iVG-F1-Rqe">
+                                        <barButtonItem key="leftBarButtonItem" id="iVG-F1-Rqe">
                                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DcV-Bc-Y96">
                                                 <rect key="frame" x="20" y="1" width="50" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -350,7 +350,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JXi-zP-5dA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="319" y="1208"/>
+            <point key="canvasLocation" x="275" y="944"/>
         </scene>
     </scenes>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

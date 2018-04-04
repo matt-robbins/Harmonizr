@@ -50,7 +50,7 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
     
     public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         
-        return NSAttributedString(string: audioUnit!.factoryPresets![row].name, attributes: [NSForegroundColorAttributeName:UIColor.white])
+        return NSAttributedString(string: audioUnit!.factoryPresets![row].name, attributes: [NSAttributedStringKey.foregroundColor:UIColor.white])
     }
     
     //MARK: UITableView

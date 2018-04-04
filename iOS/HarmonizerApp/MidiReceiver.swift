@@ -68,7 +68,7 @@ class MidiReceiver : NSObject {
     }
     
     // signifies that other aspects of the session changed, such as the connection list, connection policy
-    func midiNetworkChanged(notification:NSNotification) {
+    @objc func midiNetworkChanged(notification:NSNotification) {
         print("\(#function)")
         print("\(notification)")
         if let session = notification.object as? MIDINetworkSession {
@@ -92,7 +92,7 @@ class MidiReceiver : NSObject {
         }
     }
     
-    func midiNetworkContactsChanged(notification:NSNotification) {
+    @objc func midiNetworkContactsChanged(notification:NSNotification) {
         print("\(#function)")
         print("\(notification)")
         if let session = notification.object as? MIDINetworkSession {

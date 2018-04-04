@@ -106,7 +106,7 @@ class AudioEngine2: NSObject {
         
     }
 
-    func handleRouteChange(_ notification: Notification) {
+    @objc func handleRouteChange(_ notification: Notification) {
         
         guard let userInfo = notification.userInfo,
             let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
@@ -191,7 +191,7 @@ class AudioEngine2: NSObject {
         
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
         
-        self.engine.connect(self.engine.inputNode!, to: self.engine.mainMixerNode, format: stereoFormat)
+        self.engine.connect(self.engine.inputNode, to: self.engine.mainMixerNode, format: stereoFormat)
         
         outputUnit = engine.outputNode.audioUnit
         
@@ -228,7 +228,7 @@ class AudioEngine2: NSObject {
 
         self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: stereoFormat)
 
-        self.engine.connect(self.engine.inputNode!, to: self.harmUnitNode!, format: stereoFormat)
+        self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: stereoFormat)
         self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
 
 //        self.engine.connect(self.engine.inputNode!, to: self.reverbUnitNode, format: stereoFormat)

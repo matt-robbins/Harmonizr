@@ -75,7 +75,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(timerFunction), userInfo: nil, repeats: true)
     }
     
-    func timerFunction()
+    @objc func timerFunction()
     {
         guard let audioUnit = audioUnit else { return }
         harmonizerView.setSelectedNote(audioUnit.getCurrentNote())

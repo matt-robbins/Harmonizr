@@ -189,7 +189,7 @@ class ViewController: UIViewController {
         //audioUnit.currentPreset = presets?[0]
 	}
     
-    func dismissPopover() {
+    @objc func dismissPopover() {
         navController.dismiss(animated: true, completion: nil)
         navController = nil
         btMidiViewController = nil
