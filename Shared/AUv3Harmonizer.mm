@@ -34,7 +34,7 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
     {
         0, //keycenter
         2, //inversion
-        4,
+        3,
         1, //autoharm
         1, //midi
         -1, //triad
@@ -47,7 +47,7 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
     {
         0, //keycenter
         2, //inversion
-        4,
+        3,
         1, //autoharm
         1, //midi
         -1, //triad
@@ -259,6 +259,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 //    {
 //        keycenterIntervals[k].value = _kernel.getParameter(HarmParamInterval + k);
 //    }
+    fprintf(stdout,"HI!\n");
     
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
@@ -440,13 +441,13 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 //                AUParameter *keycenterParameter = [self.parameterTree valueForKey: @"keycenter"];
                 AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
                 AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
-//                AUParameter *midiParameter = [self.parameterTree valueForKey: @"midi"];
+                AUParameter *nvoicesParameter = [self.parameterTree valueForKey: @"nvoices"];
 //                AUParameter *triadParameter = [self.parameterTree valueForKey: @"triad"];
 
                 //keycenterParameter.value = presetParameters[factoryPreset.number].keycenterValue;
                 inversionParameter.value = presetParameters[factoryPreset.number].inversionValue;
                 autoParameter.value = presetParameters[factoryPreset.number].autoValue;
-                //midiParameter.value = presetParameters[factoryPreset.number].midiValue;
+                nvoicesParameter.value = presetParameters[factoryPreset.number].nvoicesValue;
                 //triadParameter.value = presetParameters[factoryPreset.number].triadValue;
                 
                 for (int k = 0; k < 144; k++)

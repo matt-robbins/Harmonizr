@@ -75,6 +75,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBOutlet weak var presetName: UITextField!
     @IBOutlet weak var presetPrevButton: HarmButton!
     @IBOutlet weak var presetNextButton: HarmButton!
+    @IBOutlet weak var presetAddButton: UIButton!
     
     @IBOutlet weak var liveSwitch: UISwitch!
     
@@ -229,11 +230,11 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         print(self.view.frame.height)
         print(frame.minY)
         print(keyboardSize!.height)
-        let scrollHeight = (self.view.frame.height + frame.minY - keyboardSize!.height)
+        let scrollHeight = (self.view.frame.height + frame.minY - frame.height - keyboardSize!.height)
         
         if (scrollHeight < 0)
         {
-            self.view.window?.frame.origin.y = scrollHeight - 20
+            self.view.window?.frame.origin.y = scrollHeight
         }
         
     }
@@ -370,12 +371,23 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBAction func revertPreset(_ sender: HarmButton) {
         presetNeedsSave = false
         presetController!.restoreState()
+        presetIx = presetController!.presetIx
         syncPresetButtons()
     }
     
+    @IBAction func addPreset(_ sender: Any) {
+        presetController!.appendPreset()
+        presetNeedsSave = true
+        presetIx = presetController!.presets.count - 1
+        syncPresetButtons()
+        presetName!.becomeFirstResponder()
+    }
+    
+    
     func syncPresetButtons()
     {
-        presetName!.text = presetController!.presets[presetIx].name
+        let nameText = presetController!.presets[presetIx].name! + (presetController!.presets[presetIx].isFactory ? " (factory)" : "")
+        presetName!.text = nameText
         presetName!.isEnabled = !presetController!.presets[presetIx].isFactory
         
         presetName!.textColor = presetName.isEnabled ? UIColor.white : UIColor.lightGray

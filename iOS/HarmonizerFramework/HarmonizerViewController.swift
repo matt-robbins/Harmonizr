@@ -95,7 +95,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         
         presetController = PresetController()
         
-        
         auPoller(T: 0.1)
 		configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
         let _: UIView = configController!.view
@@ -193,14 +192,17 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
             harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
         }
         
-        
-        
         if ((presetController) != nil)
         {
             presetPrevButton.isEnabled = (presetController!.canDecrement())
             presetNextButton.isEnabled = (presetController!.canIncrement())
             
             presetLabel.text = presetController!.currentPreset().name
+            
+            for k in 0...5
+            {
+                presetFavorites[k].isSelected = presetController!.presetIx == presetController!.favorites[k]
+            }
         }
     }
     
@@ -231,7 +233,13 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         for b in presetFavorites {
             if (b === sender)
             {
-                presetController?.selectPreset(preset: b.keycenter)
+                self.presetController?.loadPresets()
+                var ix = self.presetController?.favorites[b.keycenter]
+
+                if (ix == nil) {
+                    ix = b.keycenter
+                }
+                self.presetController?.selectPreset(preset: ix!)
                 syncView()
             }
         }
@@ -253,6 +261,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
                 self.presetModified=true
                 self.configController!.refresh()
                 sender.isSelected = false
+                self.syncView()
         })
     }
     
@@ -262,9 +271,22 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         {
             return
         }
-        print(button.keycenter)
         
-        performSegue(withIdentifier: "fastPreset", sender:self)
+        performSegue(withIdentifier: "fastPreset", sender:button)
+    }
+    
+    override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.identifier == "fastPreset" {
+            if let destinationVC = segue.destination as? PresetFavoriteViewController {
+                destinationVC.favIx = ((sender as? HarmButton)?.keycenter)!
+                destinationVC.doneFcn = {
+                    print("hi!")
+                    self.presetController!.loadPresets()
+                    self.syncView()
+                }
+            }
+        }
     }
     
 }

@@ -48,11 +48,11 @@ public class Preset: NSObject, NSCoding {
     }
 }
 
-
 class PresetController: NSObject {
     
     public var audioUnit: AUv3Harmonizer?
     var presets = [Preset]()
+    var favorites = [Int]()
     var presetIx: Int = 0
     
     //MARK: preset save/load
@@ -94,7 +94,8 @@ class PresetController: NSObject {
     
     func storePresets()
     {
-        let obj = ["presets": presets,"presetIx": presetIx] as [String : Any]
+        let obj = ["presets": presets,"presetIx": presetIx, "favorites": favorites] as [String : Any]
+        
         NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
     }
     
@@ -124,10 +125,14 @@ class PresetController: NSObject {
         {
             presets = p!["presets"] as! [Preset]
             presetIx = p!["presetIx"] as! Int
-            //            presets = (p!["presets"] as? [Preset])!
-            //            presetIx = (p!["presetIx"] as? Int)!
-            //harmonizerView.preset = presets[presetIx].name
-            //harmonizerView(harmonizerView, didChangePreset: presetIx)
+            favorites = p!["favorites"] as! [Int]
+            
+            if (favorites.count == 0)
+            {
+                for k in 0...5 {
+                    favorites.append(k)
+                }
+            }
         }
         else
         {
@@ -138,7 +143,6 @@ class PresetController: NSObject {
     
     func isPresetModified() -> Bool
     {
-        
         return false
     }
     
@@ -154,10 +158,14 @@ class PresetController: NSObject {
             }
         }
         
-        for k in 0...10
+        if (favorites.count == 0)
         {
-            presets.append(Preset(name: "User \(k)", data: nil, isFactory: false))
+            for k in 0...5 {
+                favorites.append(k)
+            }
         }
+        
+        presets.append(Preset(name: "New Preset", data: nil, isFactory: false))
     }
     
     func selectPreset(preset: Int)
@@ -202,5 +210,10 @@ class PresetController: NSObject {
         {
             selectPreset(preset: presetIx + 1)
         }
+    }
+    
+    func appendPreset()
+    {
+        presets.append(Preset(name: "New Preset", data: nil, isFactory: false))
     }
 }

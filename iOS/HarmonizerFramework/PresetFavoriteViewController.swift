@@ -7,28 +7,56 @@
 
 import UIKit
 
-class PresetFavoriteViewController: UIViewController {
+class PresetFavoriteViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
+    
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return presetController!.presets.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
+    {
+        return presetController!.presets[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // This method is triggered whenever the user makes a change to the picker selection.
+        // The parameter named row and component represents what was selected.
 
+    }
+    
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var presetPicker: UIPickerView!
+    
+    @IBOutlet weak var navBar: UINavigationBar!
+    
+    var presetController: PresetController?
+    var favIx: Int = 0
+    
+    var doneFcn: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        presetPicker.delegate = self
+        presetPicker.dataSource = self
+        
+        navBar.topItem?.title = "Quick Preset \(favIx + 1)"
+        
+        presetController = PresetController()
+        presetController!.loadPresets()
+        
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func done(_ sender: Any) {
+        let row = presetPicker.selectedRow(inComponent: 0)
+        print(row)
+        presetController?.favorites[favIx] = row
+        presetController?.storePresets()
+        doneFcn!()
+        self.dismiss(animated: true)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

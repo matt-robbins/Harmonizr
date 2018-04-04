@@ -31,7 +31,7 @@ class MidiReceiver : NSObject {
     
     func setupMidi()
     {
-        print (MIDIGetNumberOfSources())
+        //print (MIDIGetNumberOfSources())
         
         observeNotifications()
         enableNetwork()

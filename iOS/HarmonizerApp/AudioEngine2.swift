@@ -94,12 +94,13 @@ class AudioEngine2: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name(String(kAudioComponentInstanceInvalidationNotification)), object: nil, queue: nil) { [weak self] notification in
-            guard let strongSelf = self else { return }
+            //guard let strongSelf = self else { return }
             /*
              If the crashed audio unit was that of our type, remove it from
              the signal chain. Note: we should notify the UI at this point.
              */
             let crashedAU = notification.object as? AUAudioUnit
+            print(notification)
             print("\(crashedAU!.audioUnitName) crashed!!!")
         }
         
@@ -189,6 +190,7 @@ class AudioEngine2: NSObject {
         //let hwFormat = input.inputFormat(forBus: 0)
         
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
+        
         self.engine.connect(self.engine.inputNode!, to: self.engine.mainMixerNode, format: stereoFormat)
         
         outputUnit = engine.outputNode.audioUnit
@@ -223,13 +225,13 @@ class AudioEngine2: NSObject {
         self.engine.disconnectNodeInput(self.engine.mainMixerNode)
         self.engine.disconnectNodeInput(self.reverbUnitNode)
         self.engine.disconnectNodeInput(self.harmUnitNode!)
-        
+
         self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: stereoFormat)
-        
+
         self.engine.connect(self.engine.inputNode!, to: self.harmUnitNode!, format: stereoFormat)
         self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
-        
-        //self.engine.connect(self.engine.inputNode!, to: self.reverbUnitNode, format: stereoFormat)
+
+//        self.engine.connect(self.engine.inputNode!, to: self.reverbUnitNode, format: stereoFormat)
         self.engine.connect(self.reverbUnitNode, to: self.engine.mainMixerNode, format: stereoFormat)
     }
     

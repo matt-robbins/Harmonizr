@@ -11,9 +11,6 @@
 		164896AD1C925F1E00AB781D /* FilterDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = 164896A91C925F1E00AB781D /* FilterDemo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		164896AE1C925F1E00AB781D /* FilterDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 164896AA1C925F1E00AB781D /* FilterDemo.mm */; };
 		1654C7771C7CFE7700C43BF4 /* FilterDemoViewController+AUAudioUnitFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86961B9F52DB007C9389 /* FilterDemoViewController+AUAudioUnitFactory.m */; };
-		2B4A917C1C75403100F61BDD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B4A917B1C75403100F61BDD /* AVFoundation.framework */; };
-		2B4A917E1C75403E00F61BDD /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */; };
-		2B4A91811C7541A700F61BDD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B4A917B1C75403100F61BDD /* AVFoundation.framework */; };
 		306CFCD41C5833460028386F /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA71B951C660081EA80 /* DSPKernel.hpp */; };
 		306CFCD61C5833510028386F /* BufferedAudioBus.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 92A10CA61B951C660081EA80 /* BufferedAudioBus.hpp */; };
 		30C0135B1C6D303D00F7E9B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30C0135A1C6D303D00F7E9B4 /* Images.xcassets */; };
@@ -66,19 +63,19 @@
 		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
 		C94FC87C202C96F70009E742 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */; };
-		C981C4641FBF9DCB00AF8593 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */; };
-		C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */; };
 		C98FBD221FD206E800330691 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FBD211FD206E800330691 /* AudioEngine.swift */; };
 		C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */; };
 		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
+		C9D2F8FE2071A5FA000783B2 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */; };
+		C9D2F8FF2071A5FA000783B2 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */; };
+		C9D2F9002071A5FA000783B2 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FD2071A5FA000783B2 /* CoreMIDI.framework */; };
+		C9D2F9012071A617000783B2 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */; };
+		C9D2F9042071A617000783B2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F9032071A617000783B2 /* AVFoundation.framework */; };
 		C9D9BC7C20191752001977BD /* HarmViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90633682018F01400412EC9 /* HarmViewController2.swift */; };
-		C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */; };
 		C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DFC5E4202F96E900CC776F /* InputViewController.swift */; };
 		C9EC31E62065B97D007835AB /* PresetFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EC31E52065B97D007835AB /* PresetFavoriteViewController.swift */; };
 		C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */; };
 		C9FD73F41F8BC69D00346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F31F8BC69D00346E31 /* Accelerate.framework */; };
-		C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F51F9107D300346E31 /* Accelerate.framework */; };
-		C9FD73F71F91084900346E31 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FD73F51F9107D300346E31 /* Accelerate.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,8 +177,6 @@
 		164896AA1C925F1E00AB781D /* FilterDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterDemo.mm; sourceTree = "<group>"; };
 		164896AB1C925F1E00AB781D /* FilterDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FilterDSPKernel.hpp; sourceTree = "<group>"; };
 		164896AC1C925F1E00AB781D /* ParameterRamper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParameterRamper.hpp; sourceTree = "<group>"; };
-		2B4A917B1C75403100F61BDD /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		30C0135A1C6D303D00F7E9B4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3E8E032C1B16387D0011624B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		91236D0D1B08F42B00734C5E /* Harmonizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Harmonizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -245,6 +240,10 @@
 		C98FBD211FD206E800330691 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 		C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiReceiver.swift; sourceTree = "<group>"; };
 		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
+		C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
+		C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
+		C9D2F8FD2071A5FA000783B2 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
+		C9D2F9032071A617000783B2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9DFC5E4202F96E900CC776F /* InputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
 		C9EC31E52065B97D007835AB /* PresetFavoriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetFavoriteViewController.swift; sourceTree = "<group>"; };
@@ -258,10 +257,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9DAB9081FA0D79A00DBB180 /* CoreAudioKit.framework in Frameworks */,
-				C98E37B41F965FEA0007BD91 /* CoreMIDI.framework in Frameworks */,
-				C981C4641FBF9DCB00AF8593 /* AudioToolbox.framework in Frameworks */,
-				C9FD73F61F9107D400346E31 /* Accelerate.framework in Frameworks */,
+				C9D2F8FE2071A5FA000783B2 /* CoreAudioKit.framework in Frameworks */,
+				C9D2F8FF2071A5FA000783B2 /* Accelerate.framework in Frameworks */,
+				C9D2F9002071A5FA000783B2 /* CoreMIDI.framework in Frameworks */,
 				91236D6A1B08F52E00734C5E /* HarmonizerFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,9 +268,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9FD73F71F91084900346E31 /* Accelerate.framework in Frameworks */,
-				2B4A917E1C75403E00F61BDD /* AudioToolbox.framework in Frameworks */,
-				2B4A917C1C75403100F61BDD /* AVFoundation.framework in Frameworks */,
+				C9D2F9042071A617000783B2 /* AVFoundation.framework in Frameworks */,
+				C9D2F9012071A617000783B2 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,7 +302,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9FD73F41F8BC69D00346E31 /* Accelerate.framework in Frameworks */,
-				2B4A91811C7541A700F61BDD /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,8 +419,6 @@
 		9152BF2B1B0958E500D8C6A4 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2B4A917B1C75403100F61BDD /* AVFoundation.framework */,
-				2B4A917D1C75403E00F61BDD /* AudioToolbox.framework */,
 			);
 			name = "Frameworks and Libraries";
 			sourceTree = "<group>";
@@ -532,6 +526,10 @@
 		C9FD73F21F8BC69C00346E31 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C9D2F9032071A617000783B2 /* AVFoundation.framework */,
+				C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */,
+				C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */,
+				C9D2F8FD2071A5FA000783B2 /* CoreMIDI.framework */,
 				C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */,
 				C9DAB9071FA0D79900DBB180 /* CoreAudioKit.framework */,
 				C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */,
@@ -718,6 +716,11 @@
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = CK78RPQ2FV;
 						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.InterAppAudio = {
+								enabled = 0;
+							};
+						};
 					};
 					92FF864A1B9A4D97007C9389 = {
 						CreatedOnToolsVersion = 7.0;
