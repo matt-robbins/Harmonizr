@@ -196,13 +196,14 @@
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="XiD-C7-Cc7" firstAttribute="top" secondItem="z9C-w3-7pW" secondAttribute="top" id="3zS-4R-xXL"/>
-                                                        <constraint firstItem="XiD-C7-Cc7" firstAttribute="leading" secondItem="z9C-w3-7pW" secondAttribute="leading" id="6BU-G3-3Bs"/>
-                                                        <constraint firstAttribute="trailing" secondItem="XiD-C7-Cc7" secondAttribute="trailing" id="RFq-rB-C16"/>
-                                                        <constraint firstAttribute="bottom" secondItem="XiD-C7-Cc7" secondAttribute="bottom" id="g6c-7N-hu0"/>
+                                                        <constraint firstItem="XiD-C7-Cc7" firstAttribute="leading" secondItem="z9C-w3-7pW" secondAttribute="leading" id="91I-nc-acD"/>
+                                                        <constraint firstAttribute="bottom" secondItem="XiD-C7-Cc7" secondAttribute="bottom" id="ChI-jv-x20"/>
+                                                        <constraint firstAttribute="trailing" secondItem="XiD-C7-Cc7" secondAttribute="trailing" id="IgY-uA-X6w"/>
+                                                        <constraint firstItem="XiD-C7-Cc7" firstAttribute="top" secondItem="z9C-w3-7pW" secondAttribute="top" id="Y16-IP-HPR"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                <viewLayoutGuide key="safeArea" id="pQf-oJ-fvf"/>
                                                 <connections>
                                                     <outlet property="nameLabel" destination="gy6-bu-VzA" id="9Jc-h3-qeq"/>
                                                     <outlet property="valueSlider" destination="Zq9-JS-MeL" id="du5-Cc-SU7"/>
