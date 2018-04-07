@@ -156,36 +156,33 @@
                                 <rect key="frame" x="44" y="32" width="724" height="322"/>
                                 <subviews>
                                     <pickerView contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="tRI-V3-Uos">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="322"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="357" height="322"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="200" id="Iio-ps-l9F"/>
-                                        </constraints>
                                     </pickerView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="FBJ-Nd-Vby">
-                                        <rect key="frame" x="210" y="0.0" width="514" height="322"/>
+                                        <rect key="frame" x="367" y="0.0" width="357" height="322"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReverbParameterTableCell" id="PlM-7T-6Ee" customClass="AUParameterTableViewCell" customModule="Harmonizer" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="28" width="514" height="44"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReverbParameterTableCell" id="PlM-7T-6Ee" customClass="AUParameterTableViewCell" customModule="Harmonizer" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="357" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PlM-7T-6Ee" id="z9C-w3-7pW">
-                                                    <rect key="frame" x="0.0" y="0.0" width="514" height="43.666666666666664"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="357" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="XiD-C7-Cc7">
-                                                            <rect key="frame" x="0.0" y="0.0" width="394" height="44"/>
+                                                            <rect key="frame" x="5" y="0.0" width="499" height="43.666666666666664"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gy6-bu-VzA">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="197" height="44"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gy6-bu-VzA">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="249.66666666666666" height="43.666666666666664"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Zq9-JS-MeL">
-                                                                    <rect key="frame" x="195" y="0.0" width="201" height="45"/>
+                                                                    <rect key="frame" x="247.66666666666663" y="0.0" width="253.33333333333337" height="44.666666666666664"/>
                                                                     <color key="minimumTrackTintColor" red="0.046427408849999997" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <connections>
                                                                         <action selector="changeValue:" destination="n4r-Op-aTt" eventType="valueChanged" id="hk7-b4-YXn"/>
@@ -195,11 +192,10 @@
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="XiD-C7-Cc7" secondAttribute="bottom" id="ChI-jv-x20"/>
-                                                        <constraint firstAttribute="trailing" secondItem="XiD-C7-Cc7" secondAttribute="trailing" id="IgY-uA-X6w"/>
-                                                        <constraint firstItem="Zq9-JS-MeL" firstAttribute="trailing" secondItem="z9C-w3-7pW" secondAttribute="trailing" id="NEB-Bx-nX8"/>
-                                                        <constraint firstItem="gy6-bu-VzA" firstAttribute="leading" secondItem="z9C-w3-7pW" secondAttribute="leading" id="PqF-xD-c8F"/>
-                                                        <constraint firstItem="XiD-C7-Cc7" firstAttribute="top" secondItem="z9C-w3-7pW" secondAttribute="top" id="Y16-IP-HPR"/>
+                                                        <constraint firstItem="XiD-C7-Cc7" firstAttribute="leading" secondItem="z9C-w3-7pW" secondAttribute="leading" constant="5" id="1ii-uN-v2t"/>
+                                                        <constraint firstAttribute="bottom" secondItem="XiD-C7-Cc7" secondAttribute="bottom" id="4Pv-bh-J1w"/>
+                                                        <constraint firstItem="XiD-C7-Cc7" firstAttribute="top" secondItem="z9C-w3-7pW" secondAttribute="top" id="D9L-z5-NYC"/>
+                                                        <constraint firstAttribute="trailing" secondItem="XiD-C7-Cc7" secondAttribute="trailing" constant="10" id="k4V-At-Fq0"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -217,10 +213,11 @@
                         <constraints>
                             <constraint firstItem="BM2-La-Z6c" firstAttribute="leading" secondItem="BEA-Ic-Jxq" secondAttribute="leading" id="8BX-Mp-Mqa"/>
                             <constraint firstItem="wtv-0h-TN6" firstAttribute="top" secondItem="BM2-La-Z6c" secondAttribute="bottom" id="BAF-5z-fLc"/>
-                            <constraint firstItem="BEA-Ic-Jxq" firstAttribute="trailing" secondItem="wtv-0h-TN6" secondAttribute="trailing" id="EcW-j3-QWM"/>
                             <constraint firstItem="BEA-Ic-Jxq" firstAttribute="bottom" secondItem="wtv-0h-TN6" secondAttribute="bottom" id="Msa-4n-UMX"/>
+                            <constraint firstItem="FBJ-Nd-Vby" firstAttribute="trailing" secondItem="BEA-Ic-Jxq" secondAttribute="trailing" id="Oq7-HD-9FU"/>
                             <constraint firstItem="BEA-Ic-Jxq" firstAttribute="trailing" secondItem="BM2-La-Z6c" secondAttribute="trailing" id="QDZ-5s-Q2s"/>
                             <constraint firstItem="wtv-0h-TN6" firstAttribute="leading" secondItem="BEA-Ic-Jxq" secondAttribute="leading" id="SRE-pP-u91"/>
+                            <constraint firstItem="tRI-V3-Uos" firstAttribute="leading" secondItem="BEA-Ic-Jxq" secondAttribute="leading" id="TS3-dn-Ivf"/>
                             <constraint firstItem="BM2-La-Z6c" firstAttribute="top" secondItem="BEA-Ic-Jxq" secondAttribute="top" id="zak-zc-KOf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="BEA-Ic-Jxq"/>

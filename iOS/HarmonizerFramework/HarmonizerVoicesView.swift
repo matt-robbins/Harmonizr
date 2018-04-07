@@ -86,7 +86,7 @@ class HarmonizerVoicesView: UIView {
     
     override func layoutSublayers(of layer: CALayer) {
         let sublayers = layer.sublayers!
-        let pipheight = min(layer.frame.height / 7, 10)
+        let pipheight = layer.frame.height / 7
         var count = 0
         let pad: CGFloat = 5
         for nv in 0...3
