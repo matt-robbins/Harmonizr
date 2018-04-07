@@ -48,6 +48,8 @@ class PresetFavoriteViewController: UIViewController,UIPickerViewDelegate,UIPick
         presetController = PresetController()
         presetController!.loadPresets()
         
+        presetPicker.selectRow(favIx, inComponent: 0, animated: true)
+        
         // Do any additional setup after loading the view.
     }
 

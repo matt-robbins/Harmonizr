@@ -66,7 +66,7 @@ class ViewController: UIViewController {
 		
         self.view.backgroundColor = UIColor.darkGray
 		// Set up the plug-in's custom view.
-		//embedPlugInView()
+		embedPlugInView()
 		
 		/*
 			Register the AU in-process for development/debugging.
@@ -88,7 +88,7 @@ class ViewController: UIViewController {
 
             Note that this registration is local to this process.
         */
-        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 1)
+        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 5)
         
         reverbButton.setTitle("Reverb", for: UIControlState())
         reverbButton.setTitleColor(UIColor.white, for: UIControlState())
@@ -106,12 +106,15 @@ class ViewController: UIViewController {
         
         self.audioEngine.loadComponent(componentDescription: componentDescription, completionHandler: {(audioUnit) in
             self.harmUnit = audioUnit
-            self.getAUView()
+            //self.getAUView()
             
-            //self.harmonizerViewController.audioUnit = self.harmUnit as? AUv3Harmonizer
+            self.harmonizerViewController.audioUnit = self.harmUnit as? AUv3Harmonizer
             
             self.audioEngine.start()            
         })
+        
+        
+        print(Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String)
         
         reverbMixParam = audioEngine.reverbUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
         reverbMixParam?.value = 5
@@ -143,7 +146,7 @@ class ViewController: UIViewController {
             `FilterDemoViewController` from that.
         */
         let builtInPlugInsURL = Bundle.main.builtInPlugInsURL!
-        let pluginURL = builtInPlugInsURL.appendingPathComponent("FilterDemoAppExtension.appex")
+        let pluginURL = builtInPlugInsURL.appendingPathComponent("HarmonizerExtension.appex")
 		let appExtensionBundle = Bundle(url: pluginURL)
 
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
