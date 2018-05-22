@@ -10,11 +10,13 @@ import UIKit
 import CoreAudioKit
 import os
 
-public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate {
+public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate {
     // MARK: Properties
 
     @IBOutlet weak var harmonizerView: HarmonizerView!
     @IBOutlet weak var voicesView: HarmonizerVoicesView!
+    
+    @IBOutlet weak var keyboardView: KeyboardView!
     
     @IBOutlet weak var midiButton: HarmButton!
     @IBOutlet weak var autoButton: HarmButton!
@@ -25,6 +27,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBOutlet weak var presetLabel: UILabel!
     
     @IBOutlet var presetFavorites: [HarmButton]!
+    
+    private var noteBlock: AUScheduleMIDIEventBlock!
     
     /*
 		When this view controller is instantiated within the app, its
@@ -79,6 +83,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     {
         guard let audioUnit = audioUnit else { return }
         harmonizerView.setSelectedNote(audioUnit.getCurrentNote())
+        keyboardView.setCurrentNote(audioUnit.getMidiNote())
         // update visible keycenter based on computed value from midi
         harmonizerView.setSelectedKeycenter(audioUnit.getCurrentKeycenter())
         return
@@ -90,6 +95,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 		// Respond to changes in the filterView (frequency and/or response changes).
         harmonizerView.delegate = self
         voicesView.delegate = self
+        keyboardView.delegate = self
         
         presetController = PresetController()
         
@@ -117,6 +123,24 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     {
         nvoicesParameter?.value = voices
         presetModified = true
+    }
+    
+    //MARK: KeyboardViewDelegate
+    
+    func keyboardView(_ view: KeyboardView, noteOn note: Int) {
+        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
+        cbytes[0] = 0x90
+        cbytes[1] = UInt8(note)
+        cbytes[2] = 64
+        self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
+    }
+    
+    func keyboardView(_ view: KeyboardView, noteOff note: Int) {
+        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
+        cbytes[0] = 0x80
+        cbytes[1] = UInt8(note)
+        cbytes[2] = 64
+        self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
     }
     
     //MARK: HarmonizerViewDelegate
@@ -168,6 +192,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 		})
         
         configController!.refresh()
+        
+        let theNoteBlock = audioUnit!.scheduleMIDIEventBlock
+        
+        noteBlock = theNoteBlock
         
         syncView()
 	}

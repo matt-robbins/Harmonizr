@@ -507,6 +507,10 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     return _kernel.note_number;
 }
 
+- (float) getMidiNote {
+    return _kernel.midi_note_number;
+}
+
 - (float) getCurrentKeycenter {
     return _kernel.root_key;
 }

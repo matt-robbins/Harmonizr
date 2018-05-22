@@ -725,7 +725,7 @@ public:
             cmdf2 = cmdf1; cmdf1 = cmdf;
             cmdf = (df * k) / sum;
             
-            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.25 && k > 20)
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.3 && k > 20)
             {
                 period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
@@ -965,6 +965,7 @@ public:
         if (!voiced)
         {
             note_number = -1.0;
+            midi_note_number = -1.0;
             return;
         }
         
@@ -973,6 +974,7 @@ public:
         float f = log2f (sampleRate / (T * 440));
         
         float note_f = f * 12.0;
+        midi_note_number = round(note_f) + 69;
         int nn = (int) round(note_f);
         float error = (note_f - (float)nn)/12;
         float error_ratio = powf(2.0, error);
@@ -1049,7 +1051,7 @@ public:
             if (k < n_auto && k >= start)
                 voices[k].target_ratio /= error_ratio; // for autoharm
             
-            voices[k].ratio = 0.8 * voices[k].ratio + 0.2 * voices[k].target_ratio;
+            voices[k].ratio = 0.9 * voices[k].ratio + 0.1 * voices[k].target_ratio;
         }
     }
 	
@@ -1122,6 +1124,7 @@ private:
 public:
 
     float note_number;
+    float midi_note_number;
     int root_key = 0;
     dispatch_semaphore_t sem;
 };

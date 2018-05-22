@@ -14,6 +14,7 @@
 @interface AUv3Harmonizer : AUAudioUnit
 
 - (float) getCurrentNote;
+- (float) getMidiNote;
 - (float) getCurrentKeycenter;
 @end
 
