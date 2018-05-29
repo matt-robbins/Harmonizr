@@ -91,6 +91,12 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 
 	public override func viewDidLoad() {
 		super.viewDidLoad()
+        
+        for view in self.view.subviews as [UIView] {
+            if let btn = view as? UIButton {
+                btn.titleLabel?.adjustsFontSizeToFitWidth = true
+            }
+        }
 		
 		// Respond to changes in the filterView (frequency and/or response changes).
         harmonizerView.delegate = self
@@ -236,6 +242,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBAction func toggleMidi(_ sender: Any) {
         midiParameter!.value = midiParameter!.value == 0 ? 1 : 0
         midiButton.isSelected = midiParameter!.value == 1
+        UIView.animate(withDuration: 0.3) {
+            self.keyboardView.isUserInteractionEnabled = self.midiButton.isSelected
+            self.keyboardView.layer.opacity = self.midiButton.isSelected ? 1.0 : 0.5
+        }
     }
     
     @IBAction func presetPrev(_ sender: Any) {

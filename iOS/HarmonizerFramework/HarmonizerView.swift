@@ -77,14 +77,19 @@ class GlowButton: VerticallyCenteredTextLayer {
     
     var isSelected: Bool {
         didSet {
+            CATransaction.begin()
+            
             if ( isSelected && isEnabled ) {
+                CATransaction.setAnimationDuration(0.05)
                 self.borderColor = UIColor.cyan.cgColor
                 self.shadowOpacity = 1.0
             }
             else {
+                CATransaction.setAnimationDuration(0.2)
                 self.borderColor = UIColor.darkGray.cgColor
                 self.shadowOpacity = 0.0
             }
+            CATransaction.commit()
         }
     }
     
@@ -122,17 +127,6 @@ class HarmonizerView: UIView {
     var touchDown = false
     var currentKey = 0
     var currentTriad = -1
-    
-    func highlight(layer: CALayer?)
-    {
-        layer!.borderColor = UIColor.cyan.cgColor
-        layer!.shadowOpacity = 1.0
-    }
-    func dehighlight(layer: CALayer?)
-    {
-        layer!.borderColor = UIColor.darkGray.cgColor
-        layer!.shadowOpacity = 0.0
-    }
     
     func setSelectedNote(_ note: Float) {
         let n = keybuttons.count
@@ -251,7 +245,7 @@ class HarmonizerView: UIView {
 //        keysLayer.name = "keys"
 //        containerLayer.frame = CGRect(x: 0, y: layer.frame.height - 3 * layer.frame.height/12, width: layer.frame.width, height: 3 * layer.frame.height/12)
 //        keysLayer.opacity = 1.0
-        layer.backgroundColor = UIColor.red.cgColor
+        //layer.backgroundColor = UIColor.red.cgColor
 //        containerLayer.addSublayer(keysLayer)
         
         let keywidth = containerLayer.frame.width / 12
@@ -351,9 +345,9 @@ class HarmonizerView: UIView {
                         height = height + keyheight * 0.1
                     }
                     
-                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + keyoffset, y: containerLayer.frame.height - height, width: keywidth, height: keyheight)
+                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + keyoffset, y: 3.2*vspacing - height, width: keywidth, height: keyheight)
                     
-                    keybuttons[j*12 + i].fontSize = min(14, keyheight * 0.3)
+                    keybuttons[j*12 + i].fontSize = min(14, keyheight * 0.5)
                 }
             }
             

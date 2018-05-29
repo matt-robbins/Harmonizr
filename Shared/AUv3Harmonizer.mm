@@ -35,7 +35,7 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         2, //inversion
         3,
-        1, //autoharm
+        0, //autoharm
         1, //midi
         -1, //triad
         {0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
@@ -48,7 +48,7 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         2, //inversion
         3,
-        1, //autoharm
+        0, //autoharm
         1, //midi
         -1, //triad
         {0,4,7,12, -1,3,6,11, 0,5,10,12, 1,4,9,13, 0,3,8,12, 0,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,12, 1,2,6,13, 0,1,5,12, // major

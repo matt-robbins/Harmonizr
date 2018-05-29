@@ -51,6 +51,9 @@ class HarmButton: UIButton {
         layer.shadowRadius = 8
         layer.masksToBounds = false
         showsTouchWhenHighlighted = true
+        
+        self.titleLabel!.minimumScaleFactor = 0.1
+        self.titleLabel!.adjustsFontSizeToFitWidth = true
     }
     
     override init(frame: CGRect) {

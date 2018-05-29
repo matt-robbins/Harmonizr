@@ -82,58 +82,58 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="HarmonizerViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="12X-sd-e4c">
-                                <rect key="frame" x="46" y="2" width="720" height="543.66666666666663"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="12X-sd-e4c">
+                                <rect key="frame" x="46" y="2" width="720" height="352"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="0Dg-S9-Iyw">
-                                        <rect key="frame" x="0.0" y="0.0" width="720" height="90.333333333333329"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="0Dg-S9-Iyw">
+                                        <rect key="frame" x="0.0" y="0.0" width="720" height="90"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="K9g-Xq-IhD">
-                                                <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="90.333333333333329"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="K9g-Xq-IhD">
+                                                <rect key="frame" x="0.0" y="0.0" width="58" height="90"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FI4-35-Vte" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="30"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FI4-35-Vte" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                        <rect key="frame" x="0.0" y="0.0" width="58" height="29.333333333333332"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <state key="normal" title="A-T">
+                                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="toggleAuto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fHN-od-l4S"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="amN-OU-hHi" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                        <rect key="frame" x="0.0" y="31.333333333333339" width="58" height="58.666666666666657"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                                        <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="15"/>
                                                         <state key="normal" title="Midi">
                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="toggleMidi:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1yR-Rn-LYV"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="amN-OU-hHi" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="31.999999999999989" width="58.666666666666664" height="58.333333333333343"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" secondItem="amN-OU-hHi" secondAttribute="height" multiplier="1:1" id="Cs7-4G-bXz"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
-                                                        <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="15"/>
-                                                        <state key="normal" title="Auto Tune">
-                                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="toggleAuto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Qth-bk-9Ml"/>
+                                                            <action selector="toggleMidi:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4SP-hY-lcZ"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="amN-OU-hHi" firstAttribute="height" secondItem="FI4-35-Vte" secondAttribute="height" multiplier="2" id="XrK-xK-8pJ"/>
+                                                </constraints>
                                             </stackView>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="avH-cs-Plg" customClass="HarmonizerVoicesView" customModule="HarmonizerFramework">
-                                                <rect key="frame" x="62.666666666666657" y="0.0" width="293.33333333333337" height="90.333333333333329"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="avH-cs-Plg" customClass="HarmonizerVoicesView" customModule="HarmonizerFramework">
+                                                <rect key="frame" x="62" y="0.0" width="294" height="90"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Jgz-qt-heT">
-                                                <rect key="frame" x="360" y="0.0" width="360" height="90.333333333333329"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Jgz-qt-heT">
+                                                <rect key="frame" x="360" y="0.0" width="360" height="90"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="UCT-uC-4nV">
-                                                        <rect key="frame" x="0.0" y="0.0" width="360" height="57.666666666666664"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="UCT-uC-4nV">
+                                                        <rect key="frame" x="0.0" y="0.0" width="360" height="30"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KBZ-Yy-5cH" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="0.0" width="58.333333333333336" height="57.666666666666664"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KBZ-Yy-5cH" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="0.0" y="0.0" width="58.333333333333336" height="30"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <state key="normal" title="&lt;">
                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -142,14 +142,14 @@
                                                                     <action selector="presetPrev:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sMn-RC-kS3"/>
                                                                 </connections>
                                                             </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgf-8I-2GQ">
-                                                                <rect key="frame" x="60.333333333333314" y="0.0" width="179" height="57.666666666666664"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgf-8I-2GQ">
+                                                                <rect key="frame" x="60.333333333333314" y="0.0" width="179" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g2V-1v-GBz" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="241.33333333333337" y="0.0" width="59" height="57.666666666666664"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g2V-1v-GBz" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="241.33333333333337" y="0.0" width="59" height="30"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <state key="normal" title="&gt;">
                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -158,12 +158,9 @@
                                                                     <action selector="presetNext:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DWX-5w-JTV"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dLc-dw-1Qg" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="302.33333333333337" y="0.0" width="57.666666666666686" height="57.666666666666664"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dLc-dw-1Qg" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="302.33333333333337" y="0.0" width="57.666666666666686" height="30"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" secondItem="dLc-dw-1Qg" secondAttribute="height" multiplier="1:1" id="Nf4-Qb-gfZ"/>
-                                                                </constraints>
                                                                 <state key="normal">
                                                                     <attributedString key="attributedTitle">
                                                                         <fragment content="⚙">
@@ -181,11 +178,11 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="iwR-KF-4xx">
-                                                        <rect key="frame" x="0.0" y="59.66666666666665" width="360" height="30.666666666666664"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="iwR-KF-4xx">
+                                                        <rect key="frame" x="0.0" y="32" width="360" height="58"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMf-yw-TXY" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="0.0" width="58.333333333333336" height="30.666666666666668"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMf-yw-TXY" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="0.0" y="0.0" width="58.333333333333336" height="58"/>
                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <gestureRecognizers/>
                                                                 <state key="normal" title="f1">
@@ -201,8 +198,8 @@
                                                                     <outletCollection property="gestureRecognizers" destination="RFa-1p-7X6" appends="YES" id="bR0-Ch-drj"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue0-hA-fHl" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="60.333333333333314" y="0.0" width="58.333333333333343" height="30.666666666666668"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue0-hA-fHl" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="60.333333333333314" y="0.0" width="58.333333333333343" height="58"/>
                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <gestureRecognizers/>
                                                                 <state key="normal" title="f2">
@@ -218,8 +215,8 @@
                                                                     <outletCollection property="gestureRecognizers" destination="KAC-FB-6aS" appends="YES" id="AHw-Jt-xqR"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGH-bF-XzS" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="120.66666666666661" y="0.0" width="58.333333333333329" height="30.666666666666668"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGH-bF-XzS" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="120.66666666666661" y="0.0" width="58.333333333333329" height="58"/>
                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <gestureRecognizers/>
                                                                 <state key="normal" title="f3">
@@ -235,8 +232,8 @@
                                                                     <outletCollection property="gestureRecognizers" destination="FAY-bE-IWH" appends="YES" id="XaL-xn-CjM"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTD-LV-0od" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="181" y="0.0" width="58.333333333333343" height="30.666666666666668"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTD-LV-0od" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="181" y="0.0" width="58.333333333333343" height="58"/>
                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <gestureRecognizers/>
                                                                 <state key="normal" title="f4">
@@ -252,8 +249,8 @@
                                                                     <outletCollection property="gestureRecognizers" destination="4dD-6z-u0c" appends="YES" id="Yh2-zu-uN3"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ku9-Sh-8cc" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="241.3333333333334" y="0.0" width="58.333333333333343" height="30.666666666666668"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ku9-Sh-8cc" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="241.3333333333334" y="0.0" width="58.333333333333343" height="58"/>
                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <gestureRecognizers/>
                                                                 <state key="normal" title="f5">
@@ -269,8 +266,8 @@
                                                                     <outletCollection property="gestureRecognizers" destination="Q8B-d4-JIo" appends="YES" id="eHg-6m-2aB"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-aX-8vc" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="301.66666666666663" y="0.0" width="58.333333333333314" height="30.666666666666668"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-aX-8vc" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="301.66666666666663" y="0.0" width="58.333333333333314" height="58"/>
                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <gestureRecognizers/>
                                                                 <state key="normal" title="f6">
@@ -298,39 +295,41 @@
                                             </stackView>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstAttribute="width" secondItem="0Dg-S9-Iyw" secondAttribute="height" multiplier="8:1" id="0Pv-Qz-ZZj"/>
+                                            <constraint firstItem="AMf-yw-TXY" firstAttribute="height" secondItem="amN-OU-hHi" secondAttribute="height" id="C7t-Hp-jaj"/>
                                             <constraint firstItem="dLc-dw-1Qg" firstAttribute="top" secondItem="FI4-35-Vte" secondAttribute="top" id="HI6-pY-oUq"/>
                                             <constraint firstItem="AMf-yw-TXY" firstAttribute="width" secondItem="amN-OU-hHi" secondAttribute="width" id="jAw-eb-f14"/>
                                         </constraints>
                                     </stackView>
-                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="HarmonizerFramework">
-                                        <rect key="frame" x="0.0" y="95.333333333333314" width="720" height="180"/>
+                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="HarmonizerFramework">
+                                        <rect key="frame" x="0.0" y="95" width="720" height="136"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="XMY-Zi-giM" secondAttribute="height" multiplier="4:1" id="4iE-7p-xoy"/>
-                                        </constraints>
                                     </view>
-                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rnK-4r-xXA" customClass="KeyboardView" customModule="HarmonizerFramework">
-                                        <rect key="frame" x="0.0" y="280.33333333333337" width="720" height="263.33333333333337"/>
+                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnK-4r-xXA" customClass="KeyboardView" customModule="HarmonizerFramework">
+                                        <rect key="frame" x="0.0" y="236" width="720" height="116"/>
                                     </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="XMY-Zi-giM" firstAttribute="height" relation="greaterThanOrEqual" secondItem="12X-sd-e4c" secondAttribute="height" multiplier="0.33" id="4Nd-0X-HdE"/>
+                                    <constraint firstItem="rnK-4r-xXA" firstAttribute="height" secondItem="12X-sd-e4c" secondAttribute="height" multiplier="0.33" id="iST-c1-KZT"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Jgz-qt-heT" firstAttribute="width" secondItem="dx9-cJ-xfo" secondAttribute="width" multiplier="0.5" constant="-2" id="56k-f3-Idn"/>
-                            <constraint firstAttribute="bottom" secondItem="12X-sd-e4c" secondAttribute="bottom" id="KuB-IB-Bc4"/>
+                            <constraint firstItem="dx9-cJ-xfo" firstAttribute="bottom" secondItem="12X-sd-e4c" secondAttribute="bottom" id="KuB-IB-Bc4"/>
                             <constraint firstItem="12X-sd-e4c" firstAttribute="leading" secondItem="dx9-cJ-xfo" secondAttribute="leading" constant="2" id="O5D-ir-Slu"/>
                             <constraint firstItem="12X-sd-e4c" firstAttribute="trailing" secondItem="dx9-cJ-xfo" secondAttribute="trailing" constant="-2" id="SP5-yy-wl8"/>
-                            <constraint firstItem="XMY-Zi-giM" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.33" id="aOr-XX-E4N"/>
                             <constraint firstItem="12X-sd-e4c" firstAttribute="top" secondItem="dx9-cJ-xfo" secondAttribute="top" constant="2" id="d4f-cE-QkI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dx9-cJ-xfo"/>
                     </view>
                     <connections>
-                        <outlet property="autoButton" destination="amN-OU-hHi" id="tql-L7-pcg"/>
+                        <outlet property="autoButton" destination="FI4-35-Vte" id="GdD-6n-lbb"/>
                         <outlet property="harmonizerView" destination="XMY-Zi-giM" id="k3y-fn-p5B"/>
                         <outlet property="keyboardView" destination="rnK-4r-xXA" id="l5Y-Nj-fRr"/>
-                        <outlet property="midiButton" destination="FI4-35-Vte" id="fmU-Pp-g84"/>
+                        <outlet property="midiButton" destination="amN-OU-hHi" id="81E-tH-K3m"/>
                         <outlet property="presetEditButton" destination="dLc-dw-1Qg" id="RTs-0J-Ld8"/>
                         <outlet property="presetLabel" destination="bgf-8I-2GQ" id="Pvj-3r-a8y"/>
                         <outlet property="presetNextButton" destination="g2V-1v-GBz" id="DER-34-tEP"/>
