@@ -71,7 +71,7 @@ class Key: CALayer {
             self.shadowOpacity = 1.0
         }
         else {
-            CATransaction.setAnimationDuration(0.4)
+            CATransaction.setAnimationDuration(0.2)
             self.backgroundColor = self.black ? UIColor.black.cgColor : UIColor.white.cgColor
             self.shadowOpacity = 0.0
         }
@@ -106,9 +106,15 @@ class KeyboardView: UIView {
     
     var midiOctave = 4
     
+    var containerLayer: CALayer = CALayer()
     weak var delegate: KeyboardViewDelegate?
     
     override func awakeFromNib() {
+        
+        containerLayer.name = "container"
+        containerLayer.anchorPoint = CGPoint.zero
+        containerLayer.frame = CGRect(origin: CGPoint.zero, size: layer.bounds.size)
+        layer.addSublayer(containerLayer)
         
         for i in 0...nkeys-1
         {
@@ -125,12 +131,14 @@ class KeyboardView: UIView {
                 wkeys.append(keyLayer)
                 keyLayer.zPosition = 0.0
             }
-            layer.addSublayer(keyLayer)
+            containerLayer.addSublayer(keyLayer)
         }
     }
 
     override func layoutSublayers(of layer: CALayer) {
         layer.backgroundColor = UIColor.black.cgColor
+        
+        containerLayer.bounds = layer.bounds
         
         let spacing = layer.frame.width / CGFloat(nwkeys)
         
@@ -164,44 +172,39 @@ class KeyboardView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches
         {
-            let p = layer.convert(t.location(in: self), to: layer.superlayer!)
-            let k = self.layer.hitTest(p) as? Key
-            if (k != nil)
+            let key = containerLayer.hitTest(t.location(in: self)) as? Key
+            if (key != nil)
             {
-                k!.isSelected = true
-                delegate?.keyboardView(self, noteOn: k!.midinote)
+                key!.isSelected = true
+                delegate?.keyboardView(self, noteOn: key!.midinote)
             }
         }
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         for t in touches
         {
-            let p = layer.convert(t.location(in: self), to: layer.superlayer!)
-            let p2 = layer.convert(t.previousLocation(in: self), to: layer.superlayer!)
+            let key = containerLayer.hitTest(t.location(in: self)) as? Key
+            let old_key = containerLayer.hitTest(t.previousLocation(in: self)) as? Key
 
-            let k = layer.hitTest(p) as? Key
-            let ok = layer.hitTest(p2) as? Key
-
-            if (k != nil)
+            if (key != nil)
             {
-                k!.isSelected = true
+                key!.isSelected = true
                 
-                if (ok != nil && k != ok)
+                if (old_key != nil && key != old_key)
                 {
-                    ok!.isSelected = false
-                    delegate?.keyboardView(self, noteOn: k!.midinote)
-                    delegate?.keyboardView(self, noteOff: ok!.midinote)
+                    old_key!.isSelected = false
+                    delegate?.keyboardView(self, noteOn: key!.midinote)
+                    delegate?.keyboardView(self, noteOff: old_key!.midinote)
                 }
             }
             else
             {
-                if (ok != nil)
+                if (old_key != nil)
                 {
-                    ok!.isSelected = false
-                    delegate?.keyboardView(self, noteOff: ok!.midinote)
+                    old_key!.isSelected = false
+                    delegate?.keyboardView(self, noteOff: old_key!.midinote)
                 }
             }
         }
@@ -211,13 +214,12 @@ class KeyboardView: UIView {
     {
         for t in touches
         {
-            let p = layer.convert(t.previousLocation(in: self), to: layer.superlayer!)
-            let k = layer.hitTest(p) as? Key
+            let key = containerLayer.hitTest(t.previousLocation(in: self)) as? Key
             
-            if (k != nil)
+            if (key != nil)
             {
-                k!.isSelected = false
-                delegate?.keyboardView(self, noteOff: k!.midinote)
+                key!.isSelected = false
+                delegate?.keyboardView(self, noteOff: key!.midinote)
             }
         }
     }

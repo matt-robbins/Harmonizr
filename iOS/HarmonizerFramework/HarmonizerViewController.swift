@@ -213,6 +213,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
             midiButton.isSelected = (midiParameter!.value == 1)
             autoButton.isSelected = (autoParameter!.value == 1)
             
+            enableKeyboard(midiButton.isSelected)
+            
             voicesView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
             
             harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
@@ -232,6 +234,14 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         }
     }
     
+    func enableKeyboard(_ enable: Bool)
+    {
+        UIView.animate(withDuration: 0.3) {
+            self.keyboardView.isUserInteractionEnabled = enable
+            self.keyboardView.layer.opacity = enable ? 1.0 : 0.3
+        }
+    }
+    
     //MARK: Actions
     
     @IBAction func toggleAuto(_ sender: Any) {
@@ -242,10 +252,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBAction func toggleMidi(_ sender: Any) {
         midiParameter!.value = midiParameter!.value == 0 ? 1 : 0
         midiButton.isSelected = midiParameter!.value == 1
-        UIView.animate(withDuration: 0.3) {
-            self.keyboardView.isUserInteractionEnabled = self.midiButton.isSelected
-            self.keyboardView.layer.opacity = self.midiButton.isSelected ? 1.0 : 0.5
-        }
+        enableKeyboard(self.midiButton.isSelected)
     }
     
     @IBAction func presetPrev(_ sender: Any) {

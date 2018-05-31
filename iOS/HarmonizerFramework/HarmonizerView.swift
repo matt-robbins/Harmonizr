@@ -100,6 +100,10 @@ class GlowButton: VerticallyCenteredTextLayer {
     }
 }
 
+class keycenterButton: GlowButton {
+    
+}
+
 class HarmonizerView: UIView {
     // MARK: Properties
 
@@ -195,22 +199,9 @@ class HarmonizerView: UIView {
             {
                 keybuttons[key].isSelected = false
             }
-            
-//            if (keybuttons[key].borderColor != UIColor.darkGray.cgColor)
-//            {
-//                //keybuttons[key].removeAnimation(forKey: "pulse")
-//                keybuttons[key].borderColor = UIColor.darkGray.cgColor
-//                keybuttons[key].shadowOpacity = 0.0
-//                keybuttons[key].zPosition = 0.0
-//            }
         }
         
-        //keybuttons[new_key].add(pulseAnimation, forKey:"pulse")
         keybuttons[new_key].isSelected = true
-//        keybuttons[new_key].shadowOpacity = 1.0
-//        keybuttons[new_key].borderColor = UIColor.cyan.cgColor
-//        keybuttons[new_key].zPosition = 1.0
-        
         currentKey = new_key
     }
     
@@ -242,19 +233,8 @@ class HarmonizerView: UIView {
         glowAnimation.autoreverses = false
         glowAnimation.repeatCount = 1
         
-//        keysLayer.name = "keys"
-//        containerLayer.frame = CGRect(x: 0, y: layer.frame.height - 3 * layer.frame.height/12, width: layer.frame.width, height: 3 * layer.frame.height/12)
-//        keysLayer.opacity = 1.0
-        //layer.backgroundColor = UIColor.red.cgColor
-//        containerLayer.addSublayer(keysLayer)
-        
-        let keywidth = containerLayer.frame.width / 12
-        
         for j in 0...2
-        {
-            let names = ["C", "C\u{266f}", "D", "D\u{266f}", "E", "F", "F\u{266f}",
-                         "G", "A\u{266D}", "A", "B\u{266D}", "B"]
-            
+        {            
             for i in 0...11
             {
                 let keyLayer = GlowButton()
@@ -263,7 +243,7 @@ class HarmonizerView: UIView {
                 
                 if (j == 0)
                 {
-                    keyLayer.string = names[i]
+                    keyLayer.string = ""
                 }
                 else if (j == 1)
                 {
@@ -284,24 +264,12 @@ class HarmonizerView: UIView {
                 }
                 
                 keyLayer.backgroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(bri), alpha: 1.0).cgColor
-                
                 keyLayer.foregroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(1-bri), alpha: 1.0).cgColor
                 
-                keyLayer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
-                keyLayer.borderWidth = 4
-                keyLayer.cornerRadius = 4
-                keyLayer.shadowColor = UIColor.cyan.cgColor
-                keyLayer.shadowRadius = 8
-                keyLayer.shadowOpacity = 0
-                keyLayer.shadowOffset = CGSize(width: 0, height: 0)
-                
-                let xpos = CGFloat(i) * containerLayer.frame.width / 12
-                
-                keyLayer.frame = CGRect(x: xpos, y: CGFloat(j) * keywidth, width: keywidth, height: keywidth)
+                keyLayer.keycenter = 12*j + i
                 keybuttons.append(keyLayer)
 
                 containerLayer.addSublayer(keyLayer)
-                
             }
         }
         
@@ -355,35 +323,30 @@ class HarmonizerView: UIView {
         }
     }
     
-    func processKeycenterTouch(point: CGPoint) {
-        let pointOfTouch = CGPoint(x: point.x, y: point.y + containerLayer.frame.height - containerLayer.frame.height)
-        
-        for j in 0...35
-        {
-            if (keybuttons[j].hitTest(pointOfTouch) != nil)
-            {
-                self.setSelectedKeycenter(Float(j))
-                
-                // change key center parameter based on x value of touch
-                delegate?.harmonizerView(self, didChangeKeycenter: Float(j))
-            }
-        }
-    }
-    
     // MARK: Touch Event Handling
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        var pointOfTouch = touches.first?.location(in: self)
-        pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
+        let pointOfTouch = touches.first?.location(in: self)
         
-        processKeycenterTouch(point: pointOfTouch!)
+        let key = containerLayer.hitTest(pointOfTouch!) as? GlowButton
+        if (key != nil)
+        {
+            self.setSelectedKeycenter(Float(key!.keycenter))
+            delegate?.harmonizerView(self, didChangeKeycenter: Float(key!.keycenter))
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        var pointOfTouch = touches.first?.location(in: self)
-        pointOfTouch = CGPoint(x: pointOfTouch!.x, y: pointOfTouch!.y)
+        let p = touches.first?.location(in: self)
+        let old_p = touches.first?.previousLocation(in: self)
+        let key = containerLayer.hitTest(p!) as? GlowButton
+        let old_key = containerLayer.hitTest(old_p!) as? GlowButton
         
-        processKeycenterTouch(point: pointOfTouch!)
+        if (key != nil && key != old_key)
+        {
+            self.setSelectedKeycenter(Float(key!.keycenter))
+            delegate?.harmonizerView(self, didChangeKeycenter: Float(key!.keycenter))
+        }
     }
 }
