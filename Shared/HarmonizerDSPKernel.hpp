@@ -1107,6 +1107,8 @@ private:
     chord_ratio_t minor_chord_table[12];
     chord_ratio_t blues_chord_table[12];
     
+    int voice_intervals[4];
+    
     int ngrains;
     int grain_ix = 0;
     grain_t * grains;

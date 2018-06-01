@@ -21,6 +21,9 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBOutlet weak var midiButton: HarmButton!
     @IBOutlet weak var autoButton: HarmButton!
     
+    @IBOutlet weak var kbdOctPlusButton: UIButton!
+    @IBOutlet weak var kbdOctMinusButton: UIButton!
+    
     @IBOutlet weak var presetPrevButton: HarmButton!
     @IBOutlet weak var presetNextButton: HarmButton!
     @IBOutlet weak var presetEditButton: HarmButton!
@@ -83,7 +86,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     {
         guard let audioUnit = audioUnit else { return }
         harmonizerView.setSelectedNote(audioUnit.getCurrentNote())
-        keyboardView.setCurrentNote(audioUnit.getMidiNote())
+        keyboardView.setCurrentNote(audioUnit.getMidiNote(0))
         // update visible keycenter based on computed value from midi
         harmonizerView.setSelectedKeycenter(audioUnit.getCurrentKeycenter())
         return
@@ -134,19 +137,28 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     //MARK: KeyboardViewDelegate
     
     func keyboardView(_ view: KeyboardView, noteOn note: Int) {
-        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
-        cbytes[0] = 0x90
-        cbytes[1] = UInt8(note)
-        cbytes[2] = 64
-        self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
+        audioUnit?.addMidiNote(Int32(note), vel: 100)
+//
+//        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
+//        cbytes[0] = 0x90
+//        cbytes[1] = UInt8(note)
+//        cbytes[2] = 64
+//        if (self.noteBlock != nil)
+//        {
+//            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
+//        }
     }
     
     func keyboardView(_ view: KeyboardView, noteOff note: Int) {
-        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
-        cbytes[0] = 0x80
-        cbytes[1] = UInt8(note)
-        cbytes[2] = 64
-        self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
+        audioUnit?.remMidiNote(Int32(note))
+//        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
+//        cbytes[0] = 0x80
+//        cbytes[1] = UInt8(note)
+//        cbytes[2] = 64
+//        if (self.noteBlock != nil)
+//        {
+//            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
+//        }
     }
     
     //MARK: HarmonizerViewDelegate
@@ -253,6 +265,13 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         midiParameter!.value = midiParameter!.value == 0 ? 1 : 0
         midiButton.isSelected = midiParameter!.value == 1
         enableKeyboard(self.midiButton.isSelected)
+    }
+    
+    @IBAction func octaveUp(_ sender: Any) {
+        keyboardView.keyShift(7)
+    }
+    @IBAction func OctaveDown(_ sender: Any) {
+        keyboardView.keyShift(-7)
     }
     
     @IBAction func presetPrev(_ sender: Any) {

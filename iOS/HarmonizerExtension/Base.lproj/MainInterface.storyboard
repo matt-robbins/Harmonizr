@@ -321,11 +321,17 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LWt-Ah-h6L">
                                                         <rect key="frame" x="0.0" y="0.0" width="58.333333333333336" height="62"/>
-                                                        <state key="normal" title="Button"/>
+                                                        <state key="normal" title="+"/>
+                                                        <connections>
+                                                            <action selector="octaveUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fLI-EK-S1D"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xz3-CX-ccC">
                                                         <rect key="frame" x="0.0" y="61.999999999999972" width="58.333333333333336" height="61.666666666666657"/>
-                                                        <state key="normal" title="Button"/>
+                                                        <state key="normal" title="-"/>
+                                                        <connections>
+                                                            <action selector="OctaveDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="q2U-lw-o6K"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -352,6 +358,8 @@
                     <connections>
                         <outlet property="autoButton" destination="FI4-35-Vte" id="GdD-6n-lbb"/>
                         <outlet property="harmonizerView" destination="XMY-Zi-giM" id="k3y-fn-p5B"/>
+                        <outlet property="kbdOctMinusButton" destination="xz3-CX-ccC" id="tBU-Ru-VI4"/>
+                        <outlet property="kbdOctPlusButton" destination="LWt-Ah-h6L" id="U8o-5y-6a3"/>
                         <outlet property="keyboardView" destination="rnK-4r-xXA" id="l5Y-Nj-fRr"/>
                         <outlet property="midiButton" destination="amN-OU-hHi" id="81E-tH-K3m"/>
                         <outlet property="presetEditButton" destination="dLc-dw-1Qg" id="RTs-0J-Ld8"/>
