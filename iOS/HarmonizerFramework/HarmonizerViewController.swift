@@ -66,6 +66,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     var gainParameter: AUParameter?
 	var parameterObserverToken: AUParameterObserverToken?
     
+    var intervals = [AUParameter]()
+    
     var configController: ConfigViewController?
     var presetController: PresetController?
     
@@ -85,8 +87,19 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @objc func timerFunction()
     {
         guard let audioUnit = audioUnit else { return }
-        harmonizerView.setSelectedNote(audioUnit.getCurrentNote())
-        keyboardView.setCurrentNote(audioUnit.getMidiNote(0))
+        
+        let note = audioUnit.getCurrentNote()
+        
+        harmonizerView.setSelectedNote(note)
+        
+        let notes = audioUnit.getNotes()
+        var int_notes: [Int] = [Int]()
+        
+        for n in notes! {
+            int_notes.append((n as? Int)!)
+        }
+
+        keyboardView.setCurrentNote(int_notes)
         // update visible keycenter based on computed value from midi
         harmonizerView.setSelectedKeycenter(audioUnit.getCurrentKeycenter())
         return
@@ -112,8 +125,16 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 		configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
         let _: UIView = configController!.view
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appResigned), name: Notification.Name.UIApplicationWillResignActive, object: nil)
+        
         connectViewWithAU()
 	}
+    
+    @objc private func appResigned()
+    {
+        keyboardView.allNotesOff()
+    }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -137,28 +158,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     //MARK: KeyboardViewDelegate
     
     func keyboardView(_ view: KeyboardView, noteOn note: Int) {
-        audioUnit?.addMidiNote(Int32(note), vel: 100)
-//
-//        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
-//        cbytes[0] = 0x90
-//        cbytes[1] = UInt8(note)
-//        cbytes[2] = 64
-//        if (self.noteBlock != nil)
-//        {
-//            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-//        }
+        audioUnit?.addMidiNote(Int32(note), vel: 80)
     }
     
     func keyboardView(_ view: KeyboardView, noteOff note: Int) {
         audioUnit?.remMidiNote(Int32(note))
-//        let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
-//        cbytes[0] = 0x80
-//        cbytes[1] = UInt8(note)
-//        cbytes[2] = 64
-//        if (self.noteBlock != nil)
-//        {
-//            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-//        }
     }
     
     //MARK: HarmonizerViewDelegate

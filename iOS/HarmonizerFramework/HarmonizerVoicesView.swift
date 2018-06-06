@@ -109,7 +109,7 @@ class HarmonizerVoicesView: UIView {
         let p = 1 + 4*((point.x) / self.layer.frame.width)
         var inv = 4*(1 - ((point.y) / self.layer.frame.height))
         if (inv > p - 1) { inv = p - 1 }
-        print(inv)
+        //print(inv)
         delegate?.voicesView(self, didChangeNvoices: Float(p))
         delegate?.voicesView(self, didChangeInversion: Float(inv))
         self.setSelectedVoices(Int(p), inversion: Int(inv))

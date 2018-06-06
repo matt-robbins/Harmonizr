@@ -115,13 +115,13 @@ class HarmButton: UIButton {
             switch isBeingPlayed {
             case true:
                 //layer.borderColor = UIColor.red.cgColor
-                setTitleColor(.red, for: UIControlState())
+                //setTitleColor(.red, for: UIControlState())
                 layer.shadowColor = UIColor.red.cgColor
                 layer.shadowOpacity = 1.0
                 superview?.bringSubview(toFront: self)
             case false:
                 isSelected = isSelected && true
-                setTitleColor(.black, for: UIControlState())
+                //setTitleColor(.black, for: UIControlState())
             }
         }
     }

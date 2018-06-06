@@ -507,8 +507,19 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     return _kernel.note_number;
 }
 
-- (float) getMidiNote: (int) voice_number {
-    return _kernel.midi_note_number;
+- (NSArray *) getNotes {
+    NSMutableArray * output = [[NSMutableArray alloc] initWithCapacity: 5];
+    
+    NSNumber *n = [NSNumber numberWithInt:_kernel.midi_note_number];
+    [output addObject:n];
+    
+    for (int k = 0; k < 4; k++)
+    {
+        NSNumber *n = [NSNumber numberWithInt:_kernel.voice_notes[k]];
+        [output addObject:n];
+    }
+    
+    return output;
 }
 
 - (int) addMidiNote:(int)note_number vel:(int)velocity {

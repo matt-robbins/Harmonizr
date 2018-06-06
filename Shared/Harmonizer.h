@@ -14,7 +14,7 @@
 @interface AUv3Harmonizer : AUAudioUnit
 
 - (float) getCurrentNote;
-- (float) getMidiNote: (int) voice_number;
+- (NSArray *) getNotes;
 - (int) addMidiNote:(int)note_number vel:(int)velocity;
 - (int) remMidiNote:(int)note_number;
 - (float) getCurrentKeycenter;

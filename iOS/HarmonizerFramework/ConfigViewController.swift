@@ -14,7 +14,43 @@ protocol PresetSaveDelegate: class {
     func configViewControllerGetPresets(_ controller: ConfigViewController) -> [String]
 }
 
-public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
+class KeyboardEditorView: KeyboardView {
+    var xpos: CGFloat = -1.0
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        xpos = (touches.first?.location(in:self).x)!
+        return
+    }
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        calculate_movement(touches,true)
+        return
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        calculate_movement(touches,false)
+        return
+    }
+}
+
+public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, KeyboardViewDelegate, VoicesViewDelegate {
+    func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float) {
+        let param = paramTree!.value(forKey: "inversion") as? AUParameter
+        param!.value = inversion
+        drawKeys()
+    }
+    
+    func voicesView(_ view: HarmonizerVoicesView, didChangeNvoices voices: Float) {
+        let param = paramTree!.value(forKey: "nvoices") as? AUParameter
+        param!.value = voices
+    }
+    
+    
+    func keyboardView(_ view: KeyboardView, noteOn note: Int) {
+        return
+    }
+    
+    func keyboardView(_ view: KeyboardView, noteOff note: Int) {
+        return
+    }
+    
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return nc
     }
@@ -57,6 +93,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         print("changed!")
         presetNeedsSave = true
         syncPresetButtons()
+        drawKeys()
     }
     
     //MARK: Properties
@@ -82,6 +119,8 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var revertButton: HarmButton!
     
+    @IBOutlet weak var voicesView: HarmonizerVoicesView!
+    @IBOutlet weak var keyboardView: KeyboardEditorView!
     var preset: Preset?
     
     var doneFcn: (() -> Void)?
@@ -103,7 +142,10 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             print("set audio unit in config view controller!")
             paramTree = audioUnit!.parameterTree
             let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
+            let inversionParam = paramTree!.value(forKey: "inversion") as? AUParameter
+            let nvoicesParam = paramTree!.value(forKey: "nvoices") as? AUParameter
             
+            voicesView.setSelectedVoices(Int(nvoicesParam!.value), inversion: Int(inversionParam!.value))
             let keycenter = keycenterParam!.value
             
             keyQuality = Int(keycenter / 12)
@@ -115,6 +157,8 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             {
                 buttons[c].isSelected = (c == keyRoot)
             }
+            
+            setRoot(nil)
         }
     }
     
@@ -198,6 +242,9 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     {
         super.viewDidLoad()
         
+        keyboardView.delegate = self
+        voicesView.delegate = self
+        
         intervalPicker!.delegate = self
         intervalPicker!.dataSource = self
         intervalPicker!.layer.cornerRadius = 8
@@ -213,6 +260,9 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         d.isSelected = true
 
         pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
+        
+        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1","0",
+                      "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]
         
         presetName.delegate = self
         saveButton.isEnabled = false
@@ -257,6 +307,42 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         timer.invalidate()
     }
     
+    public func drawKeys()
+    {
+        for k in keyboardView.keys
+        {
+            k.isSelected = false
+            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
+            {
+                k.isSelected = true
+                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
+            }
+        }
+        
+        for k in 0...nc-1
+        {
+            let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
+            var param = paramTree!.value(forKey: key) as? AUParameter
+            var offset = Int(param!.value)
+            
+            param = paramTree!.value(forKey: "inversion") as? AUParameter
+            let inversion = Int(param!.value)
+            print(inversion)
+            if (k > inversion)
+            {
+                offset -= 12
+            }
+            
+            for k in keyboardView.keys
+            {
+                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
+                {
+                    k.isHarm = true
+                }
+            }
+        }
+    }
+    
     public func refresh()
     {
         guard audioUnit != nil else { return }
@@ -268,12 +354,34 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         keycenterParam!.value = Float(keyQuality * 12 + keyRoot)
         
+        for k in keyboardView.keys
+        {
+            k.isSelected = false
+            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
+            {
+                k.isSelected = true
+                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
+            }
+        }
+        
         for k in 0...nc-1
         {
             let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
             let param = paramTree!.value(forKey: key) as? AUParameter
-            intervalPicker!.selectRow(Int(param!.value)+unisonOffset, inComponent: k, animated: true)
+            let offset = Int(param!.value)
+            
+            for k in keyboardView.keys
+            {
+                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
+                {
+                    k.isHarm = true
+                }
+            }
+            
+            intervalPicker!.selectRow(offset+unisonOffset, inComponent: k, animated: true)
         }
+        
+        
         
     }
     
@@ -300,6 +408,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     
     @IBAction func setRoot(_ sender: HarmButton?)
     {
+        let colors = [0,1,0,1,0,0,1,0,1,0,1,0]
         //let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
         
         var r = 0
@@ -316,7 +425,18 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             }
             r = r + 1
         }
+        
+        var ix = 0
+        for b in degreeStack.arrangedSubviews as! [HarmButton]
+        {
+            b.backgroundColor = colors[(ix + keyRoot) % 12] == 1 ? UIColor.black : UIColor.white
+            b.configure()
+            ix += 1
+            
+        }
         refresh()
+        drawKeys()
+
     }
     
     @IBAction func setDegree(_ sender: HarmButton?)
@@ -337,6 +457,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         }
         
         refresh()
+        drawKeys()
     }
     @IBAction func presetNext(_ sender: Any) {
         if (presetIx < presetController!.presets.count - 1)

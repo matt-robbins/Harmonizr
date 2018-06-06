@@ -64,6 +64,7 @@ class Key: CATextLayer {
     {
         self.isSelected = false
         self.isSung = false
+        self.isHarm = false
         super.init(layer: layer)
     }
     
@@ -71,6 +72,7 @@ class Key: CATextLayer {
         midinote = 0
         self.isSelected = false
         self.isSung = false
+        self.isHarm = false
         super.init()
         configure()
     }
@@ -78,6 +80,7 @@ class Key: CATextLayer {
     required init?(coder aDecoder: NSCoder) {
         self.isSelected = false
         self.isSung = false
+        self.isHarm = false
         super.init(coder: aDecoder)
         
         // set other operations after super.init if required
@@ -116,17 +119,28 @@ class Key: CATextLayer {
             }
         }
     }
+    
+    var isHarm: Bool {
+        didSet {
+            if (!isSelected)
+            {
+                toggleActive(isHarm, color: UIColor.yellow.cgColor)
+                //borderColor = isSung ? UIColor.red.cgColor : UIColor.darkGray.cgColor
+            }
+        }
+    }
 }
-
+@IBDesignable
 class KeyboardView: UIView {
     
     let nkeys = 128
-    let n_visible = 14
+    @IBInspectable var n_visible: Int = 14
     var wkeys = [Key]()
     var bkeys = [Key]()
     var keys = [Key]()
     
     var spacing: CGFloat = 0
+    var playable: Bool = true
     
     var start_pos = CGPoint.zero
     
@@ -232,10 +246,11 @@ class KeyboardView: UIView {
         return CGPoint(x: avgx, y: avgy)
     }
     
+    @discardableResult
     func calculate_movement(_ touches: Set<UITouch>, _ editing: Bool) -> Bool
     {
         let cur_pos = avg_pos(touches)
-        
+        var done = false
         if (cur_pos.y < 0 && start_pos == CGPoint.zero && touches.count == 1)
         {
             containerLayer.position.y = -20
@@ -251,25 +266,17 @@ class KeyboardView: UIView {
             containerLayer.position.x = -CGFloat(keyOffset) * spacing + hdiff
             CATransaction.commit()
             
-            if (cur_pos.y > 0)
+            if (cur_pos.y > 0 || !editing)
             {
                 start_pos = CGPoint.zero
                 containerLayer.position.y = 0
                 let off = (containerLayer.position.x + CGFloat(keyOffset) * spacing) / spacing
                 keyOffset -= Int(round(off))
-            }
-            
-            if (!editing)
-            {
-                start_pos = CGPoint.zero
-                containerLayer.position.y = 0
-                let off = (containerLayer.position.x + CGFloat(keyOffset) * spacing) / spacing
-                keyOffset -= Int(round(off))
-                allNotesOff()
+                done = true
             }
         }
         
-        return start_pos != CGPoint.zero
+        return done
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -277,11 +284,14 @@ class KeyboardView: UIView {
         {
             let p = t.location(in:self)
             
-            let key = containerLayer.hitTest(p) as? Key
-            if (key != nil)
+            if (playable)
             {
-                key!.isSelected = true
-                delegate?.keyboardView(self, noteOn: key!.midinote)
+                let key = containerLayer.hitTest(p) as? Key
+                if (key != nil)
+                {
+                    key!.isSelected = true
+                    delegate?.keyboardView(self, noteOn: key!.midinote)
+                }
             }
         }
     }
@@ -289,6 +299,10 @@ class KeyboardView: UIView {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
     {
         if (calculate_movement((event?.allTouches)!, true))
+        {
+            allNotesOff()
+        }
+        if (start_pos != CGPoint.zero)
         {
             return
         }
@@ -325,7 +339,10 @@ class KeyboardView: UIView {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
     {
-        calculate_movement((event?.allTouches)!, false)
+        if (calculate_movement((event?.allTouches)!, false))
+        {
+            allNotesOff()
+        }
         
         for t in touches
         {
@@ -348,12 +365,25 @@ class KeyboardView: UIView {
             delegate?.keyboardView(self, noteOff: k.midinote)
         }
     }
-    func setCurrentNote(_ note: Float)
+    func setCurrentNote(_ notes: [Int])
     {
-        let n = Int(round(note))
+        let raw = notes[0]
+        let harm = notes[1...]
+
         for k in keys
         {
-            k.isSung = (k.midinote == n)
+            k.isSung = false
+            k.isHarm = false
+            
+            if (harm.contains(k.midinote))
+            {
+                k.isHarm = true
+            }
+            
+            if (raw == k.midinote)
+            {
+                k.isSung = true
+            }
         }
     }
     

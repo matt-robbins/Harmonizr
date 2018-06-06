@@ -316,11 +316,11 @@ public:
                 break;
             case HarmParamNvoices:
                 n_auto = (int) clamp(value,1.f,4.f);
-                fprintf(stderr, "nvoices: %d\n", n_auto);
+                //fprintf(stderr, "nvoices: %d\n", n_auto);
                 break;
             case HarmParamAuto:
                 autotune = (int) clamp(value,0.f,1.f);
-                fprintf(stderr, "autotune: %d\n", autotune);
+                //fprintf(stderr, "autotune: %d\n", autotune);
                 break;
             case HarmParamMidi:
                 midi_enable = (int) clamp(value,0.f,1.f);
@@ -353,9 +353,9 @@ public:
                     table = blues_chord_table;
                 
                 float * ratios = (float *) &table[scale_degree%12];
-                
+                //fprintf(stderr, "addr = %d\n", addr);
+                interval_offsets[addr] = (int) value;
                 ratios[addr & 0x3] = intervals[(int) value];
-                
                 break;
         }
 	}
@@ -395,6 +395,7 @@ public:
                     table = blues_chord_table;
                 
                 float * ratios = (float *) &table[scale_degree%12];
+                return interval_offsets[addr];;
                 return round(log2(ratios[addr & 0x3])*12);
         }
 	}
@@ -594,7 +595,7 @@ public:
                             
                             if (!voiced)
                             {
-                                grains[k].ratio = voices[vix].ratio;
+                                grains[k].ratio = 1.0; //voices[vix].ratio;
                             }
                             else
                             {
@@ -610,7 +611,7 @@ public:
                                 }
                             }
                             
-                            voices[vix].nextgrain += (T / voices[vix].ratio);
+                            voices[vix].nextgrain += voiced ? (T / voices[vix].ratio) : T;
                             
                             //printf("maxgrain = %d\n", maxgrain);
                             if (k > maxgrain)
@@ -966,6 +967,10 @@ public:
         {
             note_number = -1.0;
             midi_note_number = -1.0;
+            for (int k = 0; k < 4; k++)
+            {
+                voice_notes[k] = -1;
+            }
             return;
         }
         
@@ -975,6 +980,7 @@ public:
         
         float note_f = f * 12.0;
         midi_note_number = round(note_f) + 69;
+        
         int nn = (int) round(note_f);
         float error = (note_f - (float)nn)/12;
         float error_ratio = powf(2.0, error);
@@ -984,6 +990,23 @@ public:
         
         int interval = (nn + 69 - root) % 12;
         note_number = (nn + 69) % 12 + (note_f - nn);
+        
+        for (int k = 0; k < 4; k++)
+        {
+            if (k >= n_auto)
+            {
+                voice_notes[k] = -1;
+            }
+            else {
+                voice_notes[k] = midi_note_number + interval_offsets[k + (interval*4) + (quality*48)];
+            }
+            
+            if (k > inversion)
+            {
+                voice_notes[k] -= 12;
+            }
+            
+        }
         
 //        if (autotune)
 //        {
@@ -1101,13 +1124,12 @@ private:
     int n_auto = 4;
     int triad = -1;
     float interval_table[48];
+    int interval_offsets[144];
     float * intervals;
     triad_ratio_t triads[18];
     chord_ratio_t major_chord_table[12];
     chord_ratio_t minor_chord_table[12];
     chord_ratio_t blues_chord_table[12];
-    
-    int voice_intervals[4];
     
     int ngrains;
     int grain_ix = 0;
@@ -1125,8 +1147,9 @@ private:
 
 public:
 
-    float note_number;
+    float note_number = -1.0;
     float midi_note_number;
+    int voice_notes[4];
     int root_key = 0;
     dispatch_semaphore_t sem;
 };
