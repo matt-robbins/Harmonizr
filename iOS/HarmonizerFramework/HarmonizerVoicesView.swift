@@ -40,18 +40,18 @@ class HarmonizerVoicesView: UIView {
             {
                 if ((k - (sum - voices)) > inversion)
                 {
-                    sublayers[k].borderColor = UIColor.cyan.cgColor
+                    sublayers[k].backgroundColor = UIColor.cyan.cgColor
                     sublayers[k].shadowOpacity = 1.0
                 }
                 else
                 {
-                    sublayers[k].borderColor = UIColor.yellow.cgColor
+                    sublayers[k].backgroundColor = UIColor.yellow.cgColor
                     sublayers[k].shadowOpacity = 1.0
                 }
             }
             else
             {
-                sublayers[k].borderColor = UIColor.lightGray.cgColor
+                sublayers[k].backgroundColor = UIColor.lightGray.cgColor
                 sublayers[k].shadowOpacity = 0.0
             }
         }
@@ -71,8 +71,8 @@ class HarmonizerVoicesView: UIView {
         {
             let oval = CALayer()
             
-            oval.borderColor = UIColor.darkGray.cgColor
-            oval.borderWidth = 4
+            oval.backgroundColor = UIColor.darkGray.cgColor
+            oval.borderWidth = 0
             oval.cornerRadius = 4
             
             oval.shadowColor = UIColor.cyan.cgColor
@@ -99,7 +99,7 @@ class HarmonizerVoicesView: UIView {
                 
                 sublayers[count].frame = CGRect(x: xpos, y: ypos, width: width, height: CGFloat(pipheight))
                 sublayers[count].cornerRadius = pipheight / 2
-                sublayers[count].borderWidth = pipheight / 2
+                sublayers[count].borderWidth = 0
                 count += 1
             }
         }

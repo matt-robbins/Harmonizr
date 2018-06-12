@@ -135,6 +135,11 @@ class KeyboardView: UIView {
     
     let nkeys = 128
     @IBInspectable var n_visible: Int = 14
+    {
+        didSet {
+            layoutSublayers(of: self.layer)
+        }
+    }
     var wkeys = [Key]()
     var bkeys = [Key]()
     var keys = [Key]()

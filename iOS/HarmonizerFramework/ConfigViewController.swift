@@ -14,87 +14,81 @@ protocol PresetSaveDelegate: class {
     func configViewControllerGetPresets(_ controller: ConfigViewController) -> [String]
 }
 
+protocol KeyboardEditorDelegate: class {
+    func keyboardEditor(_ view: KeyboardEditorView, setVoice index: Int, note: Int)
+}
+
 class KeyboardEditorView: KeyboardView {
     var xpos: CGFloat = -1.0
+    var curr_note: Int = -1
+    var base_note: Int = 60 {
+        didSet {
+            keys[base_note].isSelected = true
+        }
+    }
+    
+    weak var editorDelegate: KeyboardEditorDelegate?
+    
+    var harm_colors = [UIColor.red.cgColor, UIColor.orange.cgColor, UIColor.yellow.cgColor, UIColor.green.cgColor]
+    var harm_voices: Array<Int> = []
+    {
+        didSet {
+            if (harm_voices.count == 0) { return }
+            
+            CATransaction.begin()
+            
+            for k in keys {
+                k.isHarm = false
+                k.isSelected = false
+            }
+            
+            for ix in 0...harm_voices.count-1 {
+                keys[harm_voices[ix]].toggleActive(true, color: harm_colors[ix])
+            }
+            
+            keys[base_note].isSelected = true
+            
+             CATransaction.commit()
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         xpos = (touches.first?.location(in:self).x)!
+        
+        let key = containerLayer.hitTest((touches.first?.location(in:self))!) as? Key
+        if (key != nil)
+        {
+            let ix = harm_voices.index(of: key!.midinote)
+
+            if (ix != nil)
+            {
+                curr_note = ix!
+            }
+        }
         return
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         calculate_movement(touches,true)
+        let key = containerLayer.hitTest((touches.first?.location(in:self))!) as? Key
+        let old_key = containerLayer.hitTest((touches.first?.previousLocation(in:self))!) as? Key
+        if (key != nil && old_key != nil && key != old_key && curr_note >= 0)
+        {
+            harm_voices[curr_note] = key!.midinote
+            if (editorDelegate != nil)
+            {
+                editorDelegate?.keyboardEditor(self, setVoice: curr_note, note: key!.midinote - base_note)
+            }
+        }
         return
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         calculate_movement(touches,false)
+        curr_note = -1
         return
     }
 }
 
-public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, KeyboardViewDelegate, VoicesViewDelegate {
-    func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float) {
-        let param = paramTree!.value(forKey: "inversion") as? AUParameter
-        param!.value = inversion
-        drawKeys()
-    }
-    
-    func voicesView(_ view: HarmonizerVoicesView, didChangeNvoices voices: Float) {
-        let param = paramTree!.value(forKey: "nvoices") as? AUParameter
-        param!.value = voices
-    }
-    
-    
-    func keyboardView(_ view: KeyboardView, noteOn note: Int) {
-        return
-    }
-    
-    func keyboardView(_ view: KeyboardView, noteOff note: Int) {
-        return
-    }
-    
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return nc
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerData.count
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        
-        var pickerLabel: UILabel?
-        if (view != nil)
-        {
-            pickerLabel = view as? UILabel
-        }
-        else
-        {
-            pickerLabel = UILabel()
-        }
-        
-        pickerLabel!.text = pickerData[row]
-        
-        pickerLabel!.backgroundColor = UIColor.clear
-        pickerLabel!.textColor = UIColor.white
-        
-        pickerLabel!.textAlignment = .center
-        
-        return pickerLabel!        
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        // This method is triggered whenever the user makes a change to the picker selection.
-        // The parameter named row and component represents what was selected.
-        var key: String
-        
-        key = "interval_\(nc*scaleDegree + component + keyQuality*12*nc)"
-        let param = paramTree!.value(forKey: key) as? AUParameter
-        param!.value = Float(row - unisonOffset)
-        
-        print("changed!")
-        presetNeedsSave = true
-        syncPresetButtons()
-        drawKeys()
-    }
+public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, KeyboardViewDelegate, KeyboardEditorDelegate, VoicesViewDelegate {
     
     //MARK: Properties
     
@@ -153,12 +147,15 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             qualitySeg.selectedSegmentIndex = keyQuality
             
             let buttons = rootStack.arrangedSubviews as! [HarmButton]
-            for c in 0...buttons.count - 1
-            {
-                buttons[c].isSelected = (c == keyRoot)
-            }
+//            for c in 0...buttons.count - 1
+//            {
+//                buttons[c].isSelected = (c == keyRoot)
+//            }
             
-            setRoot(nil)
+            drawKeys()
+            setRoot(buttons[keyRoot])
+            
+            //
         }
     }
     
@@ -177,6 +174,94 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     var nc = 4
     
     var timer = Timer()
+    
+    
+    func keyboardEditor(_ view: KeyboardEditorView, setVoice index: Int, note: Int) {
+        let key = "interval_\(nc*scaleDegree + index + keyQuality*12*nc)"
+        let param = paramTree!.value(forKey: key) as? AUParameter
+        print("hi! \(index) -> \(note)")
+        param!.value = Float(note)
+        
+        intervalPicker!.selectRow(note+unisonOffset, inComponent: index, animated: true)
+    }
+    
+    func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float) {
+        let param = paramTree!.value(forKey: "inversion") as? AUParameter
+        param!.value = inversion
+        drawKeys()
+    }
+    
+    func voicesView(_ view: HarmonizerVoicesView, didChangeNvoices voices: Float) {
+        let param = paramTree!.value(forKey: "nvoices") as? AUParameter
+        param!.value = voices
+    }
+    
+    
+    func keyboardView(_ view: KeyboardView, noteOn note: Int) {
+        return
+    }
+    
+    func keyboardView(_ view: KeyboardView, noteOff note: Int) {
+        return
+    }
+    
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return nc
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        
+        var pickerLabel: UILabel?
+        if (view != nil)
+        {
+            pickerLabel = view as? UILabel
+        }
+        else
+        {
+            pickerLabel = UILabel()
+        }
+        
+        pickerLabel!.text = pickerData[row]
+        
+        pickerLabel!.backgroundColor = UIColor.clear
+        switch (component)
+        {
+        case 0:
+            pickerLabel!.textColor = UIColor.red
+        case 1:
+            pickerLabel!.textColor = UIColor.orange
+        case 2:
+            pickerLabel!.textColor = UIColor.yellow
+        case 3:
+            pickerLabel!.textColor = UIColor.green
+        default:
+            pickerLabel!.textColor = UIColor.white
+        }
+        
+        
+        pickerLabel!.textAlignment = .center
+        
+        return pickerLabel!
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // This method is triggered whenever the user makes a change to the picker selection.
+        // The parameter named row and component represents what was selected.
+        var key: String
+        
+        key = "interval_\(nc*scaleDegree + component + keyQuality*12*nc)"
+        let param = paramTree!.value(forKey: key) as? AUParameter
+        param!.value = Float(row - unisonOffset)
+        
+        print("changed!")
+        presetNeedsSave = true
+        syncPresetButtons()
+        drawKeys()
+    }
     
     func auPoller(T: Float){
         // Scheduling timer to Call the timerFunction
@@ -243,6 +328,8 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         super.viewDidLoad()
         
         keyboardView.delegate = self
+        keyboardView.editorDelegate = self
+        keyboardView.n_visible = 28
         voicesView.delegate = self
         
         intervalPicker!.delegate = self
@@ -262,13 +349,14 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
         
         pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1","0",
-                      "1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]
+                      "+1","+2","+3","+4","+5","+6","+7","+8","+9","+10","+11","+12","+13","+14","+15","+16"]
         
         presetName.delegate = self
         saveButton.isEnabled = false
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
     }
     
     @objc func keyboardWillShow(notification: NSNotification)
@@ -309,15 +397,11 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     
     public func drawKeys()
     {
-        for k in keyboardView.keys
-        {
-            k.isSelected = false
-            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
-            {
-                k.isSelected = true
-                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
-            }
-        }
+        keyboardView.base_note = 60 + (keyRoot + scaleDegree) % 12
+        
+        keyboardView.harm_voices = []
+        
+        var harm_voices: Array<Int> = []
         
         for k in 0...nc-1
         {
@@ -327,20 +411,16 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             
             param = paramTree!.value(forKey: "inversion") as? AUParameter
             let inversion = Int(param!.value)
-            print(inversion)
+
             if (k > inversion)
             {
                 offset -= 12
             }
             
-            for k in keyboardView.keys
-            {
-                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
-                {
-                    k.isHarm = true
-                }
-            }
+            harm_voices.append(60 + offset + (keyRoot + scaleDegree) % 12)
         }
+        
+        keyboardView.harm_voices = harm_voices
     }
     
     public func refresh()
@@ -354,35 +434,31 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         keycenterParam!.value = Float(keyQuality * 12 + keyRoot)
         
-        for k in keyboardView.keys
-        {
-            k.isSelected = false
-            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
-            {
-                k.isSelected = true
-                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
-            }
-        }
+//        for k in keyboardView.keys
+//        {
+//            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
+//            {
+//                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
+//            }
+//        }
         
         for k in 0...nc-1
         {
             let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
             let param = paramTree!.value(forKey: key) as? AUParameter
             let offset = Int(param!.value)
-            
-            for k in keyboardView.keys
-            {
-                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
-                {
-                    k.isHarm = true
-                }
-            }
-            
+
+//            for k in keyboardView.keys
+//            {
+//                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
+//                {
+//
+//                    k.isHarm = true
+//                }
+//            }
+
             intervalPicker!.selectRow(offset+unisonOffset, inComponent: k, animated: true)
         }
-        
-        
-        
     }
     
     //MARK: Actions
@@ -404,6 +480,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     @IBAction func setQuality(_ sender: UISegmentedControl?)
     {
         refresh()
+        drawKeys()
     }
     
     @IBAction func setRoot(_ sender: HarmButton?)
@@ -431,6 +508,10 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         {
             b.backgroundColor = colors[(ix + keyRoot) % 12] == 1 ? UIColor.black : UIColor.white
             b.configure()
+            if (ix == scaleDegree)
+            {
+                b.isSelected = true
+            }
             ix += 1
             
         }
@@ -459,6 +540,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         refresh()
         drawKeys()
     }
+    
     @IBAction func presetNext(_ sender: Any) {
         if (presetIx < presetController!.presets.count - 1)
         {

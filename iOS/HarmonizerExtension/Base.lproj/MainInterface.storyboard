@@ -716,6 +716,9 @@
                                             </switch>
                                         </subviews>
                                     </stackView>
+                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pL1-SL-kVQ" customClass="KeyboardEditorView" customModule="HarmonizerFramework">
+                                        <rect key="frame" x="0.0" y="157.99999999999997" width="719" height="123.66666666666666"/>
+                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="udL-3a-8cH">
                                         <rect key="frame" x="0.0" y="70" width="719" height="83.333333333333314"/>
                                         <subviews>
@@ -851,9 +854,6 @@
                                         </constraints>
                                         <viewLayoutGuide key="safeArea" id="eSt-ty-1GM"/>
                                     </stackView>
-                                    <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pL1-SL-kVQ" customClass="KeyboardEditorView" customModule="HarmonizerFramework">
-                                        <rect key="frame" x="0.0" y="158.33333333333334" width="719" height="123.66666666666666"/>
-                                    </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="8LV-8D-y94" firstAttribute="leading" secondItem="XWV-y1-U1a" secondAttribute="leading" id="2c8-jU-31C"/>
