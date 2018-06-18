@@ -16,6 +16,7 @@ protocol VoicesViewDelegate: class {
     func voicesView(_ view: HarmonizerVoicesView, didChangeNvoices voices: Float)
 }
 
+@IBDesignable
 class HarmonizerVoicesView: UIView {
 
     var borderWidth = 2
@@ -93,7 +94,7 @@ class HarmonizerVoicesView: UIView {
         {
             for p in 0...nv
             {
-                let xpos = pad + CGFloat(nv) * (layer.frame.width - 2*pad) / 4
+                let xpos = pad + CGFloat(nv) * (layer.frame.width - pad) / 4
                 let width: CGFloat = (layer.frame.width - 5 * pad) / 4
                 let ypos = layer.frame.height * (1 - (CGFloat(p) + 0.5) / 4) - CGFloat(pipheight) / 2
                 
@@ -105,10 +106,22 @@ class HarmonizerVoicesView: UIView {
         }
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.awakeFromNib()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     func processTouch(point: CGPoint) {
-        let p = 1 + 4*((point.x) / self.layer.frame.width)
+        var p = 1 + 4*((point.x) / self.layer.frame.width)
         var inv = 4*(1 - ((point.y) / self.layer.frame.height))
         if (inv > p - 1) { inv = p - 1 }
+        if (inv < 0) { inv = 0 }
+        if (p > 4) { p = 4 }
+        if (p < 1) { p = 1 }
         //print(inv)
         delegate?.voicesView(self, didChangeNvoices: Float(p))
         delegate?.voicesView(self, didChangeInversion: Float(inv))

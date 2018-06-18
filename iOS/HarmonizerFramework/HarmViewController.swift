@@ -28,13 +28,18 @@ class HarmButton: UIButton {
     
     @IBInspectable var highlightColor: CGColor = UIColor.cyan.cgColor {
         didSet {
-            layer.borderColor = highlightColor
-            layer.shadowColor = highlightColor
+            if (isSelected)
+            {
+                layer.borderColor = highlightColor
+                layer.shadowColor = highlightColor
+            }
         }
     }
     
     func configure() {
         //backgroundColor = .white
+        
+        highlightColor = tintColor.cgColor
         if (backgroundColor == .white)
         {
             setTitleColor(.black, for: UIControlState())
@@ -43,7 +48,7 @@ class HarmButton: UIButton {
         {
             setTitleColor(.white, for: UIControlState())
         }
-        layer.shadowColor = UIColor.cyan.cgColor
+        layer.shadowColor = highlightColor
         layer.cornerRadius = 4
         layer.borderWidth = 4
         layer.borderColor = UIColor.darkGray.cgColor
@@ -54,6 +59,10 @@ class HarmButton: UIButton {
         
         self.titleLabel!.minimumScaleFactor = 0.1
         self.titleLabel!.adjustsFontSizeToFitWidth = true
+    }
+    
+    override func tintColorDidChange() {
+        highlightColor = tintColor.cgColor
     }
     
     override init(frame: CGRect) {
@@ -84,6 +93,7 @@ class HarmButton: UIButton {
             }
         }
     }
+    
     override var isSelected: Bool {
         didSet {
             switch isSelected {

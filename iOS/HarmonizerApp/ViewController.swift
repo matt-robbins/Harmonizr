@@ -64,7 +64,7 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-        self.view.backgroundColor = UIColor.darkGray
+        //self.view.backgroundColor = UIColor.darkGray
 		// Set up the plug-in's custom view.
 		embedPlugInView()
 		
@@ -90,10 +90,10 @@ class ViewController: UIViewController {
         */
         AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 5)
         
-        reverbButton.setTitle("Reverb", for: UIControlState())
-        reverbButton.setTitleColor(UIColor.white, for: UIControlState())
-        playButton.setTitle("Bluetooth", for: UIControlState())
-        playButton.setTitleColor(UIColor.white, for: UIControlState())
+//        reverbButton.setTitle("Reverb", for: UIControlState())
+//        reverbButton.setTitleColor(UIColor.white, for: UIControlState())
+//        playButton.setTitle("Bluetooth", for: UIControlState())
+//        playButton.setTitleColor(UIColor.white, for: UIControlState())
         //playButton.setImage(UIImage(named: "bt_icon.svg")!, for: UIControlState())
         // diable idle timer
         UIApplication.shared.isIdleTimerDisabled = true
@@ -157,9 +157,9 @@ class ViewController: UIViewController {
         if let view = harmonizerViewController.view {
             addChildViewController(harmonizerViewController)
             view.frame = auContainerView.bounds
-            
+
             auContainerView.addSubview(view)
-            harmonizerViewController.didMove(toParentViewController: self)
+//            harmonizerViewController.didMove(toParentViewController: self)
         }
 	}
 	
@@ -205,7 +205,7 @@ class ViewController: UIViewController {
 	}
     
     @objc func dismissPopover() {
-        navController.dismiss(animated: true, completion: nil)
+        navController.dismiss(animated: false, completion: nil)
         navController = nil
         btMidiViewController = nil
     }
@@ -221,6 +221,8 @@ class ViewController: UIViewController {
         
         btMidiViewController.navigationItem.rightBarButtonItem =
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ViewController.dismissPopover))
+        //navController.navigationBar.barTintColor = UIColor.darkGray
+        
         //navController.modalPresentationStyle = UIModalPresentationStyle.popover
         
         self.present(navController, animated: false, completion: nil)

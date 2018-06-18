@@ -7,29 +7,25 @@
 
 import UIKit
 
-class PresetFavoriteViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
-    
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+class PresetFavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presetController!.presets.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
-    {
-        return presetController!.presets[row].name
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        cell.textLabel?.text = presetController!.presets[indexPath.row].name
+        return cell
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        // This method is triggered whenever the user makes a change to the picker selection.
-        // The parameter named row and component represents what was selected.
-
+    public func tableView(_ tableView: UITableView,
+                          titleForHeaderInSection section: Int) -> String? {
+        return "Presets"
     }
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var presetPicker: UIPickerView!
+    @IBOutlet weak var presetTable: UITableView!
     
     @IBOutlet weak var navBar: UINavigationBar!
     
@@ -40,25 +36,29 @@ class PresetFavoriteViewController: UIViewController,UIPickerViewDelegate,UIPick
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presetPicker.delegate = self
-        presetPicker.dataSource = self
+        presetTable.delegate = self
+        presetTable.dataSource = self
+        
         
         navBar.topItem?.title = "Quick Preset \(favIx + 1)"
         
         presetController = PresetController()
         presetController!.loadPresets()
         
-        presetPicker.selectRow(favIx, inComponent: 0, animated: true)
+        //presetPicker.selectRow(favIx, inComponent: 0, animated: true)
+        let indexPath = IndexPath(row: favIx, section: 0)
+        presetTable.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
         
+        presetTable.tableFooterView = UIView()
         // Do any additional setup after loading the view.
     }
 
     @IBAction func done(_ sender: Any) {
-        let row = presetPicker.selectedRow(inComponent: 0)
+        let row = presetTable.indexPathForSelectedRow?.row
         print(row)
-        presetController?.favorites[favIx] = row
+        presetController?.favorites[favIx] = row!
         presetController?.storePresets()
         doneFcn!()
-        self.dismiss(animated: true)
+        self.dismiss(animated: false)
     }
 }

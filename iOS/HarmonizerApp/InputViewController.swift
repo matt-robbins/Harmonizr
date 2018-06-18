@@ -30,39 +30,50 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
     var dataSources: [AVAudioSessionDataSourceDescription] = [AVAudioSessionDataSourceDescription]()
     
     @IBAction func done(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     //MARK: UITableView protocol
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if (tableView === inputTable)
-        {
+        print(section)
+        switch section {
+        case 0:
             return data.count
-        }
-        
-        if (tableView === inputDataSourceTable)
-        {
+        case 1:
             return dataSources.count
+        default:
+            return 1
         }
-        
-        fatalError("gaaaaa!")
     }
     
-    public func tableView(_ tableView: UITableView, numberOfSections section: Int) -> Int {
-        return 1
+    public func tableView(_ tableView: UITableView,
+                   titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 1:
+            return "Detailed Source"
+        default:
+            return "Source"
+        }
+    }
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if (tableView === inputTable)
+        if (indexPath.section == 0)
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             
             cell.textLabel?.text = data[indexPath.row].portName
+//            let v = UIView()
+//            v.backgroundColor = view.tintColor
+//            cell.selectedBackgroundView = v
             return cell
         }
-        if (tableView === inputDataSourceTable)
+        if (indexPath.section == 1)
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dataSourceCell", for: indexPath)
             
@@ -72,16 +83,21 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
         
         fatalError("gaaaa!")
     }
+    
+//    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection: Int){
+//        view.tintColor = UIColor.darkGray
+//        let header = view as! UITableViewHeaderFooterView
+//        header.textLabel?.textColor = UIColor.white
+//    }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = (indexPath as NSIndexPath).row
         
         let session = AVAudioSession.sharedInstance()
         
-        if (tableView === inputTable)
+        if (indexPath.section == 0)
         {
             do {
-                try session.setPreferredInput(data[row])
+                try session.setPreferredInput(data[indexPath.row])
             }
             catch {
                 print("oopsie!")
@@ -92,11 +108,11 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             updateGainSlider()
             
         }
-        if (tableView === inputDataSourceTable)
+        if (indexPath.section == 1)
         {
             print("setting data source")
             do {
-                try session.preferredInput?.setPreferredDataSource(dataSources[row])
+                try session.preferredInput?.setPreferredDataSource(dataSources[indexPath.row])
             }
             catch {
                 print("unable to set data source!")
@@ -123,8 +139,11 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
         
         inputTable.delegate = self
         inputTable.dataSource = self
-        inputDataSourceTable.delegate = self
-        inputDataSourceTable.dataSource = self
+        //inputDataSourceTable.delegate = self
+        //inputDataSourceTable.dataSource = self
+        
+        inputTable.tableFooterView = UIView()
+        inputTable.allowsMultipleSelection = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
         
@@ -171,10 +190,10 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             }
             
             self.inputTable.reloadData()
-            self.inputDataSourceTable.reloadData()
+            //self.inputDataSourceTable.reloadData()
             
-            var indexPath = IndexPath(row: current_source_ix, section: 0)
-            self.inputDataSourceTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+            var indexPath = IndexPath(row: current_source_ix, section: 1)
+            self.inputTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
             
             indexPath = IndexPath(row: current_row, section: 0)
             self.inputTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)

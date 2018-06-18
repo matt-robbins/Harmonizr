@@ -1,17 +1,14 @@
 //
-//  AUParameterTableViewCell.swift
-//  iOSHarmonizerApp
+//  HarmTableViewCell.swift
+//  Harmonizer
 //
-//  Created by Matthew E Robbins on 2/23/18.
+//  Created by Matthew E Robbins on 6/18/18.
 //
 
 import UIKit
 
-class AUParameterTableViewCell: HarmTableViewCell {
+class HarmTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var valueSlider: UISlider!
-    @IBOutlet weak var nameLabel: UILabel!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -19,7 +16,12 @@ class AUParameterTableViewCell: HarmTableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
+        let v = UIView()
+        v.backgroundColor = tintColor
+        selectedBackgroundView = v
+        
         // Configure the view for the selected state
     }
+
 }

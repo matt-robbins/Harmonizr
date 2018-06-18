@@ -22,7 +22,7 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
     var params = [AUParameter]()
     
     @IBAction func done(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
     //MARK: uiPickerView
@@ -63,6 +63,11 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
         return min(params.count,2)
     }
     
+    public func tableView(_ tableView: UITableView,
+                          titleForHeaderInSection section: Int) -> String? {
+        return "Parameters"
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "ReverbParameterTableCell"
         
@@ -88,14 +93,14 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
         super.viewDidLoad()
         self.presets.delegate = self
         self.presets.dataSource = self
-        self.paramTable.dataSource = self
+        paramTable.dataSource = self
+        
+        paramTable.tableFooterView = UIView()
         
         //self.view.backgroundColor = UIColor.darkGray
         
         params = audioUnit!.parameterTree!.allParameters
-        
-        print(params.count)
-        
+                
         var pix = 0
         
         //let factory = audioUnit!.factoryPresets

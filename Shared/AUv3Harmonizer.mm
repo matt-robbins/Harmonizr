@@ -192,6 +192,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
             valueStrings:nil dependentParameters:nil];
     
+    AUParameter *midiLinkParam = [AUParameterTree createParameterWithIdentifier:@"midi_link" name:@"Midi Link"
+            address:HarmParamMidiLink
+                min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+              flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+       valueStrings:nil dependentParameters:nil];
+    
     AUParameter *bypassParam = [AUParameterTree createParameterWithIdentifier:@"bypass" name:@"Bypass"
             address:HarmParamBypass
             min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
@@ -229,6 +235,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:nvoicesParam];
     [params addObject:autoParam];
     [params addObject:midiParam];
+    [params addObject:midiLinkParam];
     [params addObject:triadParam];
     [params addObject:bypassParam];
     [params addObject:hgainParam];
@@ -254,6 +261,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     nvoicesParam.value = 4;
     autoParam.value = 1;
     midiParam.value = 1;
+    midiLinkParam.value = 1;
     triadParam.value = -1;
     bypassParam.value = 0;
     vgainParam.value = 1;

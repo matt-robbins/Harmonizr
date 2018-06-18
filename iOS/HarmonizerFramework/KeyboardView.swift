@@ -33,11 +33,17 @@ class Key: CATextLayer {
         }
     }
     
+    var tintColor = UIColor.orange.cgColor {
+        didSet {
+            shadowColor = tintColor
+        }
+    }
+    
     func configure() {
         contentsScale = UIScreen.main.scale
         backgroundColor = UIColor.white.cgColor
         foregroundColor = UIColor.darkGray.cgColor
-        shadowColor = UIColor.cyan.cgColor
+        shadowColor = tintColor
         cornerRadius = 2
         borderWidth = 2
         borderColor = UIColor.darkGray.cgColor
@@ -106,7 +112,7 @@ class Key: CATextLayer {
     
     var isSelected: Bool {
         didSet {
-            toggleActive(isSelected, color: UIColor.cyan.cgColor)
+            toggleActive(isSelected, color: tintColor)
         }
     }
     
@@ -114,7 +120,7 @@ class Key: CATextLayer {
         didSet {
             if (!isSelected)
             {
-                toggleActive(isSung, color: UIColor.cyan.cgColor)
+                toggleActive(isSung, color: tintColor)
                 //borderColor = isSung ? UIColor.red.cgColor : UIColor.darkGray.cgColor
             }
         }
@@ -182,6 +188,7 @@ class KeyboardView: UIView {
         {
             let keyLayer = Key()
             keyLayer.black = [1,3,6,8,10].contains(i%12)
+            keyLayer.tintColor = tintColor.cgColor
             keyLayer.midinote = i
             keys.append(keyLayer)
             if (keyLayer.black)
@@ -196,7 +203,16 @@ class KeyboardView: UIView {
             containerLayer.addSublayer(keyLayer)
         }
     }
-
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.awakeFromNib()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override func layoutSublayers(of layer: CALayer) {
         layer.backgroundColor = UIColor.black.cgColor
         
@@ -205,6 +221,8 @@ class KeyboardView: UIView {
         spacing = layer.frame.width / CGFloat(n_visible)
         
         keyOffset = 28
+        
+        if (wkeys.count < 1 || bkeys.count < 1) { return }
         
         for i in 0...wkeys.count-1
         {
@@ -230,6 +248,12 @@ class KeyboardView: UIView {
                 offset += 0
             }
             bkeys[i].frame = CGRect(x: CGFloat(1 + k + s + 7 * oct) * spacing - offset, y: 0, width: bkwidth, height: layer.frame.height*3/5)
+        }
+    }
+    
+    override func tintColorDidChange() {
+        for key in keys {
+            key.tintColor = self.tintColor.cgColor
         }
     }
     

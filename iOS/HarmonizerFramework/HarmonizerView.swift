@@ -38,6 +38,15 @@ class VerticallyCenteredTextLayer : CATextLayer {
 class GlowButton: VerticallyCenteredTextLayer {
     
     var keycenter: Int = 0
+    var tintColor = UIColor.orange.cgColor {
+        didSet {
+            shadowColor = tintColor
+            if (isSelected)
+            {
+                borderColor = tintColor
+            }
+        }
+    }
     
     func configure() {
         fontSize = 14
@@ -45,7 +54,7 @@ class GlowButton: VerticallyCenteredTextLayer {
         alignmentMode = kCAAlignmentCenter
         backgroundColor = UIColor.white.cgColor
         foregroundColor = UIColor.black.cgColor
-        shadowColor = UIColor.cyan.cgColor
+        shadowColor = tintColor
         cornerRadius = 4
         borderWidth = 4
         borderColor = UIColor.darkGray.cgColor
@@ -61,7 +70,6 @@ class GlowButton: VerticallyCenteredTextLayer {
     }
     
     override init() {
-        keycenter = 0
         self.isSelected = false
         super.init()
         configure()
@@ -81,7 +89,7 @@ class GlowButton: VerticallyCenteredTextLayer {
             
             if ( isSelected && isEnabled ) {
                 CATransaction.setAnimationDuration(0.05)
-                self.borderColor = UIColor.cyan.cgColor
+                self.borderColor = tintColor
                 self.shadowOpacity = 1.0
             }
             else {
@@ -104,6 +112,7 @@ class keycenterButton: GlowButton {
     
 }
 
+@IBDesignable
 class HarmonizerView: UIView {
     // MARK: Properties
 
@@ -153,7 +162,7 @@ class HarmonizerView: UIView {
             {
                 CATransaction.setAnimationDuration(1.0)
                 keybuttons[j].shadowOpacity = 0.0
-                keybuttons[j].shadowColor = UIColor.cyan.cgColor
+                keybuttons[j].shadowColor = tintColor.cgColor
             }
             CATransaction.commit()
         }
@@ -238,6 +247,7 @@ class HarmonizerView: UIView {
             for i in 0...11
             {
                 let keyLayer = GlowButton()
+                keyLayer.tintColor = tintColor.cgColor
                 keyLayer.contentsScale = UIScreen.main.scale
                 let blackkeys = [1,3,6,8,10]
                 
@@ -257,10 +267,10 @@ class HarmonizerView: UIView {
                 keyLayer.fontSize = 18
                 keyLayer.alignmentMode = kCAAlignmentCenter
                 
-                var bri = 0.9
+                var bri = 1.0
 
                 if blackkeys.contains(i) {
-                    bri = 0.1
+                    bri = 0.0
                 }
                 
                 keyLayer.backgroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(bri), alpha: 1.0).cgColor
@@ -321,6 +331,21 @@ class HarmonizerView: UIView {
             
             CATransaction.commit()
         }
+    }
+    
+    override func tintColorDidChange() {
+        for k in keybuttons {
+            k.tintColor = self.tintColor.cgColor
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.awakeFromNib()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
     // MARK: Touch Event Handling

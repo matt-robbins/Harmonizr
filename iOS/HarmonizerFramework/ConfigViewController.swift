@@ -63,6 +63,7 @@ class KeyboardEditorView: KeyboardView {
             if (ix != nil)
             {
                 curr_note = ix!
+                key!.borderColor = harm_colors[curr_note]
             }
         }
         return
@@ -74,6 +75,8 @@ class KeyboardEditorView: KeyboardView {
         if (key != nil && old_key != nil && key != old_key && curr_note >= 0)
         {
             harm_voices[curr_note] = key!.midinote
+            old_key!.borderColor = UIColor.darkGray.cgColor
+            key!.borderColor = harm_colors[curr_note]
             if (editorDelegate != nil)
             {
                 editorDelegate?.keyboardEditor(self, setVoice: curr_note, note: key!.midinote - base_note)
@@ -83,6 +86,10 @@ class KeyboardEditorView: KeyboardView {
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         calculate_movement(touches,false)
+        
+        for key in keys {
+            key.borderColor = UIColor.darkGray.cgColor
+        }
         curr_note = -1
         return
     }
@@ -170,19 +177,27 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     var keyQuality = 0
     var keyRoot = 0
     var scaleDegree = 0
-    var unisonOffset = 12
+    var unisonOffset = 128
+    var maxOffset = 128
     var nc = 4
     
     var timer = Timer()
     
-    
     func keyboardEditor(_ view: KeyboardEditorView, setVoice index: Int, note: Int) {
         let key = "interval_\(nc*scaleDegree + index + keyQuality*12*nc)"
         let param = paramTree!.value(forKey: key) as? AUParameter
+        let inv_param = paramTree!.value(forKey: "inversion") as? AUParameter
         print("hi! \(index) -> \(note)")
-        param!.value = Float(note)
         
-        intervalPicker!.selectRow(note+unisonOffset, inComponent: index, animated: true)
+        var offset = Float(note)
+        
+        if (index > Int((inv_param?.value)!)) {
+            offset += 12
+        }
+        
+        param!.value = offset
+        
+        intervalPicker!.selectRow(Int(offset)+maxOffset, inComponent: index, animated: true)
     }
     
     func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float) {
@@ -210,7 +225,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerData.count
+        return maxOffset * 2 + 1
     }
     
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -225,7 +240,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             pickerLabel = UILabel()
         }
         
-        pickerLabel!.text = pickerData[row]
+        pickerLabel!.text = "\(row - maxOffset)" //pickerData[row]
         
         pickerLabel!.backgroundColor = UIColor.clear
         switch (component)
@@ -241,7 +256,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         default:
             pickerLabel!.textColor = UIColor.white
         }
-        
         
         pickerLabel!.textAlignment = .center
         
@@ -312,7 +326,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         if (currInterval == scaleDegree)
         {
             intervalPicker!.layer.shadowOpacity = 1.0
-            intervalPicker!.layer.borderColor = UIColor.cyan.cgColor
+            intervalPicker!.layer.borderColor = self.view.tintColor.cgColor
         }
         else
         {
@@ -329,7 +343,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         keyboardView.delegate = self
         keyboardView.editorDelegate = self
-        keyboardView.n_visible = 28
+        //keyboardView.n_visible = 21
         voicesView.delegate = self
         
         intervalPicker!.delegate = self
@@ -338,10 +352,12 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         intervalPicker!.backgroundColor = UIColor.black
         intervalPicker!.layer.borderWidth = 2
         intervalPicker!.layer.borderColor = UIColor.darkGray.cgColor
-        intervalPicker!.layer.shadowColor = UIColor.cyan.cgColor
+        intervalPicker!.layer.shadowColor = self.view.tintColor.cgColor
         intervalPicker!.layer.shadowRadius = 8
         intervalPicker!.layer.shadowOffset = CGSize(width: 0, height: 0)
         intervalPicker!.layer.shadowOpacity = 0
+        
+        liveSwitch!.onTintColor = self.view.tintColor
         
         let d = degreeStack.arrangedSubviews[0] as! HarmButton
         d.isSelected = true
@@ -365,15 +381,24 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size
         
         let frame = presetName.convert(presetName.frame, from:self.view)
-        print(self.view.frame.height)
-        print(frame.minY)
-        print(keyboardSize!.height)
-        let scrollHeight = (self.view.frame.height + frame.minY - frame.height - keyboardSize!.height)
+        let wframe = presetName.convert(presetName.frame, to: nil)
         
-        if (scrollHeight < 0)
+        print(wframe.minY)
+        
+        if ((self.view.window?.frame.height)! - wframe.maxY < keyboardSize!.height)
         {
-            self.view.window?.frame.origin.y = scrollHeight
+            self.view.window?.frame.origin.y = ((self.view.window?.frame.height)! - wframe.maxY) - keyboardSize!.height - 5
         }
+//
+//        print(self.view.frame.height)
+//        print(frame.minY)
+//        print(keyboardSize!.height)
+//        let scrollHeight = (self.view.frame.height + frame.minY - frame.height - keyboardSize!.height)
+//
+//        if (scrollHeight < 0)
+//        {
+//            self.view.window?.frame.origin.y = scrollHeight
+//        }
         
     }
     @objc func keyboardWillHide(notification: NSNotification)
@@ -434,13 +459,13 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         keycenterParam!.value = Float(keyQuality * 12 + keyRoot)
         
-//        for k in keyboardView.keys
-//        {
-//            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
-//            {
-//                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
-//            }
-//        }
+        for k in keyboardView.keys
+        {
+            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
+            {
+                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
+            }
+        }
         
         for k in 0...nc-1
         {
@@ -462,8 +487,9 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     }
     
     //MARK: Actions
-    @IBAction func done(_ sender: AnyObject?)
+    @IBAction func done(_ sender: UIButton?)
     {
+        //sender!.isSelected = true
         if (presetNeedsSave)
         {
             savePreset(saveButton)
@@ -600,7 +626,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         saveButton.isEnabled = presetNeedsSave && presetName!.isEnabled
         revertButton.isEnabled = saveButton.isEnabled
-        doneButton.title = saveButton.isEnabled ? "Save" : "Done"
+        //doneButton.title = saveButton.isEnabled ? "Save" : "Done"
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {

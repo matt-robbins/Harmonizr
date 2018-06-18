@@ -20,7 +20,9 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     
     @IBOutlet weak var midiButton: HarmButton!
     @IBOutlet weak var autoButton: HarmButton!
+    @IBOutlet weak var dryButton: HarmButton!
     
+    @IBOutlet weak var kbdLinkButton: HarmButton!
     @IBOutlet weak var kbdOctPlusButton: UIButton!
     @IBOutlet weak var kbdOctMinusButton: UIButton!
     
@@ -60,10 +62,12 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     var nvoicesParameter: AUParameter?
     var autoParameter: AUParameter?
     var midiParameter: AUParameter?
+    var midiLinkParameter: AUParameter?
     var triadParameter: AUParameter?
     var bypassParameter: AUParameter?
     var speedParameter: AUParameter?
-    var gainParameter: AUParameter?
+    var hgainParameter: AUParameter?
+    var vgainParameter: AUParameter?
 	var parameterObserverToken: AUParameterObserverToken?
     
     var intervals = [AUParameter]()
@@ -108,6 +112,9 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 	public override func viewDidLoad() {
 		super.viewDidLoad()
         
+//        let theme = ThemeManager.currentTheme()
+//        ThemeManager.applyTheme(theme)
+//        
         for view in self.view.subviews as [UIView] {
             if let btn = view as? UIButton {
                 btn.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -194,10 +201,12 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         nvoicesParameter = paramTree.value(forKey: "nvoices") as? AUParameter
         autoParameter = paramTree.value(forKey: "auto") as? AUParameter
         midiParameter = paramTree.value(forKey: "midi") as? AUParameter
+        midiLinkParameter = paramTree.value(forKey: "midi_link") as? AUParameter
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
         bypassParameter = paramTree.value(forKey: "bypass") as? AUParameter
         speedParameter = paramTree.value(forKey: "speed") as? AUParameter
-        gainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
+        hgainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
+        vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
         
         presetController!.audioUnit = audioUnit
         presetController!.restoreState()
@@ -228,6 +237,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         {
             midiButton.isSelected = (midiParameter!.value == 1)
             autoButton.isSelected = (autoParameter!.value == 1)
+            dryButton.isSelected = (vgainParameter!.value > 0)
+            kbdLinkButton.isSelected = (midiLinkParameter!.value == 1)
             
             enableKeyboard(midiButton.isSelected)
             
@@ -269,6 +280,16 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         midiParameter!.value = midiParameter!.value == 0 ? 1 : 0
         midiButton.isSelected = midiParameter!.value == 1
         enableKeyboard(self.midiButton.isSelected)
+    }
+    
+    @IBAction func toggleLink(_ sender: Any) {
+        midiLinkParameter!.value = midiLinkParameter!.value == 0 ? 1 : 0
+        kbdLinkButton.isSelected = midiLinkParameter!.value == 1
+    }
+    
+    @IBAction func toggleDry(_ sender: Any) {
+        vgainParameter!.value = vgainParameter!.value == 0 ? 1 : 0
+        dryButton.isSelected = vgainParameter!.value == 1
     }
     
     @IBAction func octaveUp(_ sender: Any) {

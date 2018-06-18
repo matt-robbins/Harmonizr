@@ -86,13 +86,14 @@ enum {
     HarmParamNvoices = 2,
     HarmParamAuto = 3,
     HarmParamMidi = 4,
-    HarmParamTriad = 5,
-    HarmParamBypass = 6,
-    HarmParamDouble = 7,
-    HarmParamHgain = 8,
-    HarmParamVgain = 9,
-    HarmParamSpeed = 10,
-    HarmParamInterval = 11
+    HarmParamMidiLink = 5,
+    HarmParamTriad = 6,
+    HarmParamBypass = 7,
+    HarmParamDouble = 8,
+    HarmParamHgain = 9,
+    HarmParamVgain = 10,
+    HarmParamSpeed = 11,
+    HarmParamInterval = 12
 };
 
 static inline double squared(double x) {
@@ -325,6 +326,9 @@ public:
             case HarmParamMidi:
                 midi_enable = (int) clamp(value,0.f,1.f);
                 break;
+            case HarmParamMidiLink:
+                midi_link = (int) clamp(value,0.f,1.f);
+                break;
             case HarmParamTriad:
                 triad = (int) clamp(value,-1.f,30.f);
                 break;
@@ -372,6 +376,8 @@ public:
                 return (float) autotune;
             case HarmParamMidi:
                 return (float) midi_enable;
+            case HarmParamMidiLink:
+                return (float) midi_link;
             case HarmParamTriad:
                 return (float) triad;
             case HarmParamBypass:
@@ -451,8 +457,7 @@ public:
 	void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
 		int channelCount = n_channels;
         sample_count += frameCount;
-        //fprintf(stderr, "in = 0x%p, val = %f\n", inBufferListPtr->mBuffers[0].mData, *(float*)inBufferListPtr->mBuffers[0].mData);
-        //fprintf(stderr, "rendering! frameCount = %d, channelCount = %d\n", frameCount, n_channels);
+        
         // For each sample.
 		for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex)
         {
@@ -524,30 +529,30 @@ public:
             if (!autotune)
             {
                 first_psola_voice = 1;
-                
-                int dx1 = cix - (int) voices[0].ix1;
-                if (dx1 < 0) dx1 += ncbuf;
-
-                if (dx1 > 512 + (int) T)
-                {
-                    voices[0].ix1 += T;
-                }
-
-                if (dx1 < 512 - (int) T)
-                {
-                    voices[0].ix1 -= T;
-                }
-
-                voices[0].ix1 += voices[0].ratio;
-
-                if (voices[0].ix1 >= ncbuf)
-                    voices[0].ix1 -= ncbuf;
-                if (voices[0].ix1 < 0)
-                    voices[0].ix1 += ncbuf;
-
-                int ix1i = (int) voices[0].ix1;
-                *out = voicegain * cubic(cbuf + ix1i, voices[0].ix1 - ix1i) / 2;
-
+//
+//                int dx1 = cix - (int) voices[0].ix1;
+//                if (dx1 < 0) dx1 += ncbuf;
+//
+//                if (dx1 > 512 + (int) T)
+//                {
+//                    voices[0].ix1 += T;
+//                }
+//
+//                if (dx1 < 512 - (int) T)
+//                {
+//                    voices[0].ix1 -= T;
+//                }
+//
+//                voices[0].ix1 += voices[0].ratio;
+//
+//                if (voices[0].ix1 >= ncbuf)
+//                    voices[0].ix1 -= ncbuf;
+//                if (voices[0].ix1 < 0)
+//                    voices[0].ix1 += ncbuf;
+//
+//                int ix1i = (int) voices[0].ix1;
+//                *out = voicegain * cubic(cbuf + ix1i, voices[0].ix1 - ix1i) / 2;
+                *out = *in * voicegain / 2;
                 *out2 = *out;
             }
             
@@ -561,7 +566,7 @@ public:
                     continue;
                 
                 float unvoiced_offset = 0;
-                if (!voiced && vix > 0)
+                if (!voiced && vix > 5)
                 {
                     continue;
                     //unvoiced_offset = T * (0.5 - (float) rand() / RAND_MAX);
@@ -726,7 +731,7 @@ public:
             cmdf2 = cmdf1; cmdf1 = cmdf;
             cmdf = (df * k) / sum;
             
-            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.3 && k > 20)
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.15 && k > 20)
             {
                 period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
@@ -960,7 +965,10 @@ public:
         {
             midi_changed = 0;
             //printf("%d samples since last midi note\n", sample_count - midi_changed_sample_num);
-            analyze_harmony();
+            if (midi_link)
+            {
+                analyze_harmony();
+            }
         }
         
         if (!voiced)
@@ -1121,6 +1129,7 @@ private:
     int inversion = 2;
     int midi_enable = 1;
     int auto_enable = 1;
+    int midi_link = 1;
     int n_auto = 4;
     int triad = -1;
     float interval_table[48];
