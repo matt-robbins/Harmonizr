@@ -58,11 +58,33 @@ class HarmButton: UIButton {
         showsTouchWhenHighlighted = true
         
         self.titleLabel!.minimumScaleFactor = 0.1
-        self.titleLabel!.adjustsFontSizeToFitWidth = true
+        //self.titleLabel!.adjustsFontSizeToFitWidth = true
     }
     
     override func tintColorDidChange() {
         highlightColor = tintColor.cgColor
+    }
+    
+    override func layoutSubviews() {
+
+        if (titleLabel != nil)
+        {
+            titleLabel!.numberOfLines = 0
+            //titleLabel!.adjustsFontSizeToFitWidth = true
+            
+            let factor = frame.height / titleLabel!.font.pointSize / 2
+            if (factor < 1)
+            {
+                titleLabel!.transform = CGAffineTransform(scaleX: factor, y: factor)
+            }
+            else {
+                titleLabel!.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            }
+            //let font = titleLabel!.font
+            //titleLabel!.font = UIFont(name: (font?.description)!, size: frame.height / 2)
+        }
+        
+        super.layoutSubviews()
     }
     
     override init(frame: CGRect) {

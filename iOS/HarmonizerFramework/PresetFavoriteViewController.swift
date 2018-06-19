@@ -40,7 +40,7 @@ class PresetFavoriteViewController: UIViewController, UITableViewDelegate, UITab
         presetTable.dataSource = self
         
         
-        navBar.topItem?.title = "Quick Preset \(favIx + 1)"
+        navBar.topItem?.title = "Favorite Preset \"f\(favIx + 1)\""
         
         presetController = PresetController()
         presetController!.loadPresets()
@@ -55,7 +55,6 @@ class PresetFavoriteViewController: UIViewController, UITableViewDelegate, UITab
 
     @IBAction func done(_ sender: Any) {
         let row = presetTable.indexPathForSelectedRow?.row
-        print(row)
         presetController?.favorites[favIx] = row!
         presetController?.storePresets()
         doneFcn!()

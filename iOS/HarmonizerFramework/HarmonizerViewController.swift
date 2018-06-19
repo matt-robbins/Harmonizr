@@ -31,6 +31,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBOutlet weak var presetEditButton: HarmButton!
     @IBOutlet weak var presetLabel: UILabel!
     
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet var presetFavorites: [HarmButton]!
     
     private var noteBlock: AUScheduleMIDIEventBlock!
@@ -135,6 +136,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appResigned), name: Notification.Name.UIApplicationWillResignActive, object: nil)
         
+        
+        self.addChildViewController(self.configController!)
         connectViewWithAU()
 	}
     
@@ -254,9 +257,9 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
             
             presetLabel.text = presetController!.currentPreset().name
             
-            for k in 0...5
+            for k in 0...presetFavorites.count-1
             {
-                presetFavorites[k].isSelected = presetController!.presetIx == presetController!.favorites[k]
+                presetFavorites[k].isSelected = presetController!.presetIx == presetController!.favorites[presetFavorites[k].keycenter]
             }
         }
     }
@@ -336,14 +339,29 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         sender.isSelected = true
         
         //performSegue(withIdentifier: "configurePreset", sender: self)
+        //return nil
+        
+        
+        view.frame = self.view.bounds
+        
+        self.view.addSubview(configController!.view)
+        //self.containerView.isHidden = false
+        
+        configController!.view.frame = view.bounds
+        configController!.didMove(toParentViewController: self)
+        configController!.drawKeys()
+        sender.isSelected = false
+        
         //
-        self.present(self.configController!, animated:true, completion:
-            {
-                self.presetModified=true
-                self.configController!.refresh()
-                sender.isSelected = false
-                self.syncView()
-        })
+//        self.present(self.configController!, animated:true, completion:
+//            {
+//                self.presetModified=true
+//                self.configController!.refresh()
+//                sender.isSelected = false
+//                self.syncView()
+//
+//                self.configController!.didMove(toParentViewController: self.parent)
+//        })
     }
     
     @IBAction func longPress(_ sender: UILongPressGestureRecognizer) {

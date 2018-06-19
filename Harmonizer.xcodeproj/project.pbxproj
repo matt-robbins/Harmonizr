@@ -66,6 +66,8 @@
 		C96F204020D7F63E00F43D90 /* HarmPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F203E20D7F63E00F43D90 /* HarmPickerView.swift */; };
 		C96F204220D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */; };
 		C96F204320D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */; };
+		C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204420D85CF200F43D90 /* HarmPageViewController.swift */; };
+		C96F204620D8606B00F43D90 /* HarmPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204420D85CF200F43D90 /* HarmPageViewController.swift */; };
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
@@ -239,6 +241,7 @@
 		C96F203B20D7D3B200F43D90 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		C96F203E20D7F63E00F43D90 /* HarmPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmPickerView.swift; sourceTree = "<group>"; };
 		C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmTableViewCell.swift; sourceTree = "<group>"; };
+		C96F204420D85CF200F43D90 /* HarmPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmPageViewController.swift; sourceTree = "<group>"; };
 		C97F1B7F20D41121001C26E1 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		C981C4651FBF9DCB00AF8593 /* Harmonizer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Harmonizer.entitlements; sourceTree = "<group>"; };
@@ -367,11 +370,11 @@
 				C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */,
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
+				C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */,
 				C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */,
 				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
-				C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */,
 				C96F203B20D7D3B200F43D90 /* BaseView.swift */,
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
 				91236D1B1B08F42B00734C5E /* Info.plist */,
@@ -388,6 +391,7 @@
 				C94FC87B202C96F60009E742 /* AppIcon.appiconset */,
 				91236D571B08F52D00734C5E /* HarmonizerFramework.h */,
 				9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */,
+				C96F204420D85CF200F43D90 /* HarmPageViewController.swift */,
 				C91216C2206998D200E6BB57 /* PresetController.swift */,
 				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
 				C9EC31E52065B97D007835AB /* PresetFavoriteViewController.swift */,
@@ -835,6 +839,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96F204620D8606B00F43D90 /* HarmPageViewController.swift in Sources */,
 				C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */,
 				C96F204220D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
 				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
@@ -857,6 +862,7 @@
 				92A10D171B9529170081EA80 /* DSPKernel.mm in Sources */,
 				91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */,
 				C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */,
+				C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */,
 				C9FA08BD20B315D6003CC2EA /* KeyboardView.swift in Sources */,
 				C96F204020D7F63E00F43D90 /* HarmPickerView.swift in Sources */,
 				C9EC31E62065B97D007835AB /* PresetFavoriteViewController.swift in Sources */,

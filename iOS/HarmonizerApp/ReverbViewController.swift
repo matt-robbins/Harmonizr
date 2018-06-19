@@ -9,12 +9,13 @@ import Foundation
 import UIKit
 import AudioToolbox
 
-public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDataSource {
+public class ReverbViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet weak var presets: UIPickerView!
+    //@IBOutlet weak var presets: UIPickerView!
     @IBOutlet weak var paramTable: UITableView!
     @IBOutlet weak var doneButton: UIButton!
     
+    @IBOutlet weak var presetTable: UITableView!
     var mixParam: AUParameter?
     var gainParam: AUParameter?
     var audioUnit: AUAudioUnit?
@@ -25,34 +26,6 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
         self.dismiss(animated: false, completion: nil)
     }
     
-    //MARK: uiPickerView
-    
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return audioUnit!.factoryPresets!.count
-    }
-
-    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return audioUnit!.factoryPresets![row].name
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        audioUnit!.currentPreset = audioUnit!.factoryPresets![row]
-        for p in params {
-            print(p.value)
-        }
-        self.paramTable.reloadData()
-        
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        
-        return NSAttributedString(string: audioUnit!.factoryPresets![row].name, attributes: [NSAttributedStringKey.foregroundColor:UIColor.white])
-    }
-    
     //MARK: UITableView
     
     public func numberOfSections(in view: UITableView) -> Int {
@@ -60,42 +33,74 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(params.count,2)
+        switch tableView {
+        case paramTable:
+            return min(params.count,2)
+        case presetTable:
+            return audioUnit!.factoryPresets!.count
+        default:
+            return 0
+        }
     }
     
     public func tableView(_ tableView: UITableView,
                           titleForHeaderInSection section: Int) -> String? {
-        return "Parameters"
+        switch tableView {
+        case paramTable:
+            return "Parameters"
+        case presetTable:
+            return "Presets"
+        default:
+            return "???"
+        }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "ReverbParameterTableCell"
+        switch tableView {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AUParameterTableViewCell  else {
-            fatalError("The dequeued cell is not an instance of AUParameterTableViewCell.")
+        case paramTable:
+            let cellIdentifier = "ReverbParameterTableCell"
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AUParameterTableViewCell  else {
+                fatalError("The dequeued cell is not an instance of AUParameterTableViewCell.")
+            }
+            
+            cell.nameLabel.text = params[indexPath.row].displayName
+            
+            cell.valueSlider.minimumValue = params[indexPath.row].minValue
+            cell.valueSlider.maximumValue = params[indexPath.row].maxValue
+            
+            cell.valueSlider.value = params[indexPath.row].value
+            cell.valueSlider.tag = indexPath.row
+            
+            return cell
+        case presetTable:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "presetCell", for: indexPath)
+            cell.textLabel!.text = audioUnit!.factoryPresets![indexPath.row].name
+            return cell
+        default:
+            fatalError("Bad Table")
+            
         }
         
-        print("Setting table stuff!")
-        
-        cell.nameLabel.text = params[indexPath.row].displayName
-        
-        cell.valueSlider.minimumValue = params[indexPath.row].minValue
-        cell.valueSlider.maximumValue = params[indexPath.row].maxValue
-        
-        cell.valueSlider.value = params[indexPath.row].value
-        cell.valueSlider.tag = indexPath.row
-        
-        return cell
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if (tableView != presetTable) { return }
+        audioUnit!.currentPreset = audioUnit!.factoryPresets![indexPath.row]
     }
     
     public override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.presets.delegate = self
-        self.presets.dataSource = self
+//        self.presets.delegate = self
+//        self.presets.dataSource = self
         paramTable.dataSource = self
-        
         paramTable.tableFooterView = UIView()
+        
+        presetTable.dataSource = self
+        presetTable.delegate = self
+        presetTable.tableFooterView = UIView()
         
         //self.view.backgroundColor = UIColor.darkGray
         
@@ -111,7 +116,10 @@ public class ReverbViewController: UIViewController,UIPickerViewDelegate,UIPicke
             }
         }
         
-        presets.selectRow(pix, inComponent: 0, animated: true)
+        //presets.selectRow(pix, inComponent: 0, animated: true)
+        let ixPath = IndexPath(row: pix, section: 0)
+        presetTable.selectRow(at: ixPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+        presetTable.scrollToRow(at: ixPath, at: .middle, animated: true)
     }
 
     //MARK: Actions

@@ -23,11 +23,13 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var inputTable: UITableView!
-    @IBOutlet weak var inputDataSourceTable: UITableView!
     @IBOutlet weak var inputGainSlider: UISlider!
+    
+    weak var tableGainSlider: UISlider?
     
     var data: [AVAudioSessionPortDescription] = [AVAudioSessionPortDescription]()
     var dataSources: [AVAudioSessionDataSourceDescription] = [AVAudioSessionDataSourceDescription]()
+    
     
     @IBAction func done(_ sender: Any) {
         self.dismiss(animated: false, completion: nil)
@@ -40,8 +42,8 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
         switch section {
         case 0:
             return data.count
-        case 1:
-            return dataSources.count
+        case 2:
+            return max(dataSources.count,0)
         default:
             return 1
         }
@@ -50,15 +52,17 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
     public func tableView(_ tableView: UITableView,
                    titleForHeaderInSection section: Int) -> String? {
         switch section {
+        case 2:
+            return "Option"
         case 1:
-            return "Detailed Source"
+            return "Gain"
         default:
             return "Source"
         }
     }
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -68,27 +72,39 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             
             cell.textLabel?.text = data[indexPath.row].portName
-//            let v = UIView()
-//            v.backgroundColor = view.tintColor
-//            cell.selectedBackgroundView = v
             return cell
         }
-        if (indexPath.section == 1)
+        if (indexPath.section == 2)
         {
             let cell = tableView.dequeueReusableCell(withIdentifier: "dataSourceCell", for: indexPath)
+            if (dataSources.count == 0)
+            {
+                cell.detailTextLabel?.text = "oops"
+                cell.isUserInteractionEnabled = false
+            }
+            else
+            {
+                cell.isUserInteractionEnabled = true
+                cell.textLabel?.text = dataSources[indexPath.row].dataSourceName
+            }
+            return cell
+        }
+        
+        if (indexPath.section == 1)
+        {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "gainCell", for: indexPath) as? AUParameterTableViewCell  else {
+                fatalError("The dequeued cell is not an instance of AUParameterTableViewCell.")
+            }
             
-            cell.textLabel?.text = dataSources[indexPath.row].dataSourceName
+            if (cell.valueSlider != nil)
+            {
+                cell.valueSlider.value = AVAudioSession.sharedInstance().inputGain
+            }
             return cell
         }
         
         fatalError("gaaaa!")
     }
-    
-//    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection: Int){
-//        view.tintColor = UIColor.darkGray
-//        let header = view as! UITableViewHeaderFooterView
-//        header.textLabel?.textColor = UIColor.white
-//    }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -104,21 +120,18 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             }
             
             refresh()
-            
-            updateGainSlider()
-            
         }
-        if (indexPath.section == 1)
+        if (indexPath.section == 2)
         {
-            print("setting data source")
             do {
                 try session.preferredInput?.setPreferredDataSource(dataSources[indexPath.row])
             }
             catch {
                 print("unable to set data source!")
             }
+            refresh()
         }
-        
+        //
         return
     }
     
@@ -139,19 +152,13 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
         
         inputTable.delegate = self
         inputTable.dataSource = self
-        //inputDataSourceTable.delegate = self
-        //inputDataSourceTable.dataSource = self
-        
+        inputTable.isScrollEnabled = false
         inputTable.tableFooterView = UIView()
         inputTable.allowsMultipleSelection = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
         
         refresh()
-        
-        updateGainSlider()
-        
-        //self.tableView(self.tableView, didSelectRowAt: indexPath)
     }
     
     private func refresh()
@@ -192,7 +199,7 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             self.inputTable.reloadData()
             //self.inputDataSourceTable.reloadData()
             
-            var indexPath = IndexPath(row: current_source_ix, section: 1)
+            var indexPath = IndexPath(row: current_source_ix, section: 2)
             self.inputTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
             
             indexPath = IndexPath(row: current_row, section: 0)
@@ -200,22 +207,9 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
-    private func updateGainSlider()
-    {
-        DispatchQueue.main.async {
-            let session = AVAudioSession.sharedInstance()
-            self.inputGainSlider.isEnabled = session.isInputGainSettable
-            if (session.isInputGainSettable)
-            {
-                self.inputGainSlider.value = session.inputGain
-            }
-        }
-    }
-    
     @objc private func handleRouteChange()
     {
         refresh()
-        updateGainSlider()
     }
 }
 

@@ -286,7 +286,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     {
         guard let audioUnit = audioUnit else { return }
         let note = audioUnit.getCurrentNote()
-        
+                
         if (note == -1.0)
         {
             currInterval = -1
@@ -489,7 +489,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     //MARK: Actions
     @IBAction func done(_ sender: UIButton?)
     {
-        //sender!.isSelected = true
+        sender!.isSelected = true
         if (presetNeedsSave)
         {
             savePreset(saveButton)
@@ -499,8 +499,10 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         {
             doneFcn!()
         }
-        
-        self.dismiss(animated: true, completion: nil)
+        self.view.removeFromSuperview()
+        self.removeFromParentViewController()
+        sender!.isSelected = false
+        //self.dismiss(animated: true, completion: { sender!.isSelected = false })
     }
     
     @IBAction func setQuality(_ sender: UISegmentedControl?)

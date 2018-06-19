@@ -42,6 +42,8 @@ typedef struct voice_s
     float pan;
     float ix1;
     float ix2;
+    float gain;
+    
     int xfade_ix;
     int xfade_dur;
     int midinote;
