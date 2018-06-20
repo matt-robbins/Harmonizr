@@ -68,6 +68,7 @@
 		C96F204320D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */; };
 		C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204420D85CF200F43D90 /* HarmPageViewController.swift */; };
 		C96F204620D8606B00F43D90 /* HarmPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204420D85CF200F43D90 /* HarmPageViewController.swift */; };
+		C96F204720D9C1CC00F43D90 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30C0135A1C6D303D00F7E9B4 /* Images.xcassets */; };
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
@@ -801,6 +802,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96F204720D9C1CC00F43D90 /* Images.xcassets in Resources */,
 				C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */,
 				916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */,
 			);

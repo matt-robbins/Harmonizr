@@ -1079,12 +1079,14 @@ public:
             //voices[k].ratio = voices[k].target_ratio;
         }
     
+        float frac = 0.99 - (speed * 0.29);
+        
         for (int k = 0; k < nvoices; k++)
         {
             if (k < n_auto && k >= start)
                 voices[k].target_ratio /= error_ratio; // for autoharm
             
-            voices[k].ratio = 0.9 * voices[k].ratio + 0.1 * voices[k].target_ratio;
+            voices[k].ratio = frac * voices[k].ratio + (1-frac) * voices[k].target_ratio;
         }
     }
 	
@@ -1102,9 +1104,9 @@ private:
     int maxgrain = 0;
     float rcnt = 256;
     float T = 400;
-    int nmed = 3;
-    float Tbuf[3];
-    float Tsrt[3];
+    int nmed = 5;
+    float Tbuf[5];
+    float Tsrt[5];
     int Tix;
     float pitchmark[3] = {0,-1,-1};
     int maxT = 600; // note nfft should be bigger than 3*maxT

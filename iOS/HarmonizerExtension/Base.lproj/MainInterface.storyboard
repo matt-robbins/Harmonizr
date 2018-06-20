@@ -98,10 +98,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="714" height="93.333333333333329"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="K9g-Xq-IhD">
-                                                <rect key="frame" x="0.0" y="0.0" width="57" height="93.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="57.333333333333336" height="93.333333333333329"/>
                                                 <subviews>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FI4-35-Vte" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="0.0" width="57" height="33.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="57.333333333333336" height="33.333333333333336"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <state key="normal" title="Auto">
                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -111,7 +111,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="amN-OU-hHi" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="35.333333333333343" width="57" height="58"/>
+                                                        <rect key="frame" x="0.0" y="35.333333333333343" width="57.333333333333336" height="58"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="amN-OU-hHi" secondAttribute="height" multiplier="1:1" priority="300" id="el1-1X-G0C"/>
@@ -128,7 +128,7 @@
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="avH-cs-Plg" customClass="HarmonizerVoicesView" customModule="HarmonizerFramework">
-                                                <rect key="frame" x="60.999999999999986" y="0.0" width="232.66666666666663" height="93.333333333333329"/>
+                                                <rect key="frame" x="61.333333333333329" y="0.0" width="232.33333333333337" height="93.333333333333329"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Jgz-qt-heT">
@@ -438,7 +438,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="44" y="-530"/>
+            <point key="canvasLocation" x="-27" y="-610"/>
         </scene>
         <!--Config View Controller-->
         <scene sceneID="LXC-s0-m5X">
@@ -451,137 +451,49 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="VcR-bJ-Rzr">
                                 <rect key="frame" x="44" y="5" width="719" height="349"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="g3K-gd-69G" userLabel="Root Stack">
-                                        <rect key="frame" x="0.0" y="0.0" width="719" height="34"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="g3K-gd-69G" userLabel="Root Stack">
+                                        <rect key="frame" x="0.0" y="0.0" width="719" height="29"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="b5S-PV-84d">
-                                                <rect key="frame" x="0.0" y="0.0" width="475.33333333333331" height="34"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="b5S-PV-84d">
+                                                <rect key="frame" x="0.0" y="0.0" width="317" height="29"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v9X-bL-b7s" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="0.0" width="37.666666666666664" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="C">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit harmony for:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTS-pT-9CL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="131.33333333333334" height="29"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <stepper hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="n7V-su-wRE">
+                                                        <rect key="frame" x="134" y="0.0" width="94" height="29"/>
                                                         <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="sBe-qW-mqU"/>
+                                                            <action selector="rootInc:" destination="G03-CJ-RWa" eventType="valueChanged" id="iNF-3P-TLJ"/>
                                                         </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fwp-nR-Drh" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="39.666666666666671" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="C#"/>
+                                                    </stepper>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="JLh-5x-zpw" userLabel="Quality">
+                                                        <rect key="frame" x="136.33333333333334" y="0.0" width="140.00000000000003" height="30"/>
+                                                        <segments>
+                                                            <segment title="Maj."/>
+                                                            <segment title="Min."/>
+                                                            <segment title="Dom."/>
+                                                        </segments>
                                                         <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="tun-DU-AYt"/>
+                                                            <action selector="setQuality:" destination="G03-CJ-RWa" eventType="valueChanged" id="5Yn-ow-quR"/>
                                                         </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jc8-CH-Jla" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="79.666666666666671" y="0.0" width="37.666666666666671" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="D">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="O44-Vc-ZU8"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5h-04-t1l" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="119.33333333333336" y="0.0" width="37.666666666666671" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="D#"/>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="nJv-ts-wIa"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kR5-bL-UaI" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="159" y="0.0" width="37.666666666666657" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="E">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="5IM-TA-9nq"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pan-x6-7i1" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="198.66666666666666" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="F">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="g1e-2G-321"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kke-Iy-RY7" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="238.66666666666666" y="0.0" width="37.666666666666657" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="F#"/>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="STK-gP-Gp7"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P06-Lc-SAD" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="278.33333333333331" y="0.0" width="37.666666666666686" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="G">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="20N-Vn-cF6"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EgL-vk-aLH" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="318" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="G#"/>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="Xza-Gh-HTb"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dU3-SH-cWI" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="358" y="0.0" width="37.666666666666686" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="A">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="bHr-iy-4eM"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cjV-s5-eI7" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="397.66666666666669" y="0.0" width="37.666666666666686" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="A#"/>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="w1f-MD-sa9"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gcG-n1-kJx" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="437.33333333333331" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="B">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setRoot:" destination="G03-CJ-RWa" eventType="touchUpInside" id="xCC-99-VP6"/>
-                                                        </connections>
-                                                    </button>
+                                                    </segmentedControl>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Root" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jHl-nx-o7D">
+                                                        <rect key="frame" x="281.33333333333331" y="0.0" width="35.666666666666686" height="29"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                             </stackView>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="JLh-5x-zpw" userLabel="Quality">
-                                                <rect key="frame" x="483.33333333333337" y="0.0" width="160" height="35"/>
-                                                <segments>
-                                                    <segment title="Maj."/>
-                                                    <segment title="Min."/>
-                                                    <segment title="Dom."/>
-                                                </segments>
-                                                <connections>
-                                                    <action selector="setQuality:" destination="G03-CJ-RWa" eventType="valueChanged" id="5Yn-ow-quR"/>
-                                                </connections>
-                                            </segmentedControl>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ez4-e4-lRJ">
+                                                <rect key="frame" x="325" y="0.0" width="318.33333333333326" height="29"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Qt-RQ-R0C" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                <rect key="frame" x="651.33333333333337" y="0.0" width="67.666666666666629" height="34"/>
+                                                <rect key="frame" x="651.33333333333337" y="0.0" width="67.666666666666629" height="29"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Back">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -600,153 +512,58 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="8LV-8D-y94" userLabel="Degree Stack">
-                                        <rect key="frame" x="0.0" y="39" width="719" height="34"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="8LV-8D-y94" userLabel="Degree Stack">
+                                        <rect key="frame" x="0.0" y="34" width="719" height="29"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="HP1-ly-ZSM">
-                                                <rect key="frame" x="0.0" y="0.0" width="475.33333333333331" height="34"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="HP1-ly-ZSM">
+                                                <rect key="frame" x="0.0" y="0.0" width="467.66666666666669" height="29"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="77c-An-LfP" userLabel="1" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="0.0" width="37.666666666666664" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="1">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scale Degree: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRb-Sh-WUy">
+                                                        <rect key="frame" x="0.0" y="0.0" width="196" height="29"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="CJJ-Oj-Lty">
+                                                        <rect key="frame" x="198" y="0.0" width="94" height="29"/>
                                                         <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="47H-IN-qQx"/>
+                                                            <action selector="degreeInc:" destination="G03-CJ-RWa" eventType="valueChanged" id="6AB-70-Ywe"/>
                                                         </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eTF-d2-HOW" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="39.666666666666671" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="#1"/>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="R0j-iO-pwE"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RXN-kM-t4f" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="79.666666666666671" y="0.0" width="37.666666666666671" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="2">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="EWN-Dc-LoB"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LFg-rp-D2q" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="119.33333333333336" y="0.0" width="37.666666666666671" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="#2">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="bkj-CG-JHA"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zbv-Mc-DEJ" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="159" y="0.0" width="37.666666666666657" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="3">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="aBL-IU-eyG"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xVl-un-q0f" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="198.66666666666666" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="4">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="Ggr-Zn-iZn"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KkB-Id-f3U" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="238.66666666666666" y="0.0" width="37.666666666666657" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="#4"/>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="mfW-CR-fRr"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2DY-o9-Sm3" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="278.33333333333331" y="0.0" width="37.666666666666686" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="5">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="5NO-S5-6XJ"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fss-kl-ONb" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="318" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                        <state key="normal" title="#5"/>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="MH8-Dz-cSZ"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iaH-jA-5ZX" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="358" y="0.0" width="37.666666666666686" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="6">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="Hh0-pL-Pkt"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xNI-lQ-V4b" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="397.66666666666669" y="0.0" width="37.666666666666686" height="34"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="♭7"/>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="jXc-cR-KiW"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KBw-F7-e5q" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="437.33333333333331" y="0.0" width="38" height="34"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <state key="normal" title="7">
-                                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="setDegree:" destination="G03-CJ-RWa" eventType="touchUpInside" id="rWl-Qr-0wE"/>
-                                                        </connections>
-                                                    </button>
+                                                    </stepper>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Degree" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwR-EK-B6y">
+                                                        <rect key="frame" x="366" y="0.0" width="101.66666666666669" height="29"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Live Select" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KIz-mZ-0SE">
-                                                <rect key="frame" x="480.33333333333343" y="0.0" width="184.66666666666669" height="34"/>
+                                                <rect key="frame" x="472.66666666666657" y="0.0" width="147.33333333333331" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="KOK-53-HvF">
-                                                <rect key="frame" x="670" y="0.0" width="51" height="34"/>
+                                                <rect key="frame" x="625" y="0.0" width="96" height="29"/>
                                                 <color key="onTintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </switch>
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AkA-gh-dfo" userLabel="Spacer">
-                                        <rect key="frame" x="0.0" y="78" width="719" height="5"/>
+                                        <rect key="frame" x="0.0" y="68" width="719" height="5"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="5" id="fxE-I3-QCC"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="hIT-Dp-MKm">
-                                        <rect key="frame" x="0.0" y="88" width="719" height="119.66666666666669"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="hIT-Dp-MKm">
+                                        <rect key="frame" x="0.0" y="78" width="719" height="126"/>
                                         <subviews>
-                                            <view clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pL1-SL-kVQ" customClass="KeyboardEditorView" customModule="HarmonizerFramework">
-                                                <rect key="frame" x="0.0" y="0.0" width="478.33333333333331" height="119.66666666666667"/>
+                                            <view clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pL1-SL-kVQ" customClass="KeyboardEditorView" customModule="HarmonizerFramework">
+                                                <rect key="frame" x="0.0" y="0.0" width="503.33333333333331" height="126"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" secondItem="pL1-SL-kVQ" secondAttribute="height" multiplier="4:1" id="nkv-fm-CEB"/>
+                                                    <constraint firstAttribute="width" secondItem="pL1-SL-kVQ" secondAttribute="height" multiplier="4:1" id="nkv-fm-CEB"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="n_visible">
@@ -754,40 +571,33 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="udb-YL-hoW" customClass="HarmonizerVoicesView" customModule="HarmonizerFramework">
-                                                <rect key="frame" x="483.33333333333343" y="0.0" width="235.66666666666669" height="119.66666666666667"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udb-YL-hoW" customClass="HarmonizerVoicesView" customModule="HarmonizerFramework">
+                                                <rect key="frame" x="508.33333333333343" y="0.0" width="210.66666666666669" height="126"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="udL-3a-8cH">
-                                        <rect key="frame" x="0.0" y="212.66666666666663" width="719" height="136.33333333333337"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="udL-3a-8cH">
+                                        <rect key="frame" x="0.0" y="209" width="719" height="140"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QxZ-8P-C9i">
-                                                <rect key="frame" x="0.0" y="0.0" width="421.33333333333331" height="136.33333333333334"/>
-                                                <subviews>
-                                                    <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aiS-28-YQn">
-                                                        <rect key="frame" x="39" y="0.0" width="227.33333333333331" height="123.66666666666667"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </pickerView>
-                                                </subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QxZ-8P-C9i">
+                                                <rect key="frame" x="0.0" y="0.0" width="421.33333333333331" height="140"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="bSf-GO-Mze">
-                                                <rect key="frame" x="431.33333333333326" y="0.0" width="287.66666666666674" height="136.33333333333334"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="bSf-GO-Mze">
+                                                <rect key="frame" x="431.33333333333326" y="0.0" width="287.66666666666674" height="140"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Save to Preset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5DF-Az-zAm">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save to Preset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5DF-Az-zAm">
                                                         <rect key="frame" x="0.0" y="0.0" width="287.66666666666669" height="20.333333333333332"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="4rI-hO-KWT">
-                                                        <rect key="frame" x="0.0" y="25.333333333333343" width="287.66666666666669" height="30"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="4rI-hO-KWT">
+                                                        <rect key="frame" x="0.0" y="25.333333333333343" width="287.66666666666669" height="30.333333333333329"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eS3-Fk-3LD" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eS3-Fk-3LD" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="0.0" y="0.0" width="30.333333333333332" height="30.333333333333332"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="eS3-Fk-3LD" secondAttribute="height" multiplier="1:1" id="wf9-uz-qyl"/>
                                                                 </constraints>
@@ -798,8 +608,8 @@
                                                                     <action selector="presetPrev:" destination="G03-CJ-RWa" eventType="touchUpInside" id="fPs-KD-DnG"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-wP-i4O" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="32" y="0.0" width="30" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-wP-i4O" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="32.333333333333371" y="0.0" width="30" height="30.333333333333332"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="jcN-wP-i4O" secondAttribute="height" multiplier="1:1" id="rl1-fa-BsA"/>
                                                                 </constraints>
@@ -810,8 +620,8 @@
                                                                     <action selector="presetNext:" destination="G03-CJ-RWa" eventType="touchUpInside" id="wBE-wd-bhz"/>
                                                                 </connections>
                                                             </button>
-                                                            <textField opaque="NO" contentMode="left" horizontalHuggingPriority="100" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Preset" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-Nw-6gW">
-                                                                <rect key="frame" x="64.000000000000043" y="0.0" width="191.66666666666663" height="30"/>
+                                                            <textField opaque="NO" contentMode="left" horizontalHuggingPriority="100" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Preset" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="PTL-Nw-6gW">
+                                                                <rect key="frame" x="64.333333333333314" y="0.0" width="191" height="30.333333333333332"/>
                                                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <color key="tintColor" red="0.046427408849999997" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -822,8 +632,8 @@
                                                                     <action selector="setPresetName:" destination="G03-CJ-RWa" eventType="editingDidEnd" id="Kcr-xg-4vb"/>
                                                                 </connections>
                                                             </textField>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPX-HI-rEn">
-                                                                <rect key="frame" x="257.66666666666669" y="0.0" width="30" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPX-HI-rEn">
+                                                                <rect key="frame" x="257.33333333333331" y="0.0" width="30.333333333333314" height="30.333333333333332"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="pPX-HI-rEn" secondAttribute="height" multiplier="1:1" id="DDb-Jr-44V"/>
                                                                 </constraints>
@@ -837,11 +647,11 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XKn-mI-m46">
-                                                        <rect key="frame" x="0.0" y="60.333333333333343" width="287.66666666666669" height="76"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XKn-mI-m46">
+                                                        <rect key="frame" x="0.0" y="60.666666666666679" width="287.66666666666669" height="79.333333333333314"/>
                                                         <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h92-Z2-OOz" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="4.9999999999999716" width="60" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h92-Z2-OOz" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="0.0" y="5.3333333333333144" width="60.333333333333336" height="30"/>
                                                                 <state key="normal" title="Save">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </state>
@@ -849,8 +659,8 @@
                                                                     <action selector="savePreset:" destination="G03-CJ-RWa" eventType="touchUpInside" id="OUS-b8-Tmg"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKF-sV-FFi" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="228.33333333333331" y="4.9999999999999716" width="60" height="30"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKF-sV-FFi" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="228.00000000000009" y="5.3333333333333144" width="60.333333333333343" height="30"/>
                                                                 <state key="normal" title="Revert">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </state>
@@ -886,10 +696,9 @@
                                 <constraints>
                                     <constraint firstItem="8LV-8D-y94" firstAttribute="leading" secondItem="XWV-y1-U1a" secondAttribute="leading" id="2c8-jU-31C"/>
                                     <constraint firstItem="udL-3a-8cH" firstAttribute="leading" secondItem="VcR-bJ-Rzr" secondAttribute="leading" id="6kT-iM-lmi"/>
-                                    <constraint firstItem="udb-YL-hoW" firstAttribute="leading" secondItem="JLh-5x-zpw" secondAttribute="leading" id="mJb-qz-BpK"/>
                                     <constraint firstItem="XWV-y1-U1a" firstAttribute="trailing" secondItem="udL-3a-8cH" secondAttribute="trailing" id="uJa-f8-Ddd"/>
+                                    <constraint firstItem="pL1-SL-kVQ" firstAttribute="width" secondItem="VcR-bJ-Rzr" secondAttribute="width" multiplier="0.7" id="uWs-2h-dcw"/>
                                     <constraint firstItem="g3K-gd-69G" firstAttribute="leading" secondItem="XWV-y1-U1a" secondAttribute="leading" id="wGZ-1u-wrv"/>
-                                    <constraint firstItem="KBw-F7-e5q" firstAttribute="trailing" secondItem="gcG-n1-kJx" secondAttribute="trailing" id="zpE-RQ-1rd"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="XWV-y1-U1a"/>
                             </stackView>
@@ -907,8 +716,9 @@
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="degreeLabel" destination="bwR-EK-B6y" id="toD-BL-FQY"/>
                         <outlet property="degreeStack" destination="HP1-ly-ZSM" id="QQr-lN-Mhg"/>
-                        <outlet property="intervalPicker" destination="aiS-28-YQn" id="8ZK-9H-qE0"/>
+                        <outlet property="degreeStepper" destination="CJJ-Oj-Lty" id="Pvy-2V-Faz"/>
                         <outlet property="keyboardView" destination="pL1-SL-kVQ" id="cvr-ZL-mCN"/>
                         <outlet property="liveSwitch" destination="KOK-53-HvF" id="cDN-KL-YKe"/>
                         <outlet property="presetAddButton" destination="pPX-HI-rEn" id="Top-gy-ibV"/>
@@ -917,14 +727,16 @@
                         <outlet property="presetPrevButton" destination="eS3-Fk-3LD" id="cug-La-h9o"/>
                         <outlet property="qualitySeg" destination="JLh-5x-zpw" id="r47-Sb-OX3"/>
                         <outlet property="revertButton" destination="OKF-sV-FFi" id="SIP-6i-eFU"/>
+                        <outlet property="rootLabel" destination="jHl-nx-o7D" id="I0s-7A-ffR"/>
                         <outlet property="rootStack" destination="b5S-PV-84d" id="WcB-xd-QPg"/>
+                        <outlet property="rootStepper" destination="n7V-su-wRE" id="39c-it-8Sy"/>
                         <outlet property="saveButton" destination="h92-Z2-OOz" id="k38-zn-1oq"/>
                         <outlet property="voicesView" destination="udb-YL-hoW" id="4KP-ly-dor"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmc-0u-KBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1111.3300492610838" y="-2.3999999999999999"/>
+            <point key="canvasLocation" x="793" y="-30"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="IW1-sh-U6s">

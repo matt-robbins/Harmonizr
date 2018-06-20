@@ -29,7 +29,7 @@ class KeyboardEditorView: KeyboardView {
     
     weak var editorDelegate: KeyboardEditorDelegate?
     
-    var harm_colors = [UIColor.red.cgColor, UIColor.orange.cgColor, UIColor.yellow.cgColor, UIColor.green.cgColor]
+    var harm_colors = [UIColor.red.cgColor, UIColor.yellow.cgColor, UIColor.yellow.cgColor, UIColor.yellow.cgColor]
     var harm_voices: Array<Int> = []
     {
         didSet {
@@ -95,21 +95,22 @@ class KeyboardEditorView: KeyboardView {
     }
 }
 
-public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, KeyboardViewDelegate, KeyboardEditorDelegate, VoicesViewDelegate {
+public class ConfigViewController: UIViewController, UITextFieldDelegate,
+    KeyboardViewDelegate, KeyboardEditorDelegate, VoicesViewDelegate
+{
     
     //MARK: Properties
-    
-    @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var navBar: UINavigationBar!
-    var pickerData: [String] = [String]()
     
     @IBOutlet weak var qualitySeg: UISegmentedControl!
     
     @IBOutlet weak var degreeStack: UIStackView!
     @IBOutlet weak var rootStack: UIStackView!
     
-    @IBOutlet weak var intervalPicker: UIPickerView!
+    @IBOutlet weak var rootLabel: UILabel!
+    @IBOutlet weak var rootStepper: UIStepper!
     
+    @IBOutlet weak var degreeStepper: UIStepper!
+    @IBOutlet weak var degreeLabel: UILabel!
     @IBOutlet weak var presetName: UITextField!
     @IBOutlet weak var presetPrevButton: HarmButton!
     @IBOutlet weak var presetNextButton: HarmButton!
@@ -136,6 +137,8 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         }
     }
     
+    var keynames = ["C", "C\u{266f}/D\u{266D}", "D", "D\u{266f}/E\u{266D}", "E", "F", "F\u{266f}/G\u{266D}","G", "G\u{266f}/A\u{266D}", "A", "B\u{266D}", "B/C\u{266D}"]
+    var degreenames = ["1", "\u{266f}1", "2", "\u{266f}2", "3", "4", "\u{266f}4","5", "\u{266D}6", "6", "\u{266D}7", "7"]
     var currInterval = 0
     
     public var audioUnit: AUv3Harmonizer? {
@@ -160,8 +163,11 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
 //            }
             
             drawKeys()
-            setRoot(buttons[keyRoot])
+            rootStepper!.value = Double(keyRoot)
             
+            rootLabel!.text = keynames[keyRoot]
+            
+            refresh()
             //
         }
     }
@@ -187,7 +193,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         let key = "interval_\(nc*scaleDegree + index + keyQuality*12*nc)"
         let param = paramTree!.value(forKey: key) as? AUParameter
         let inv_param = paramTree!.value(forKey: "inversion") as? AUParameter
-        print("hi! \(index) -> \(note)")
+        //print("hi! \(index) -> \(note)")
         
         var offset = Float(note)
         
@@ -196,8 +202,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         }
         
         param!.value = offset
-        
-        intervalPicker!.selectRow(Int(offset)+maxOffset, inComponent: index, animated: true)
     }
     
     func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float) {
@@ -220,63 +224,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         return
     }
     
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return nc
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return maxOffset * 2 + 1
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        
-        var pickerLabel: UILabel?
-        if (view != nil)
-        {
-            pickerLabel = view as? UILabel
-        }
-        else
-        {
-            pickerLabel = UILabel()
-        }
-        
-        pickerLabel!.text = "\(row - maxOffset)" //pickerData[row]
-        
-        pickerLabel!.backgroundColor = UIColor.clear
-        switch (component)
-        {
-        case 0:
-            pickerLabel!.textColor = UIColor.red
-        case 1:
-            pickerLabel!.textColor = UIColor.orange
-        case 2:
-            pickerLabel!.textColor = UIColor.yellow
-        case 3:
-            pickerLabel!.textColor = UIColor.green
-        default:
-            pickerLabel!.textColor = UIColor.white
-        }
-        
-        pickerLabel!.textAlignment = .center
-        
-        return pickerLabel!
-    }
-    
-    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        // This method is triggered whenever the user makes a change to the picker selection.
-        // The parameter named row and component represents what was selected.
-        var key: String
-        
-        key = "interval_\(nc*scaleDegree + component + keyQuality*12*nc)"
-        let param = paramTree!.value(forKey: key) as? AUParameter
-        param!.value = Float(row - unisonOffset)
-        
-        print("changed!")
-        presetNeedsSave = true
-        syncPresetButtons()
-        drawKeys()
-    }
-    
     func auPoller(T: Float){
         // Scheduling timer to Call the timerFunction
         timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(timerFunction), userInfo: nil, repeats: true)
@@ -286,7 +233,16 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     {
         guard let audioUnit = audioUnit else { return }
         let note = audioUnit.getCurrentNote()
-                
+        let notes = audioUnit.getNotes()
+        
+        var int_notes: [Int] = [Int]()
+        
+        for n in notes! {
+            int_notes.append((n as? Int)!)
+        }
+        
+        keyboardView.setCurrentNote(int_notes)
+        
         if (note == -1.0)
         {
             currInterval = -1
@@ -297,41 +253,15 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             let k = Int(audioUnit.getCurrentKeycenter()) % 12
             
             currInterval = (i - k + 12) % 12
-        }
-
-        let buttons = degreeStack.arrangedSubviews as! [HarmButton]
-        
-        for d in 0...buttons.count-1
-        {
-            let b = buttons[d]
-            CATransaction.begin()
             
-            if (d == currInterval)
+            if (liveSwitch!.isOn && currInterval != scaleDegree)
             {
-                if (liveSwitch.isOn && !b.isBeingPlayed)
-                {
-                    setDegree(b)
-                }
+                scaleDegree = currInterval
                 
-                b.isBeingPlayed = true
+                degreeStepper!.value = Double(scaleDegree)
+                refresh()
+                drawKeys()
             }
-            else
-            {
-                b.isBeingPlayed = false
-            }
-            
-            CATransaction.commit()
-        }
-        
-        if (currInterval == scaleDegree)
-        {
-            intervalPicker!.layer.shadowOpacity = 1.0
-            intervalPicker!.layer.borderColor = self.view.tintColor.cgColor
-        }
-        else
-        {
-            intervalPicker!.layer.shadowOpacity = 0.0
-            intervalPicker!.layer.borderColor = UIColor.darkGray.cgColor
         }
         
         return
@@ -346,26 +276,23 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         //keyboardView.n_visible = 21
         voicesView.delegate = self
         
-        intervalPicker!.delegate = self
-        intervalPicker!.dataSource = self
-        intervalPicker!.layer.cornerRadius = 8
-        intervalPicker!.backgroundColor = UIColor.black
-        intervalPicker!.layer.borderWidth = 2
-        intervalPicker!.layer.borderColor = UIColor.darkGray.cgColor
-        intervalPicker!.layer.shadowColor = self.view.tintColor.cgColor
-        intervalPicker!.layer.shadowRadius = 8
-        intervalPicker!.layer.shadowOffset = CGSize(width: 0, height: 0)
-        intervalPicker!.layer.shadowOpacity = 0
-        
         liveSwitch!.onTintColor = self.view.tintColor
         
-        let d = degreeStack.arrangedSubviews[0] as! HarmButton
-        d.isSelected = true
+//        let d = degreeStack.arrangedSubviews[0] as! HarmButton
+//        d.isSelected = true
 
-        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
+//        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
+//
+//        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1","0",
+//                      "+1","+2","+3","+4","+5","+6","+7","+8","+9","+10","+11","+12","+13","+14","+15","+16"]
         
-        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1","0",
-                      "+1","+2","+3","+4","+5","+6","+7","+8","+9","+10","+11","+12","+13","+14","+15","+16"]
+        rootLabel!.text = keynames[0]
+        degreeLabel!.text = degreenames[0]
+        
+        rootStepper!.maximumValue = 11
+        rootStepper!.minimumValue = 0
+        degreeStepper!.maximumValue = 11
+        degreeStepper!.minimumValue = 0
         
         presetName.delegate = self
         saveButton.isEnabled = false
@@ -382,8 +309,6 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
         
         let frame = presetName.convert(presetName.frame, from:self.view)
         let wframe = presetName.convert(presetName.frame, to: nil)
-        
-        print(wframe.minY)
         
         if ((self.view.window?.frame.height)! - wframe.maxY < keyboardSize!.height)
         {
@@ -467,6 +392,9 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
             }
         }
         
+        rootLabel!.text = "Current key root: \(keynames[keyRoot])"
+        degreeLabel!.text = degreenames[scaleDegree]
+        
         for k in 0...nc-1
         {
             let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
@@ -482,7 +410,7 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
 //                }
 //            }
 
-            intervalPicker!.selectRow(offset+unisonOffset, inComponent: k, animated: true)
+            //intervalPicker!.selectRow(offset+unisonOffset, inComponent: k, animated: true)
         }
     }
     
@@ -507,6 +435,19 @@ public class ConfigViewController: UIViewController,UIPickerViewDelegate, UIPick
     
     @IBAction func setQuality(_ sender: UISegmentedControl?)
     {
+        refresh()
+        drawKeys()
+    }
+    @IBAction func rootInc(_ sender: UIStepper) {
+        keyRoot = Int(sender.value)
+        
+        refresh()
+        drawKeys()
+    }
+    
+    @IBAction func degreeInc(_ sender: UIStepper) {
+        scaleDegree = Int(sender.value)
+        
         refresh()
         drawKeys()
     }

@@ -182,6 +182,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         keycenterParameter?.value = keycenter
     }
     
+    func harmonizerView(_ view: HarmonizerView, touchIsDown touch: Bool)
+    {
+        speedParameter!.value = touch ? 0.1: 1.0
+    }
+    
     func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float {
         return audioUnit!.getCurrentNote()
     }
@@ -245,6 +250,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
             
             enableKeyboard(midiButton.isSelected)
             
+            voicesView.autoTuneVoice1 = autoButton.isSelected
             voicesView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
             
             harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
@@ -277,6 +283,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBAction func toggleAuto(_ sender: Any) {
         autoParameter!.value = autoParameter!.value == 0 ? 1 : 0
         autoButton.isSelected = autoParameter!.value == 1
+        voicesView.autoTuneVoice1 = autoParameter!.value == 1
     }
     
     @IBAction func toggleMidi(_ sender: Any) {
@@ -347,9 +354,15 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         self.view.addSubview(configController!.view)
         //self.containerView.isHidden = false
         
-        configController!.view.frame = view.bounds
+        configController!.view.frame = view.bounds.offsetBy(dx: view.bounds.maxX, dy: 0)
         configController!.didMove(toParentViewController: self)
-        configController!.drawKeys()
+        
+        UIView.beginAnimations("resize", context: nil)
+        UIView.setAnimationDuration(0.1)
+        configController!.view.frame = view.bounds
+        
+        UIView.commitAnimations()
+        //configController!.drawKeys()
         sender.isSelected = false
         
         //

@@ -57,7 +57,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Bluetooth"/>
                                                     <connections>
-                                                        <action selector="togglePlay:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L06-Zo-ks1"/>
+                                                        <action selector="openBluetoothMenu:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0rU-n1-tgt"/>
                                                     </connections>
                                                 </button>
                                             </barButtonItem>

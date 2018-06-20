@@ -213,11 +213,13 @@ class ViewController: UIViewController {
     // MARK: IBActions
 
 	/// Handles Play/Stop button touches.
-    @IBAction func togglePlay(_ sender: AnyObject?) {
+    @IBAction func openBluetoothMenu(_ sender: AnyObject?) {
 		//let isPlaying = playEngine.togglePlay()
         
         btMidiViewController = CABTMIDICentralViewController()
         navController = UINavigationController(rootViewController: btMidiViewController)
+        
+        navController.navigationBar.tintColor! = view.tintColor
         
         btMidiViewController.navigationItem.rightBarButtonItem =
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ViewController.dismissPopover))

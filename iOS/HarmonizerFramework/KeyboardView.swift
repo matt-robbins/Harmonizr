@@ -136,6 +136,13 @@ class Key: CATextLayer {
         }
     }
 }
+
+class Marker: CALayer {
+    override func contains(_ p: CGPoint) -> Bool {
+        return false
+    }
+}
+
 @IBDesignable
 class KeyboardView: UIView {
     
@@ -149,8 +156,16 @@ class KeyboardView: UIView {
     var wkeys = [Key]()
     var bkeys = [Key]()
     var keys = [Key]()
+    var markers = [Marker]()
     
-    var spacing: CGFloat = 0
+    var markKey = 1
+    {
+        didSet {
+            
+        }
+    }
+
+    var spacing: CGFloat = 20
     var playable: Bool = true
     
     var start_pos = CGPoint.zero
@@ -202,6 +217,14 @@ class KeyboardView: UIView {
             }
             containerLayer.addSublayer(keyLayer)
         }
+        
+        for ix in 0...4
+        {
+            let marker = Marker()
+            markers.append(marker)
+            marker.zPosition = ix == 0 ? 2.0 : 1.5
+            containerLayer.addSublayer(marker)
+        }
     }
     
     override init(frame: CGRect) {
@@ -249,12 +272,33 @@ class KeyboardView: UIView {
             }
             bkeys[i].frame = CGRect(x: CGFloat(1 + k + s + 7 * oct) * spacing - offset, y: 0, width: bkwidth, height: layer.frame.height*3/5)
         }
+        
+        var ix = 0
+        for marker in markers {
+            marker.frame = CGRect(x: (CGFloat(0) + 0.5) * spacing - spacing/8, y: 5, width: spacing/4, height: spacing/4)
+            
+            let color = ix == 0 ? UIColor.red.cgColor : UIColor.yellow.cgColor
+            
+            marker.backgroundColor = color
+            marker.cornerRadius = marker.frame.width/2
+            marker.shadowRadius = 5
+            marker.shadowColor = color
+            marker.shadowOpacity = 1.0
+            //marker.opacity = 0.6
+            ix += 1
+        }
+        
     }
     
     override func tintColorDidChange() {
         for key in keys {
             key.tintColor = self.tintColor.cgColor
         }
+        
+//        for marker in markesr {
+//            marker.backgroundColor = self.tintColor.cgColor
+//            marker.shadowColor = self.tintColor.cgColor
+//        }
     }
     
     func avg_pos(_ points: Set<UITouch>) -> CGPoint
@@ -394,25 +438,31 @@ class KeyboardView: UIView {
             delegate?.keyboardView(self, noteOff: k.midinote)
         }
     }
+    
     func setCurrentNote(_ notes: [Int])
     {
-        let raw = notes[0]
-        let harm = notes[1...]
-
-        for k in keys
+        for ix in 0...markers.count-1
         {
-            k.isSung = false
-            k.isHarm = false
+            markKey = notes[ix]
             
-            if (harm.contains(k.midinote))
-            {
-                k.isHarm = true
+            let marker = markers[ix]
+            
+            if (markKey < 1 || markKey > keys.count - 1) {
+                marker.opacity = 0.0
+                continue
             }
             
-            if (raw == k.midinote)
+            marker.opacity = 1.0
+            var center: CGFloat = 0
+            if (keys[markKey].black)
             {
-                k.isSung = true
+                center = (keys[markKey].frame.maxX + keys[markKey].frame.minX)/2
             }
+            else {
+                center = (keys[markKey+1].frame.minX + keys[markKey-1].frame.maxX)/2
+            }
+            marker.frame = CGRect(x: center - spacing/8, y: 2, width: spacing/4, height: spacing/4)
+            marker.cornerRadius = spacing/8
         }
     }
     

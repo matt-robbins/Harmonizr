@@ -25,7 +25,16 @@ class HarmonizerVoicesView: UIView {
     
     weak var delegate: VoicesViewDelegate?
     
-    func setSelectedVoices(_ voices: Int, inversion: Int)
+    var voices = 1
+    var inversion = 0
+    
+    var autoTuneVoice1 = true {
+        didSet {
+            sync()
+        }
+    }
+    
+    func sync()
     {
         let sublayers = layer.sublayers!
         
@@ -37,8 +46,11 @@ class HarmonizerVoicesView: UIView {
         
         for k in 0...sublayers.count - 1
         {
+            sublayers[k].borderWidth = 0
+            
             if (k < sum && k >= (sum - voices))
             {
+                
                 if ((k - (sum - voices)) > inversion)
                 {
                     sublayers[k].backgroundColor = UIColor.cyan.cgColor
@@ -47,6 +59,12 @@ class HarmonizerVoicesView: UIView {
                 else
                 {
                     sublayers[k].backgroundColor = UIColor.yellow.cgColor
+                    if (k - (sum - voices) == 0 && autoTuneVoice1)
+                    {
+                        sublayers[k].borderColor = UIColor.red.cgColor
+                        sublayers[k].backgroundColor = UIColor.yellow.cgColor
+                        sublayers[k].borderWidth = sublayers[k].frame.height/8
+                    }
                     sublayers[k].shadowOpacity = 1.0
                 }
             }
@@ -56,6 +74,14 @@ class HarmonizerVoicesView: UIView {
                 sublayers[k].shadowOpacity = 0.0
             }
         }
+    }
+    
+    func setSelectedVoices(_ voices: Int, inversion: Int)
+    {
+        self.voices = voices
+        self.inversion = inversion
+        
+        sync()
     }
     
     override func awakeFromNib() {

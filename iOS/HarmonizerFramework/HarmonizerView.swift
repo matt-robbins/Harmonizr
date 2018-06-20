@@ -13,6 +13,7 @@ import UIKit
  */
 protocol HarmonizerViewDelegate: class {
     func harmonizerView(_ view: HarmonizerView, didChangeKeycenter keycenter: Float)
+    func harmonizerView(_ view: HarmonizerView, touchIsDown touch: Bool)
     func harmonizerViewGetPitch(_ view: HarmonizerView) -> Float
     func harmonizerViewGetKeycenter(_ view: HarmonizerView) -> Float
 }
@@ -353,6 +354,8 @@ class HarmonizerView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let pointOfTouch = touches.first?.location(in: self)
         
+        delegate?.harmonizerView(self, touchIsDown: true)
+        
         let key = containerLayer.hitTest(pointOfTouch!) as? GlowButton
         if (key != nil)
         {
@@ -373,5 +376,9 @@ class HarmonizerView: UIView {
             self.setSelectedKeycenter(Float(key!.keycenter))
             delegate?.harmonizerView(self, didChangeKeycenter: Float(key!.keycenter))
         }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        delegate?.harmonizerView(self, touchIsDown: false)
     }
 }
