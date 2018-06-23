@@ -52,6 +52,11 @@ class KeyboardEditorView: KeyboardView {
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        labels = false
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         xpos = (touches.first?.location(in:self).x)!
         
@@ -95,10 +100,13 @@ class KeyboardEditorView: KeyboardView {
     }
 }
 
+protocol HarmonizerAlternateViewDelegate: class {
+    func ShowMainView()
+}
+
 public class ConfigViewController: UIViewController, UITextFieldDelegate,
     KeyboardViewDelegate, KeyboardEditorDelegate, VoicesViewDelegate
 {
-    
     //MARK: Properties
     
     @IBOutlet weak var qualitySeg: UISegmentedControl!
@@ -124,6 +132,8 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     @IBOutlet weak var voicesView: HarmonizerVoicesView!
     @IBOutlet weak var keyboardView: KeyboardEditorView!
     var preset: Preset?
+    
+    weak var delegate: HarmonizerAlternateViewDelegate?
     
     var doneFcn: (() -> Void)?
     
@@ -154,18 +164,18 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
             
             keyQuality = Int(keycenter / 12)
             keyRoot = Int(keycenter) % 12
-            qualitySeg.selectedSegmentIndex = keyQuality
+            //qualitySeg.selectedSegmentIndex = keyQuality
             
-            let buttons = rootStack.arrangedSubviews as! [HarmButton]
+            //let buttons = rootStack.arrangedSubviews as! [HarmButton]
 //            for c in 0...buttons.count - 1
 //            {
 //                buttons[c].isSelected = (c == keyRoot)
 //            }
             
             drawKeys()
-            rootStepper!.value = Double(keyRoot)
+            //rootStepper!.value = Double(keyRoot)
             
-            rootLabel!.text = keynames[keyRoot]
+            //rootLabel!.text = keynames[keyRoot]
             
             refresh()
             //
@@ -232,6 +242,12 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     @objc func timerFunction()
     {
         guard let audioUnit = audioUnit else { return }
+        
+        if (self.view.isHidden)
+        {
+            return
+        }
+        
         let note = audioUnit.getCurrentNote()
         let notes = audioUnit.getNotes()
         
@@ -254,14 +270,14 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
             
             currInterval = (i - k + 12) % 12
             
-            if (liveSwitch!.isOn && currInterval != scaleDegree)
-            {
-                scaleDegree = currInterval
-                
-                degreeStepper!.value = Double(scaleDegree)
-                refresh()
-                drawKeys()
-            }
+//            if (liveSwitch!.isOn && currInterval != scaleDegree)
+//            {
+//                scaleDegree = currInterval
+//
+//                degreeStepper!.value = Double(scaleDegree)
+//                refresh()
+//                drawKeys()
+//            }
         }
         
         return
@@ -271,12 +287,15 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     {
         super.viewDidLoad()
         
+        self.title = "Edit Harmony"
         keyboardView.delegate = self
         keyboardView.editorDelegate = self
         //keyboardView.n_visible = 21
         voicesView.delegate = self
         
         liveSwitch!.onTintColor = self.view.tintColor
+        
+        audioUnit = globalAudioUnit
         
 //        let d = degreeStack.arrangedSubviews[0] as! HarmButton
 //        d.isSelected = true
@@ -288,17 +307,23 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         
         rootLabel!.text = keynames[0]
         degreeLabel!.text = degreenames[0]
-        
-        rootStepper!.maximumValue = 11
-        rootStepper!.minimumValue = 0
+//
         degreeStepper!.maximumValue = 11
         degreeStepper!.minimumValue = 0
+        degreeStepper!.stepValue = 1
+        degreeStepper!.wraps = true
+        rootStepper!.maximumValue = 11
+        rootStepper!.minimumValue = 0
+        rootStepper!.stepValue = 1
+        rootStepper!.wraps = true
         
         presetName.delegate = self
         saveButton.isEnabled = false
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        drawKeys()
         
     }
     
@@ -335,7 +360,7 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     {
         super.viewWillAppear(animated)
         syncPresetButtons()
-        preset = Preset(name: "current",data: presetController!.getPreset(), isFactory: false)
+        //preset = Preset(name: "current",data: presetController!.getPreset(), isFactory: false)
         auPoller(T: 0.1)
     }
     
@@ -378,7 +403,7 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         guard audioUnit != nil else { return }
         
         keyQuality = qualitySeg.selectedSegmentIndex
-        qualitySeg!.selectedSegmentIndex = keyQuality
+        //qualitySeg!.selectedSegmentIndex = keyQuality
         
         let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
         
@@ -392,7 +417,7 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
             }
         }
         
-        rootLabel!.text = "Current key root: \(keynames[keyRoot])"
+        rootLabel!.text = keynames[keyRoot]
         degreeLabel!.text = degreenames[scaleDegree]
         
         for k in 0...nc-1
@@ -427,8 +452,11 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         {
             doneFcn!()
         }
-        self.view.removeFromSuperview()
-        self.removeFromParentViewController()
+//        self.view.removeFromSuperview()
+//        self.removeFromParentViewController()
+        delegate?.ShowMainView()
+        
+        //self.view.isHidden = true
         sender!.isSelected = false
         //self.dismiss(animated: true, completion: { sender!.isSelected = false })
     }
@@ -558,6 +586,10 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     
     func syncPresetButtons()
     {
+        if (presetController == nil)
+        {
+            return
+        }
         let nameText = presetController!.presets[presetIx].name! + (presetController!.presets[presetIx].isFactory ? " (factory)" : "")
         presetName!.text = nameText
         presetName!.isEnabled = !presetController!.presets[presetIx].isFactory

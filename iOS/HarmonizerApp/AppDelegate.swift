@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITableView.appearance().separatorColor = UIColor.lightGray
         UITableViewHeaderFooterView.appearance().tintColor = UIColor.darkGray
         UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor.white
+        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).highlightedTextColor = UIColor.lightGray
         BaseView.appearance().backgroundColor = UIColor.clear
         UIPickerView.appearance().backgroundColor = UIColor.clear
         UINavigationBar.appearance().barStyle = .black

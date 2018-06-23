@@ -26,6 +26,12 @@ class Key: CATextLayer {
         }
     }
     
+    var labelVisible: Bool = true {
+        didSet {
+            self.foregroundColor = labelVisible ?  UIColor.lightText.cgColor : UIColor.clear.cgColor
+        }
+    }
+    
     var black: Bool = false
     {
         didSet {
@@ -164,6 +170,14 @@ class KeyboardView: UIView {
             
         }
     }
+    
+    var labels: Bool = true {
+        didSet {
+            for key in keys {
+                key.labelVisible = labels
+            }
+        }
+    }
 
     var spacing: CGFloat = 20
     var playable: Bool = true
@@ -284,7 +298,7 @@ class KeyboardView: UIView {
             marker.shadowRadius = 5
             marker.shadowColor = color
             marker.shadowOpacity = 1.0
-            //marker.opacity = 0.6
+            marker.opacity = 0.6
             ix += 1
         }
         
@@ -452,7 +466,7 @@ class KeyboardView: UIView {
                 continue
             }
             
-            marker.opacity = 1.0
+            marker.opacity = 0.8
             var center: CGFloat = 0
             if (keys[markKey].black)
             {

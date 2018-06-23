@@ -10,7 +10,10 @@ import UIKit
 import CoreAudioKit
 import os
 
-public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate {
+public var globalAudioUnit: AUv3Harmonizer?
+
+public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate, HarmonizerAlternateViewDelegate {
+    
     // MARK: Properties
 
     @IBOutlet weak var harmonizerView: HarmonizerView!
@@ -31,6 +34,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBOutlet weak var presetEditButton: HarmButton!
     @IBOutlet weak var presetLabel: UILabel!
     
+    @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet var presetFavorites: [HarmButton]!
     
@@ -55,6 +59,8 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 					self.connectViewWithAU()
 				}
 			}
+            
+            globalAudioUnit = audioUnit
         }
     }
 	
@@ -73,7 +79,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     
     var intervals = [AUParameter]()
     
-    var configController: ConfigViewController?
+    var configController: ConfigNavigationController?
     var presetController: PresetController?
     
     var presetModified: Bool = false {
@@ -116,11 +122,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 //        let theme = ThemeManager.currentTheme()
 //        ThemeManager.applyTheme(theme)
 //        
-        for view in self.view.subviews as [UIView] {
-            if let btn = view as? UIButton {
-                btn.titleLabel?.adjustsFontSizeToFitWidth = true
-            }
-        }
+//        for view in self.view.subviews as [UIView] {
+//            if let btn = view as? UIButton {
+//                btn.titleLabel?.adjustsFontSizeToFitWidth = true
+//            }
+//        }
 		
 		// Respond to changes in the filterView (frequency and/or response changes).
         harmonizerView.delegate = self
@@ -130,14 +136,23 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         presetController = PresetController()
         
         auPoller(T: 0.1)
-		configController = self.storyboard?.instantiateViewController(withIdentifier: "configView") as? ConfigViewController
-        let _: UIView = configController!.view
+		configController = self.storyboard?.instantiateViewController(withIdentifier: "detailsNavigator") as? ConfigNavigationController
+        
+        configController!.viewDelegate = self
+        
+        //let _: UIView = configController!.view
+        
+        //configController!.presetController = presetController
+        
+        self.addChildViewController(self.configController!)
+        
+        self.containerView.addSubview(configController!.view)
+        
+        configController!.didMove(toParentViewController: self)
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appResigned), name: Notification.Name.UIApplicationWillResignActive, object: nil)
         
-        
-        self.addChildViewController(self.configController!)
         connectViewWithAU()
 	}
     
@@ -215,7 +230,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         speedParameter = paramTree.value(forKey: "speed") as? AUParameter
         hgainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
-        
+        print(hgainParameter!.value)
         presetController!.audioUnit = audioUnit
         presetController!.restoreState()
         
@@ -230,7 +245,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
                                           execute: requestWorkItem)
 		})
         
-        configController!.refresh()
+        
+        configController!.audioUnit = self.audioUnit
+//        configController!.presetController = self.presetController
+//
+//        configController!.refresh()
         
         let theNoteBlock = audioUnit!.scheduleMIDIEventBlock
         
@@ -245,13 +264,15 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         {
             midiButton.isSelected = (midiParameter!.value == 1)
             autoButton.isSelected = (autoParameter!.value == 1)
-            dryButton.isSelected = (vgainParameter!.value > 0)
+            dryButton.isSelected = (hgainParameter!.value == 0)
             kbdLinkButton.isSelected = (midiLinkParameter!.value == 1)
             
             enableKeyboard(midiButton.isSelected)
             
             voicesView.autoTuneVoice1 = autoButton.isSelected
             voicesView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
+            
+            voicesView.alpha = dryButton.isSelected ? 0.5 : 1.0
             
             harmonizerView.setSelectedKeycenter(keycenterParameter!.value)
         }
@@ -298,8 +319,12 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     }
     
     @IBAction func toggleDry(_ sender: Any) {
-        vgainParameter!.value = vgainParameter!.value == 0 ? 1 : 0
-        dryButton.isSelected = vgainParameter!.value == 1
+        
+        dryButton.isSelected = !dryButton.isSelected
+        hgainParameter!.value = dryButton.isSelected ? 0 : 1
+        voicesView.alpha = dryButton.isSelected ? 0.5 : 1
+        //print(hgainParameter!.value)
+        
     }
     
     @IBAction func octaveUp(_ sender: Any) {
@@ -336,32 +361,44 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         }
     }
     
+    func ShowMainView() {
+        
+        self.containerView.isHidden = true
+        self.mainView.isHidden = false
+        self.mainView.alpha = 1.0
+        self.syncView()
+        
+    }
+    
     @IBAction func presetConf(_ sender: HarmButton) {
-        self.configController!.audioUnit = self.audioUnit
-        self.configController!.presetController = self.presetController
-        self.configController!.doneFcn = {
-            self.syncView()
-        }
+        
+//        self.configController!.doneFcn = {
+//            self.syncView()
+//        }
         
         sender.isSelected = true
         
         //performSegue(withIdentifier: "configurePreset", sender: self)
         //return nil
         
+        self.mainView.isHidden = true
+        self.mainView.alpha = 0.0
+        self.containerView.isHidden = false
         
-        view.frame = self.view.bounds
+        self.configController!.view.frame = containerView.bounds
         
-        self.view.addSubview(configController!.view)
-        //self.containerView.isHidden = false
-        
-        configController!.view.frame = view.bounds.offsetBy(dx: view.bounds.maxX, dy: 0)
-        configController!.didMove(toParentViewController: self)
-        
-        UIView.beginAnimations("resize", context: nil)
-        UIView.setAnimationDuration(0.1)
-        configController!.view.frame = view.bounds
-        
-        UIView.commitAnimations()
+//        let vc = configController // self.storyboard?.instantiateViewController(withIdentifier: "configDetailView") as? ConfigDetailViewController
+//
+//        self.view.addSubview(vc!.view)
+//
+//        vc!.view.frame = view.bounds.offsetBy(dx: view.bounds.maxX, dy: 0)
+//        vc!.didMove(toParentViewController: self)
+//
+//        UIView.beginAnimations("resize", context: nil)
+//        UIView.setAnimationDuration(0.1)
+//        vc!.view.frame = view.bounds
+//
+//        UIView.commitAnimations()
         //configController!.drawKeys()
         sender.isSelected = false
         

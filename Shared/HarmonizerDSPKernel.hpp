@@ -385,7 +385,7 @@ public:
             case HarmParamBypass:
                 return (float) bypass;
             case HarmParamHgain:
-                return harmgain;
+                return harmgain_target;
             case HarmParamVgain:
                 return voicegain;
             case HarmParamSpeed:
@@ -1080,13 +1080,21 @@ public:
         }
     
         float frac = 0.99 - (speed * 0.29);
+        float v1frac = 0.95;
         
         for (int k = 0; k < nvoices; k++)
         {
             if (k < n_auto && k >= start)
                 voices[k].target_ratio /= error_ratio; // for autoharm
             
+            if (k == 0)
+            {
+                voices[k].ratio = v1frac * voices[k].ratio + (1-v1frac) * voices[k].target_ratio;
+            }
+            else
+            {
             voices[k].ratio = frac * voices[k].ratio + (1-frac) * voices[k].target_ratio;
+            }
         }
     }
 	
