@@ -196,7 +196,7 @@
                                                                         <subviews>
                                                                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Y-lt-TAX" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="60"/>
-                                                                                <state key="normal" image="Logo" backgroundImage="Logo"/>
+                                                                                <state key="normal" image="Logo"/>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMf-yw-TXY" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="60.666666666666629" y="0.0" width="58.666666666666657" height="60"/>
@@ -320,18 +320,18 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yec-WX-anO">
-                                                        <rect key="frame" x="0.0" y="101.66666666666667" width="724" height="132.66666666666663"/>
+                                                        <rect key="frame" x="0.0" y="101.66666666666669" width="724" height="123.33333333333331"/>
                                                         <subviews>
                                                             <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="0.0" width="724" height="132.66666666666666"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="724" height="123.33333333333333"/>
                                                             </view>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="JV1-J5-NPq">
-                                                        <rect key="frame" x="0.0" y="239.33333333333334" width="724" height="114.66666666666666"/>
+                                                        <rect key="frame" x="0.0" y="230" width="724" height="124"/>
                                                         <subviews>
                                                             <view clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnK-4r-xXA" customClass="KeyboardView" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="0.0" width="663.33333333333337" height="114.66666666666667"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="663.33333333333337" height="124"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="n_visible">
                                                                         <integer key="value" value="14"/>
@@ -339,10 +339,10 @@
                                                                 </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ZUr-hM-WhY">
-                                                                <rect key="frame" x="665.33333333333337" y="0.0" width="58.666666666666629" height="114.66666666666667"/>
+                                                                <rect key="frame" x="665.33333333333337" y="0.0" width="58.666666666666629" height="124"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fnI-wt-qaD" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="38.333333333333336"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="41.333333333333336"/>
                                                                         <state key="normal" title="▲">
                                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </state>
@@ -351,14 +351,14 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LWt-Ah-h6L">
-                                                                        <rect key="frame" x="0.0" y="38.333333333333343" width="58.666666666666664" height="38"/>
+                                                                        <rect key="frame" x="0.0" y="41.333333333333314" width="58.666666666666664" height="41.333333333333343"/>
                                                                         <state key="normal" title="▶"/>
                                                                         <connections>
                                                                             <action selector="octaveUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fLI-EK-S1D"/>
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xz3-CX-ccC">
-                                                                        <rect key="frame" x="0.0" y="76.333333333333343" width="58.666666666666664" height="38.333333333333343"/>
+                                                                        <rect key="frame" x="0.0" y="82.666666666666686" width="58.666666666666664" height="41.333333333333343"/>
                                                                         <state key="normal" title="◀"/>
                                                                         <connections>
                                                                             <action selector="OctaveDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="q2U-lw-o6K"/>
@@ -378,6 +378,7 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="12X-sd-e4c" firstAttribute="leading" secondItem="xJe-bz-bEY" secondAttribute="leading" id="7oh-ZB-Pbt"/>
+                                            <constraint firstItem="JV1-J5-NPq" firstAttribute="height" secondItem="xJe-bz-bEY" secondAttribute="height" multiplier="0.35" id="O6T-Ar-c52"/>
                                             <constraint firstAttribute="bottom" secondItem="12X-sd-e4c" secondAttribute="bottom" id="Zlx-Im-u1z"/>
                                             <constraint firstAttribute="trailing" secondItem="12X-sd-e4c" secondAttribute="trailing" id="r1i-dA-wSC"/>
                                             <constraint firstItem="12X-sd-e4c" firstAttribute="top" secondItem="xJe-bz-bEY" secondAttribute="top" id="zSa-WY-xdE"/>

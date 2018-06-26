@@ -171,7 +171,7 @@ public:
         
         voices[0].midinote = 0;
         
-        ngrains = 12 * nvoices;
+        ngrains = 5 * nvoices;
         grains = new grain_t[ngrains];
         
         for (int k = 0; k < ngrains; k++)
@@ -465,6 +465,9 @@ public:
 		int channelCount = n_channels;
         sample_count += frameCount;
         
+        if (bufferOffset != 0)
+            fprintf(stderr, "buffer_offset = %d\n", bufferOffset);
+        
         // For each sample.
 		for (int frameIndex = 0; frameIndex < frameCount; ++frameIndex)
         {
@@ -512,6 +515,8 @@ public:
                     T = oldT;
                 
                 voiced = (p != 0);
+                
+                update_voices();
             }
             
             float dp = cix - 2*maxT - pitchmark[0];
@@ -521,13 +526,15 @@ public:
             if (dp > (T + T/4))
             {
                 findmark();
-                update_voices();
-                
+            
                 //printf("pitchmark[0,1,2] = %.2f,%.2f,%.2f\ninput = %d\n", pitchmark[0],pitchmark[1],pitchmark[2],cix);
             }
             
-            if (pitchmark[2] < 0)
-                continue;
+//            if (pitchmark[2] < 0)
+//            {
+//                fprintf(stderr, "pitchmark[2] < 0\n");
+//                continue;
+//            }
             
             // voice 0 uses simple cubic resampling instead of PSOLA (if pitch correction is used)
             
@@ -571,7 +578,7 @@ public:
             {
                 voices[vix].target_gain = (voiced && voices[vix].midinote > 0) ? 1.0 : 0.0;
                 if (vix == 0 && autotune) voices[vix].target_gain = 1.0;
-                voices[vix].gain += .0005 * sgn(voices[vix].target_gain - voices[vix].gain);
+                voices[vix].gain += .001 * sgn(voices[vix].target_gain - voices[vix].gain);
 //                if (voices[vix].midinote == -1 || (vix > n_auto && !midi_enable))
 //                    continue;
                 
@@ -589,7 +596,7 @@ public:
                 if (--voices[vix].nextgrain < 0)
                 {
                     // search for the first open grain
-                    
+                    int found_grain = 0;
                     for (int k = 0; k < ngrains; k++)
                     {
                         if (grains[k].size < 0)
@@ -632,8 +639,14 @@ public:
                             if (k > maxgrain)
                                 maxgrain = k;
                             
+                            found_grain = true;
                             break;
                         }
+                    }
+                    
+                    if (found_grain == false)
+                    {
+                        fprintf(stderr, "couldn't find grain!\n");
                     }
                     for (int k = maxgrain; k > 0; k--)
                     {
@@ -981,6 +994,8 @@ public:
             }
         }
         
+        static int was_voiced = 0;
+        
         if (!voiced)
         {
             note_number = -1.0;
@@ -989,6 +1004,7 @@ public:
             {
                 voice_notes[k] = -1;
             }
+            was_voiced = 0;
             return;
         }
         
@@ -1076,17 +1092,28 @@ public:
             }
         }
         
-        static int was_voiced = 0;
-        
         for (int k = 0; k < nvoices; k++)
         {
             if (voices[k].midinote < 0)
                 continue;
             
-            if (!was_voiced)
+            if ((voiced && !was_voiced) || voices[k].lastnote < 0)
                 voices[k].midinote_ = voices[k].midinote;
             else
-                voices[k].midinote_ += .2 * sgn(voices[k].midinote - voices[k].midinote_);
+            {
+                float diff = .9 * (voices[k].midinote - voices[k].midinote_);
+                if (fabs(diff) > speed)
+                    diff = sgn(diff) * speed;
+                
+                voices[k].midinote_ += diff;
+                
+//                if (fabs(voices[k].midinote - voices[k].midinote_) < 1.0)
+//                    voices[k].midinote_ += .9 * (voices[k].midinote - voices[k].midinote_);
+//                else
+//                    voices[k].midinote_ += speed * sgn(voices[k].midinote - voices[k].midinote_);
+            }
+            
+            //voices[k].midinote_ = sgn(voices[k].midinote - voices[k].midinote_) * fmin(1.0, abs(voices[k].midinote - voices[k].midinote_));
             
             //voices[0].midinote = 0;
             
@@ -1099,7 +1126,7 @@ public:
         was_voiced = voiced;
     
         float frac = 0.99 - (speed * 0.29);
-        float v1frac = 0.95;
+        float v1frac = 0.8;
         
         for (int k = 0; k < nvoices; k++)
         {
@@ -1112,7 +1139,7 @@ public:
             }
             else
             {
-            voices[k].ratio = frac * voices[k].ratio + (1-frac) * voices[k].target_ratio;
+            voices[k].ratio = v1frac * voices[k].ratio + (1-v1frac) * voices[k].target_ratio;
             }
         }
     }
@@ -1145,9 +1172,9 @@ private:
     int keycenter = 0;
     float midinotes[128];
     float midigain = 1.0;
-    float harmgain = 1.0;
+    float harmgain = 0.0;
     float harmgain_target = 1.0;
-    float voicegain = 1.0;
+    float voicegain = 0.0;
     float voicegain_target = 1.0;
     float speed = 1.0;
     int autotune = 1;
