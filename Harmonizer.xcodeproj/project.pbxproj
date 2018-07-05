@@ -62,8 +62,6 @@
 		C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */; };
 		C96F203C20D7D3B200F43D90 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F203B20D7D3B200F43D90 /* BaseView.swift */; };
 		C96F203D20D7D3B200F43D90 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F203B20D7D3B200F43D90 /* BaseView.swift */; };
-		C96F203F20D7F63E00F43D90 /* HarmPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F203E20D7F63E00F43D90 /* HarmPickerView.swift */; };
-		C96F204020D7F63E00F43D90 /* HarmPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F203E20D7F63E00F43D90 /* HarmPickerView.swift */; };
 		C96F204220D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */; };
 		C96F204320D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */; };
 		C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204420D85CF200F43D90 /* HarmPageViewController.swift */; };
@@ -245,7 +243,6 @@
 		C94FC87B202C96F60009E742 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine2.swift; sourceTree = "<group>"; };
 		C96F203B20D7D3B200F43D90 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
-		C96F203E20D7F63E00F43D90 /* HarmPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmPickerView.swift; sourceTree = "<group>"; };
 		C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmTableViewCell.swift; sourceTree = "<group>"; };
 		C96F204420D85CF200F43D90 /* HarmPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmPageViewController.swift; sourceTree = "<group>"; };
 		C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmParameterTableView.swift; sourceTree = "<group>"; };
@@ -376,7 +373,6 @@
 			children = (
 				91236D0F1B08F42B00734C5E /* AppDelegate.swift */,
 				91236D111B08F42B00734C5E /* ViewController.swift */,
-				C96F203E20D7F63E00F43D90 /* HarmPickerView.swift */,
 				C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */,
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
@@ -864,7 +860,6 @@
 				C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */,
 				C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,
-				C96F203F20D7F63E00F43D90 /* HarmPickerView.swift in Sources */,
 				C96F203C20D7D3B200F43D90 /* BaseView.swift in Sources */,
 				91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */,
 				C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */,
@@ -880,7 +875,6 @@
 				C93163531FBCE9A400EE1762 /* HarmViewController.swift in Sources */,
 				C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */,
 				C9FA08BD20B315D6003CC2EA /* KeyboardView.swift in Sources */,
-				C96F204020D7F63E00F43D90 /* HarmPickerView.swift in Sources */,
 				C9EC31E62065B97D007835AB /* PresetFavoriteViewController.swift in Sources */,
 				C96F204F20DC066700F43D90 /* ConfigNavigationController.swift in Sources */,
 				927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */,

@@ -20,11 +20,14 @@ class ConfigListViewController: UITableViewController {
     var speedParameter: AUParameter?
     var hgainParameter: AUParameter?
     var vgainParameter: AUParameter?
+    var tuningParameter: AUParameter?
     
     @IBOutlet weak var drySwitch: UISwitch!
     
     @IBOutlet weak var levelStepper: UIStepper!
     @IBOutlet weak var levelLabel: UILabel!
+    
+    @IBOutlet weak var tuningLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +46,9 @@ class ConfigListViewController: UITableViewController {
         hgainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
         
+        tuningParameter = paramTree.value(forKey: "tuning") as? AUParameter
         
+        tuningLabel.text = "\(tuningParameter!.value) Hz"
         
     }
     
@@ -82,6 +87,11 @@ class ConfigListViewController: UITableViewController {
     @IBAction func harmonyLevel(_ sender: UIStepper) {
         hgainParameter!.value = AUValue(sender.value / 100)
         levelLabel.text = "\(Int(sender.value))%"
+    }
+    @IBAction func baseTuning(_ sender: UIStepper) {
+        tuningParameter!.value = AUValue(sender.value)
+        
+        tuningLabel.text = "\(tuningParameter!.value) Hz"
     }
 }
 

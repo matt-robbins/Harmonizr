@@ -96,11 +96,24 @@ enum {
     HarmParamHgain = 9,
     HarmParamVgain = 10,
     HarmParamSpeed = 11,
-    HarmParamInterval = 12
+    HarmParamTuning = 12,
+    HarmParamInterval = 13
 };
 
 static inline double squared(double x) {
     return x * x;
+}
+
+static float inc_to_target(float value, float target, float c, float maxrate_up, float maxrate_down)
+{
+    float diff = c * (target - value);
+    if (sgn(diff) > 0 && diff > maxrate_up)
+        diff = maxrate_up;
+    
+    else if (sgn(diff) < 0 && diff < maxrate_down)
+        diff = maxrate_down;
+    
+    return value + diff;
 }
 
 /*
@@ -352,6 +365,9 @@ public:
             case HarmParamSpeed:
                 speed = clamp(value, 0.f, 1.f);
                 break;
+            case HarmParamTuning:
+                baseTuning = value;
+                break;
             case HarmParamInterval:
             default:
                 int addr = (int) address - (int) HarmParamInterval;
@@ -395,6 +411,8 @@ public:
                 return voicegain_target;
             case HarmParamSpeed:
                 return speed;
+            case HarmParamTuning:
+                return baseTuning;
 				
             case HarmParamInterval:
             default:
@@ -530,45 +548,17 @@ public:
                 //printf("pitchmark[0,1,2] = %.2f,%.2f,%.2f\ninput = %d\n", pitchmark[0],pitchmark[1],pitchmark[2],cix);
             }
             
-//            if (pitchmark[2] < 0)
-//            {
-//                fprintf(stderr, "pitchmark[2] < 0\n");
-//                continue;
-//            }
-            
-            // voice 0 uses simple cubic resampling instead of PSOLA (if pitch correction is used)
-            
             int first_psola_voice = 0;
             
             if (!autotune)
             {
-                first_psola_voice = 1;
-//
-//                int dx1 = cix - (int) voices[0].ix1;
-//                if (dx1 < 0) dx1 += ncbuf;
-//
-//                if (dx1 > 512 + (int) T)
-//                {
-//                    voices[0].ix1 += T;
-//                }
-//
-//                if (dx1 < 512 - (int) T)
-//                {
-//                    voices[0].ix1 -= T;
-//                }
-//
-//                voices[0].ix1 += voices[0].ratio;
-//
-//                if (voices[0].ix1 >= ncbuf)
-//                    voices[0].ix1 -= ncbuf;
-//                if (voices[0].ix1 < 0)
-//                    voices[0].ix1 += ncbuf;
-//
-//                int ix1i = (int) voices[0].ix1;
-//                *out = voicegain * cubic(cbuf + ix1i, voices[0].ix1 - ix1i) / 2;
                 *out = *in * voicegain / 2;
                 *out2 = *out;
+                
+                first_psola_voice = 1;
+                //voicegain_target = 1;
             }
+            //voicegain_target = 0;
             
             // Ramp Gain
             voicegain += .001 * sgn(voicegain_target - voicegain);
@@ -578,7 +568,9 @@ public:
             {
                 voices[vix].target_gain = (voiced && voices[vix].midinote > 0) ? 1.0 : 0.0;
                 if (vix == 0 && autotune) voices[vix].target_gain = 1.0;
-                voices[vix].gain += .001 * sgn(voices[vix].target_gain - voices[vix].gain);
+                //voices[vix].gain += .001 * sgn(voices[vix].target_gain - voices[vix].gain);
+                voices[vix].gain = inc_to_target(voices[vix].gain, voices[vix].target_gain, 0.9, 0.001, -0.001);
+                
 //                if (voices[vix].midinote == -1 || (vix > n_auto && !midi_enable))
 //                    continue;
                 
@@ -965,6 +957,8 @@ public:
     
     void update_voices (void)
     {
+        static int last_nn = 0;
+        
         voices[0].error = 0;
         //voices[0].ratio = 1;
         voices[0].target_ratio = 1;
@@ -1000,6 +994,7 @@ public:
         {
             note_number = -1.0;
             midi_note_number = -1.0;
+            last_nn = -1;
             for (int k = 0; k < 4; k++)
             {
                 voice_notes[k] = -1;
@@ -1010,20 +1005,35 @@ public:
         
         //int n_auto = 4;
             
-        float f = log2f (sampleRate / (T * 440));
+        float f = log2f (sampleRate / (T * baseTuning));
         
         float note_f = f * 12.0;
-        midi_note_number = round(note_f) + 69;
-        
         int nn = (int) round(note_f);
-        float error = (note_f - (float)nn)/12;
-        float error_ratio = powf(2.0, error);
+        
+        midi_note_number = nn + 69;
+        
+        //fprintf(stderr, "%f,%d\n",note_f,last_nn);
+        
+        if (fabs(note_f - (float) last_nn) < 0.75)
+        {
+            midi_note_number = last_nn + 69;
+        }
+        else
+        {
+            last_nn = nn;
+            midi_note_number = nn + 69;
+        }
+        
+        //float error = (note_f - (float)nn)/12;
+        //float error_ratio = powf(2.0, error);
         
         int root = root_key % 12;
         int quality = root_key / 12;
         
-        int interval = (nn + 69 - root) % 12;
+        int interval = (last_nn + 69 - root) % 12;
         note_number = (nn + 69) % 12 + (note_f - nn);
+        
+        //last_nn = nn;
         
         for (int k = 0; k < 4; k++)
         {
@@ -1033,7 +1043,6 @@ public:
             }
             else {
                 voice_notes[k] = midi_note_number + interval_offsets[k + (interval*4) + (quality*48)];
-                
             }
             
             if (k > inversion)
@@ -1043,12 +1052,6 @@ public:
             
             voices[k].midinote = voice_notes[k];
         }
-        
-//        if (autotune)
-//        {
-//            // lock to nearest note
-//            voices[0].target_ratio = 1.0/error_ratio;
-//        }
         
         int start = autotune ? 0 : 1;
 
@@ -1106,11 +1109,6 @@ public:
                     diff = sgn(diff) * speed;
                 
                 voices[k].midinote_ += diff;
-                
-//                if (fabs(voices[k].midinote - voices[k].midinote_) < 1.0)
-//                    voices[k].midinote_ += .9 * (voices[k].midinote - voices[k].midinote_);
-//                else
-//                    voices[k].midinote_ += speed * sgn(voices[k].midinote - voices[k].midinote_);
             }
             
             //voices[k].midinote_ = sgn(voices[k].midinote - voices[k].midinote_) * fmin(1.0, abs(voices[k].midinote - voices[k].midinote_));
@@ -1126,7 +1124,7 @@ public:
         was_voiced = voiced;
     
         float frac = 0.99 - (speed * 0.29);
-        float v1frac = 0.8;
+        float v1frac = 0.5;
         
         for (int k = 0; k < nvoices; k++)
         {
@@ -1168,7 +1166,7 @@ private:
     int voiced = 0;
     FFTSetup fft_s;
 	float sampleRate = 44100.0;
-
+    float baseTuning = 440.0;
     int keycenter = 0;
     float midinotes[128];
     float midigain = 1.0;

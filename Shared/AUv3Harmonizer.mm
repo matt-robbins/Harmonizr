@@ -227,6 +227,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                                                                          min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
                                                                 valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *tuningParam = [AUParameterTree createParameterWithIdentifier:@"tuning" name:@"Tuning"
+                                                                      address:HarmParamTuning
+                                                                          min:400 max:500 unit:kAudioUnitParameterUnit_Hertz unitName:nil
+                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                 valueStrings:nil dependentParameters:nil];
 
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
     
@@ -241,6 +247,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:hgainParam];
     [params addObject:vgainParam];
     [params addObject:speedParam];
+    [params addObject:tuningParam];
         
     for (int k = 0; k < 144; k++)
     {
@@ -267,6 +274,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     vgainParam.value = 1;
     hgainParam.value = 1;
     speedParam.value = 1;
+    tuningParam.value = 440.0;
     
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     _kernel.setParameter(HarmParamInversion, inversionParam.value);
