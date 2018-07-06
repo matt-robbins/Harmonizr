@@ -85,19 +85,22 @@ typedef enum triads
 
 enum {
     HarmParamKeycenter = 0,
-    HarmParamInversion = 1,
-    HarmParamNvoices = 2,
-    HarmParamAuto = 3,
-    HarmParamMidi = 4,
-    HarmParamMidiLink = 5,
-    HarmParamTriad = 6,
-    HarmParamBypass = 7,
-    HarmParamDouble = 8,
-    HarmParamHgain = 9,
-    HarmParamVgain = 10,
-    HarmParamSpeed = 11,
-    HarmParamTuning = 12,
-    HarmParamInterval = 13
+    HarmParamInversion,
+    HarmParamNvoices,
+    HarmParamAuto,
+    HarmParamAutoStrength,
+    HarmParamMidi,
+    HarmParamMidiLink,
+    HarmParamMidiLegato,
+    HarmParamTriad,
+    HarmParamBypass,
+    HarmParamDouble,
+    HarmParamHgain,
+    HarmParamVgain,
+    HarmParamDryMix,
+    HarmParamSpeed,
+    HarmParamTuning,
+    HarmParamInterval
 };
 
 static inline double squared(double x) {
@@ -343,11 +346,17 @@ public:
                 autotune = (int) clamp(value,0.f,1.f);
                 //fprintf(stderr, "autotune: %d\n", autotune);
                 break;
+            case HarmParamAutoStrength:
+                corr_strength = clamp(value, 0.f, 1.f);
+                break;
             case HarmParamMidi:
                 midi_enable = (int) clamp(value,0.f,1.f);
                 break;
             case HarmParamMidiLink:
                 midi_link = (int) clamp(value,0.f,1.f);
+                break;
+            case HarmParamMidiLegato:
+                midi_legato = (int) clamp(value, 0.f, 1.f);
                 break;
             case HarmParamTriad:
                 triad = (int) clamp(value,-1.f,30.f);
@@ -361,6 +370,9 @@ public:
                 break;
             case HarmParamVgain:
                 voicegain_target = clamp(value, 0.f, 2.f);
+                break;
+            case HarmParamDryMix:
+                dry_mix = clamp(value, 0.f, 1.f);
                 break;
             case HarmParamSpeed:
                 speed = clamp(value, 0.f, 1.f);
@@ -397,10 +409,14 @@ public:
                 return (float) n_auto;
             case HarmParamAuto:
                 return (float) autotune;
+            case HarmParamAutoStrength:
+                return (float) corr_strength;
             case HarmParamMidi:
                 return (float) midi_enable;
             case HarmParamMidiLink:
                 return (float) midi_link;
+            case HarmParamMidiLegato:
+                return (float) midi_legato;
             case HarmParamTriad:
                 return (float) triad;
             case HarmParamBypass:
@@ -409,6 +425,8 @@ public:
                 return harmgain_target;
             case HarmParamVgain:
                 return voicegain_target;
+            case HarmParamDryMix:
+                return dry_mix;
             case HarmParamSpeed:
                 return speed;
             case HarmParamTuning:
@@ -470,6 +488,10 @@ public:
                 if (num == 11)
                 {
                     midigain = (float) val / 127.0;
+                }
+                if (num == 64)
+                {
+                    midi_legato = (float) (val > 0);
                 }
                 if (num == 123) { // all notes off
 
@@ -550,15 +572,17 @@ public:
             
             int first_psola_voice = 0;
             
-            if (!autotune)
+            voicegain_target = 0;
+            if (!autotune && triad < 0)
             {
-                *out = *in * voicegain / 2;
-                *out2 = *out;
-                
                 first_psola_voice = 1;
-                //voicegain_target = 1;
+                voicegain_target = dry_mix;
             }
-            //voicegain_target = 0;
+            
+            *out = *in * voicegain / 2;
+            *out2 = *out;
+            
+            int nonvoiced_count = (int) (voicegain > 0);
             
             // Ramp Gain
             voicegain += .001 * sgn(voicegain_target - voicegain);
@@ -566,10 +590,14 @@ public:
     
             for (int vix = first_psola_voice; vix < nvoices; vix++)
             {
-                voices[vix].target_gain = (voiced && voices[vix].midinote > 0) ? 1.0 : 0.0;
-                if (vix == 0 && autotune) voices[vix].target_gain = 1.0;
+                voices[vix].target_gain = ((voiced || nonvoiced_count == 0) && voices[vix].midinote > 0) ? 1.0 : 0.0;
+                
+                if (voices[vix].target_gain > 0)
+                    nonvoiced_count++;
+                
+                if (vix == 0 && (autotune || triad >= 0)) voices[vix].target_gain = dry_mix;
                 //voices[vix].gain += .001 * sgn(voices[vix].target_gain - voices[vix].gain);
-                voices[vix].gain = inc_to_target(voices[vix].gain, voices[vix].target_gain, 0.9, 0.001, -0.001);
+                voices[vix].gain = inc_to_target(voices[vix].gain, voices[vix].target_gain, 0.9, 0.001, -0.0004);
                 
 //                if (voices[vix].midinote == -1 || (vix > n_auto && !midi_enable))
 //                    continue;
@@ -620,6 +648,7 @@ public:
                                 // for high transpositions, start shortening the blips.
                                 if (voices[vix].ratio > 1.7)
                                 {
+                                    //grains[k].size = T/2;
                                     grains[k].ratio *= (1 + (voices[vix].ratio - 1.7)/2);
                                     //grains[k].gain *= powf(voices[vix].ratio,0.5);
                                 }
@@ -819,27 +848,30 @@ public:
         midi_changed_sample_num = sample_count;
         midi_changed = 1;
         
-        // look for one with the same note and take that if we can, or the empty one with
-        // the closest last note to the one we want
-        for (int k = 3; k < nvoices; k++)
+        if (!midi_legato)
         {
-            dist = abs(voices[k].lastnote - note);
-            if ((dist < min_dist && voices[k].midinote < 0) || voices[k].midinote == note)
+            // look for one with the same note and take that if we can, or the empty one with
+            // the closest last note to the one we want
+            for (int k = 3; k < nvoices; k++)
             {
-                min_ix = k;
-                min_dist = dist;
+                dist = abs(voices[k].lastnote - note);
+                if ((dist < min_dist && voices[k].midinote < 0) || voices[k].midinote == note)
+                {
+                    min_ix = k;
+                    min_dist = dist;
+                }
             }
-        }
-        
-        if (min_dist >= 0)
-        {
-            voices[min_ix].lastnote = voices[min_ix].midinote;
-            voices[min_ix].midinote = note;
-            voices[min_ix].midivel = vel;
-            voices[min_ix].sample_num = sample_count;
-            //voices[min_ix].ratio = 1.0;
-            voices[min_ix].nextgrain = 0;
-            return;
+            
+            if (min_dist >= 0)
+            {
+                voices[min_ix].lastnote = voices[min_ix].midinote;
+                voices[min_ix].midinote = note;
+                voices[min_ix].midivel = vel;
+                voices[min_ix].sample_num = sample_count;
+                //voices[min_ix].ratio = 1.0;
+                //voices[min_ix].nextgrain = 0;
+                return;
+            }
         }
         
         // otherwise, we are stealing
@@ -859,7 +891,7 @@ public:
         voices[min_ix].midinote = note;
         voices[min_ix].midivel = vel;
         voices[min_ix].sample_num = sample_count;
-        voices[min_ix].nextgrain = 0;
+        //voices[min_ix].nextgrain = 0;
         
         if (++voice_ix > nvoices)
             voice_ix = 3;
@@ -1014,7 +1046,7 @@ public:
         
         //fprintf(stderr, "%f,%d\n",note_f,last_nn);
         
-        if (fabs(note_f - (float) last_nn) < 0.75)
+        if (fabs(note_f - (float) last_nn) < 0.6)
         {
             midi_note_number = last_nn + 69;
         }
@@ -1053,41 +1085,42 @@ public:
             voices[k].midinote = voice_notes[k];
         }
         
-        int start = autotune ? 0 : 1;
+        int start = (autotune || (triad >= 0)) ? 0 : 1;
 
-        if (triad >= 0)
-        {
-            voices[0].midinote = 0;
-            voices[1].midinote = 0;
-            voices[2].midinote = 0;
-            voices[1].target_ratio = voices[1].ratio = triads[triad].r1;
-            voices[2].target_ratio = voices[2].ratio = triads[triad].r2;
-        }
+//        if (triad >= 0)
+//        {
+//            voices[0].midinote = 0;
+//            voices[1].midinote = 0;
+//            voices[2].midinote = 0;
+//            voices[1].target_ratio = voices[1].ratio = triads[triad].r1;
+//            voices[2].target_ratio = voices[2].ratio = triads[triad].r2;
+//        }
         
-        else if (auto_enable)
-        {
-            for (int k = start; k < n_auto; k++)
-            {
-                //voices[k].midinote = 0;
-                
-                if (quality == 0)
-                {
-                    voices[k].target_ratio = major_chord_table[interval][k];
-                }
-                else if (quality == 1)
-                {
-                    voices[k].target_ratio = minor_chord_table[interval][k];
-                }
-                else if (quality == 2)
-                {
-                    voices[k].target_ratio = blues_chord_table[interval][k];
-                }
-                
-                if (k > inversion)
-                    voices[k].target_ratio *= 0.5;
-            }
-        }
-        else
+//        else if (auto_enable)
+//        {
+//            for (int k = start; k < n_auto; k++)
+//            {
+//                //voices[k].midinote = 0;
+//
+//                if (quality == 0)
+//                {
+//                    voices[k].target_ratio = major_chord_table[interval][k];
+//                }
+//                else if (quality == 1)
+//                {
+//                    voices[k].target_ratio = minor_chord_table[interval][k];
+//                }
+//                else if (quality == 2)
+//                {
+//                    voices[k].target_ratio = blues_chord_table[interval][k];
+//                }
+//
+//                if (k > inversion)
+//                    voices[k].target_ratio *= 0.5;
+//            }
+//        }
+//        else
+        if (!auto_enable)
         {
             for (int k = 0; k < n_auto; k++)
             {
@@ -1099,6 +1132,24 @@ public:
         {
             if (voices[k].midinote < 0)
                 continue;
+            
+            if (triad >= 0 && k < 4)
+            {
+                voices[k].target_ratio = major_chord_table[0][k];
+                
+                if (k > inversion)
+                {
+                    voices[k].target_ratio /= 2;
+                }
+                
+                if (k == 0 && voices[k].target_ratio != 1)
+                {
+                    voices[0].midinote = 0; // hack to turn on voice
+                }
+                
+                //fprintf(stderr,"%d: %f\n", k, major_chord_table[0][k]);
+                continue;
+            }
             
             if ((voiced && !was_voiced) || voices[k].lastnote < 0)
                 voices[k].midinote_ = voices[k].midinote;
@@ -1116,7 +1167,10 @@ public:
             //voices[0].midinote = 0;
             
             float error_hsteps = (voices[k].midinote_ - 69) - note_f;
-            
+            if (k == 0)
+            {
+                error_hsteps *= corr_strength;
+            }
             voices[k].target_ratio = powf(2.0, error_hsteps/12);
             //voices[k].ratio = voices[k].target_ratio;
         }
@@ -1174,7 +1228,9 @@ private:
     float harmgain_target = 1.0;
     float voicegain = 0.0;
     float voicegain_target = 1.0;
+    float dry_mix = 1.0;
     float speed = 1.0;
+    float corr_strength = 0.5;
     int autotune = 1;
     int bypass = 0;
     
@@ -1185,6 +1241,7 @@ private:
     voice_t * voices;
     int inversion = 2;
     int midi_enable = 1;
+    int midi_legato = 0;
     int auto_enable = 1;
     int midi_link = 1;
     int n_auto = 4;

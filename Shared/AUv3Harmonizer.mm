@@ -23,6 +23,7 @@ typedef struct FactoryPresetParameters {
     AUValue inversionValue;
     AUValue nvoicesValue;
     AUValue autoValue;
+    AUValue autoStrengthValue;
     AUValue midiValue;
     AUValue triadValue;
     AUValue intervalValues[144];
@@ -35,7 +36,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         2, //inversion
         3,
-        0, //autoharm
+        0, //autotune
+        0,
         1, //midi
         -1, //triad
         {0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
@@ -48,7 +50,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         2, //inversion
         3,
-        0, //autoharm
+        0, //autotune
+        0,
         1, //midi
         -1, //triad
         {0,4,7,12, -1,3,6,11, 0,5,10,12, 1,4,9,13, 0,3,8,12, 0,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,12, 1,2,6,13, 0,1,5,12, // major
@@ -61,7 +64,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         2, //inversion
         3,
-        1, //autoharm
+        1, //autotune
+        0,
         1, //midi
         -1, //triad
         {0,4,7,12, 0,3,6,12, 0,3,7,12, 0,3,9,12, 0,3,8,12, 0,4,7,12, 0,3,9,12, 0,5,9,12, 0,4,8,12, 0,5,8,12, 0,4,7,12, 0,3,6,12, // major
@@ -73,7 +77,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         1, //inversion
         4,
-        0, //autoharm
+        0, //autotune
+        0,
         1, //midi
         -1, //triad
         {0,4,7,12, 0,3,5,9, 0,3,5,9, 0,3,6,9, 0,3,8,12, 0,2,6,9, 0,3,5,9, 0,5,9,12, 0,3,6,9, 0,3,5,9, 0,3,6,9, 0,3,6,8, // major
@@ -85,7 +90,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         3, //inversion
         4,
-        0, //autoharm
+        0, //autotune
+        0,
         1, //midi
         -1, //triad
         {0,4,7,9, 0,3,6,8, 0,3,7,10, 0,3,6,9, 0,3,5,8, 0,4,7,9, 0,3,6,9, 0,2,5,9, 0,3,6,9, 0,3,5,8, 0,2,6,9, 0,1,5,8, // major
@@ -97,9 +103,10 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         1, //inversion
         1,
-        1, //autoharm
+        1, //autotune
+        1,
         1, //midi
-        -1, //triad
+        1, //triad
         {-12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "major"
             -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "minor"
             -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "dom"
@@ -109,7 +116,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         3, //inversion
         4,
-        0, //autoharm
+        0, //autotune
+        0,
         1, //midi
         -1, //triad
         {0,4,7,11, 0,3,6,10, 0,3,7,10, 0,3,6,9, 0,3,7,10, 0,4,7,11, 0,3,6,10, 0,4,7,10, 0,4,8,11, 0,3,7,10, 0,4,7,11, 0,3,6,10, // major
@@ -180,11 +188,17 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
             valueStrings:nil dependentParameters:nil];
 
-    AUParameter *autoParam = [AUParameterTree createParameterWithIdentifier:@"auto" name:@"Auto"
+    AUParameter *autoParam = [AUParameterTree createParameterWithIdentifier:@"auto" name:@"Autotune"
              address:HarmParamAuto
              min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
              flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
              valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *autoStrengthParam = [AUParameterTree createParameterWithIdentifier:@"auto_strength" name:@"Autotune Strength"
+                                                                    address:HarmParamAutoStrength
+                                                                        min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+                                                                      flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                               valueStrings:nil dependentParameters:nil];
     
     AUParameter *midiParam = [AUParameterTree createParameterWithIdentifier:@"midi" name:@"Midi"
             address:HarmParamMidi
@@ -197,6 +211,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                 min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
               flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *midiLegatoParam = [AUParameterTree createParameterWithIdentifier:@"midi_legato" name:@"Midi Legato"
+                                                                        address:HarmParamMidiLegato
+                                                                            min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+                                                                          flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                   valueStrings:nil dependentParameters:nil];
     
     AUParameter *bypassParam = [AUParameterTree createParameterWithIdentifier:@"bypass" name:@"Bypass"
             address:HarmParamBypass
@@ -222,6 +242,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
                                                                 valueStrings:nil dependentParameters:nil];
     
+    AUParameter *dryMixParam = [AUParameterTree createParameterWithIdentifier:@"dry_mix" name:@"Dry Mix"
+                                                                     address:HarmParamDryMix
+                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                valueStrings:nil dependentParameters:nil];
+    
     AUParameter *speedParam = [AUParameterTree createParameterWithIdentifier:@"speed" name:@"Speed"
                                                                      address:HarmParamSpeed
                                                                          min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
@@ -240,12 +266,15 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:inversionParam];
     [params addObject:nvoicesParam];
     [params addObject:autoParam];
+    [params addObject:autoStrengthParam];
     [params addObject:midiParam];
     [params addObject:midiLinkParam];
+    [params addObject:midiLegatoParam];
     [params addObject:triadParam];
     [params addObject:bypassParam];
     [params addObject:hgainParam];
     [params addObject:vgainParam];
+    [params addObject:dryMixParam];
     [params addObject:speedParam];
     [params addObject:tuningParam];
         
@@ -267,12 +296,15 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     inversionParam.value = 2;
     nvoicesParam.value = 4;
     autoParam.value = 1;
+    autoStrengthParam.value = 0.5;
     midiParam.value = 1;
     midiLinkParam.value = 1;
+    midiLegatoParam.value = 0;
     triadParam.value = -1;
     bypassParam.value = 0;
     vgainParam.value = 1;
     hgainParam.value = 1;
+    dryMixParam.value = 1;
     speedParam.value = 1;
     tuningParam.value = 440.0;
     
@@ -471,13 +503,13 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                 AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
                 AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
                 AUParameter *nvoicesParameter = [self.parameterTree valueForKey: @"nvoices"];
-//                AUParameter *triadParameter = [self.parameterTree valueForKey: @"triad"];
+                AUParameter *triadParameter = [self.parameterTree valueForKey: @"triad"];
 
                 //keycenterParameter.value = presetParameters[factoryPreset.number].keycenterValue;
                 inversionParameter.value = presetParameters[factoryPreset.number].inversionValue;
                 autoParameter.value = presetParameters[factoryPreset.number].autoValue;
                 nvoicesParameter.value = presetParameters[factoryPreset.number].nvoicesValue;
-                //triadParameter.value = presetParameters[factoryPreset.number].triadValue;
+                triadParameter.value = presetParameters[factoryPreset.number].triadValue;
                 
                 for (int k = 0; k < 144; k++)
                 {
