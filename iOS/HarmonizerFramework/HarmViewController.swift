@@ -71,8 +71,10 @@ class HarmButton: UIButton {
         {
             titleLabel!.numberOfLines = 0
             //titleLabel!.adjustsFontSizeToFitWidth = true
+            titleLabel!.textAlignment = .center
             
-            let factor = frame.height / titleLabel!.font.pointSize / 2
+            let factor = min(frame.height / (1.5*titleLabel!.font.pointSize), frame.width / (1.5*titleLabel!.intrinsicContentSize.width))
+            //print("factor = \(factor)")
             if (factor < 1)
             {
                 titleLabel!.transform = CGAffineTransform(scaleX: factor, y: factor)

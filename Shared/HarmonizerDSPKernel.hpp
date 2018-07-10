@@ -599,6 +599,11 @@ public:
                 //voices[vix].gain += .001 * sgn(voices[vix].target_gain - voices[vix].gain);
                 voices[vix].gain = inc_to_target(voices[vix].gain, voices[vix].target_gain, 0.9, 0.001, -0.0004);
                 
+                if (voices[vix].gain < 0.001)
+                {
+                    continue;
+                }
+                
 //                if (voices[vix].midinote == -1 || (vix > n_auto && !midi_enable))
 //                    continue;
                 

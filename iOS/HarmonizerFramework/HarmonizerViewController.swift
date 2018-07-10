@@ -127,6 +127,17 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 //                btn.titleLabel?.adjustsFontSizeToFitWidth = true
 //            }
 //        }
+        
+        UITableViewCell.appearance().backgroundColor = UIColor.clear
+        UITableView.appearance().backgroundColor = UIColor.clear
+        UITableView.appearance().separatorColor = UIColor.lightGray
+        UITableViewHeaderFooterView.appearance().tintColor = UIColor.darkGray
+        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor.white
+        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).highlightedTextColor = UIColor.lightGray
+        BaseView.appearance().backgroundColor = UIColor.clear
+        UIPickerView.appearance().backgroundColor = UIColor.clear
+        UINavigationBar.appearance().barStyle = .black
+        UINavigationBar.appearance().backgroundColor = UIColor.darkGray
 		
 		// Respond to changes in the filterView (frequency and/or response changes).
         harmonizerView.delegate = self
