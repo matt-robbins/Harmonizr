@@ -36,6 +36,29 @@ class HarmButton: UIButton {
         }
     }
     
+    @IBInspectable var borderWidth: CGFloat = 4
+    @IBInspectable var shadowRadius: CGFloat = 8
+    
+    func enableBorder(_ border: Bool)
+    {
+        if (border)
+        {
+            layer.borderWidth = borderWidth
+            layer.shadowRadius = shadowRadius
+        }
+        else
+        {
+            layer.borderWidth = 0
+            layer.shadowRadius = 0
+        }
+    }
+    
+    @IBInspectable var border: Bool = true {
+        didSet {
+            enableBorder(border)
+        }
+    }
+    
     func configure() {
         //backgroundColor = .white
         
@@ -48,12 +71,14 @@ class HarmButton: UIButton {
         {
             setTitleColor(.white, for: UIControlState())
         }
+        
+        //setTitleColor(.white, for: .disabled)
         layer.shadowColor = highlightColor
         layer.cornerRadius = 4
-        layer.borderWidth = 4
+        layer.borderWidth = borderWidth
         layer.borderColor = UIColor.darkGray.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowRadius = 8
+        layer.shadowRadius = shadowRadius
         layer.masksToBounds = false
         showsTouchWhenHighlighted = true
         
@@ -73,7 +98,7 @@ class HarmButton: UIButton {
             //titleLabel!.adjustsFontSizeToFitWidth = true
             titleLabel!.textAlignment = .center
             
-            let factor = min(frame.height / (1.5*titleLabel!.font.pointSize), frame.width / (1.5*titleLabel!.intrinsicContentSize.width))
+            let factor = max(0.01, min(frame.height / (1.5*titleLabel!.font.pointSize), frame.width / (1.5*titleLabel!.intrinsicContentSize.width)))
             //print("factor = \(factor)")
             if (factor < 1)
             {
@@ -84,6 +109,8 @@ class HarmButton: UIButton {
             }
             //let font = titleLabel!.font
             //titleLabel!.font = UIFont(name: (font?.description)!, size: frame.height / 2)
+            
+            enableBorder(border)
         }
         
         super.layoutSubviews()

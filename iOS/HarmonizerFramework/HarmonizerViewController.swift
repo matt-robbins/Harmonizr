@@ -24,6 +24,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     @IBOutlet weak var midiButton: HarmButton!
     @IBOutlet weak var autoButton: HarmButton!
     @IBOutlet weak var dryButton: HarmButton!
+    @IBOutlet weak var presetButton: LabelButton!
     
     @IBOutlet weak var kbdLinkButton: HarmButton!
     @IBOutlet weak var kbdOctPlusButton: UIButton!
@@ -80,11 +81,13 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     var intervals = [AUParameter]()
     
     var configController: ConfigNavigationController?
+    var saveController: PresetSaveViewController?
     var presetController: PresetController?
     
     var presetModified: Bool = false {
         didSet {
-
+            //presetLabel.textColor = (presetModified == true) ? self.view.tintColor : UIColor.lightGray
+            presetButton.isEnabled = presetModified
         }
     }
 
@@ -149,7 +152,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         auPoller(T: 0.1)
 		configController = self.storyboard?.instantiateViewController(withIdentifier: "detailsNavigator") as? ConfigNavigationController
         
+        saveController = self.storyboard?.instantiateViewController(withIdentifier: "saveController") as? PresetSaveViewController
+        
         configController!.viewDelegate = self
+        saveController!.presetController = presetController
         
         //let _: UIView = configController!.view
         
@@ -293,7 +299,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
             presetPrevButton.isEnabled = (presetController!.canDecrement())
             presetNextButton.isEnabled = (presetController!.canIncrement())
             
-            presetLabel.text = presetController!.currentPreset().name
+            //presetLabel.text = presetController!.currentPreset().name
+            //presetButton.titleLabel?.text =
+            presetButton.isEnabled = presetModified
+            presetButton.titleText = presetController!.currentPreset().name!
             
             for k in 0...presetFavorites.count-1
             {
@@ -338,6 +347,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         
     }
     
+    @IBAction func savePreset(_ sender: HarmButton) {
+    }
+    
+    
     @IBAction func octaveUp(_ sender: Any) {
         keyboardView.keyShift(7)
     }
@@ -347,11 +360,13 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
     
     @IBAction func presetPrev(_ sender: Any) {
         presetController?.incrementPreset(inc: -1)
+        presetModified = false
         syncView()
     }
     
     @IBAction func presetNext(_ sender: Any) {
         presetController?.incrementPreset(inc: 1)
+        presetModified = false
         syncView()
     }
     
@@ -367,6 +382,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
                     ix = b.keycenter
                 }
                 self.presetController?.selectPreset(preset: ix!)
+                presetModified = false
                 syncView()
             }
         }

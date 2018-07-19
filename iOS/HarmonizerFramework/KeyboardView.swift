@@ -63,6 +63,7 @@ class Key: CATextLayer {
     
     override func draw(in ctx: CGContext) {
         let height = self.bounds.size.height
+        //self.fontSize = min(self.frame.width/2, 14)
         let fontSize = self.fontSize
         let yDiff = height - 2*fontSize
         
@@ -264,6 +265,7 @@ class KeyboardView: UIView {
         for i in 0...wkeys.count-1
         {
             wkeys[i].frame = CGRect(x: CGFloat(i) * spacing, y: 0, width: spacing, height: layer.frame.height)
+            wkeys[i].fontSize = min(14, wkeys[i].frame.width / 4)
         }
         
         for i in 0...bkeys.count-1
