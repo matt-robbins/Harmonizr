@@ -24,12 +24,13 @@ class PresetSaveViewController: UIViewController, UITextFieldDelegate {
     
     var presetController: PresetController? {
         didSet {
+            
             if (presetName != nil)
             {
-            presetName!.text = presetController!.currentPreset().name
-            presetName!.isEnabled = !presetController!.currentPreset().isFactory
-            
-            presetIx = presetController!.presetIx
+                presetName!.text = presetController!.currentPreset().name
+                presetName!.isEnabled = !presetController!.currentPreset().isFactory
+                
+                presetIx = presetController!.presetIx
             }
         }
     }
@@ -37,13 +38,21 @@ class PresetSaveViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         presetName.delegate = self
         saveButton.isEnabled = false
+        
+        if (presetController != nil)
+        {
+            presetName!.text = presetController!.currentPreset().name
+            presetName!.isEnabled = !presetController!.currentPreset().isFactory
+            
+            presetIx = presetController!.presetIx
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        syncPresetButtons()
         // Do any additional setup after loading the view.
     }
 
@@ -63,6 +72,51 @@ class PresetSaveViewController: UIViewController, UITextFieldDelegate {
     }
     */
     
+    @IBAction func presetNext(_ sender: Any) {
+        if (presetIx < presetController!.presets.count - 1)
+        {
+            presetIx = presetIx + 1
+            presetNeedsSave = true
+            syncPresetButtons()
+        }
+    }
+    
+    @IBAction func presetPrev(_ sender: Any) {
+        if (presetIx > 0)
+        {
+            presetIx = presetIx - 1
+            presetNeedsSave = true
+            syncPresetButtons()
+        }
+    }
+    
+    @IBAction func changePresetName(_ sender: UITextField) {
+        presetNeedsSave = true
+        presetController!.presets[presetIx].name = sender.text
+        syncPresetButtons()
+    }
+    
+    @IBAction func savePreset(_ sender: Any) {
+        presetController?.writePreset(name: presetName.text!, ix: presetIx)
+        presetNeedsSave = false
+        syncPresetButtons()
+    }
+    
+    @IBAction func revertPreset(_ sender: HarmButton) {
+        presetNeedsSave = false
+        presetController!.restoreState()
+        presetIx = presetController!.presetIx
+        syncPresetButtons()
+    }
+    
+    @IBAction func addPreset(_ sender: Any) {
+        presetController!.appendPreset()
+        presetNeedsSave = true
+        presetIx = presetController!.presets.count - 1
+        syncPresetButtons()
+        presetName!.becomeFirstResponder()
+    }
+    
     func syncPresetButtons()
     {
         if (presetController == nil)
@@ -81,6 +135,11 @@ class PresetSaveViewController: UIViewController, UITextFieldDelegate {
         saveButton.isEnabled = presetNeedsSave && presetName!.isEnabled
         revertButton.isEnabled = saveButton.isEnabled
         //doneButton.title = saveButton.isEnabled ? "Save" : "Done"
+    }
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.presetName.resignFirstResponder()
+        return true
     }
 
     @objc func keyboardWillShow(notification: NSNotification)

@@ -19,15 +19,19 @@ class PresetFavoriteViewController: UIViewController, UITableViewDelegate, UITab
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = indexPath.row
+        presetController?.favorites[favIx] = row
+        presetController?.storePresets()
+    }
+    
     public func tableView(_ tableView: UITableView,
                           titleForHeaderInSection section: Int) -> String? {
         return "Presets"
     }
     
-    @IBOutlet weak var doneButton: UIBarButtonItem!
+   // @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var presetTable: UITableView!
-    
-    @IBOutlet weak var navBar: UINavigationBar!
     
     var presetController: PresetController?
     var favIx: Int = 0
@@ -39,25 +43,15 @@ class PresetFavoriteViewController: UIViewController, UITableViewDelegate, UITab
         presetTable.delegate = self
         presetTable.dataSource = self
         
-        
-        navBar.topItem?.title = "Favorite Preset \"f\(favIx + 1)\""
+        title = "Favorite Preset \"f\(favIx + 1)\""
         
         presetController = PresetController()
         presetController!.loadPresets()
         
-        //presetPicker.selectRow(favIx, inComponent: 0, animated: true)
-        let indexPath = IndexPath(row: favIx, section: 0)
+        let indexPath = IndexPath(row: presetController!.favorites[favIx], section: 0)
         presetTable.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
         
         presetTable.tableFooterView = UIView()
         // Do any additional setup after loading the view.
-    }
-
-    @IBAction func done(_ sender: Any) {
-        let row = presetTable.indexPathForSelectedRow?.row
-        presetController?.favorites[favIx] = row!
-        presetController?.storePresets()
-        doneFcn!()
-        self.dismiss(animated: false)
     }
 }

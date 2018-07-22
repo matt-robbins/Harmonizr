@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xw6-qn-yae">
     <device id="retina5_9" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -21,24 +21,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="pxp-ho-FO2">
-                                <rect key="frame" x="44" y="0.0" width="724" height="32"/>
-                                <viewLayoutGuide key="safeArea" id="j8D-MP-Xsu"/>
-                                <items>
-                                    <navigationItem title="Fast Preset" id="jMD-xH-oGd">
-                                        <barButtonItem key="leftBarButtonItem" title="Done" id="DrT-Wf-0Xv">
-                                            <connections>
-                                                <action selector="done:" destination="Kq0-Be-39z" id="WXk-0v-kou"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="R9K-xU-vWD">
-                                <rect key="frame" x="46" y="32" width="720" height="320"/>
+                                <rect key="frame" x="46" y="32" width="720" height="322"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="a2e-DO-ppc">
-                                        <rect key="frame" x="0.0" y="0.0" width="720" height="320"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="720" height="322"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="WbM-7m-lV5" style="IBUITableViewCellStyleDefault" id="Byv-6d-tC7" customClass="HarmTableViewCell" customModule="Harmonizer">
@@ -61,54 +48,54 @@
                                         </prototypes>
                                     </tableView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="a2e-DO-ppc" secondAttribute="bottom" id="VCy-dF-H5q"/>
+                                    <constraint firstItem="a2e-DO-ppc" firstAttribute="top" secondItem="R9K-xU-vWD" secondAttribute="top" id="qQE-2c-zUv"/>
+                                </constraints>
                             </stackView>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="pxp-ho-FO2" firstAttribute="top" secondItem="g77-3U-dM0" secondAttribute="top" id="3bQ-7g-yaI"/>
                             <constraint firstItem="g77-3U-dM0" firstAttribute="trailing" secondItem="R9K-xU-vWD" secondAttribute="trailing" constant="2" id="7GV-ml-rjM"/>
                             <constraint firstItem="R9K-xU-vWD" firstAttribute="leading" secondItem="g77-3U-dM0" secondAttribute="leading" constant="2" id="EDL-ec-lza"/>
-                            <constraint firstItem="g77-3U-dM0" firstAttribute="bottom" secondItem="R9K-xU-vWD" secondAttribute="bottom" constant="2" id="SUM-Hm-b81"/>
-                            <constraint firstItem="pxp-ho-FO2" firstAttribute="leading" secondItem="g77-3U-dM0" secondAttribute="leading" id="cbw-t4-FB0"/>
-                            <constraint firstItem="g77-3U-dM0" firstAttribute="trailing" secondItem="pxp-ho-FO2" secondAttribute="trailing" id="rfd-95-nq4"/>
-                            <constraint firstItem="R9K-xU-vWD" firstAttribute="top" secondItem="pxp-ho-FO2" secondAttribute="bottom" id="sSI-jq-Y6s"/>
+                            <constraint firstItem="R9K-xU-vWD" firstAttribute="top" secondItem="g77-3U-dM0" secondAttribute="top" id="Hqm-P0-Aa2"/>
+                            <constraint firstItem="g77-3U-dM0" firstAttribute="bottom" secondItem="R9K-xU-vWD" secondAttribute="bottom" id="Je3-8a-ola"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="g77-3U-dM0"/>
                     </view>
                     <connections>
-                        <outlet property="doneButton" destination="DrT-Wf-0Xv" id="zr7-6Z-4ur"/>
-                        <outlet property="navBar" destination="pxp-ho-FO2" id="aQC-IF-5mX"/>
                         <outlet property="presetTable" destination="a2e-DO-ppc" id="f9B-Q7-jtR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EA7-0y-pCh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-593" y="-980"/>
+            <point key="canvasLocation" x="767" y="-2393"/>
         </scene>
-        <!--Harmonizer View Controller-->
+        <!--Main-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="mainView" modalPresentationStyle="currentContext" id="BYZ-38-t0r" customClass="HarmonizerViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mainView" title="Main" modalPresentationStyle="currentContext" id="BYZ-38-t0r" customClass="HarmonizerViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4r-gf-TiO">
-                                <rect key="frame" x="44" y="0.0" width="724" height="354"/>
+                                <rect key="frame" x="44" y="32" width="724" height="322"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJe-bz-bEY" userLabel="mainView">
-                                        <rect key="frame" x="0.0" y="0.0" width="724" height="354"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="724" height="322"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="12X-sd-e4c">
-                                                <rect key="frame" x="0.0" y="0.0" width="724" height="354"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="724" height="322"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="0Dg-S9-Iyw" userLabel="presets Stack">
-                                                        <rect key="frame" x="0.0" y="0.0" width="724" height="95"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="724" height="94.333333333333329"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="K9g-Xq-IhD">
-                                                                <rect key="frame" x="0.0" y="0.0" width="59.333333333333336" height="95"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="94.333333333333329"/>
                                                                 <subviews>
                                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FI4-35-Vte" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="59.333333333333336" height="34"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="34"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="34" id="3Up-Oq-eyh"/>
@@ -122,7 +109,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="amN-OU-hHi" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                        <rect key="frame" x="0.0" y="36" width="59.333333333333336" height="59"/>
+                                                                        <rect key="frame" x="0.0" y="36" width="58.666666666666664" height="58.333333333333343"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" relation="lessThanOrEqual" secondItem="amN-OU-hHi" secondAttribute="width" multiplier="1:1" priority="999" id="el1-1X-G0C"/>
@@ -139,11 +126,11 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="avH-cs-Plg" customClass="HarmonizerVoicesView" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="63.333333333333314" y="0.0" width="235" height="95"/>
+                                                                <rect key="frame" x="62.666666666666671" y="0.0" width="235.66666666666663" height="94.333333333333329"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                             </view>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Jgz-qt-heT">
-                                                                <rect key="frame" x="302.33333333333326" y="0.0" width="421.66666666666674" height="95"/>
+                                                                <rect key="frame" x="302.33333333333326" y="0.0" width="421.66666666666674" height="94.333333333333329"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="UCT-uC-4nV">
                                                                         <rect key="frame" x="0.0" y="0.0" width="421.66666666666669" height="34"/>
@@ -186,7 +173,7 @@
                                                                                         </userDefinedRuntimeAttributes>
                                                                                         <connections>
                                                                                             <action selector="savePreset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KXR-JI-es2"/>
-                                                                                            <segue destination="0gD-xV-MLx" kind="presentation" id="Ly5-GN-gEN"/>
+                                                                                            <segue destination="0gD-xV-MLx" kind="show" identifier="showSave" id="Ly5-GN-gEN"/>
                                                                                         </connections>
                                                                                     </button>
                                                                                 </subviews>
@@ -219,20 +206,20 @@
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
-                                                                                    <action selector="presetConf:" destination="BYZ-38-t0r" eventType="touchUpInside" id="D7B-uf-J9Q"/>
+                                                                                    <segue destination="z7q-ka-Sfk" kind="show" id="7Ga-ct-8Eu"/>
                                                                                 </connections>
                                                                             </button>
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="iwR-KF-4xx">
-                                                                        <rect key="frame" x="0.0" y="36" width="421.66666666666669" height="59"/>
+                                                                        <rect key="frame" x="0.0" y="36" width="421.66666666666669" height="58.333333333333343"/>
                                                                         <subviews>
                                                                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Y-lt-TAX" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="59"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="58.666666666666664" height="58.333333333333336"/>
                                                                                 <state key="normal" image="Logo"/>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMf-yw-TXY" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                                <rect key="frame" x="60.666666666666686" y="0.0" width="58.333333333333343" height="59"/>
+                                                                                <rect key="frame" x="60.666666666666686" y="0.0" width="58.333333333333343" height="58.333333333333336"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
                                                                                 <state key="normal" title="f1">
@@ -249,7 +236,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="260" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue0-hA-fHl" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                                <rect key="frame" x="121.00000000000001" y="0.0" width="58.666666666666671" height="59"/>
+                                                                                <rect key="frame" x="121.00000000000001" y="0.0" width="58.666666666666671" height="58.333333333333336"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
                                                                                 <state key="normal" title="f2">
@@ -266,7 +253,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGH-bF-XzS" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                                <rect key="frame" x="181.66666666666669" y="0.0" width="58.333333333333343" height="59"/>
+                                                                                <rect key="frame" x="181.66666666666669" y="0.0" width="58.333333333333343" height="58.333333333333336"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
                                                                                 <state key="normal" title="f3">
@@ -283,7 +270,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTD-LV-0od" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                                <rect key="frame" x="242.00000000000003" y="0.0" width="58.666666666666657" height="59"/>
+                                                                                <rect key="frame" x="242.00000000000003" y="0.0" width="58.666666666666657" height="58.333333333333336"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
                                                                                 <state key="normal" title="f4">
@@ -300,7 +287,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ku9-Sh-8cc" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                                <rect key="frame" x="302.66666666666669" y="0.0" width="58.333333333333314" height="59"/>
+                                                                                <rect key="frame" x="302.66666666666669" y="0.0" width="58.333333333333314" height="58.333333333333336"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
                                                                                 <state key="normal" title="f5">
@@ -317,7 +304,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-aX-8vc" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                                                <rect key="frame" x="363.00000000000006" y="0.0" width="58.666666666666686" height="59"/>
+                                                                                <rect key="frame" x="363.00000000000006" y="0.0" width="58.666666666666686" height="58.333333333333336"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
                                                                                 <state key="normal" title="f6">
@@ -352,15 +339,15 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yec-WX-anO" userLabel="Harmonizer Stack">
-                                                        <rect key="frame" x="0.0" y="100" width="724" height="147"/>
+                                                        <rect key="frame" x="0.0" y="99.333333333333343" width="724" height="115.66666666666666"/>
                                                         <subviews>
                                                             <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="0.0" width="724" height="147"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="724" height="115.66666666666667"/>
                                                             </view>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="JV1-J5-NPq" userLabel="Keyboard Stack">
-                                                        <rect key="frame" x="0.0" y="252" width="724" height="102"/>
+                                                        <rect key="frame" x="0.0" y="220" width="724" height="102"/>
                                                         <subviews>
                                                             <view clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnK-4r-xXA" customClass="KeyboardView" customModule="HarmonizerFramework">
                                                                 <rect key="frame" x="0.0" y="0.0" width="663.33333333333337" height="102"/>
@@ -437,7 +424,7 @@
                                         </constraints>
                                     </view>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vf5-SJ-o8q">
-                                        <rect key="frame" x="-44" y="0.0" width="0.0" height="354"/>
+                                        <rect key="frame" x="-44" y="0.0" width="0.0" height="322"/>
                                     </containerView>
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="Cv4-jC-PvG"/>
@@ -455,6 +442,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="dx9-cJ-xfo"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Harmonizr" id="NfF-XB-bmV"/>
                     <connections>
                         <outlet property="autoButton" destination="FI4-35-Vte" id="GdD-6n-lbb"/>
                         <outlet property="containerView" destination="Vf5-SJ-o8q" id="jRK-tG-ukz"/>
@@ -477,7 +465,7 @@
                         <outletCollection property="presetFavorites" destination="Ue0-hA-fHl" collectionClass="NSMutableArray" id="kCG-Zn-JMH"/>
                         <outletCollection property="presetFavorites" destination="AMf-yw-TXY" collectionClass="NSMutableArray" id="L8m-Td-5bR"/>
                         <outletCollection property="presetFavorites" destination="jTD-LV-0od" collectionClass="NSMutableArray" id="pSV-W1-why"/>
-                        <segue destination="Kq0-Be-39z" kind="presentation" identifier="fastPreset" animates="NO" id="Gmc-6Y-6WB"/>
+                        <segue destination="Kq0-Be-39z" kind="show" identifier="fastPreset" id="Gmc-6Y-6WB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -512,7 +500,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1434" y="-2030"/>
+            <point key="canvasLocation" x="-25" y="-2031"/>
         </scene>
         <!--Config View Controller-->
         <scene sceneID="LXC-s0-m5X">
@@ -526,19 +514,19 @@
                                 <rect key="frame" x="44" y="37" width="704" height="317"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t0u-BF-idS" userLabel="Quality">
-                                        <rect key="frame" x="0.0" y="0.0" width="704" height="39.666666666666664"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="704" height="36.666666666666664"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTS-pT-9CL">
-                                                <rect key="frame" x="0.0" y="0.0" width="86.333333333333329" height="39.666666666666664"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="86.333333333333329" height="36.666666666666664"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dn6-9F-9ze">
-                                                <rect key="frame" x="86.333333333333343" y="0.0" width="477.66666666666663" height="39.666666666666664"/>
+                                                <rect key="frame" x="86.333333333333343" y="0.0" width="477.66666666666663" height="36.666666666666664"/>
                                             </view>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" semanticContentAttribute="spatial" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="JLh-5x-zpw" userLabel="Quality">
-                                                <rect key="frame" x="564" y="0.0" width="140" height="40.666666666666664"/>
+                                                <rect key="frame" x="564" y="0.0" width="140" height="37.666666666666664"/>
                                                 <segments>
                                                     <segment title="Maj."/>
                                                     <segment title="Min."/>
@@ -551,7 +539,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0VX-fJ-g7N" userLabel="Degree">
-                                        <rect key="frame" x="0.0" y="44.666666666666671" width="704" height="29"/>
+                                        <rect key="frame" x="0.0" y="41.666666666666671" width="704" height="29"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Scale Degree" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRb-Sh-WUy">
                                                 <rect key="frame" x="0.0" y="0.0" width="558.33333333333337" height="29"/>
@@ -588,16 +576,16 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Mkw-f0-5wZ" userLabel="Root">
-                                        <rect key="frame" x="0.0" y="78.666666666666671" width="704" height="20.333333333333329"/>
+                                        <rect key="frame" x="0.0" y="75.666666666666671" width="704" height="29"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Show/Hear With Key Root" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nix-Nb-Phb">
-                                                <rect key="frame" x="0.0" y="0.0" width="558.33333333333337" height="20.333333333333332"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="558.33333333333337" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZkE-g7-wJH">
-                                                <rect key="frame" x="563.33333333333337" y="0.0" width="41.666666666666629" height="20.333333333333332"/>
+                                                <rect key="frame" x="563.33333333333337" y="0.0" width="41.666666666666629" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -614,19 +602,19 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vd5-Wj-5Ln">
-                                        <rect key="frame" x="0.0" y="104" width="704" height="79.333333333333314"/>
+                                        <rect key="frame" x="0.0" y="109.66666666666666" width="704" height="73.666666666666657"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inversion/Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TXg-bs-vcM">
-                                                <rect key="frame" x="0.0" y="0.0" width="120.33333333333333" height="79.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="120.33333333333333" height="73.666666666666671"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ti-eR-qSI">
-                                                <rect key="frame" x="120.33333333333334" y="0.0" width="443.66666666666663" height="79.333333333333329"/>
+                                                <rect key="frame" x="120.33333333333334" y="0.0" width="443.66666666666663" height="73.666666666666671"/>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udb-YL-hoW" customClass="HarmonizerVoicesView" customModule="HarmonizerFramework">
-                                                <rect key="frame" x="564" y="0.0" width="140" height="79.333333333333329"/>
+                                                <rect key="frame" x="564" y="0.0" width="140" height="73.666666666666671"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
@@ -802,16 +790,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmc-0u-KBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-791" y="-65"/>
+            <point key="canvasLocation" x="-25" y="-282"/>
         </scene>
         <!--Settings-->
         <scene sceneID="n5G-s5-HVm">
             <objects>
-                <tableViewController id="z7q-ka-Sfk" customClass="ConfigListViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
+                <tableViewController title="Settings" id="z7q-ka-Sfk" customClass="ConfigListViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Uyr-0u-bq3">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
                             <tableViewSection headerTitle="Harmony" id="py1-4P-UeO">
                                 <cells>
@@ -1080,9 +1068,6 @@
                             <outlet property="delegate" destination="z7q-ka-Sfk" id="L1D-HP-zv4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Settings" id="fcc-7F-epm">
-                        <barButtonItem key="leftBarButtonItem" title="Done" id="F0j-yy-cNW" userLabel="Done"/>
-                    </navigationItem>
                     <connections>
                         <outlet property="corrLabel" destination="1EA-NK-srQ" id="yp8-Ak-fdu"/>
                         <outlet property="corrStepper" destination="FNT-SN-Epg" id="piy-bn-RdR"/>
@@ -1097,23 +1082,27 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0JS-sF-v0b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1491" y="-132"/>
+            <point key="canvasLocation" x="-25" y="-1161"/>
         </scene>
-        <!--Config Navigation Controller-->
-        <scene sceneID="9C3-4l-sYU">
+        <!--Main-->
+        <scene sceneID="WGT-rm-yrF">
             <objects>
-                <navigationController storyboardIdentifier="detailsNavigator" id="cMk-PQ-0CG" customClass="ConfigNavigationController" customModule="HarmonizerFramework" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="a0y-B1-8Sm">
-                        <rect key="frame" x="0.0" y="0.0" width="812" height="32"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
+                <viewController title="Main" id="xw6-qn-yae" customClass="HarmonizrMainViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
+                    <containerView key="view" opaque="NO" contentMode="scaleToFill" id="EYv-uF-k4S">
+                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                        <viewLayoutGuide key="safeArea" id="yc6-6c-hVC"/>
+                        <connections>
+                            <segue destination="gbC-CU-RWF" kind="embed" identifier="showMainView" id="ADY-a4-W3L"/>
+                        </connections>
+                    </containerView>
                     <connections>
-                        <segue destination="z7q-ka-Sfk" kind="relationship" relationship="rootViewController" id="cH8-MX-XfH"/>
+                        <outlet property="containerView" destination="EYv-uF-k4S" id="Q2N-g9-K5n"/>
                     </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="g6B-fF-yYo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gKD-wq-nDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1491" y="-1015"/>
+            <point key="canvasLocation" x="-1411" y="-2031"/>
         </scene>
         <!--Config Detail View Controller-->
         <scene sceneID="IW1-sh-U6s">
@@ -1160,21 +1149,21 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HfX-mM-GOS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="54" y="-127"/>
+            <point key="canvasLocation" x="860" y="940"/>
         </scene>
-        <!--Preset Save View Controller-->
+        <!--Save to Preset-->
         <scene sceneID="bQK-tI-ygQ">
             <objects>
-                <viewController storyboardIdentifier="saveController" id="0gD-xV-MLx" customClass="PresetSaveViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="saveController" title="Save to Preset" id="0gD-xV-MLx" customClass="PresetSaveViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="msV-iH-CUl">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="RUm-G4-Ckx" userLabel="Save">
-                                <rect key="frame" x="44" y="0.0" width="724" height="354"/>
+                                <rect key="frame" x="44" y="32" width="724" height="322"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="uFs-32-vIp">
-                                        <rect key="frame" x="0.0" y="0.0" width="724" height="354"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="724" height="322"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save to Preset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iJ0-Rw-wms">
                                                 <rect key="frame" x="0.0" y="0.0" width="724" height="20.333333333333332"/>
@@ -1183,7 +1172,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="qss-lu-yce">
-                                                <rect key="frame" x="0.0" y="25.333333333333329" width="724" height="30.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="25.333333333333336" width="724" height="30.666666666666664"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OnA-ZD-Xyt" customClass="HarmButton" customModule="HarmonizerFramework">
                                                         <rect key="frame" x="0.0" y="0.0" width="30" height="30.666666666666668"/>
@@ -1194,6 +1183,7 @@
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
+                                                            <action selector="presetPrev:" destination="0gD-xV-MLx" eventType="touchUpInside" id="Za8-5f-TY1"/>
                                                             <action selector="presetPrev:" destination="G03-CJ-RWa" eventType="touchUpInside" id="x9j-YG-KLD"/>
                                                         </connections>
                                                     </button>
@@ -1207,6 +1197,7 @@
                                                         </state>
                                                         <connections>
                                                             <action selector="presetNext:" destination="G03-CJ-RWa" eventType="touchUpInside" id="FPC-Lh-7XR"/>
+                                                            <action selector="presetNext:" destination="0gD-xV-MLx" eventType="touchUpInside" id="Oed-Zi-Tkq"/>
                                                         </connections>
                                                     </button>
                                                     <textField opaque="NO" contentMode="left" horizontalHuggingPriority="100" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Preset" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f7m-UA-aDd">
@@ -1217,6 +1208,7 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                         <connections>
+                                                            <action selector="changePresetName:" destination="0gD-xV-MLx" eventType="editingDidEnd" id="iRf-RB-Qlq"/>
                                                             <action selector="changePresetName:" destination="G03-CJ-RWa" eventType="editingDidEnd" id="xYS-N4-QxC"/>
                                                             <action selector="setPresetName:" destination="G03-CJ-RWa" eventType="editingDidEnd" id="gnq-Oy-pHb"/>
                                                         </connections>
@@ -1232,12 +1224,13 @@
                                                         </state>
                                                         <connections>
                                                             <action selector="addPreset:" destination="G03-CJ-RWa" eventType="touchUpInside" id="4YO-Rp-3fr"/>
+                                                            <action selector="addPreset:" destination="0gD-xV-MLx" eventType="touchUpInside" id="7tq-D6-HGf"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JsG-g9-c1E">
-                                                <rect key="frame" x="0.0" y="61" width="724" height="293"/>
+                                                <rect key="frame" x="0.0" y="61" width="724" height="261"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5r-DC-Wom" customClass="HarmButton" customModule="HarmonizerFramework">
                                                         <rect key="frame" x="0.0" y="5.3333333333333286" width="60" height="30"/>
@@ -1246,6 +1239,7 @@
                                                         </state>
                                                         <connections>
                                                             <action selector="savePreset:" destination="G03-CJ-RWa" eventType="touchUpInside" id="AlP-8m-IL0"/>
+                                                            <action selector="savePreset:" destination="0gD-xV-MLx" eventType="touchUpInside" id="Hkc-iO-Ip2"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0L-y3-CTf" customClass="HarmButton" customModule="HarmonizerFramework">
@@ -1255,6 +1249,7 @@
                                                         </state>
                                                         <connections>
                                                             <action selector="revertPreset:" destination="G03-CJ-RWa" eventType="touchUpInside" id="XlU-UM-rnx"/>
+                                                            <action selector="revertPreset:" destination="0gD-xV-MLx" eventType="touchUpInside" id="atN-us-uGt"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -1297,7 +1292,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fvL-Ii-Us2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-749" y="-2031"/>
+            <point key="canvasLocation" x="767" y="-1638"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="0cD-YF-mOH">
+            <objects>
+                <navigationController storyboardIdentifier="MainNavigation" automaticallyAdjustsScrollViewInsets="NO" id="gbC-CU-RWF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <size key="freeformSize" width="812" height="375"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="x7c-BM-3mL">
+                        <rect key="frame" x="0.0" y="0.0" width="812" height="32"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Bod-5z-3bb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mQi-31-StV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-700" y="-2031"/>
         </scene>
     </scenes>
     <resources>

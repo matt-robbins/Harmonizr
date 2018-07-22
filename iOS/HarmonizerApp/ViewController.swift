@@ -37,7 +37,7 @@ class ViewController: UIViewController {
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
 	//var filterDemoViewController: FilterDemoViewController!
-    var harmonizerViewController: HarmonizerViewController!
+    var harmonizerViewController: HarmonizrMainViewController!
 
     var btMidiViewController: CABTMIDICentralViewController!
     var navController: UINavigationController!
@@ -66,7 +66,7 @@ class ViewController: UIViewController {
 		
         //self.view.backgroundColor = UIColor.darkGray
 		// Set up the plug-in's custom view.
-		embedPlugInView()
+		//embedPlugInView()
 		
 		/*
 			Register the AU in-process for development/debugging.
@@ -90,23 +90,14 @@ class ViewController: UIViewController {
         */
         AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 5)
         
-//        reverbButton.setTitle("Reverb", for: UIControlState())
-//        reverbButton.setTitleColor(UIColor.white, for: UIControlState())
-//        playButton.setTitle("Bluetooth", for: UIControlState())
-//        playButton.setTitleColor(UIColor.white, for: UIControlState())
-        //playButton.setImage(UIImage(named: "bt_icon.svg")!, for: UIControlState())
         // diable idle timer
         UIApplication.shared.isIdleTimerDisabled = true
         
         self.audioEngine = AudioEngine2()
         
-//        AUAudioUnit.instantiate(with: componentDescription, options: []) { (unit: AUAudioUnit?,error) in
-//            self.harmUnit.component = self.audioEngine.effectUnit!
-//        }
-        
         self.audioEngine.loadComponent(componentDescription: componentDescription, completionHandler: {(audioUnit) in
             self.harmUnit = audioUnit
-            //self.getAUView()
+            self.getAUView()
             
             self.harmonizerViewController.audioUnit = self.harmUnit as? AUv3Harmonizer
             
@@ -114,7 +105,7 @@ class ViewController: UIViewController {
         })
         
         
-        print(Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String)
+        //print(Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String)
         
         reverbMixParam = audioEngine.reverbUnit!.parameterTree!.parameter(withAddress: AUParameterAddress(kReverb2Param_DryWetMix))
         reverbMixParam?.value = 5
@@ -150,9 +141,9 @@ class ViewController: UIViewController {
 		let appExtensionBundle = Bundle(url: pluginURL)
 
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
-		//filterDemoViewController = storyboard.instantiateInitialViewController() as! FilterDemoViewController
-        harmonizerViewController = storyboard.instantiateInitialViewController() as! HarmonizerViewController
-
+        
+        harmonizerViewController = storyboard.instantiateInitialViewController() as! HarmonizrMainViewController
+//
         // Present the view controller's view.
         if let view = harmonizerViewController.view {
             addChildViewController(harmonizerViewController)
@@ -168,6 +159,7 @@ class ViewController: UIViewController {
         harmUnit!.requestViewController { [weak self] viewController in
             guard let strongSelf = self else { return }
         
+            print(viewController)
             // Only update the view if the view controller has one.
             guard let viewController = viewController else {
 
@@ -176,7 +168,7 @@ class ViewController: UIViewController {
             }
             
             if let view = viewController.view {
-                strongSelf.harmonizerViewController = viewController as? HarmonizerViewController
+                strongSelf.harmonizerViewController = viewController as? HarmonizrMainViewController
                 strongSelf.addChildViewController(viewController)
                 view.frame = strongSelf.auContainerView.bounds
                 

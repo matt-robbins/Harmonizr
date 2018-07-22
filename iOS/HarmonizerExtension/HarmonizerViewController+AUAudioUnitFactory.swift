@@ -9,7 +9,7 @@
 import CoreAudioKit
 import HarmonizerFramework
 
-extension HarmonizerViewController: AUAudioUnitFactory {
+extension HarmonizrMainViewController: AUAudioUnitFactory {
     /*
         This implements the required `NSExtensionRequestHandling` protocol method.
         Note that this may become unnecessary in the future, if `AUViewController`
@@ -26,5 +26,10 @@ extension HarmonizerViewController: AUAudioUnitFactory {
         audioUnit = try AUv3Harmonizer(componentDescription: componentDescription, options: [])
         
         return audioUnit!
+    }
+    
+    public func requestViewController(completionHandler: (UIViewController?) -> Void)
+    {
+        completionHandler(self)
     }
 }

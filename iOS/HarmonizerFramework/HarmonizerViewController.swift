@@ -10,9 +10,9 @@ import UIKit
 import CoreAudioKit
 import os
 
-public var globalAudioUnit: AUv3Harmonizer?
+//public var globalAudioUnit: AUv3Harmonizer?
 
-public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate, HarmonizerAlternateViewDelegate {
+public class HarmonizerViewController: UIViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate {
     
     // MARK: Properties
 
@@ -150,22 +150,22 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         presetController = PresetController()
         
         auPoller(T: 0.1)
-		configController = self.storyboard?.instantiateViewController(withIdentifier: "detailsNavigator") as? ConfigNavigationController
+		//configController = self.storyboard?.instantiateViewController(withIdentifier: "detailsNavigator") as? ConfigNavigationController
         
         saveController = self.storyboard?.instantiateViewController(withIdentifier: "saveController") as? PresetSaveViewController
         
-        configController!.viewDelegate = self
+        //configController!.viewDelegate = self
         saveController!.presetController = presetController
         
         //let _: UIView = configController!.view
         
         //configController!.presetController = presetController
         
-        self.addChildViewController(self.configController!)
-        
-        self.containerView.addSubview(configController!.view)
-        
-        configController!.didMove(toParentViewController: self)
+//        self.addChildViewController(self.configController!)
+//
+//        self.containerView.addSubview(configController!.view)
+//
+//        configController!.didMove(toParentViewController: self)
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appResigned), name: Notification.Name.UIApplicationWillResignActive, object: nil)
@@ -263,7 +263,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
 		})
         
         
-        configController!.audioUnit = self.audioUnit
+        //configController!.audioUnit = self.audioUnit
 //        configController!.presetController = self.presetController
 //
 //        configController!.refresh()
@@ -275,7 +275,7 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         syncView()
 	}
     
-    private func syncView()
+    func syncView()
     {
         if (audioUnit != nil)
         {
@@ -397,50 +397,6 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
         
     }
     
-    @IBAction func presetConf(_ sender: HarmButton) {
-        
-//        self.configController!.doneFcn = {
-//            self.syncView()
-//        }
-        
-        sender.isSelected = true
-        
-        //performSegue(withIdentifier: "configurePreset", sender: self)
-        //return nil
-        
-        self.mainView.isHidden = true
-        self.mainView.alpha = 0.0
-        self.containerView.isHidden = false
-        
-        self.configController!.view.frame = containerView.bounds
-        
-//        let vc = configController // self.storyboard?.instantiateViewController(withIdentifier: "configDetailView") as? ConfigDetailViewController
-//
-//        self.view.addSubview(vc!.view)
-//
-//        vc!.view.frame = view.bounds.offsetBy(dx: view.bounds.maxX, dy: 0)
-//        vc!.didMove(toParentViewController: self)
-//
-//        UIView.beginAnimations("resize", context: nil)
-//        UIView.setAnimationDuration(0.1)
-//        vc!.view.frame = view.bounds
-//
-//        UIView.commitAnimations()
-        //configController!.drawKeys()
-        sender.isSelected = false
-        
-        //
-//        self.present(self.configController!, animated:true, completion:
-//            {
-//                self.presetModified=true
-//                self.configController!.refresh()
-//                sender.isSelected = false
-//                self.syncView()
-//
-//                self.configController!.didMove(toParentViewController: self.parent)
-//        })
-    }
-    
     @IBAction func longPress(_ sender: UILongPressGestureRecognizer) {
         guard let button = sender.view as! HarmButton?
         else
@@ -448,7 +404,10 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
             return
         }
         
-        performSegue(withIdentifier: "fastPreset", sender:button)
+        if (sender.state == .began)
+        {
+            performSegue(withIdentifier: "fastPreset", sender:button)
+        }
     }
     
     override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -461,6 +420,11 @@ public class HarmonizerViewController: AUViewController, HarmonizerViewDelegate,
                     self.presetController!.loadPresets()
                     self.syncView()
                 }
+            }
+        }
+        else if segue.identifier == "showSave" {
+            if let destinationVC = segue.destination as? PresetSaveViewController {
+                destinationVC.presetController = presetController
             }
         }
     }
