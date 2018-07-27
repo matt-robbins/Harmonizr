@@ -12,7 +12,7 @@ import os
 
 //public var globalAudioUnit: AUv3Harmonizer?
 
-public class HarmonizerViewController: UIViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate {
+class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate {
     
     // MARK: Properties
 
@@ -119,7 +119,7 @@ public class HarmonizerViewController: UIViewController, HarmonizerViewDelegate,
         return
     }
 
-	public override func viewDidLoad() {
+	override func viewDidLoad() {
 		super.viewDidLoad()
         
 //        let theme = ThemeManager.currentTheme()
@@ -178,7 +178,7 @@ public class HarmonizerViewController: UIViewController, HarmonizerViewDelegate,
         keyboardView.allNotesOff()
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //syncView()
     }
@@ -410,7 +410,7 @@ public class HarmonizerViewController: UIViewController, HarmonizerViewDelegate,
         }
     }
     
-    override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "fastPreset" {
             if let destinationVC = segue.destination as? PresetFavoriteViewController {

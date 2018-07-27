@@ -22,7 +22,7 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         didSet {
             globalAudioUnit = audioUnit
             
-            //harmViewController?.audioUnit = globalAudioUnit
+            harmViewController?.audioUnit = globalAudioUnit
         }
     }
     
@@ -49,6 +49,10 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         }
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print(view.frame)
+    }
     
     //MARK: - Navigation
 

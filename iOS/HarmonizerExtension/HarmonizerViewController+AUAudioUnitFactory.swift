@@ -28,7 +28,7 @@ extension HarmonizrMainViewController: AUAudioUnitFactory {
         return audioUnit!
     }
     
-    public func requestViewController(completionHandler: (UIViewController?) -> Void)
+    public func requestViewController(completionHandler: @escaping (UIViewController?) -> Void)
     {
         completionHandler(self)
     }

@@ -66,7 +66,7 @@ class ViewController: UIViewController {
 		
         //self.view.backgroundColor = UIColor.darkGray
 		// Set up the plug-in's custom view.
-		//embedPlugInView()
+		embedPlugInView()
 		
 		/*
 			Register the AU in-process for development/debugging.
@@ -97,7 +97,7 @@ class ViewController: UIViewController {
         
         self.audioEngine.loadComponent(componentDescription: componentDescription, completionHandler: {(audioUnit) in
             self.harmUnit = audioUnit
-            self.getAUView()
+            //self.getAUView()
             
             self.harmonizerViewController.audioUnit = self.harmUnit as? AUv3Harmonizer
             
@@ -163,8 +163,7 @@ class ViewController: UIViewController {
             // Only update the view if the view controller has one.
             guard let viewController = viewController else {
 
-                print("no view!!!")
-                return
+                fatalError("no view!!!")
             }
             
             if let view = viewController.view {
