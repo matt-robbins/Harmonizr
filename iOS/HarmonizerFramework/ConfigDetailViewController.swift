@@ -24,11 +24,17 @@ class ConfigListViewController: UITableViewController {
     var vgainParameter: AUParameter?
     var dryMixParameter: AUParameter?
     var tuningParameter: AUParameter?
+    var threshParameter: AUParameter?
     
     @IBOutlet weak var speedSlider: UISlider!
     
     @IBOutlet weak var drySwitch: UISwitch!
     @IBOutlet weak var legatoSwitch: UISwitch!
+    
+    
+    @IBOutlet weak var threshStepper: UIStepper!
+    
+    @IBOutlet weak var threshLabel: UILabel!
     
     @IBOutlet weak var levelStepper: UIStepper!
     @IBOutlet weak var levelLabel: UILabel!
@@ -59,6 +65,9 @@ class ConfigListViewController: UITableViewController {
         dryMixParameter = paramTree.value(forKey: "dry_mix") as? AUParameter
         
         tuningParameter = paramTree.value(forKey: "tuning") as? AUParameter
+        threshParameter = paramTree.value(forKey: "threshold") as? AUParameter
+        
+        threshLabel.text = "\(threshParameter!.value)"
         
         tuningLabel.text = "\(tuningParameter!.value) Hz"
         
@@ -120,6 +129,10 @@ class ConfigListViewController: UITableViewController {
         tuningParameter!.value = AUValue(sender.value)
         
         tuningLabel.text = "\(tuningParameter!.value) Hz"
+    }
+    @IBAction func setThreshold(_ sender: UIStepper) {
+        threshParameter!.value = AUValue(sender.value)
+        threshLabel.text = "\(threshParameter!.value)"
     }
     @IBAction func setSpeed(_ sender: UISlider) {
         speedParameter!.value = AUValue(sender.value)

@@ -150,7 +150,7 @@ class ViewController: UIViewController {
             view.frame = auContainerView.bounds
 
             auContainerView.addSubview(view)
-//            harmonizerViewController.didMove(toParentViewController: self)
+            harmonizerViewController.didMove(toParentViewController: self)
         }
 	}
 	
@@ -200,7 +200,11 @@ class ViewController: UIViewController {
         navController = nil
         btMidiViewController = nil
     }
-
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     // MARK: IBActions
 
 	/// Handles Play/Stop button touches.

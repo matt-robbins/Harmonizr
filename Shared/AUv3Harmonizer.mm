@@ -260,6 +260,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                                                                         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
                                                                  valueStrings:nil dependentParameters:nil];
 
+    AUParameter *threshParam = [AUParameterTree createParameterWithIdentifier:@"threshold" name:@"Threshold"
+                                                                     address:HarmParamThreshold
+                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                valueStrings:nil dependentParameters:nil];
+    
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
     
     [params addObject:keycenterParam];
@@ -277,6 +283,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:dryMixParam];
     [params addObject:speedParam];
     [params addObject:tuningParam];
+    [params addObject:threshParam];
         
     for (int k = 0; k < 144; k++)
     {
@@ -307,6 +314,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     dryMixParam.value = 1;
     speedParam.value = 1;
     tuningParam.value = 440.0;
+    threshParam.value = 0.2;
     
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     _kernel.setParameter(HarmParamInversion, inversionParam.value);

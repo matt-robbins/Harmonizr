@@ -51,7 +51,7 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(view.frame)
+        view.frame = (view.superview?.bounds)!
     }
     
     //MARK: - Navigation

@@ -100,6 +100,7 @@ enum {
     HarmParamDryMix,
     HarmParamSpeed,
     HarmParamTuning,
+    HarmParamThreshold,
     HarmParamInterval
 };
 
@@ -380,6 +381,9 @@ public:
             case HarmParamTuning:
                 baseTuning = value;
                 break;
+            case HarmParamThreshold:
+                threshold = value;
+                break;
             case HarmParamInterval:
             default:
                 int addr = (int) address - (int) HarmParamInterval;
@@ -431,7 +435,8 @@ public:
                 return speed;
             case HarmParamTuning:
                 return baseTuning;
-				
+            case HarmParamThreshold:
+                return threshold;
             case HarmParamInterval:
             default:
                 int addr = (int) address - (int) HarmParamInterval;
@@ -780,7 +785,7 @@ public:
             cmdf2 = cmdf1; cmdf1 = cmdf;
             cmdf = (df * k) / sum;
             
-            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < 0.15 && k > 20)
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < threshold && k > 20)
             {
                 period = (float) (k-1) + 0.5*(cmdf2 - cmdf)/(cmdf2 + cmdf - 2*cmdf1); break;
             }
@@ -1236,6 +1241,7 @@ private:
     float dry_mix = 1.0;
     float speed = 1.0;
     float corr_strength = 0.5;
+    float threshold = 0.2;
     int autotune = 1;
     int bypass = 0;
     
