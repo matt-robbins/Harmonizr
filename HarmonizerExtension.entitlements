@@ -6,7 +6,5 @@
 	<array>
 		<string>group.harmonizr.extension</string>
 	</array>
-	<key>inter-app-audio</key>
-	<true/>
 </dict>
 </plist>

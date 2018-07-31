@@ -59,9 +59,10 @@ class PresetController: NSObject {
     
     func stateURL() -> URL
     {
-        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        let ArchiveURL = DocumentsDirectory.appendingPathComponent("state")
-        return ArchiveURL
+        let DocumentsDirectory = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.harmonizr.extension")
+//        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        let ArchiveURL = DocumentsDirectory?.appendingPathComponent("state")
+        return ArchiveURL!
     }
     
     func saveState()
@@ -88,8 +89,9 @@ class PresetController: NSObject {
     
     func presetURL() -> URL
     {
-        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        return DocumentsDirectory.appendingPathComponent("presets")
+        let DocumentsDirectory = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.harmonizr.extension")
+        //let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        return DocumentsDirectory!.appendingPathComponent("presets")
     }
     
     func storePresets()

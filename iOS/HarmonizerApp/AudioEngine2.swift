@@ -171,7 +171,7 @@ class AudioEngine2: NSObject {
             try session.setActive(true)
         }
         catch {
-            fatalError("Can't configure audio session.")
+            //fatalError("Can't configure audio session.")
         }
         
         if (!self.engine.isRunning) {
