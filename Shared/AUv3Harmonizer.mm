@@ -507,7 +507,6 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         for (AUAudioUnitPreset *factoryPreset in _presets) {
             if (currentPreset.number == factoryPreset.number) {
                 
-//                AUParameter *keycenterParameter = [self.parameterTree valueForKey: @"keycenter"];
                 AUParameter *inversionParameter = [self.parameterTree valueForKey: @"inversion"];
                 AUParameter *autoParameter = [self.parameterTree valueForKey: @"auto"];
                 AUParameter *nvoicesParameter = [self.parameterTree valueForKey: @"nvoices"];
@@ -576,6 +575,20 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     }
     
     return output;
+}
+
+- (NSArray *) fields
+{
+    static NSArray *_fields;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _fields = @[@"inversion",
+                    @"auto",
+                    @"nvoices",
+                    @"triad",
+                    @"speed"];
+    });
+    return _fields;
 }
 
 - (int) addMidiNote:(int)note_number vel:(int)velocity {

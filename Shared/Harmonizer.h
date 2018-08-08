@@ -13,6 +13,7 @@
 
 @interface AUv3Harmonizer : AUAudioUnit
 
+- (NSArray *) fields;
 - (float) getCurrentNote;
 - (NSArray *) getNotes;
 - (int) addMidiNote:(int)note_number vel:(int)velocity;

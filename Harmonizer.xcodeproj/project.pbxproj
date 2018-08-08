@@ -77,6 +77,10 @@
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
+		C994EB19210FF2B3000715F8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB18210FF2B3000715F8 /* AudioToolbox.framework */; };
+		C994EB1B210FF2DF000715F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB1A210FF2DF000715F8 /* CoreData.framework */; };
+		C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
+		C994EB1F21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */; };
 		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
 		C9D2F8FE2071A5FA000783B2 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */; };
@@ -260,6 +264,9 @@
 		C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		C981C4651FBF9DCB00AF8593 /* Harmonizer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Harmonizer.entitlements; sourceTree = "<group>"; };
 		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
+		C994EB18210FF2B3000715F8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		C994EB1A210FF2DF000715F8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
+		C994EB1D21122C8A000715F8 /* PresetModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PresetModel.xcdatamodel; sourceTree = "<group>"; };
 		C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiReceiver.swift; sourceTree = "<group>"; };
 		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -282,6 +289,7 @@
 			files = (
 				C9D2F8FE2071A5FA000783B2 /* CoreAudioKit.framework in Frameworks */,
 				C9D2F8FF2071A5FA000783B2 /* Accelerate.framework in Frameworks */,
+				C994EB19210FF2B3000715F8 /* AudioToolbox.framework in Frameworks */,
 				C9D2F9002071A5FA000783B2 /* CoreMIDI.framework in Frameworks */,
 				91236D6A1B08F52E00734C5E /* HarmonizerFramework.framework in Frameworks */,
 			);
@@ -291,6 +299,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C994EB1B210FF2DF000715F8 /* CoreData.framework in Frameworks */,
 				C9D2F9042071A617000783B2 /* AVFoundation.framework in Frameworks */,
 				C9D2F9012071A617000783B2 /* Accelerate.framework in Frameworks */,
 			);
@@ -420,6 +429,7 @@
 				C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */,
 				C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */,
 				C96F204A20DB032B00F43D90 /* HarmParameterTableViewCell.swift */,
+				C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */,
 			);
 			name = HarmonizerFramework;
 			path = iOS/HarmonizerFramework;
@@ -557,6 +567,8 @@
 		C9FD73F21F8BC69C00346E31 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C994EB1A210FF2DF000715F8 /* CoreData.framework */,
+				C994EB18210FF2B3000715F8 /* AudioToolbox.framework */,
 				C9D2F9032071A617000783B2 /* AVFoundation.framework */,
 				C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */,
 				C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */,
@@ -900,6 +912,7 @@
 				927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */,
 				C92AB161205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,
 				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
+				C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */,
 				C96F204920DB02E400F43D90 /* HarmParameterTableView.swift in Sources */,
 				C91216C3206998D200E6BB57 /* PresetController.swift in Sources */,
 				C96F204320D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
@@ -914,6 +927,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C994EB1F21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */,
 				C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */,
 				91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */,
 				C92AB162205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,
@@ -1795,6 +1809,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C994EB1D21122C8A000715F8 /* PresetModel.xcdatamodel */,
+			);
+			currentVersion = C994EB1D21122C8A000715F8 /* PresetModel.xcdatamodel */;
+			path = PresetModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 91D3DA0C1B023C03008FFFBB /* Project object */;
 }

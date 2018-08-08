@@ -51,9 +51,19 @@ public class Preset: NSObject, NSCoding {
 class PresetController: NSObject {
     
     public var audioUnit: AUv3Harmonizer?
+    {
+        didSet {
+            for f in (audioUnit?.fields())!
+            {
+                fields.append(f as! String)
+            }
+        }
+    }
     var presets = [Preset]()
     var favorites = [Int]()
     var presetIx: Int = 0
+    
+    var fields: [String] = []
     
     //MARK: preset save/load
     
@@ -101,9 +111,43 @@ class PresetController: NSObject {
         NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
     }
     
-    func getPreset() -> [String: Any]?
+    func getPreset() -> Data
     {
-        return audioUnit!.fullState
+        let state: NSMutableDictionary = [:]
+        
+        for key in fields {
+            let p = (audioUnit!.parameterTree?.value(forKey: key) as? AUParameter)?.value
+            state[key] = p
+        }
+        
+        var js: Data? = nil
+        print(state)
+        do {
+            js = try JSONSerialization.data(withJSONObject: state, options: [])
+            print(String(data: js!, encoding: .utf8) as Any)
+        }
+        catch {
+            print("Failed to encode to json")
+        }
+        return js!
+        //return audioUnit!.fullState
+    }
+    
+    func setPreset(_ data: Data)
+    {
+        var state: NSMutableDictionary? = nil
+        do {
+            state = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers]) as? NSMutableDictionary
+        }
+        catch {
+            return
+        }
+        for key in fields {
+            let p = audioUnit!.parameterTree?.value(forKey: key) as? AUParameter
+            p?.value = state![key] as! Float
+        }
+        
+        //audioUnit!.fullState = data
     }
     
     func writePreset(name: String, ix: Int)
@@ -186,7 +230,7 @@ class PresetController: NSObject {
             }
             else
             {
-                self.audioUnit!.fullState = p.data as? [String: Any]
+                setPreset(p.data as! Data)
             }
             
             storePresets() // NOTE: we have to store to keep index
