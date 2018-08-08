@@ -8,52 +8,25 @@
 import UIKit
 
 class PresetSaveViewController: UIViewController, UITextFieldDelegate {
-
     
-    @IBOutlet weak var presetName: UITextField!
-    @IBOutlet weak var saveButton: HarmButton!
-    @IBOutlet weak var revertButton: HarmButton!
-    
-    @IBOutlet weak var presetPrevButton: HarmButton!
-    @IBOutlet weak var presetNextButton: HarmButton!
-    @IBOutlet weak var presetAddButton: UIButton!
-    
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    @IBOutlet weak var presetTable: UITableView!
     
     var presetNeedsSave: Bool = false
     var presetIx: Int = 0
     
     var presetController: PresetController? {
         didSet {
-            
-            if (presetName != nil)
-            {
-                presetName!.text = presetController!.currentPreset().name
-                presetName!.isEnabled = !presetController!.currentPreset().isFactory
-                
-                presetIx = presetController!.presetIx
-            }
+            presetIx = presetController!.presetIx
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        presetName.delegate = self
-        saveButton.isEnabled = false
         
-        if (presetController != nil)
-        {
-            presetName!.text = presetController!.currentPreset().name
-            presetName!.isEnabled = !presetController!.currentPreset().isFactory
-            
-            presetIx = presetController!.presetIx
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
-        syncPresetButtons()
-        // Do any additional setup after loading the view.
+        presetTable.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        presetTable.dataSource = self
+        presetTable.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,102 +45,64 @@ class PresetSaveViewController: UIViewController, UITextFieldDelegate {
     }
     */
     
-    @IBAction func presetNext(_ sender: Any) {
-        if (presetIx < presetController!.presets.count - 1)
-        {
-            presetIx = presetIx + 1
-            presetNeedsSave = true
-            syncPresetButtons()
+    @IBAction func newPreset(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "New Preset", message: "Add new preset", preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) {
+            [unowned self] action in
+            
+            guard let textField = alert.textFields?.first,
+                let nameToSave = textField.text else {
+                    return
+            }
+            
+            self.presetController!.appendPreset()
+            self.presetIx = self.presetController!.presets.count - 1
+            self.presetController!.writePreset(name: nameToSave, ix: self.presetIx)
+            self.navigationController!.popViewController(animated: true)
         }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        alert.addTextField()
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
-    
-    @IBAction func presetPrev(_ sender: Any) {
-        if (presetIx > 0)
-        {
-            presetIx = presetIx - 1
-            presetNeedsSave = true
-            syncPresetButtons()
-        }
-    }
-    
-    @IBAction func changePresetName(_ sender: UITextField) {
-        presetNeedsSave = true
-        presetController!.presets[presetIx].name = sender.text
-        syncPresetButtons()
-    }
-    
-    @IBAction func savePreset(_ sender: Any) {
-        presetController?.writePreset(name: presetName.text!, ix: presetIx)
-        presetNeedsSave = false
-        syncPresetButtons()
-    }
-    
-    @IBAction func revertPreset(_ sender: HarmButton) {
-        presetNeedsSave = false
-        presetController!.restoreState()
-        presetIx = presetController!.presetIx
-        syncPresetButtons()
-    }
-    
-    @IBAction func addPreset(_ sender: Any) {
-        presetController!.appendPreset()
-        presetNeedsSave = true
-        presetIx = presetController!.presets.count - 1
-        syncPresetButtons()
-        presetName!.becomeFirstResponder()
-    }
-    
-    func syncPresetButtons()
+
+}
+
+extension PresetSaveViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if (presetController == nil)
+        //updateSelection()
+        return presetController!.presets.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        
+        let p = presetController!.presets[indexPath.row]
+        
+        cell.textLabel?.text = p.name! + (p.isFactory ? " (factory)" : "")
+        cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
+        
+        cell.isUserInteractionEnabled = !p.isFactory
+        
+        return cell
+    }
+}
+extension PresetSaveViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let p = presetController!.presets[indexPath.row]
+        if (p.isFactory)
         {
             return
         }
-        let nameText = presetController!.presets[presetIx].name! + (presetController!.presets[presetIx].isFactory ? " (factory)" : "")
-        presetName!.text = nameText
-        presetName!.isEnabled = !presetController!.presets[presetIx].isFactory
         
-        presetName!.textColor = presetName.isEnabled ? UIColor.white : UIColor.lightGray
-        
-        presetPrevButton.isEnabled = (presetIx > 0)
-        presetNextButton.isEnabled = (presetIx < presetController!.presets.count - 1)
-        
-        saveButton.isEnabled = presetNeedsSave && presetName!.isEnabled
-        revertButton.isEnabled = saveButton.isEnabled
-        //doneButton.title = saveButton.isEnabled ? "Save" : "Done"
-    }
-    
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.presetName.resignFirstResponder()
-        return true
-    }
-
-    @objc func keyboardWillShow(notification: NSNotification)
-    {
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size
-        
-        let frame = presetName.convert(presetName.frame, from:self.view)
-        let wframe = presetName.convert(presetName.frame, to: nil)
-        
-        if ((self.view.window?.frame.height)! - wframe.maxY < keyboardSize!.height)
-        {
-            self.view.window?.frame.origin.y = ((self.view.window?.frame.height)! - wframe.maxY) - keyboardSize!.height - 5
-        }
-        //
-        //        print(self.view.frame.height)
-        //        print(frame.minY)
-        //        print(keyboardSize!.height)
-        //        let scrollHeight = (self.view.frame.height + frame.minY - frame.height - keyboardSize!.height)
-        //
-        //        if (scrollHeight < 0)
-        //        {
-        //            self.view.window?.frame.origin.y = scrollHeight
-        //        }
-        
-    }
-    @objc func keyboardWillHide(notification: NSNotification)
-    {
-        self.view.window?.frame.origin.y = 0
+        presetController!.writePreset(name: p.name!, ix: indexPath.row)
+        navigationController!.popViewController(animated: true)
     }
 }

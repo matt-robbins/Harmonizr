@@ -59,11 +59,39 @@ class PresetController: NSObject {
             }
         }
     }
+    
+    var defaults: UserDefaults? = nil
+    
+    public var presetIx: Int {
+        set (new) {
+            var val = new
+            if (val < 0) { val = 0 }
+            if (val >= presets.count) { val = presets.count-1 }
+            defaults?.set(val, forKey: "presetIndex")
+        }
+        get {
+            var res = defaults?.integer(forKey: "presetIndex")
+            if (res == nil)
+            {
+                defaults?.set(0, forKey: "presetIndex")
+                res = 0
+            }
+            return res!
+        }
+    }
+    
     var presets = [Preset]()
     var favorites = [Int]()
-    var presetIx: Int = 0
+    //var presetIx: Int = 0
     
     var fields: [String] = []
+    
+    
+    override init() {
+        super.init()
+        
+        defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+    }
     
     //MARK: preset save/load
     
@@ -102,13 +130,6 @@ class PresetController: NSObject {
         let DocumentsDirectory = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.harmonizr.extension")
         //let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
         return DocumentsDirectory!.appendingPathComponent("presets")
-    }
-    
-    func storePresets()
-    {
-        let obj = ["presets": presets,"presetIx": presetIx, "favorites": favorites] as [String : Any]
-        
-        NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
     }
     
     func getPreset() -> Data
@@ -169,13 +190,20 @@ class PresetController: NSObject {
         storePresets()
     }
     
+    func storePresets()
+    {
+        let obj = ["presets": presets,"presetIx": presetIx, "favorites": favorites] as [String : Any]
+        
+        NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
+    }
+    
     func loadPresets()
     {
         let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL().path) as? [String : Any]
         if (p != nil)
         {
             presets = p!["presets"] as! [Preset]
-            presetIx = p!["presetIx"] as! Int
+            //presetIx = p!["presetIx"] as! Int
             favorites = p!["favorites"] as! [Int]
             
             if (favorites.count == 0)
@@ -227,6 +255,7 @@ class PresetController: NSObject {
             if (p.isFactory)
             {
                 self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[preset]
+                p.data = getPreset()
             }
             else
             {

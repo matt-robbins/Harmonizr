@@ -84,6 +84,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     var saveController: PresetSaveViewController?
     var presetController: PresetController?
     
+    var presetState: Data?
+    
     var presetModified: Bool = false {
         didSet {
             //presetLabel.textColor = (presetModified == true) ? self.view.tintColor : UIColor.lightGray
@@ -130,17 +132,6 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
 //                btn.titleLabel?.adjustsFontSizeToFitWidth = true
 //            }
 //        }
-        
-        UITableViewCell.appearance().backgroundColor = UIColor.clear
-        UITableView.appearance().backgroundColor = UIColor.clear
-        UITableView.appearance().separatorColor = UIColor.lightGray
-        UITableViewHeaderFooterView.appearance().tintColor = UIColor.darkGray
-        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor.white
-        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).highlightedTextColor = UIColor.lightGray
-        BaseView.appearance().backgroundColor = UIColor.clear
-        UIPickerView.appearance().backgroundColor = UIColor.clear
-        UINavigationBar.appearance().barStyle = .black
-        UINavigationBar.appearance().backgroundColor = UIColor.darkGray
 		
 		// Respond to changes in the filterView (frequency and/or response changes).
         harmonizerView.delegate = self
@@ -180,7 +171,18 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //syncView()
+        syncView()
+    }
+    
+    func checkPresetModified() {
+        presetState = presetController!.getPreset()
+        
+        guard let d = presetController!.currentPreset().data as? Data else {
+            presetModified = true
+            return
+        }
+        
+        presetModified = !(presetState == d)
     }
     
     //MARK: VoicesViewDelegate
@@ -188,13 +190,13 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float)
     {
         inversionParameter?.value = inversion
-        presetModified = true
+        checkPresetModified()
     }
     
     func voicesView(_ view: HarmonizerVoicesView, didChangeNvoices voices: Float)
     {
         nvoicesParameter?.value = voices
-        presetModified = true
+        checkPresetModified()
     }
     
     //MARK: KeyboardViewDelegate
@@ -250,6 +252,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         print(hgainParameter!.value)
         presetController!.audioUnit = audioUnit
         presetController!.restoreState()
+        
+        presetState = presetController!.getPreset()
         
         var pendingRequestWorkItem: DispatchWorkItem?
         
@@ -308,6 +312,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             {
                 presetFavorites[k].isSelected = presetController!.presetIx == presetController!.favorites[presetFavorites[k].keycenter]
             }
+            
+            checkPresetModified()
         }
     }
     
@@ -325,6 +331,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         autoParameter!.value = autoParameter!.value == 0 ? 1 : 0
         autoButton.isSelected = autoParameter!.value == 1
         voicesView.autoTuneVoice1 = autoParameter!.value == 1
+        checkPresetModified()
     }
     
     @IBAction func toggleMidi(_ sender: Any) {
@@ -343,6 +350,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         dryButton.isSelected = !dryButton.isSelected
         hgainParameter!.value = dryButton.isSelected ? 0 : 1
         voicesView.alpha = dryButton.isSelected ? 0.5 : 1
+        
+        checkPresetModified()
         //print(hgainParameter!.value)
         
     }

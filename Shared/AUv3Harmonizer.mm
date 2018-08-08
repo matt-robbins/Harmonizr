@@ -586,7 +586,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                     @"auto",
                     @"nvoices",
                     @"triad",
-                    @"speed"];
+                    @"speed",
+                    @"hgain"];
     });
     return _fields;
 }

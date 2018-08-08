@@ -501,7 +501,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-25" y="-2155"/>
+            <point key="canvasLocation" x="-26" y="-1999"/>
         </scene>
         <!--Config View Controller-->
         <scene sceneID="LXC-s0-m5X">
@@ -791,7 +791,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cmc-0u-KBH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-25" y="-282"/>
+            <point key="canvasLocation" x="-27" y="-230"/>
         </scene>
         <!--Settings-->
         <scene sceneID="n5G-s5-HVm">
@@ -1123,7 +1123,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0JS-sF-v0b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-25" y="-1161"/>
+            <point key="canvasLocation" x="-27" y="-1087"/>
         </scene>
         <!--Main-->
         <scene sceneID="WGT-rm-yrF">
@@ -1143,7 +1143,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gKD-wq-nDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-887" y="-2794"/>
+            <point key="canvasLocation" x="-1408" y="-1999"/>
         </scene>
         <!--Config Detail View Controller-->
         <scene sceneID="IW1-sh-U6s">
@@ -1200,135 +1200,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="RUm-G4-Ckx" userLabel="Save">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="uFs-32-vIp">
                                 <rect key="frame" x="0.0" y="32" width="667" height="343"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="uFs-32-vIp">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aV3-h5-Pzv">
                                         <rect key="frame" x="0.0" y="0.0" width="667" height="343"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save to Preset" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iJ0-Rw-wms">
-                                                <rect key="frame" x="0.0" y="0.0" width="667" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="qss-lu-yce">
-                                                <rect key="frame" x="0.0" y="25.5" width="667" height="30"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OnA-ZD-Xyt" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="0.0" width="29.5" height="30"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" secondItem="OnA-ZD-Xyt" secondAttribute="height" multiplier="1:1" id="3Uj-AT-1ag"/>
-                                                        </constraints>
-                                                        <state key="normal" title="◀">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="presetPrev:" destination="0gD-xV-MLx" eventType="touchUpInside" id="Za8-5f-TY1"/>
-                                                            <action selector="presetPrev:" destination="G03-CJ-RWa" eventType="touchUpInside" id="x9j-YG-KLD"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GNG-FK-lG7" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="31.5" y="0.0" width="30" height="30"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" secondItem="GNG-FK-lG7" secondAttribute="height" multiplier="1:1" id="WaQ-m5-vjh"/>
-                                                        </constraints>
-                                                        <state key="normal" title="▶">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="presetNext:" destination="G03-CJ-RWa" eventType="touchUpInside" id="FPC-Lh-7XR"/>
-                                                            <action selector="presetNext:" destination="0gD-xV-MLx" eventType="touchUpInside" id="Oed-Zi-Tkq"/>
-                                                        </connections>
-                                                    </button>
-                                                    <textField opaque="NO" contentMode="left" horizontalHuggingPriority="100" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Preset" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f7m-UA-aDd">
-                                                        <rect key="frame" x="63.5" y="0.0" width="572" height="30"/>
-                                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="tintColor" red="0.046427408849999997" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                                        <connections>
-                                                            <action selector="changePresetName:" destination="0gD-xV-MLx" eventType="editingDidEnd" id="iRf-RB-Qlq"/>
-                                                            <action selector="changePresetName:" destination="G03-CJ-RWa" eventType="editingDidEnd" id="xYS-N4-QxC"/>
-                                                            <action selector="setPresetName:" destination="G03-CJ-RWa" eventType="editingDidEnd" id="gnq-Oy-pHb"/>
-                                                        </connections>
-                                                    </textField>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RlR-1j-tNM">
-                                                        <rect key="frame" x="637.5" y="0.0" width="29.5" height="30"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" secondItem="RlR-1j-tNM" secondAttribute="height" multiplier="1:1" id="Y8h-2f-ftm"/>
-                                                        </constraints>
-                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="addPreset:" destination="G03-CJ-RWa" eventType="touchUpInside" id="4YO-Rp-3fr"/>
-                                                            <action selector="addPreset:" destination="0gD-xV-MLx" eventType="touchUpInside" id="7tq-D6-HGf"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JsG-g9-c1E">
-                                                <rect key="frame" x="0.0" y="60.5" width="667" height="282.5"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q5r-DC-Wom" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="0.0" y="5.5" width="58.5" height="30"/>
-                                                        <state key="normal" title="Save">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="savePreset:" destination="G03-CJ-RWa" eventType="touchUpInside" id="AlP-8m-IL0"/>
-                                                            <action selector="savePreset:" destination="0gD-xV-MLx" eventType="touchUpInside" id="Hkc-iO-Ip2"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0L-y3-CTf" customClass="HarmButton" customModule="HarmonizerFramework">
-                                                        <rect key="frame" x="608.5" y="5.5" width="58.5" height="30"/>
-                                                        <state key="normal" title="Revert">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="revertPreset:" destination="G03-CJ-RWa" eventType="touchUpInside" id="XlU-UM-rnx"/>
-                                                            <action selector="revertPreset:" destination="0gD-xV-MLx" eventType="touchUpInside" id="atN-us-uGt"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="q5r-DC-Wom" firstAttribute="leading" secondItem="JsG-g9-c1E" secondAttribute="leading" id="A7H-LG-mU3"/>
-                                                    <constraint firstItem="f0L-y3-CTf" firstAttribute="bottom" secondItem="q5r-DC-Wom" secondAttribute="bottom" id="FOm-8L-1uA"/>
-                                                    <constraint firstAttribute="trailing" secondItem="f0L-y3-CTf" secondAttribute="trailing" id="GGJ-JT-UrM"/>
-                                                    <constraint firstItem="f0L-y3-CTf" firstAttribute="top" secondItem="q5r-DC-Wom" secondAttribute="top" id="ILB-jr-iRs"/>
-                                                    <constraint firstItem="f0L-y3-CTf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JsG-g9-c1E" secondAttribute="leading" constant="20" symbolic="YES" id="QYE-WS-vSj"/>
-                                                    <constraint firstItem="q5r-DC-Wom" firstAttribute="top" secondItem="JsG-g9-c1E" secondAttribute="top" constant="5" id="Uik-SM-0Cx"/>
-                                                    <constraint firstItem="f0L-y3-CTf" firstAttribute="width" secondItem="q5r-DC-Wom" secondAttribute="width" id="VGs-16-Fys"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="q5r-DC-Wom" firstAttribute="trailing" secondItem="OnA-ZD-Xyt" secondAttribute="trailing" multiplier="2" id="OXw-ml-b5V"/>
-                                            <constraint firstItem="RlR-1j-tNM" firstAttribute="trailing" secondItem="f0L-y3-CTf" secondAttribute="trailing" id="izH-zo-CSm"/>
-                                        </constraints>
-                                    </stackView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableView>
                                 </subviews>
-                                <viewLayoutGuide key="safeArea" id="rqF-FH-Ear"/>
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="iiX-Mu-tWe" firstAttribute="trailing" secondItem="RUm-G4-Ckx" secondAttribute="trailing" id="7i3-Xx-gkb"/>
-                            <constraint firstItem="RUm-G4-Ckx" firstAttribute="top" secondItem="iiX-Mu-tWe" secondAttribute="top" id="htQ-5C-cQ2"/>
-                            <constraint firstItem="RUm-G4-Ckx" firstAttribute="leading" secondItem="iiX-Mu-tWe" secondAttribute="leading" id="l9u-PP-8PE"/>
-                            <constraint firstItem="iiX-Mu-tWe" firstAttribute="bottom" secondItem="RUm-G4-Ckx" secondAttribute="bottom" id="pIJ-uu-qhK"/>
+                            <constraint firstItem="uFs-32-vIp" firstAttribute="bottom" secondItem="iiX-Mu-tWe" secondAttribute="bottom" id="RUh-G7-EKe"/>
+                            <constraint firstItem="uFs-32-vIp" firstAttribute="top" secondItem="iiX-Mu-tWe" secondAttribute="top" id="aEA-jr-lLY"/>
+                            <constraint firstItem="uFs-32-vIp" firstAttribute="trailing" secondItem="iiX-Mu-tWe" secondAttribute="trailing" id="gcG-sy-Ac4"/>
+                            <constraint firstItem="uFs-32-vIp" firstAttribute="leading" secondItem="iiX-Mu-tWe" secondAttribute="leading" id="mm7-fq-QKy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="iiX-Mu-tWe"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Save To Preset" id="bpv-vv-txv" userLabel="Save To Preset">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="UuX-sn-6Fa">
+                            <connections>
+                                <action selector="newPreset:" destination="0gD-xV-MLx" id="QCE-dU-KQB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="presetAddButton" destination="RlR-1j-tNM" id="U3Q-VV-Vce"/>
-                        <outlet property="presetName" destination="f7m-UA-aDd" id="R2s-BX-1Fx"/>
-                        <outlet property="presetNextButton" destination="GNG-FK-lG7" id="POi-aD-455"/>
-                        <outlet property="presetPrevButton" destination="OnA-ZD-Xyt" id="O0a-Fn-4tF"/>
-                        <outlet property="revertButton" destination="f0L-y3-CTf" id="rrP-hC-T2L"/>
-                        <outlet property="saveButton" destination="q5r-DC-Wom" id="DKz-sx-xj5"/>
+                        <outlet property="addButton" destination="UuX-sn-6Fa" id="93h-V3-QgG"/>
+                        <outlet property="presetTable" destination="aV3-h5-Pzv" id="Wwf-jx-ETj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fvL-Ii-Us2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1351,7 +1250,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mQi-31-StV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-930" y="-1778"/>
+            <point key="canvasLocation" x="-716" y="-1999"/>
         </scene>
     </scenes>
     <resources>
