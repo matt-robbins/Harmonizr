@@ -12,11 +12,13 @@ public class Preset: NSObject, NSCoding {
         static let name = "name"
         static let data = "data"
         static let isFactory = "isFactory"
+        static let id = "id"
     }
     
     public var name: String? = nil
     public var data: Any? = nil
     public var isFactory: Bool = false
+    public var id: Int = 0
     
     init (name: String, data: Any?, isFactory: Bool) {
         self.name = name
@@ -192,6 +194,10 @@ class PresetController: NSObject {
     
     func storePresets()
     {
+        for ix in 0...presets.count-1 {
+            presets[ix].id = ix
+        }
+        
         let obj = ["presets": presets,"presetIx": presetIx, "favorites": favorites] as [String : Any]
         
         NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
@@ -264,6 +270,33 @@ class PresetController: NSObject {
             
             storePresets() // NOTE: we have to store to keep index
         }
+    }
+    
+    func swap(ix1: Int, ix2: Int)
+    {
+        let tmp = presets[ix2]
+        presets[ix2] = presets[ix1]
+        presets[ix1] = tmp
+        
+        storePresets()
+//        var id = 0
+//        for p in presets {
+//            p.id = Int32(id)
+//            id += 1
+//        }
+//
+//        saveState()
+    }
+    
+    func delete(ix: Int)
+    {
+        presets.remove(at: ix)
+        if (presetIx >= presets.count)
+        {
+            presetIx = presets.count - 1
+        }
+        
+        selectPreset(preset: presetIx)
     }
     
     func canIncrement() -> Bool

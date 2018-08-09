@@ -89,7 +89,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     var presetModified: Bool = false {
         didSet {
             //presetLabel.textColor = (presetModified == true) ? self.view.tintColor : UIColor.lightGray
-            presetButton.isEnabled = presetModified
+            presetButton.isModified = presetModified
         }
     }
 
@@ -305,7 +305,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             
             //presetLabel.text = presetController!.currentPreset().name
             //presetButton.titleLabel?.text =
-            presetButton.isEnabled = presetModified
+            presetButton.isModified = presetModified
             presetButton.titleText = presetController!.currentPreset().name!
             
             for k in 0...presetFavorites.count-1
@@ -357,6 +357,14 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     }
     
     @IBAction func savePreset(_ sender: HarmButton) {
+        if (presetModified)
+        {
+            performSegue(withIdentifier: "saveToPreset", sender:sender)
+        }
+        else
+        {
+            performSegue(withIdentifier: "presetList", sender:sender)
+        }
     }
     
     
@@ -431,8 +439,13 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
                 }
             }
         }
-        else if segue.identifier == "showSave" {
+        else if segue.identifier == "saveToPreset" {
             if let destinationVC = segue.destination as? PresetSaveViewController {
+                destinationVC.presetController = presetController
+            }
+        }
+        else if segue.identifier == "presetList" {
+            if let destinationVC = segue.destination as? PresetListViewController {
                 destinationVC.presetController = presetController
             }
         }

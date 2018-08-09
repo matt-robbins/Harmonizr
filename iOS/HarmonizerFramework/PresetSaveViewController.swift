@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PresetSaveViewController: UIViewController, UITextFieldDelegate {
+class PresetSaveViewController: UIViewController {
     
     @IBOutlet weak var addButton: UIBarButtonItem!
     @IBOutlet weak var presetTable: UITableView!
@@ -77,13 +77,13 @@ extension PresetSaveViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         //updateSelection()
-        return presetController!.presets.count
+        return presetController!.presets.filter { $0.isFactory == false }.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        let p = presetController!.presets[indexPath.row]
+        let p = presetController!.presets.filter { $0.isFactory == false }[indexPath.row]
         
         cell.textLabel?.text = p.name! + (p.isFactory ? " (factory)" : "")
         cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
@@ -96,13 +96,13 @@ extension PresetSaveViewController: UITableViewDataSource {
 extension PresetSaveViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let p = presetController!.presets[indexPath.row]
+        let p = presetController!.presets.filter { $0.isFactory == false }[indexPath.row]
         if (p.isFactory)
         {
             return
         }
         
-        presetController!.writePreset(name: p.name!, ix: indexPath.row)
+        presetController!.writePreset(name: p.name!, ix: p.id)
         navigationController!.popViewController(animated: true)
     }
 }

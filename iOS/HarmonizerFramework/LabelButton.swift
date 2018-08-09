@@ -51,7 +51,7 @@ class LabelButton: UIButton {
     func setTitleText(_ label: String)
     {
         var newTitle = label
-        if (isEnabled)
+        if (isModified)
         {
             newTitle += "*"
         }
@@ -59,10 +59,13 @@ class LabelButton: UIButton {
         setTitle(newTitle, for: UIControlState())
     }
     
-    override var isEnabled: Bool {
+    var isModified: Bool = false {
         didSet {
             setTitleText(titleText)
         }
     }
+//    override var isEnabled: Bool {
+//        
+//    }
 
 }
