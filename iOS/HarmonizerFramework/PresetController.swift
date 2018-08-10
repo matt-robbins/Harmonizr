@@ -96,7 +96,6 @@ class PresetController: NSObject {
     
     var presets = [Preset]()
     var favorites = [Int]()
-    //var presetIx: Int = 0
     
     var fields: [String] = []
     
@@ -104,6 +103,31 @@ class PresetController: NSObject {
         super.init()
         
         defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        
+        if (moc == nil)
+        {
+            guard let modelURL = Bundle.main.url(forResource: "PresetModel", withExtension: "momd") else {
+                fatalError("failed to find data model")
+            }
+            guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
+                fatalError("Failed to create model from file: \(modelURL)")
+            }
+            
+            let psc = NSPersistentStoreCoordinator(managedObjectModel: mom)
+            
+            let dirURL = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.harmonizr.extension")
+            let fileURL = URL(string: "Presets.db", relativeTo: dirURL)
+            
+            let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
+            do {
+                try psc.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: fileURL, options: options)
+            } catch {
+                fatalError("Error configuring persistent store: \(error)")
+            }
+            
+            moc = NSManagedObjectContext(concurrencyType:.mainQueueConcurrencyType)
+            moc!.persistentStoreCoordinator = psc
+        }
     }
     
     //MARK: preset save/load
@@ -178,7 +202,7 @@ class PresetController: NSObject {
         }
     }
     
-    func writePreset(name: String, ix: Int)
+    func updatePreset(name: String, ix: Int)
     {
         if (ix < 0 || ix > presets.count - 1)
         {
@@ -283,7 +307,10 @@ class PresetController: NSObject {
         let tmp = presets[ix2]
         presets[ix2] = presets[ix1]
         presets[ix1] = tmp
-        
+        if (presetIx == ix1)
+        {
+            presetIx = ix2
+        }
         selectPreset(preset: presetIx)
         storePresets()
 

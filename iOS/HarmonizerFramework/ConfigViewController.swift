@@ -563,7 +563,7 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     }
     
     @IBAction func savePreset(_ sender: Any) {
-        presetController?.writePreset(name: presetName.text!, ix: presetIx)
+        presetController?.updatePreset(name: presetName.text!, ix: presetIx)
         presetNeedsSave = false
         syncPresetButtons()
     }

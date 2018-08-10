@@ -19,7 +19,7 @@ class PresetListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        presetTable.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        //presetTable.register(HarmTableViewCell.self, forCellReuseIdentifier: "Cell")
         presetTable.dataSource = self
         presetTable.delegate = self
         // Do any additional setup after loading the view.
@@ -49,7 +49,7 @@ class PresetListViewController: UIViewController {
     
     func updateSelection()
     {
-        
+        presetTable.selectRow(at: IndexPath(row: presetController!.presetIx, section: 0), animated: true, scrollPosition: .top)
     }
     
     /*
@@ -72,13 +72,14 @@ extension PresetListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "presetListCell", for: indexPath)
         
         let p = presetController!.presets[indexPath.row]
         
         cell.textLabel?.text = p.name! + (p.isFactory ? " (factory)" : "")
         cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
-                
+        //cell.selectionStyle = .default
+        //cell.accessoryView = UISwitch()
         return cell
     }
     

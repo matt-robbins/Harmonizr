@@ -58,7 +58,7 @@ class PresetSaveViewController: UIViewController {
             
             self.presetController!.appendPreset()
             self.presetIx = self.presetController!.presets.count - 1
-            self.presetController!.writePreset(name: nameToSave, ix: self.presetIx)
+            self.presetController!.updatePreset(name: nameToSave, ix: self.presetIx)
             self.navigationController!.popViewController(animated: true)
         }
         
@@ -102,7 +102,7 @@ extension PresetSaveViewController: UITableViewDelegate {
             return
         }
         
-        presetController!.writePreset(name: p.name!, ix: p.id)
+        presetController!.updatePreset(name: p.name!, ix: p.id)
         navigationController!.popViewController(animated: true)
     }
 }

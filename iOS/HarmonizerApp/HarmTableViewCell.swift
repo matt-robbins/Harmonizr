@@ -9,22 +9,22 @@ import UIKit
 
 class HarmTableViewCell: UITableViewCell {
 
-    var led = CALayer()
+    var led = UIView()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        led.backgroundColor = UIColor.darkGray.cgColor
-        led.shadowColor = tintColor.cgColor
-        led.shadowOffset = CGSize(width: 0, height: 0)
-        led.shadowRadius = 5
-        led.cornerRadius = 2.5
-        led.shadowOpacity = 0.0
+        led.layer.backgroundColor = UIColor.darkGray.cgColor
+        led.layer.shadowColor = tintColor.cgColor
+        led.layer.shadowOffset = CGSize(width: 0, height: 0)
+        led.layer.shadowRadius = 5
+        led.layer.cornerRadius = 2.5
+        led.layer.shadowOpacity = 0.0
         
         led.frame = CGRect(x: 0, y: 0, width:5, height:5)
         
-        layer.addSublayer(led)
+        self.accessoryView = led
         
         self.selectionStyle = UITableViewCellSelectionStyle.none
     }
@@ -43,13 +43,13 @@ class HarmTableViewCell: UITableViewCell {
         
         if (selected)
         {
-            led.backgroundColor = tintColor.cgColor
-            led.shadowOpacity = 1.0
+            led.layer.backgroundColor = tintColor.cgColor
+            led.layer.shadowOpacity = 1.0
         }
         else
         {
-            led.backgroundColor = UIColor.darkGray.cgColor
-            led.shadowOpacity = 0.0
+            led.layer.backgroundColor = UIColor.darkGray.cgColor
+            led.layer.shadowOpacity = 0.0
         }
         
         // Configure the view for the selected state
