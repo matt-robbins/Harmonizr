@@ -68,7 +68,7 @@ class PresetSaveViewController: UIViewController {
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
         
-        present(alert, animated: true)
+        self.present(alert, animated: true)
     }
 
 }

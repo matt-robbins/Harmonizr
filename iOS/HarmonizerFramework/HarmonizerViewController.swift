@@ -21,6 +21,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     @IBOutlet weak var keyboardView: KeyboardView!
     
+    @IBOutlet weak var keyboardStack: UIStackView!
     @IBOutlet weak var midiButton: HarmButton!
     @IBOutlet weak var autoButton: HarmButton!
     @IBOutlet weak var dryButton: HarmButton!
@@ -314,6 +315,14 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             }
             
             checkPresetModified()
+        }
+        
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        
+        let kb = defaults?.bool(forKey: "showMidiKeyboard")
+        if (kb != nil)
+        {
+            keyboardStack.isHidden = !(kb!)
         }
     }
     

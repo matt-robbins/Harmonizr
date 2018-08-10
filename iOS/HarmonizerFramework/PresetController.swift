@@ -6,30 +6,38 @@
 //
 
 import UIKit
+import CoreData
 
 public class Preset: NSObject, NSCoding {
     struct PropertyKey {
         static let name = "name"
         static let data = "data"
-        static let isFactory = "isFactory"
         static let id = "id"
+        static let factoryId = "factoryId"
     }
     
     public var name: String? = nil
     public var data: Any? = nil
-    public var isFactory: Bool = false
+    public var isFactory: Bool {
+        get {
+            return factoryId >= 0
+        }
+    }
     public var id: Int = 0
+    public var factoryId: Int = 0
     
-    init (name: String, data: Any?, isFactory: Bool) {
+    init (name: String, data: Any?, factoryId: Int) {
         self.name = name
         self.data = data
-        self.isFactory = isFactory
+        self.factoryId = factoryId
     }
     
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: PropertyKey.name)
         aCoder.encode(data, forKey: PropertyKey.data)
-        aCoder.encode(isFactory, forKey: PropertyKey.isFactory)
+        //aCoder.encode(isFactory, forKey: PropertyKey.isFactory)
+        aCoder.encode(id, forKey: PropertyKey.id)
+        aCoder.encode(factoryId, forKey: PropertyKey.factoryId)
     }
     
     public required convenience init?(coder aDecoder: NSCoder)
@@ -40,13 +48,12 @@ public class Preset: NSObject, NSCoding {
             return nil
         }
         
-        // Because photo is an optional property of Meal, just use conditional cast.
         let data = aDecoder.decodeObject(forKey: PropertyKey.data)
         
-        let isFactory = aDecoder.decodeBool(forKey: PropertyKey.isFactory)
+        let factoryId = aDecoder.decodeInt32(forKey: PropertyKey.factoryId)
         
         // Must call designated initializer.
-        self.init(name: name, data: data, isFactory: isFactory)
+        self.init(name: name, data: data, factoryId: Int(factoryId))
     }
 }
 
@@ -62,7 +69,8 @@ class PresetController: NSObject {
         }
     }
     
-    var defaults: UserDefaults? = nil
+    var defaults: UserDefaults?
+    var moc: NSManagedObjectContext? = nil
     
     public var presetIx: Int {
         set (new) {
@@ -72,6 +80,10 @@ class PresetController: NSObject {
             defaults?.set(val, forKey: "presetIndex")
         }
         get {
+            if (defaults == nil)
+            {
+                return 0
+            }
             var res = defaults?.integer(forKey: "presetIndex")
             if (res == nil)
             {
@@ -87,7 +99,6 @@ class PresetController: NSObject {
     //var presetIx: Int = 0
     
     var fields: [String] = []
-    
     
     override init() {
         super.init()
@@ -116,14 +127,12 @@ class PresetController: NSObject {
     {
         loadPresets()
         
+        selectPreset(preset: presetIx)
         let f = stateURL()
         let s = NSKeyedUnarchiver.unarchiveObject(withFile: f.path) as? [String: Any]
         if (s != nil)
         {
             self.audioUnit!.fullState = s
-        }
-        else
-        {
         }
     }
     
@@ -144,16 +153,14 @@ class PresetController: NSObject {
         }
         
         var js: Data? = nil
-        print(state)
         do {
             js = try JSONSerialization.data(withJSONObject: state, options: [])
-            print(String(data: js!, encoding: .utf8) as Any)
         }
         catch {
             print("Failed to encode to json")
         }
+        
         return js!
-        //return audioUnit!.fullState
     }
     
     func setPreset(_ data: Data)
@@ -169,8 +176,6 @@ class PresetController: NSObject {
             let p = audioUnit!.parameterTree?.value(forKey: key) as? AUParameter
             p?.value = state![key] as! Float
         }
-        
-        //audioUnit!.fullState = data
     }
     
     func writePreset(name: String, ix: Int)
@@ -198,7 +203,7 @@ class PresetController: NSObject {
             presets[ix].id = ix
         }
         
-        let obj = ["presets": presets,"presetIx": presetIx, "favorites": favorites] as [String : Any]
+        let obj = ["presets": presets, "favorites": favorites] as [String : Any]
         
         NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
     }
@@ -209,7 +214,6 @@ class PresetController: NSObject {
         if (p != nil)
         {
             presets = p!["presets"] as! [Preset]
-            //presetIx = p!["presetIx"] as! Int
             favorites = p!["favorites"] as! [Int]
             
             if (favorites.count == 0)
@@ -235,7 +239,7 @@ class PresetController: NSObject {
     {
         for k in 0...(audioUnit!.factoryPresets?.count)!-1 {
             let p = (audioUnit!.factoryPresets?[k])!
-            presets.append(Preset(name:p.name, data: nil, isFactory: true))
+            presets.append(Preset(name:p.name, data: nil, factoryId: k))
             
             if (p.name == audioUnit!.currentPreset?.name)
             {
@@ -250,7 +254,7 @@ class PresetController: NSObject {
             }
         }
         
-        presets.append(Preset(name: "New Preset", data: nil, isFactory: false))
+        //presets.append(Preset(name: "New Preset", data: nil, factoryId: -1))
     }
     
     func selectPreset(preset: Int)
@@ -260,15 +264,17 @@ class PresetController: NSObject {
             let p = presets[preset]
             if (p.isFactory)
             {
-                self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[preset]
-                p.data = getPreset()
+                self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[p.factoryId]
+                if (p.data == nil)
+                {
+                    p.data = getPreset()
+                    storePresets()
+                }
             }
             else
             {
                 setPreset(p.data as! Data)
             }
-            
-            storePresets() // NOTE: we have to store to keep index
         }
     }
     
@@ -278,14 +284,9 @@ class PresetController: NSObject {
         presets[ix2] = presets[ix1]
         presets[ix1] = tmp
         
+        selectPreset(preset: presetIx)
         storePresets()
-//        var id = 0
-//        for p in presets {
-//            p.id = Int32(id)
-//            id += 1
-//        }
-//
-//        saveState()
+
     }
     
     func delete(ix: Int)
@@ -327,6 +328,6 @@ class PresetController: NSObject {
     
     func appendPreset()
     {
-        presets.append(Preset(name: "New Preset", data: nil, isFactory: false))
+        presets.append(Preset(name: "New Preset", data: nil, factoryId: -1))
     }
 }

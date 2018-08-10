@@ -44,6 +44,10 @@ class ConfigListViewController: UITableViewController {
     
     @IBOutlet weak var tuningLabel: UILabel!
     
+    @IBOutlet weak var showKeyboardSwitch: UISwitch!
+    
+    var defaults: UserDefaults?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -79,6 +83,9 @@ class ConfigListViewController: UITableViewController {
         
         speedSlider.value = speedParameter!.value
         
+        defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        
+        showKeyboardSwitch.isOn = (defaults?.bool(forKey: "showMidiKeyboard"))!
     }
     
     override func didReceiveMemoryWarning() {
@@ -136,6 +143,10 @@ class ConfigListViewController: UITableViewController {
     }
     @IBAction func setSpeed(_ sender: UISlider) {
         speedParameter!.value = AUValue(sender.value)
+    }
+    @IBAction func toggleKeyboard(_ sender: UISwitch) {
+        
+        defaults?.set(sender.isOn, forKey: "showMidiKeyboard")
     }
 }
 

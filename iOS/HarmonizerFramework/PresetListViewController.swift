@@ -24,6 +24,11 @@ class PresetListViewController: UIViewController {
         presetTable.delegate = self
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        presetTable.selectRow(at: IndexPath(row: presetController!.presetIx, section: 0), animated: false, scrollPosition: UITableViewScrollPosition.top)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -80,7 +85,6 @@ extension PresetListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete)
         {
-            print("delete!")
             presetController!.delete(ix: indexPath.row)
             self.presetTable.deleteRows(at: [indexPath], with: .automatic)
         }
@@ -91,7 +95,34 @@ extension PresetListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presetController!.selectPreset(preset: indexPath.row)
+        if (tableView.isEditing == false)
+        {
+            presetController!.selectPreset(preset: indexPath.row)
+            self.navigationController!.popViewController(animated: true)
+            //return
+        }
+        let alert = UIAlertController(title: "Rename Preset", message: "Rename this preset", preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) {
+            [unowned self] action in
+            
+            guard let textField = alert.textFields?.first,
+                let nameToSave = textField.text else {
+                    return
+            }
+            
+            self.presetController!.presets[indexPath.row].name = nameToSave
+            self.presetController!.storePresets()
+            self.presetTable.reloadData()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
+        
+        alert.addTextField()
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {

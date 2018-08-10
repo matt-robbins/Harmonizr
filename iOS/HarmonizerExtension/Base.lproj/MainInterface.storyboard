@@ -9,7 +9,6 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -113,7 +112,7 @@
                                                                         <rect key="frame" x="0.0" y="36" width="45.5" height="45.5"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="height" relation="lessThanOrEqual" secondItem="amN-OU-hHi" secondAttribute="width" multiplier="1:1" priority="999" id="el1-1X-G0C"/>
+                                                                            <constraint firstAttribute="height" relation="lessThanOrEqual" secondItem="amN-OU-hHi" secondAttribute="width" multiplier="1:1" id="el1-1X-G0C"/>
                                                                         </constraints>
                                                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="15"/>
@@ -218,11 +217,11 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="45.5" height="45.5"/>
                                                                                 <state key="normal" image="Logo"/>
                                                                             </button>
-                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMf-yw-TXY" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMf-yw-TXY" userLabel="1" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="47.5" y="0.0" width="45.5" height="45.5"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
-                                                                                <state key="normal" title="f1">
+                                                                                <state key="normal" title="1">
                                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 </state>
                                                                                 <userDefinedRuntimeAttributes>
@@ -232,14 +231,13 @@
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="setPreset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CgP-G7-Xg1"/>
-                                                                                    <outletCollection property="gestureRecognizers" destination="RFa-1p-7X6" appends="YES" id="bR0-Ch-drj"/>
                                                                                 </connections>
                                                                             </button>
-                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="260" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue0-hA-fHl" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="260" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ue0-hA-fHl" userLabel="2" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="95" y="0.0" width="45.5" height="45.5"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
-                                                                                <state key="normal" title="f2">
+                                                                                <state key="normal" title="2">
                                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                 </state>
                                                                                 <userDefinedRuntimeAttributes>
@@ -249,14 +247,13 @@
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="setPreset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UMa-Pl-XUE"/>
-                                                                                    <outletCollection property="gestureRecognizers" destination="KAC-FB-6aS" appends="YES" id="AHw-Jt-xqR"/>
                                                                                 </connections>
                                                                             </button>
-                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGH-bF-XzS" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OGH-bF-XzS" userLabel="3" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="142.5" y="0.0" width="45.5" height="45.5"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
-                                                                                <state key="normal" title="f3">
+                                                                                <state key="normal" title="3">
                                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 </state>
                                                                                 <userDefinedRuntimeAttributes>
@@ -266,14 +263,13 @@
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="setPreset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xFh-Mi-Vfb"/>
-                                                                                    <outletCollection property="gestureRecognizers" destination="FAY-bE-IWH" appends="YES" id="XaL-xn-CjM"/>
                                                                                 </connections>
                                                                             </button>
-                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTD-LV-0od" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTD-LV-0od" userLabel="4" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="190" y="0.0" width="45.5" height="45.5"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
-                                                                                <state key="normal" title="f4">
+                                                                                <state key="normal" title="4">
                                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                 </state>
                                                                                 <userDefinedRuntimeAttributes>
@@ -283,14 +279,13 @@
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="setPreset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="n95-sH-SL8"/>
-                                                                                    <outletCollection property="gestureRecognizers" destination="4dD-6z-u0c" appends="YES" id="Yh2-zu-uN3"/>
                                                                                 </connections>
                                                                             </button>
-                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ku9-Sh-8cc" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ku9-Sh-8cc" userLabel="5" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="237.5" y="0.0" width="45.5" height="45.5"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
-                                                                                <state key="normal" title="f5">
+                                                                                <state key="normal" title="5">
                                                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 </state>
                                                                                 <userDefinedRuntimeAttributes>
@@ -300,14 +295,13 @@
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="setPreset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eMt-XY-dKy"/>
-                                                                                    <outletCollection property="gestureRecognizers" destination="Q8B-d4-JIo" appends="YES" id="eHg-6m-2aB"/>
                                                                                 </connections>
                                                                             </button>
-                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-aX-8vc" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CwY-aX-8vc" userLabel="6" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="285" y="0.0" width="45.5" height="45.5"/>
                                                                                 <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <gestureRecognizers/>
-                                                                                <state key="normal" title="f6">
+                                                                                <state key="normal" title="6">
                                                                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                                 </state>
                                                                                 <userDefinedRuntimeAttributes>
@@ -317,7 +311,6 @@
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="setPreset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UCB-en-cgI"/>
-                                                                                    <outletCollection property="gestureRecognizers" destination="hzH-vY-4LL" appends="YES" id="2Zj-2u-qlT"/>
                                                                                 </connections>
                                                                             </button>
                                                                         </subviews>
@@ -452,6 +445,7 @@
                         <outlet property="kbdLinkButton" destination="fnI-wt-qaD" id="jZW-fY-cMy"/>
                         <outlet property="kbdOctMinusButton" destination="xz3-CX-ccC" id="tBU-Ru-VI4"/>
                         <outlet property="kbdOctPlusButton" destination="LWt-Ah-h6L" id="U8o-5y-6a3"/>
+                        <outlet property="keyboardStack" destination="JV1-J5-NPq" id="BJr-07-spt"/>
                         <outlet property="keyboardView" destination="rnK-4r-xXA" id="l5Y-Nj-fRr"/>
                         <outlet property="mainView" destination="xJe-bz-bEY" id="duO-7W-UUt"/>
                         <outlet property="midiButton" destination="amN-OU-hHi" id="81E-tH-K3m"/>
@@ -472,36 +466,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="KAC-FB-6aS">
-                    <connections>
-                        <action selector="longPress:" destination="BYZ-38-t0r" id="7Pb-LQ-EMA"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="RFa-1p-7X6">
-                    <connections>
-                        <action selector="longPress:" destination="BYZ-38-t0r" id="0Ds-6m-AOl"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="FAY-bE-IWH">
-                    <connections>
-                        <action selector="longPress:" destination="BYZ-38-t0r" id="YoX-fu-tGi"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="4dD-6z-u0c">
-                    <connections>
-                        <action selector="longPress:" destination="BYZ-38-t0r" id="cvv-Fv-NHC"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Q8B-d4-JIo">
-                    <connections>
-                        <action selector="longPress:" destination="BYZ-38-t0r" id="fQo-Dr-zSP"/>
-                    </connections>
-                </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="hzH-vY-4LL">
-                    <connections>
-                        <action selector="longPress:" destination="BYZ-38-t0r" id="Jqf-h2-t29"/>
-                    </connections>
-                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1" y="-2001"/>
         </scene>
@@ -1088,6 +1052,7 @@
                                                     <color key="onTintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
                                                         <action selector="legatoSwitch:" destination="z7q-ka-Sfk" eventType="valueChanged" id="FoR-3K-aV5"/>
+                                                        <action selector="toggleKeyboard:" destination="z7q-ka-Sfk" eventType="valueChanged" id="xZV-aY-CGD"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
@@ -1116,6 +1081,7 @@
                         <outlet property="legatoSwitch" destination="qGR-nZ-Lnc" id="TKo-7B-Qv4"/>
                         <outlet property="levelLabel" destination="1se-Po-KtR" id="61g-z4-VZ1"/>
                         <outlet property="levelStepper" destination="mqa-OJ-dKI" id="og8-kN-n1e"/>
+                        <outlet property="showKeyboardSwitch" destination="qGR-nZ-Lnc" id="fjB-7W-tKd"/>
                         <outlet property="speedSlider" destination="fpu-fI-xVO" id="8Ra-uT-qFO"/>
                         <outlet property="threshLabel" destination="lNg-A9-ScM" id="Iw2-Qb-f43"/>
                         <outlet property="threshStepper" destination="CFV-fm-Nap" id="CzV-BT-GJf"/>
@@ -1212,6 +1178,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="uFs-32-vIp" firstAttribute="bottom" secondItem="iiX-Mu-tWe" secondAttribute="bottom" id="RUh-G7-EKe"/>
                             <constraint firstItem="uFs-32-vIp" firstAttribute="top" secondItem="iiX-Mu-tWe" secondAttribute="top" id="aEA-jr-lLY"/>
@@ -1244,11 +1211,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UKe-eM-3au">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UKe-eM-3au">
                                 <rect key="frame" x="0.0" y="32" width="568" height="288"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="UKe-eM-3au" firstAttribute="leading" secondItem="Rnc-b5-zCj" secondAttribute="leading" id="3SH-Yj-YaF"/>
                             <constraint firstItem="UKe-eM-3au" firstAttribute="top" secondItem="Rnc-b5-zCj" secondAttribute="top" id="SiB-Ko-9po"/>
@@ -1258,18 +1226,11 @@
                         <viewLayoutGuide key="safeArea" id="Rnc-b5-zCj"/>
                     </view>
                     <navigationItem key="navigationItem" title="Presets" id="0Uc-o6-SLf">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="1xU-GN-l4g">
-                                <connections>
-                                    <action selector="addPreset:" destination="gGY-YD-deE" id="aZX-Db-z1s"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Edit" id="Ria-kM-gtY">
-                                <connections>
-                                    <action selector="toggleEdit:" destination="gGY-YD-deE" id="5ny-aw-Kh0"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="Ria-kM-gtY">
+                            <connections>
+                                <action selector="toggleEdit:" destination="gGY-YD-deE" id="5ny-aw-Kh0"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="presetTable" destination="UKe-eM-3au" id="AV0-gG-moE"/>

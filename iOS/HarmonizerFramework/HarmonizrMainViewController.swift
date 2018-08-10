@@ -22,7 +22,10 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         didSet {
             globalAudioUnit = audioUnit
             
-            harmViewController?.audioUnit = globalAudioUnit
+            if (harmViewController != nil)
+            {
+                harmViewController?.audioUnit = globalAudioUnit
+            }
         }
     }
     
@@ -41,6 +44,7 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         UIPickerView.appearance().backgroundColor = UIColor.clear
         UINavigationBar.appearance().barStyle = .black
         UINavigationBar.appearance().backgroundColor = UIColor.darkGray
+        
     }
 
     override public func didReceiveMemoryWarning() {

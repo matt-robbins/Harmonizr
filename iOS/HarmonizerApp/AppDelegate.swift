@@ -26,5 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().barStyle = .black
         UINavigationBar.appearance().backgroundColor = UIColor.darkGray
        // UINavigationBar.appearance().text
+        
+        
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        
+        let isInitialized = defaults?.bool(forKey: "init")
+        
+        if (!isInitialized!)
+        {
+            defaults?.set(true,forKey: "showMidiKeyboard")
+            defaults?.set(0, forKey: "presetIndex")
+        }
+        
     }
 }

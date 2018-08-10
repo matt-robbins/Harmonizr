@@ -315,6 +315,9 @@ class HarmonizerView: UIView {
                 vspacing = keyheight * 1.05
             }
             
+            // let maxheight = 3.2 * vspacing
+            let maxheight = containerLayer.frame.height
+            
             let blackkeys = [1,3,6,8,10]
             for j in 0...2 {
                 for i in 0...11 {
@@ -324,7 +327,7 @@ class HarmonizerView: UIView {
                         height = height + keyheight * 0.1
                     }
                     
-                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + keyoffset, y: 3.2*vspacing - height, width: keywidth, height: keyheight)
+                    keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + keyoffset, y: maxheight - height, width: keywidth, height: keyheight)
                     
                     keybuttons[j*12 + i].fontSize = min(14, keyheight * 0.5)
                 }
