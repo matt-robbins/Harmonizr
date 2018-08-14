@@ -141,7 +141,7 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     var presetController: PresetController? {
         didSet {
             presetName!.text = presetController!.currentPreset().name
-            presetName!.isEnabled = !presetController!.currentPreset().isFactory
+            presetName!.isEnabled = !(presetController!.currentPreset().factoryId >= 0)
             
             presetIx = presetController!.presetIx
         }
@@ -359,8 +359,6 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     public override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        syncPresetButtons()
-        //preset = Preset(name: "current",data: presetController!.getPreset(), isFactory: false)
         auPoller(T: 0.1)
     }
     
@@ -442,12 +440,7 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     //MARK: Actions
     @IBAction func done(_ sender: UIButton?)
     {
-        sender!.isSelected = true
-        if (presetNeedsSave)
-        {
-            savePreset(saveButton)
-        }
-        
+
         if (doneFcn != nil)
         {
             doneFcn!()
@@ -536,72 +529,6 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         
         refresh()
         drawKeys()
-    }
-    
-    @IBAction func presetNext(_ sender: Any) {
-        if (presetIx < presetController!.presets.count - 1)
-        {
-            presetIx = presetIx + 1
-            presetNeedsSave = true
-            syncPresetButtons()
-        }
-    }
-    
-    @IBAction func presetPrev(_ sender: Any) {
-        if (presetIx > 0)
-        {
-            presetIx = presetIx - 1
-            presetNeedsSave = true
-            syncPresetButtons()
-        }
-    }
-    
-    @IBAction func changePresetName(_ sender: UITextField) {
-        presetNeedsSave = true
-        presetController!.presets[presetIx].name = sender.text
-        syncPresetButtons()
-    }
-    
-    @IBAction func savePreset(_ sender: Any) {
-        presetController?.updatePreset(name: presetName.text!, ix: presetIx)
-        presetNeedsSave = false
-        syncPresetButtons()
-    }
-    
-    @IBAction func revertPreset(_ sender: HarmButton) {
-        presetNeedsSave = false
-        presetController!.restoreState()
-        presetIx = presetController!.presetIx
-        syncPresetButtons()
-    }
-    
-    @IBAction func addPreset(_ sender: Any) {
-        presetController!.appendPreset()
-        presetNeedsSave = true
-        presetIx = presetController!.presets.count - 1
-        syncPresetButtons()
-        presetName!.becomeFirstResponder()
-    }
-    
-    
-    func syncPresetButtons()
-    {
-        if (presetController == nil)
-        {
-            return
-        }
-        let nameText = presetController!.presets[presetIx].name! + (presetController!.presets[presetIx].isFactory ? " (factory)" : "")
-        presetName!.text = nameText
-        presetName!.isEnabled = !presetController!.presets[presetIx].isFactory
-        
-        presetName!.textColor = presetName.isEnabled ? UIColor.white : UIColor.lightGray
-
-        presetPrevButton.isEnabled = (presetIx > 0)
-        presetNextButton.isEnabled = (presetIx < presetController!.presets.count - 1)
-        
-        saveButton.isEnabled = presetNeedsSave && presetName!.isEnabled
-        revertButton.isEnabled = saveButton.isEnabled
-        //doneButton.title = saveButton.isEnabled ? "Save" : "Done"
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {

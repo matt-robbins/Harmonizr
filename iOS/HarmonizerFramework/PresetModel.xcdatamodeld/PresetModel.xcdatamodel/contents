@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CDPreset" representedClassName="CDPreset" syncable="YES" codeGenerationType="class">
+    <entity name="Preset" representedClassName="Preset" syncable="YES" codeGenerationType="class">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="factoryId" optional="YES" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -8,6 +8,6 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDPreset" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Preset" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

@@ -8,54 +8,54 @@
 import UIKit
 import CoreData
 
-public class Preset: NSObject, NSCoding {
-    struct PropertyKey {
-        static let name = "name"
-        static let data = "data"
-        static let id = "id"
-        static let factoryId = "factoryId"
-    }
-    
-    public var name: String? = nil
-    public var data: Any? = nil
-    public var isFactory: Bool {
-        get {
-            return factoryId >= 0
-        }
-    }
-    public var id: Int = 0
-    public var factoryId: Int = 0
-    
-    init (name: String, data: Any?, factoryId: Int) {
-        self.name = name
-        self.data = data
-        self.factoryId = factoryId
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(name, forKey: PropertyKey.name)
-        aCoder.encode(data, forKey: PropertyKey.data)
-        //aCoder.encode(isFactory, forKey: PropertyKey.isFactory)
-        aCoder.encode(id, forKey: PropertyKey.id)
-        aCoder.encode(factoryId, forKey: PropertyKey.factoryId)
-    }
-    
-    public required convenience init?(coder aDecoder: NSCoder)
-    {
-        // The name is required. If we cannot decode a name string, the initializer should fail.
-        guard let name = aDecoder.decodeObject(forKey: PropertyKey.name) as? String else {
-            //os_log("Unable to decode the name for a Preset object.", log: OSLog.default, type: .debug)
-            return nil
-        }
-        
-        let data = aDecoder.decodeObject(forKey: PropertyKey.data)
-        
-        let factoryId = aDecoder.decodeInt32(forKey: PropertyKey.factoryId)
-        
-        // Must call designated initializer.
-        self.init(name: name, data: data, factoryId: Int(factoryId))
-    }
-}
+//public class Preset: NSObject, NSCoding {
+//    struct PropertyKey {
+//        static let name = "name"
+//        static let data = "data"
+//        static let id = "id"
+//        static let factoryId = "factoryId"
+//    }
+//    
+//    public var name: String? = nil
+//    public var data: Any? = nil
+//    public var isFactory: Bool {
+//        get {
+//            return factoryId >= 0
+//        }
+//    }
+//    public var id: Int = 0
+//    public var factoryId: Int = 0
+//    
+//    init (name: String, data: Any?, factoryId: Int) {
+//        self.name = name
+//        self.data = data
+//        self.factoryId = factoryId
+//    }
+//    
+//    public func encode(with aCoder: NSCoder) {
+//        aCoder.encode(name, forKey: PropertyKey.name)
+//        aCoder.encode(data, forKey: PropertyKey.data)
+//        //aCoder.encode(isFactory, forKey: PropertyKey.isFactory)
+//        aCoder.encode(id, forKey: PropertyKey.id)
+//        aCoder.encode(factoryId, forKey: PropertyKey.factoryId)
+//    }
+//    
+//    public required convenience init?(coder aDecoder: NSCoder)
+//    {
+//        // The name is required. If we cannot decode a name string, the initializer should fail.
+//        guard let name = aDecoder.decodeObject(forKey: PropertyKey.name) as? String else {
+//            //os_log("Unable to decode the name for a Preset object.", log: OSLog.default, type: .debug)
+//            return nil
+//        }
+//        
+//        let data = aDecoder.decodeObject(forKey: PropertyKey.data)
+//        
+//        let factoryId = aDecoder.decodeInt32(forKey: PropertyKey.factoryId)
+//        
+//        // Must call designated initializer.
+//        self.init(name: name, data: data, factoryId: Int(factoryId))
+//    }
+//}
 
 class PresetController: NSObject {
     
@@ -82,13 +82,13 @@ class PresetController: NSObject {
         get {
             if (defaults == nil)
             {
-                return 0
+                return -1
             }
             var res = defaults?.integer(forKey: "presetIndex")
             if (res == nil)
             {
                 defaults?.set(0, forKey: "presetIndex")
-                res = 0
+                res = -2
             }
             return res!
         }
@@ -102,7 +102,7 @@ class PresetController: NSObject {
     override init() {
         super.init()
         
-        defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        defaults = UserDefaults()
         
         if (moc == nil)
         {
@@ -134,10 +134,10 @@ class PresetController: NSObject {
     
     func stateURL() -> URL
     {
-        let DocumentsDirectory = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.harmonizr.extension")
-//        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        let ArchiveURL = DocumentsDirectory?.appendingPathComponent("state")
-        return ArchiveURL!
+//        let DocumentsDirectory = FileManager().containerURL()
+        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        let ArchiveURL = DocumentsDirectory.appendingPathComponent("state")
+        return ArchiveURL
     }
     
     func saveState()
@@ -151,7 +151,7 @@ class PresetController: NSObject {
     {
         loadPresets()
         
-        selectPreset(preset: presetIx)
+        //selectPreset(preset: presetIx)
         let f = stateURL()
         let s = NSKeyedUnarchiver.unarchiveObject(withFile: f.path) as? [String: Any]
         if (s != nil)
@@ -160,11 +160,13 @@ class PresetController: NSObject {
         }
     }
     
-    func presetURL() -> URL
-    {
-        let DocumentsDirectory = FileManager().containerURL(forSecurityApplicationGroupIdentifier: "group.harmonizr.extension")
-        //let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        return DocumentsDirectory!.appendingPathComponent("presets")
+    func saveMoc() {
+        do {
+            try moc!.save()
+        }
+        catch let error as NSError {
+            print("oopsy! \(error)")
+        }
     }
     
     func getPreset() -> Data
@@ -209,7 +211,7 @@ class PresetController: NSObject {
             return
         }
         
-        if (presets[ix].isFactory)
+        if (presets[ix].factoryId >= 0)
         {
             return
         }
@@ -219,35 +221,37 @@ class PresetController: NSObject {
         presetIx = ix
         
         storePresets()
+        loadPresets()
     }
     
     func storePresets()
     {
         for ix in 0...presets.count-1 {
-            presets[ix].id = ix
+            presets[ix].index = Int32(ix)
         }
         
-        let obj = ["presets": presets, "favorites": favorites] as [String : Any]
-        
-        NSKeyedArchiver.archiveRootObject(obj, toFile: presetURL().path)
+        saveMoc()
     }
     
     func loadPresets()
     {
-        let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL().path) as? [String : Any]
-        if (p != nil)
-        {
-            presets = p!["presets"] as! [Preset]
-            favorites = p!["favorites"] as! [Int]
-            
-            if (favorites.count == 0)
-            {
-                for k in 0...5 {
-                    favorites.append(k)
-                }
-            }
+        let managedContext = moc!
+        
+        let fetchRequest = NSFetchRequest<Preset>(entityName: "Preset")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+        
+        do {
+            presets = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("failed to fetch. \(error), \(error.userInfo)")
         }
-        else
+        
+        for p in presets {
+            print(p.index)
+        }
+        //selectPreset(preset: presetIx)
+        
+        if (presets.count == 0)
         {
             generatePresets()
             storePresets()
@@ -259,26 +263,71 @@ class PresetController: NSObject {
         return false
     }
     
+    func getMaxId()
+    {
+        
+    }
+    
+    func appendPreset(name: String)
+    {
+       // presets.append(Preset(name: "New Preset", data: nil, factoryId: -1))
+        
+        let fetchRequest = NSFetchRequest<Preset>(entityName: "Preset")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
+        fetchRequest.fetchLimit = 1
+        
+        var maxId = 0
+        do {
+            let persons = try moc!.fetch(fetchRequest)
+            maxId = Int((persons.first?.id)!)
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
+        
+        let entity = NSEntityDescription.entity(forEntityName: "Preset", in: moc!)!
+        
+        let p = Preset(entity: entity, insertInto: moc!)
+        p.name = name
+        p.id = Int32(maxId)
+        p.data = getPreset()
+        p.factoryId = Int32(-1)
+        
+        presets.insert(p, at: presetIx)
+        
+        storePresets()
+        
+        loadPresets()
+        presetIx = presets.index(of: p)!
+    }
+    
     func generatePresets()
     {
         for k in 0...(audioUnit!.factoryPresets?.count)!-1 {
-            let p = (audioUnit!.factoryPresets?[k])!
-            presets.append(Preset(name:p.name, data: nil, factoryId: k))
+            let fp = (audioUnit!.factoryPresets?[k])!
+            
+            let entity = NSEntityDescription.entity(forEntityName: "Preset", in: moc!)!
+            
+            let p = Preset(entity: entity, insertInto: moc!)
+            p.name = fp.name
+            p.id = Int32(presets.count)
+            p.data = nil
+            p.factoryId = Int32(k)
+            
+            do {
+                try moc!.save()
+                presets.append(p)
+                //presetIx = max_id
+            }
+            catch let error as NSError {
+                print("Failed to save. \(error), \(error.userInfo)")
+            }
             
             if (p.name == audioUnit!.currentPreset?.name)
             {
                 presetIx = k
             }
         }
-        
-        if (favorites.count == 0)
-        {
-            for k in 0...5 {
-                favorites.append(k)
-            }
-        }
-        
-        //presets.append(Preset(name: "New Preset", data: nil, factoryId: -1))
     }
     
     func selectPreset(preset: Int)
@@ -286,9 +335,9 @@ class PresetController: NSObject {
         if (preset < presets.count && preset >= 0) {
             presetIx = preset
             let p = presets[preset]
-            if (p.isFactory)
+            if (p.factoryId >= 0)
             {
-                self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[p.factoryId]
+                self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[Int(p.factoryId)]
                 if (p.data == nil)
                 {
                     p.data = getPreset()
@@ -297,32 +346,26 @@ class PresetController: NSObject {
             }
             else
             {
-                setPreset(p.data as! Data)
+                setPreset(p.data!)
             }
         }
     }
     
-    func swap(ix1: Int, ix2: Int)
+    func swap(src: Int, dst: Int)
     {
-        let tmp = presets[ix2]
-        presets[ix2] = presets[ix1]
-        presets[ix1] = tmp
-        if (presetIx == ix1)
-        {
-            presetIx = ix2
-        }
-        selectPreset(preset: presetIx)
+        let p = presets[presetIx]
+        let tmp = presets.remove(at: src)
+        presets.insert(tmp, at: dst)
         storePresets()
-
+        selectPreset(preset: presets.index(of: p)!)
     }
     
     func delete(ix: Int)
     {
+        moc!.delete(presets[ix])
         presets.remove(at: ix)
-        if (presetIx >= presets.count)
-        {
-            presetIx = presets.count - 1
-        }
+        storePresets()
+        loadPresets()
         
         selectPreset(preset: presetIx)
     }
@@ -351,10 +394,5 @@ class PresetController: NSObject {
         {
             selectPreset(preset: presetIx + 1)
         }
-    }
-    
-    func appendPreset()
-    {
-        presets.append(Preset(name: "New Preset", data: nil, factoryId: -1))
     }
 }

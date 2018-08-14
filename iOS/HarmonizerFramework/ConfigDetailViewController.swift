@@ -78,6 +78,9 @@ class ConfigListViewController: UITableViewController {
         corrStepper.value = Double(autoStrengthParameter!.value * 100)
         corrLabel.text = "\(Int(corrStepper.value)) %"
         
+        levelStepper.value = Double(hgainParameter!.value * 100)
+        levelLabel.text = "\(Int(levelStepper.value)) %"
+        
         drySwitch.isOn = dryMixParameter!.value > 0.5
         legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
         

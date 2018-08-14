@@ -76,7 +76,7 @@ extension PresetListViewController: UITableViewDataSource {
         
         let p = presetController!.presets[indexPath.row]
         
-        cell.textLabel?.text = p.name! + (p.isFactory ? " (factory)" : "")
+        cell.textLabel?.text = p.name! + (p.factoryId >= 0 ? " (factory)" : "")
         cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
         //cell.selectionStyle = .default
         //cell.accessoryView = UISwitch()
@@ -127,12 +127,12 @@ extension PresetListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        presetController!.swap(ix1: sourceIndexPath.row, ix2: destinationIndexPath.row)
+        presetController!.swap(src: sourceIndexPath.row, dst: destinationIndexPath.row)
     }
 }
 
 extension PresetListViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return presetController!.presets[indexPath.row].isFactory ? .none : .delete
+        return presetController!.presets[indexPath.row].factoryId >= 0 ? .none : .delete
     }
 }

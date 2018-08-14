@@ -56,9 +56,8 @@ class PresetSaveViewController: UIViewController {
                     return
             }
             
-            self.presetController!.appendPreset()
-            self.presetIx = self.presetController!.presets.count - 1
-            self.presetController!.updatePreset(name: nameToSave, ix: self.presetIx)
+            self.presetController!.appendPreset(name: nameToSave)
+            
             self.navigationController!.popViewController(animated: true)
         }
         
@@ -77,18 +76,18 @@ extension PresetSaveViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         //updateSelection()
-        return presetController!.presets.filter { $0.isFactory == false }.count
+        return presetController!.presets.filter { $0.factoryId < 0 }.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        let p = presetController!.presets.filter { $0.isFactory == false }[indexPath.row]
+        let p = presetController!.presets.filter { $0.factoryId < 0 }[indexPath.row]
         
-        cell.textLabel?.text = p.name! + (p.isFactory ? " (factory)" : "")
+        cell.textLabel?.text = p.name! + (p.factoryId >= 0 ? " (factory)" : "")
         cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
         
-        cell.isUserInteractionEnabled = !p.isFactory
+        cell.isUserInteractionEnabled = (p.factoryId < 0)
         
         return cell
     }
@@ -96,13 +95,10 @@ extension PresetSaveViewController: UITableViewDataSource {
 extension PresetSaveViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let p = presetController!.presets.filter { $0.isFactory == false }[indexPath.row]
-        if (p.isFactory)
-        {
-            return
-        }
+        let p = presetController!.presets.filter { $0.factoryId < 0 }[indexPath.row]
+
         
-        presetController!.updatePreset(name: p.name!, ix: p.id)
+        presetController!.updatePreset(name: p.name!, ix: Int(p.index))
         navigationController!.popViewController(animated: true)
     }
 }

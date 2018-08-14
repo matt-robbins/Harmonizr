@@ -252,9 +252,11 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
         print(hgainParameter!.value)
         presetController!.audioUnit = audioUnit
+        presetController!.loadPresets()
+        print("index = \(presetController!.presetIx)")
         presetController!.restoreState()
         
-        presetState = presetController!.getPreset()
+        //presetState = presetController!.getPreset()
         
         var pendingRequestWorkItem: DispatchWorkItem?
         
@@ -311,7 +313,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             
             for k in 0...presetFavorites.count-1
             {
-                presetFavorites[k].isSelected = presetController!.presetIx == presetController!.favorites[presetFavorites[k].keycenter]
+                presetFavorites[k].isSelected = (presetFavorites[k].tag == presetController!.presetIx)
             }
             
             checkPresetModified()
@@ -402,12 +404,10 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             if (b === sender)
             {
                 self.presetController?.loadPresets()
-                var ix = self.presetController?.favorites[b.keycenter]
-
-                if (ix == nil) {
-                    ix = b.keycenter
-                }
-                self.presetController?.selectPreset(preset: ix!)
+                let ix = b.keycenter
+                
+                self.presetController?.selectPreset(preset: ix)
+                print(presetController!.presetIx)
                 presetModified = false
                 syncView()
             }
