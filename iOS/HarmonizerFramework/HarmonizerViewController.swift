@@ -178,7 +178,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     func checkPresetModified() {
         presetState = presetController!.getPreset()
         
-        guard let d = presetController!.currentPreset().data as? Data else {
+        guard let d = presetController!.currentPreset().data else {
             presetModified = true
             return
         }

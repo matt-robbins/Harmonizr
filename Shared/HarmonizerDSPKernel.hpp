@@ -1095,7 +1095,7 @@ public:
             voices[k].midinote = voice_notes[k];
         }
         
-        int start = (autotune || (triad >= 0)) ? 0 : 1;
+        //int start = (autotune || (triad >= 0)) ? 0 : 1;
 
 //        if (triad >= 0)
 //        {
@@ -1187,7 +1187,7 @@ public:
         
         was_voiced = voiced;
     
-        float frac = 0.99 - (speed * 0.29);
+        //float frac = 0.99 - (speed * 0.29);
         float v1frac = 0.5;
         
         for (int k = 0; k < nvoices; k++)

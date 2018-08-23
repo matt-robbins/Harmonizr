@@ -158,9 +158,7 @@ class ViewController: UIViewController {
     {
         harmUnit!.requestViewController { [weak self] viewController in
             guard let strongSelf = self else { return }
-        
-            print(viewController)
-            // Only update the view if the view controller has one.
+                    // Only update the view if the view controller has one.
             guard let viewController = viewController else {
 
                 fatalError("no view!!!")

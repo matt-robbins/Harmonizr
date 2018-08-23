@@ -320,40 +320,8 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         presetName.delegate = self
         saveButton.isEnabled = false
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
         drawKeys()
         
-    }
-    
-    @objc func keyboardWillShow(notification: NSNotification)
-    {
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size
-        
-        let frame = presetName.convert(presetName.frame, from:self.view)
-        let wframe = presetName.convert(presetName.frame, to: nil)
-        
-        if ((self.view.window?.frame.height)! - wframe.maxY < keyboardSize!.height)
-        {
-            self.view.window?.frame.origin.y = ((self.view.window?.frame.height)! - wframe.maxY) - keyboardSize!.height - 5
-        }
-//
-//        print(self.view.frame.height)
-//        print(frame.minY)
-//        print(keyboardSize!.height)
-//        let scrollHeight = (self.view.frame.height + frame.minY - frame.height - keyboardSize!.height)
-//
-//        if (scrollHeight < 0)
-//        {
-//            self.view.window?.frame.origin.y = scrollHeight
-//        }
-        
-    }
-    @objc func keyboardWillHide(notification: NSNotification)
-    {
-        self.view.window?.frame.origin.y = 0
     }
     
     public override func viewWillAppear(_ animated: Bool)
@@ -418,23 +386,23 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         rootLabel!.text = keynames[keyRoot]
         degreeLabel!.text = degreenames[scaleDegree]
         
-        for k in 0...nc-1
-        {
-            let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
-            let param = paramTree!.value(forKey: key) as? AUParameter
-            let offset = Int(param!.value)
-
-//            for k in keyboardView.keys
-//            {
-//                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
-//                {
+//        for k in 0...nc-1
+//        {
+//            let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
+//            let param = paramTree!.value(forKey: key) as? AUParameter
+//            let offset = Int(param!.value)
 //
-//                    k.isHarm = true
-//                }
-//            }
-
-            //intervalPicker!.selectRow(offset+unisonOffset, inComponent: k, animated: true)
-        }
+////            for k in keyboardView.keys
+////            {
+////                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
+////                {
+////
+////                    k.isHarm = true
+////                }
+////            }
+//
+//            //intervalPicker!.selectRow(offset+unisonOffset, inComponent: k, animated: true)
+//        }
     }
     
     //MARK: Actions

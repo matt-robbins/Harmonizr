@@ -8,54 +8,46 @@
 import UIKit
 import CoreData
 
-//public class Preset: NSObject, NSCoding {
-//    struct PropertyKey {
-//        static let name = "name"
-//        static let data = "data"
-//        static let id = "id"
-//        static let factoryId = "factoryId"
-//    }
-//    
-//    public var name: String? = nil
-//    public var data: Any? = nil
-//    public var isFactory: Bool {
-//        get {
-//            return factoryId >= 0
-//        }
-//    }
-//    public var id: Int = 0
-//    public var factoryId: Int = 0
-//    
-//    init (name: String, data: Any?, factoryId: Int) {
-//        self.name = name
-//        self.data = data
-//        self.factoryId = factoryId
-//    }
-//    
-//    public func encode(with aCoder: NSCoder) {
-//        aCoder.encode(name, forKey: PropertyKey.name)
-//        aCoder.encode(data, forKey: PropertyKey.data)
-//        //aCoder.encode(isFactory, forKey: PropertyKey.isFactory)
-//        aCoder.encode(id, forKey: PropertyKey.id)
-//        aCoder.encode(factoryId, forKey: PropertyKey.factoryId)
-//    }
-//    
-//    public required convenience init?(coder aDecoder: NSCoder)
-//    {
-//        // The name is required. If we cannot decode a name string, the initializer should fail.
-//        guard let name = aDecoder.decodeObject(forKey: PropertyKey.name) as? String else {
-//            //os_log("Unable to decode the name for a Preset object.", log: OSLog.default, type: .debug)
-//            return nil
-//        }
-//        
-//        let data = aDecoder.decodeObject(forKey: PropertyKey.data)
-//        
-//        let factoryId = aDecoder.decodeInt32(forKey: PropertyKey.factoryId)
-//        
-//        // Must call designated initializer.
-//        self.init(name: name, data: data, factoryId: Int(factoryId))
-//    }
-//}
+class OldPreset: NSObject, NSCoding {
+    struct PropertyKey {
+        static let name = "name"
+        static let data = "data"
+        static let isFactory = "isFactory"
+    }
+    
+    public var name: String? = nil
+    public var data: Any? = nil
+    public var isFactory: Bool = false
+    
+    init (name: String, data: Any?, isFactory: Bool) {
+        self.name = name
+        self.data = data
+        self.isFactory = isFactory
+    }
+    
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(name, forKey: PropertyKey.name)
+        aCoder.encode(data, forKey: PropertyKey.data)
+        aCoder.encode(isFactory, forKey: PropertyKey.isFactory)
+    }
+    
+    public required convenience init?(coder aDecoder: NSCoder)
+    {
+        // The name is required. If we cannot decode a name string, the initializer should fail.
+        guard let name = aDecoder.decodeObject(forKey: PropertyKey.name) as? String else {
+            //os_log("Unable to decode the name for a Preset object.", log: OSLog.default, type: .debug)
+            return nil
+        }
+        
+        // Because photo is an optional property of Meal, just use conditional cast.
+        let data = aDecoder.decodeObject(forKey: PropertyKey.data)
+        
+        let isFactory = aDecoder.decodeBool(forKey: PropertyKey.isFactory)
+        
+        // Must call designated initializer.
+        self.init(name: name, data: data, isFactory: isFactory)
+    }
+}
 
 class PresetController: NSObject {
     
@@ -254,7 +246,38 @@ class PresetController: NSObject {
         if (presets.count == 0)
         {
             generatePresets()
+            loadOldPresets()
             storePresets()
+        }
+    }
+    
+    func loadOldPresets()
+    {
+        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        let presetURL = DocumentsDirectory.appendingPathComponent("presets")
+        NSKeyedArchiver.setClassName("HarmonizerFramework.Preset", for: OldPreset.self)
+        NSKeyedUnarchiver.setClass(OldPreset.self, forClassName: "HarmonizerFramework.Preset")
+        let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL.path) as? [String : Any]
+        if (p != nil)
+        {
+            let oldPresets = p!["presets"] as! [OldPreset]
+            
+            for op in oldPresets {
+                if (!op.isFactory && op.data != nil)
+                {
+                    //print(op.data)
+                    self.audioUnit!.fullState = op.data as? [String: Any]
+                    self.appendPreset(name: op.name!, insert: false)
+                }
+            }
+            
+            do {
+                try FileManager().removeItem(at: presetURL)
+            }
+            catch
+            {
+                print("failed to delete old presets")
+            }
         }
     }
     
@@ -268,7 +291,7 @@ class PresetController: NSObject {
         
     }
     
-    func appendPreset(name: String)
+    func appendPreset(name: String, insert: Bool = true)
     {
        // presets.append(Preset(name: "New Preset", data: nil, factoryId: -1))
         
@@ -293,12 +316,21 @@ class PresetController: NSObject {
         p.data = getPreset()
         p.factoryId = Int32(-1)
         
-        presets.insert(p, at: presetIx)
+        if (insert)
+        {
+            presets.insert(p, at: presetIx)
+        }
+        else {
+            presets.append(p)
+        }
         
         storePresets()
         
         loadPresets()
-        presetIx = presets.index(of: p)!
+        if (insert)
+        {
+            presetIx = presets.index(of: p)!
+        }
     }
     
     func generatePresets()
