@@ -83,7 +83,8 @@
 		C99D71501FD6405000B98BC9 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D714F1FD6405000B98BC9 /* MidiReceiver.swift */; };
 		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
-		C9B6147C2123243300396B8D /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
+		C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
+		C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9D2F8FE2071A5FA000783B2 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */; };
 		C9D2F8FF2071A5FA000783B2 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */; };
 		C9D2F9002071A5FA000783B2 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FD2071A5FA000783B2 /* CoreMIDI.framework */; };
@@ -885,7 +886,7 @@
 			files = (
 				C96F204620D8606B00F43D90 /* HarmPageViewController.swift in Sources */,
 				C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */,
-				C9B6147C2123243300396B8D /* PresetModel.xcdatamodeld in Sources */,
+				C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
 				C96F204220D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
 				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
@@ -932,6 +933,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
 				C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */,
 				91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */,
 				C92AB162205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,

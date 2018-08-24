@@ -1157,6 +1157,13 @@ public:
                     voices[0].midinote = 0; // hack to turn on voice
                 }
                 
+                voice_notes[k] = midi_note_number + interval_offsets[k];
+                
+                if (k > inversion)
+                {
+                    voice_notes[k] -= 12;
+                }
+                
                 //fprintf(stderr,"%d: %f\n", k, major_chord_table[0][k]);
                 continue;
             }

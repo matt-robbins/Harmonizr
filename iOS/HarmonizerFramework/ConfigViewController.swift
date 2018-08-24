@@ -109,9 +109,12 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
 {
     //MARK: Properties
     
+    @IBOutlet weak var qualityStack: UIStackView!
+    @IBOutlet weak var degreeStack: UIStackView!
+    
     @IBOutlet weak var qualitySeg: UISegmentedControl!
     
-    @IBOutlet weak var degreeStack: UIStackView!
+
     @IBOutlet weak var rootStack: UIStackView!
     
     @IBOutlet weak var rootLabel: UILabel!
@@ -119,15 +122,10 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     
     @IBOutlet weak var degreeStepper: UIStepper!
     @IBOutlet weak var degreeLabel: UILabel!
-    @IBOutlet weak var presetName: UITextField!
-    @IBOutlet weak var presetPrevButton: HarmButton!
-    @IBOutlet weak var presetNextButton: HarmButton!
-    @IBOutlet weak var presetAddButton: UIButton!
     
     @IBOutlet weak var liveSwitch: UISwitch!
     
-    @IBOutlet weak var saveButton: UIButton!
-    @IBOutlet weak var revertButton: HarmButton!
+    @IBOutlet weak var fixedIntervalSwitch: UISwitch!
     
     @IBOutlet weak var voicesView: HarmonizerVoicesView!
     @IBOutlet weak var keyboardView: KeyboardEditorView!
@@ -140,9 +138,6 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     var presetIx: Int = 0
     var presetController: PresetController? {
         didSet {
-            presetName!.text = presetController!.currentPreset().name
-            presetName!.isEnabled = !(presetController!.currentPreset().factoryId >= 0)
-            
             presetIx = presetController!.presetIx
         }
     }
@@ -153,14 +148,18 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     
     public var audioUnit: AUv3Harmonizer? {
         didSet {
-            print("set audio unit in config view controller!")
+            //print("set audio unit in config view controller!")
             paramTree = audioUnit!.parameterTree
             let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
             let inversionParam = paramTree!.value(forKey: "inversion") as? AUParameter
             let nvoicesParam = paramTree!.value(forKey: "nvoices") as? AUParameter
+            let triadParam = paramTree!.value(forKey: "triad") as? AUParameter
             
             voicesView.setSelectedVoices(Int(nvoicesParam!.value), inversion: Int(inversionParam!.value))
             let keycenter = keycenterParam!.value
+            
+            fixedIntervalSwitch.isOn = triadParam!.value >= 0
+            setFixedInterval(fixedIntervalSwitch.isOn)
             
             keyQuality = Int(keycenter / 12)
             keyRoot = Int(keycenter) % 12
@@ -317,10 +316,8 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         rootStepper!.stepValue = 1
         rootStepper!.wraps = true
         
-        presetName.delegate = self
-        saveButton.isEnabled = false
-        
         drawKeys()
+        refresh()
         
     }
     
@@ -441,6 +438,21 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         drawKeys()
     }
     
+    func setFixedInterval(_ fixed: Bool)
+    {
+        qualitySeg!.isEnabled = !fixed
+        qualityStack!.isHidden = fixed
+        degreeStack!.isHidden = fixed
+        
+    }
+    
+    @IBAction func fixedIntervalSet(_ sender: UISwitch) {
+        setFixedInterval(sender.isOn)
+        let param = paramTree!.value(forKey: "triad") as? AUParameter
+        let val: AUValue = sender.isOn ? 0 : -1
+        param!.value = val
+    }
+    
     @IBAction func setRoot(_ sender: HarmButton?)
     {
         let colors = [0,1,0,1,0,0,1,0,1,0,1,0]
@@ -497,11 +509,6 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         
         refresh()
         drawKeys()
-    }
-    
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.presetName.resignFirstResponder()
-        return true
     }
     
 }

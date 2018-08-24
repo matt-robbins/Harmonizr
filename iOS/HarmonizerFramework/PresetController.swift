@@ -101,8 +101,10 @@ class PresetController: NSObject {
             guard let modelURL = Bundle.main.url(forResource: "PresetModel", withExtension: "momd") else {
                 fatalError("failed to find data model")
             }
+            
+            //guard let mom = NSManagedObjectModel.mergedModel(from: nil) else {
             guard let mom = NSManagedObjectModel(contentsOf: modelURL) else {
-                fatalError("Failed to create model from file: \(modelURL)")
+                fatalError("Failed to create model!")
             }
             
             let psc = NSPersistentStoreCoordinator(managedObjectModel: mom)
