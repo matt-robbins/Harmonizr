@@ -413,9 +413,16 @@ class PresetController: NSObject {
         return (presetIx > 0)
     }
     
-    func currentPreset() -> Preset
+    func currentPreset() -> Preset?
     {
-        return presets[presetIx]
+        if (presetIx < presets.count && presetIx >= 0)
+        {
+            return presets[presetIx]
+        }
+        else
+        {
+            return nil
+        }
     }
     
     func incrementPreset(inc: Int)

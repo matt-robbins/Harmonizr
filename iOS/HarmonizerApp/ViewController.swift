@@ -88,7 +88,7 @@ class ViewController: UIViewController {
 
             Note that this registration is local to this process.
         */
-        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 5)
+        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 6)
         
         // diable idle timer
         UIApplication.shared.isIdleTimerDisabled = true

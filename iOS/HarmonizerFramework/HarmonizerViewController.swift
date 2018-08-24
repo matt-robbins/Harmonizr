@@ -178,7 +178,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     func checkPresetModified() {
         presetState = presetController!.getPreset()
         
-        guard let d = presetController!.currentPreset().data else {
+        guard let d = presetController!.currentPreset()?.data else {
             presetModified = true
             return
         }
@@ -309,7 +309,15 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             //presetLabel.text = presetController!.currentPreset().name
             //presetButton.titleLabel?.text =
             presetButton.isModified = presetModified
-            presetButton.titleText = presetController!.currentPreset().name!
+            
+            if let preset = presetController!.currentPreset()
+            {
+                presetButton.titleText = preset.name!
+            }
+            else
+            {
+                presetButton.titleText = "(no preset)"
+            }
             
             for k in 0...presetFavorites.count-1
             {
