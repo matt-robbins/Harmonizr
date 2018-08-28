@@ -389,6 +389,8 @@ class PresetController: NSObject {
                 presetIx = k
             }
         }
+        
+        selectPreset(preset: 0)
     }
     
     func selectPreset(preset: Int)

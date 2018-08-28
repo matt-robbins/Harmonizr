@@ -222,15 +222,6 @@ class ViewController: UIViewController {
         
         self.present(navController, animated: false, completion: nil)
 	}
-	
-    @IBAction func toggleReverb(_ sender: UITapGestureRecognizer)
-    {
-        performSegue(withIdentifier: "mainToReverb", sender: self)
-        //self.audioEngine.start()
-    }
-    @IBAction func configureReverb(_ sender: UILongPressGestureRecognizer) {
-        performSegue(withIdentifier: "mainToReverb", sender: self)
-    }
     
     @IBAction func toggleBackgroundMode(_ sender: UISwitch)
     {
