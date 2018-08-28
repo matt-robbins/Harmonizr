@@ -15,7 +15,7 @@
 
 #pragma mark AUv3FilterDemo (Presets)
 
-static const UInt8 kNumberOfPresets = 7;
+static const UInt8 kNumberOfPresets = 9;
 static const NSInteger kDefaultFactoryPreset = 0;
 
 typedef struct FactoryPresetParameters {
@@ -35,7 +35,7 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
     {
         0, //keycenter
         2, //inversion
-        3,
+        4,
         0, //autotune
         0,
         1, //midi
@@ -49,7 +49,7 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
     {
         0, //keycenter
         2, //inversion
-        3,
+        4,
         0, //autotune
         0,
         1, //midi
@@ -63,8 +63,8 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
     {
         0, //keycenter
         2, //inversion
-        3,
-        1, //autotune
+        4,
+        0, //autotune
         0,
         1, //midi
         -1, //triad
@@ -86,6 +86,20 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
             0,4,7,10, 0,3,6,9, 0,3,5,9, 0,3,6,9, 0,3,6,8, 0,2,6,9, 0,3,5,9, 0,3,5,9, 0,2,4,8, 0,3,6,9, 0,2,6,9, 0,4,7,10 //dom
         }
     },
+    // JustMidi
+    {
+        0, //keycenter
+        2, //inversion
+        1,
+        0, //autotune
+        0,
+        1, //midi
+        -1, //triad
+        {0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
+            0,3,7,12, -1,2,6,11, 1,5,10,13, 0,4,9,12, -1,3,8,11, -1,2,7,10, 1,6,9,13, 0,5,8,12, 0,4,7,11, 0,3,6,10, 0,5,9,14, 1,4,8,13, // minor
+            0,4,10,12, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+        }
+    },
     { // Bohemian?
         0, //keycenter
         3, //inversion
@@ -103,13 +117,26 @@ static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
         0, //keycenter
         1, //inversion
         1,
-        1, //autotune
+        0, //autotune
         1,
         1, //midi
         1, //triad
         {-12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "major"
             -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "minor"
             -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, -12,-12,-12,-12, // "dom"
+        }
+    },
+    { // 4ths
+        0, //keycenter
+        2, //inversion
+        3,
+        0, //autotune
+        1,
+        1, //midi
+        1, //triad
+        {0,-5,7,12, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, // "major"
+            0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, // "minor"
+            0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, // "dom"
         }
     },
     { // Modes
@@ -332,7 +359,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     // Create factory preset array.
 	_currentFactoryPresetIndex = kDefaultFactoryPreset;
     _presets = @[NewAUPreset(0, @"Chords"),NewAUPreset(1, @"Diatonic"),NewAUPreset(2, @"Chromatic"),
-                 NewAUPreset(3, @"Barbershop"),NewAUPreset(4, @"Bohemian?"),NewAUPreset(5, @"Bass!"),NewAUPreset(6, @"Modes")];
+                 NewAUPreset(3, @"Barbershop"),NewAUPreset(4,@"JustMidi"),NewAUPreset(5, @"Bohemian?"),NewAUPreset(6, @"Bass!"),NewAUPreset(7, @"4ths"), NewAUPreset(8, @"Modes")];
     
 	// Create the parameter tree.
     _parameterTree = [AUParameterTree createTreeWithChildren:params];

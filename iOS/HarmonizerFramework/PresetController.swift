@@ -240,9 +240,6 @@ class PresetController: NSObject {
             print("failed to fetch. \(error), \(error.userInfo)")
         }
         
-        for p in presets {
-            print(p.index)
-        }
         //selectPreset(preset: presetIx)
         
         if (presets.count == 0)
@@ -250,6 +247,36 @@ class PresetController: NSObject {
             generatePresets()
             loadOldPresets()
             storePresets()
+        }
+        
+        updateFactoryPresets()
+    }
+    
+    func updateFactoryPresets()
+    {
+        let fetchRequest = NSFetchRequest<Preset>(entityName: "Preset")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "factoryId", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "factoryId >= 0")
+        
+        var presets = [Preset]()
+        
+        do {
+            presets = try moc!.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("failed to fetch. \(error), \(error.userInfo)")
+        }
+        
+        if (presets.count != audioUnit!.factoryPresets?.count)
+        {
+            for p in self.presets {
+                if (p.factoryId >= 0) {
+                    moc!.delete(p)
+                    self.presets.remove(at: self.presets.index(of: p)!)
+                }
+            }
+            
+            saveMoc()
+            generatePresets()
         }
     }
     
@@ -371,10 +398,13 @@ class PresetController: NSObject {
             let p = presets[preset]
             if (p.factoryId >= 0)
             {
-                self.audioUnit!.currentPreset = self.audioUnit!.factoryPresets?[Int(p.factoryId)]
-                if (p.data == nil)
+                let fp = self.audioUnit!.factoryPresets?[Int(p.factoryId)]
+                
+                self.audioUnit!.currentPreset = fp
+                if (p.data == nil || p.data != getPreset() || p.name != fp?.name)
                 {
                     p.data = getPreset()
+                    p.name = fp?.name
                     storePresets()
                 }
             }

@@ -104,30 +104,119 @@ protocol HarmonizerAlternateViewDelegate: class {
     func ShowMainView()
 }
 
-public class ConfigViewController: UIViewController, UITextFieldDelegate,
+public class ConfigViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
     KeyboardViewDelegate, KeyboardEditorDelegate, VoicesViewDelegate
 {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        var cell: UITableViewCell?
+        
+        switch (indexPath.row)
+        {
+        case 0:
+            
+            cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath)
+            cell?.textLabel?.text = "Fixed Intervals"
+            
+            let sw = cell?.viewWithTag(101) as! UISwitch
+            sw.isOn = triadParam!.value >= 0
+            sw.addTarget(self,action: #selector(self.fixedIntervalSet(_:)), for: .valueChanged)
+            
+        case 1:
+            
+            let quality = Int(keycenterParam!.value / 12)
+            
+            cell = tableView.dequeueReusableCell(withIdentifier: "SegmentCell", for: indexPath)
+            
+            cell?.textLabel?.text = "Key Quality"
+            
+            let seg = cell?.viewWithTag(100) as! UISegmentedControl
+            seg.selectedSegmentIndex = quality
+            
+            cell?.textLabel?.isEnabled = !fixedIntervals
+            seg.isEnabled = !fixedIntervals
+            
+            seg.addTarget(self,action: #selector(self.setQuality(_:)), for: .valueChanged)
+            
+        case 2:
+            cell = tableView.dequeueReusableCell(withIdentifier: "StepperCell", for: indexPath)
+            
+            cell?.textLabel?.text = "Scale Degree"
+            cell?.textLabel?.isEnabled = !fixedIntervals
+            
+            let stepper = cell?.viewWithTag(102) as! UIStepper
+            stepper.maximumValue = 11
+            stepper.stepValue = 1
+            stepper.value = Double(scaleDegree)
+            degreeLabel = cell?.viewWithTag(101) as! UILabel
+            degreeLabel.text = "\(degreenames[scaleDegree])"
+            
+            cell?.textLabel?.isEnabled = !fixedIntervals
+            degreeLabel.isEnabled = !fixedIntervals
+            stepper.isEnabled = !fixedIntervals
+            stepper.alpha = fixedIntervals ? 0.5 : 1
+            
+            stepper.addTarget(self, action: #selector(self.degreeInc(_:)), for: .valueChanged)
+            
+        case 3:
+            cell = tableView.dequeueReusableCell(withIdentifier: "StepperCell", for: indexPath)
+            
+            cell?.textLabel?.text = "Show/Hear with Key Root"
+            
+            rootLabel = cell?.viewWithTag(101) as! UILabel
+            rootLabel.text = "\(keynames[keyRoot])"
+            
+            let stepper = cell?.viewWithTag(102) as! UIStepper
+            stepper.maximumValue = 11
+            stepper.stepValue = 1
+            stepper.value = Double(keyRoot)
+            
+            cell?.textLabel?.isEnabled = !fixedIntervals
+            rootLabel.isEnabled = !fixedIntervals
+            stepper.isEnabled = !fixedIntervals
+            stepper.alpha = fixedIntervals ? 0.5 : 1
+            
+            stepper.addTarget(self, action: #selector(self.rootInc(_:)), for: .valueChanged)
+            
+        case 4:
+            cell = tableView.dequeueReusableCell(withIdentifier: "StepperCell", for: indexPath)
+            
+            cell?.textLabel?.text = "Inversion"
+            
+            inversionLabel = cell?.viewWithTag(101) as? UILabel
+            inversionLabel?.text = ""
+            
+            let stepper = cell?.viewWithTag(102) as! UIStepper
+            stepper.maximumValue = 3
+            stepper.stepValue = 1
+            stepper.value = Double(inversion)
+            
+            stepper.addTarget(self, action: #selector(self.setInversion(_:)), for: .valueChanged)
+            
+        default:
+            cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            cell?.textLabel?.text = "row \(indexPath.row)"
+        }
+        
+        cell?.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
+        
+        cell?.selectionStyle = .none
+        return cell!
+       
+    }
+    
     //MARK: Properties
     
-    @IBOutlet weak var qualityStack: UIStackView!
-    @IBOutlet weak var degreeStack: UIStackView!
+    @IBOutlet weak var configTable: UITableView!
     
-    @IBOutlet weak var qualitySeg: UISegmentedControl!
+    weak var rootLabel: UILabel!
+    weak var degreeLabel: UILabel!
+    weak var inversionLabel: UILabel?
     
-
-    @IBOutlet weak var rootStack: UIStackView!
-    
-    @IBOutlet weak var rootLabel: UILabel!
-    @IBOutlet weak var rootStepper: UIStepper!
-    
-    @IBOutlet weak var degreeStepper: UIStepper!
-    @IBOutlet weak var degreeLabel: UILabel!
-    
-    @IBOutlet weak var liveSwitch: UISwitch!
-    
-    @IBOutlet weak var fixedIntervalSwitch: UISwitch!
-    
-    @IBOutlet weak var voicesView: HarmonizerVoicesView!
     @IBOutlet weak var keyboardView: KeyboardEditorView!
     var preset: Preset?
     
@@ -146,41 +235,6 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     var degreenames = ["1", "\u{266f}1", "2", "\u{266f}2", "3", "4", "\u{266f}4","5", "\u{266D}6", "6", "\u{266D}7", "7"]
     var currInterval = 0
     
-    public var audioUnit: AUv3Harmonizer? {
-        didSet {
-            //print("set audio unit in config view controller!")
-            paramTree = audioUnit!.parameterTree
-            let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
-            let inversionParam = paramTree!.value(forKey: "inversion") as? AUParameter
-            let nvoicesParam = paramTree!.value(forKey: "nvoices") as? AUParameter
-            let triadParam = paramTree!.value(forKey: "triad") as? AUParameter
-            
-            voicesView.setSelectedVoices(Int(nvoicesParam!.value), inversion: Int(inversionParam!.value))
-            let keycenter = keycenterParam!.value
-            
-            fixedIntervalSwitch.isOn = triadParam!.value >= 0
-            setFixedInterval(fixedIntervalSwitch.isOn)
-            
-            keyQuality = Int(keycenter / 12)
-            keyRoot = Int(keycenter) % 12
-            //qualitySeg.selectedSegmentIndex = keyQuality
-            
-            //let buttons = rootStack.arrangedSubviews as! [HarmButton]
-//            for c in 0...buttons.count - 1
-//            {
-//                buttons[c].isSelected = (c == keyRoot)
-//            }
-            
-            drawKeys()
-            //rootStepper!.value = Double(keyRoot)
-            
-            //rootLabel!.text = keynames[keyRoot]
-            
-            refresh()
-            //
-        }
-    }
-    
     var presetNeedsSave: Bool = false {
         didSet {
             
@@ -188,9 +242,41 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     }
     
     var paramTree: AUParameterTree?
+    var keycenterParam: AUParameter?
+    var inversionParam: AUParameter?
+    var nvoicesParam: AUParameter?
+    var triadParam: AUParameter?
+    
+    
+    public var audioUnit: AUv3Harmonizer? {
+        didSet {
+            //print("set audio unit in config view controller!")
+            paramTree = audioUnit!.parameterTree
+            keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
+            inversionParam = paramTree!.value(forKey: "inversion") as? AUParameter
+            nvoicesParam = paramTree!.value(forKey: "nvoices") as? AUParameter
+            triadParam = paramTree!.value(forKey: "triad") as? AUParameter
+            
+            //voicesView.setSelectedVoices(Int(nvoicesParam!.value), inversion: Int(inversionParam!.value))
+            let keycenter = keycenterParam!.value
+            
+            fixedIntervals = Float((triadParam?.value)!) >= 0
+            
+            keyQuality = Int(keycenter / 12)
+            keyRoot = Int(keycenter) % 12
+            inversion = Int(inversionParam!.value)
+            
+            drawKeys()
+            
+            refresh()
+            //
+        }
+    }
     
     var keyQuality = 0
     var keyRoot = 0
+    var inversion = 0
+    var fixedIntervals = false
     var scaleDegree = 0
     var unisonOffset = 128
     var maxOffset = 128
@@ -268,15 +354,6 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
             let k = Int(audioUnit.getCurrentKeycenter()) % 12
             
             currInterval = (i - k + 12) % 12
-            
-//            if (liveSwitch!.isOn && currInterval != scaleDegree)
-//            {
-//                scaleDegree = currInterval
-//
-//                degreeStepper!.value = Double(scaleDegree)
-//                refresh()
-//                drawKeys()
-//            }
         }
         
         return
@@ -289,41 +366,26 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         self.title = "Edit Harmony"
         keyboardView.delegate = self
         keyboardView.editorDelegate = self
-        //keyboardView.n_visible = 21
-        voicesView.delegate = self
-        
-        liveSwitch!.onTintColor = self.view.tintColor
+        keyboardView.n_visible = 28
+        //keyboardView.keyOffset = 14
+        //voicesView.delegate = self
         
         audioUnit = globalAudioUnit
         
-//        let d = degreeStack.arrangedSubviews[0] as! HarmButton
-//        d.isSelected = true
-
-//        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-M3","-m3","-M2","-m2","U","m2","M2","m3","M3","P4","d5","P5","m6","M6","m7","M7","P8","m9","M9","m10","M10"]
-//
-//        pickerData = ["-12","-11","-10","-9","-8","-7","-6","-5","-4","-3","-2","-1","0",
-//                      "+1","+2","+3","+4","+5","+6","+7","+8","+9","+10","+11","+12","+13","+14","+15","+16"]
+        configTable.delegate = self
+        configTable.dataSource = self
+        configTable.tableFooterView = UIView()
         
-        rootLabel!.text = keynames[0]
-        degreeLabel!.text = degreenames[0]
-//
-        degreeStepper!.maximumValue = 11
-        degreeStepper!.minimumValue = 0
-        degreeStepper!.stepValue = 1
-        degreeStepper!.wraps = true
-        rootStepper!.maximumValue = 11
-        rootStepper!.minimumValue = 0
-        rootStepper!.stepValue = 1
-        rootStepper!.wraps = true
-        
-        drawKeys()
-        refresh()
+//        drawKeys()
+//        refresh()
         
     }
     
-    public override func viewWillAppear(_ animated: Bool)
+    public override func viewDidAppear(_ animated: Bool)
     {
-        super.viewWillAppear(animated)
+        super.viewDidAppear(animated)
+        refresh()
+        drawKeys()
         auPoller(T: 0.1)
     }
     
@@ -335,7 +397,7 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     
     public func drawKeys()
     {
-        keyboardView.base_note = 60 + (keyRoot + scaleDegree) % 12
+        keyboardView.base_note = 48 + (keyRoot + scaleDegree) % 12
         
         keyboardView.harm_voices = []
         
@@ -344,18 +406,17 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         for k in 0...nc-1
         {
             let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
-            var param = paramTree!.value(forKey: key) as? AUParameter
+            let param = paramTree!.value(forKey: key) as? AUParameter
             var offset = Int(param!.value)
             
-            param = paramTree!.value(forKey: "inversion") as? AUParameter
-            let inversion = Int(param!.value)
+            let inversion = Int(inversionParam!.value)
 
             if (k > inversion)
             {
                 offset -= 12
             }
             
-            harm_voices.append(60 + offset + (keyRoot + scaleDegree) % 12)
+            harm_voices.append(48 + offset + (keyRoot + scaleDegree) % 12)
         }
         
         keyboardView.harm_voices = harm_voices
@@ -365,68 +426,44 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     {
         guard audioUnit != nil else { return }
         
-        keyQuality = qualitySeg.selectedSegmentIndex
-        //qualitySeg!.selectedSegmentIndex = keyQuality
-        
-        let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
-        
         keycenterParam!.value = Float(keyQuality * 12 + keyRoot)
         
-        for k in keyboardView.keys
-        {
-            if (k.midinote) == 60 + (keyRoot + scaleDegree) % 12
-            {
-                keyboardView.keyOffset = Int(k.midinote * 7/12) - 3
-            }
-        }
+        keyboardView.keyOffset = 14
         
-        rootLabel!.text = keynames[keyRoot]
-        degreeLabel!.text = degreenames[scaleDegree]
-        
-//        for k in 0...nc-1
+//        for k in keyboardView.keys
 //        {
-//            let key = "interval_\(nc*scaleDegree + k + keyQuality*12*nc)"
-//            let param = paramTree!.value(forKey: key) as? AUParameter
-//            let offset = Int(param!.value)
-//
-////            for k in keyboardView.keys
-////            {
-////                if (k.midinote) == 60 + offset + (keyRoot + scaleDegree) % 12
-////                {
-////
-////                    k.isHarm = true
-////                }
-////            }
-//
-//            //intervalPicker!.selectRow(offset+unisonOffset, inComponent: k, animated: true)
+//            if (k.midinote) == 48 + (keyRoot + scaleDegree) % 12
+//            {
+//                keyboardView.keyOffset = 14
+//            }
 //        }
+        if (rootLabel != nil)
+        {
+            rootLabel!.text = keynames[keyRoot]
+        }
+        if (degreeLabel != nil)
+        {
+            degreeLabel!.text = degreenames[scaleDegree]
+        }
     }
     
-    //MARK: Actions
-    @IBAction func done(_ sender: UIButton?)
-    {
-
-        if (doneFcn != nil)
-        {
-            doneFcn!()
-        }
-//        self.view.removeFromSuperview()
-//        self.removeFromParentViewController()
-        delegate?.ShowMainView()
-        
-        //self.view.isHidden = true
-        sender!.isSelected = false
-        //self.dismiss(animated: true, completion: { sender!.isSelected = false })
-    }
     
     @IBAction func setQuality(_ sender: UISegmentedControl?)
     {
+        keyQuality = (sender?.selectedSegmentIndex)!
         refresh()
         drawKeys()
     }
     @IBAction func rootInc(_ sender: UIStepper) {
         keyRoot = Int(sender.value)
         
+        refresh()
+        drawKeys()
+    }
+    
+    @objc func setInversion(_ sender: UIStepper) {
+        inversion = Int(sender.value)
+        inversionParam!.value = AUValue(inversion)
         refresh()
         drawKeys()
     }
@@ -440,10 +477,19 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
     
     func setFixedInterval(_ fixed: Bool)
     {
-        qualitySeg!.isEnabled = !fixed
-        qualityStack!.isHidden = fixed
-        degreeStack!.isHidden = fixed
+//        qualitySeg!.isEnabled = !fixed
+//        qualityStack!.isHidden = fixed
+//        degreeStack!.isHidden = fixed
+        self.fixedIntervals = fixed
         
+        keycenterParam!.value = 0
+        keyRoot = 0
+        keyQuality = 0
+        scaleDegree = 0
+        self.configTable!.reloadData()
+        refresh()
+        drawKeys()
+//
     }
     
     @IBAction func fixedIntervalSet(_ sender: UISwitch) {
@@ -452,63 +498,4 @@ public class ConfigViewController: UIViewController, UITextFieldDelegate,
         let val: AUValue = sender.isOn ? 0 : -1
         param!.value = val
     }
-    
-    @IBAction func setRoot(_ sender: HarmButton?)
-    {
-        let colors = [0,1,0,1,0,0,1,0,1,0,1,0]
-        //let keycenterParam = paramTree!.value(forKey: "keycenter") as? AUParameter
-        
-        var r = 0
-        for b in rootStack.arrangedSubviews as! [HarmButton]
-        {
-            if (b == sender)
-            {
-                keyRoot = r
-                b.isSelected = true
-            }
-            else
-            {
-                b.isSelected = false
-            }
-            r = r + 1
-        }
-        
-        var ix = 0
-        for b in degreeStack.arrangedSubviews as! [HarmButton]
-        {
-            b.backgroundColor = colors[(ix + keyRoot) % 12] == 1 ? UIColor.black : UIColor.white
-            b.configure()
-            if (ix == scaleDegree)
-            {
-                b.isSelected = true
-            }
-            ix += 1
-            
-        }
-        refresh()
-        drawKeys()
-
-    }
-    
-    @IBAction func setDegree(_ sender: HarmButton?)
-    {
-        var degree = 0
-        for b in degreeStack.arrangedSubviews as! [HarmButton]
-        {
-            if (b == sender)
-            {
-                scaleDegree = degree
-                b.isSelected = true
-            }
-            else
-            {
-                b.isSelected = false
-            }
-            degree = degree + 1
-        }
-        
-        refresh()
-        drawKeys()
-    }
-    
 }

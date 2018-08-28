@@ -258,8 +258,6 @@ class KeyboardView: UIView {
         
         spacing = layer.frame.width / CGFloat(n_visible)
         
-        keyOffset = 28
-        
         if (wkeys.count < 1 || bkeys.count < 1) { return }
         
         for i in 0...wkeys.count-1
