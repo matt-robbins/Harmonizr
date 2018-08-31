@@ -175,7 +175,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 @implementation AUv3Harmonizer {
 	// C++ members need to be ivars; they would be copied on access if they were properties.
-    FilterDSPKernel  _kernel;
+    HarmonizerDSPKernel  _kernel;
     BufferedInputBus _inputBus;
     
     AUAudioUnitPreset   *_currentPreset;
@@ -373,7 +373,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	_outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
 
 	// Make a local pointer to the kernel to avoid capturing self.
-	__block FilterDSPKernel *filterKernel = &_kernel;
+	__block HarmonizerDSPKernel *filterKernel = &_kernel;
 
 	// implementorValueObserver is called when a parameter changes value.
 	_parameterTree.implementorValueObserver = ^(AUParameter *param, AUValue value) {
@@ -463,7 +463,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	*/
     NSLog(@"getting render block!");
     // Specify captured objects are mutable.
-	__block FilterDSPKernel *state = &_kernel;
+	__block HarmonizerDSPKernel *state = &_kernel;
 	__block BufferedInputBus *input = &_inputBus;
     
     return ^AUAudioUnitStatus(

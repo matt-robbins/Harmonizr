@@ -78,7 +78,7 @@ extension PresetListViewController: UITableViewDataSource {
         
         cell.textLabel?.text = p.name! + (p.factoryId >= 0 ? " (factory)" : "")
         cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
-        //cell.selectionStyle = .default
+        cell.selectionStyle = p.factoryId >= 0 ? .default : .none
         //cell.accessoryView = UISwitch()
         return cell
     }
@@ -102,6 +102,14 @@ extension PresetListViewController: UITableViewDataSource {
             self.navigationController!.popViewController(animated: true)
             //return
         }
+        
+        let p = presetController!.presets[indexPath.row]
+        
+        if (p.factoryId >= 0)
+        {
+            return
+        }
+        
         let alert = UIAlertController(title: "Rename Preset", message: "Rename this preset", preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save", style: .default) {

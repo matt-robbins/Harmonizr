@@ -77,6 +77,7 @@
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
+		C991E6B92136DD3D00CCFD82 /* harmonizr-dsp in Resources */ = {isa = PBXBuildFile; fileRef = C991E6B82136DD3D00CCFD82 /* harmonizr-dsp */; };
 		C994EB19210FF2B3000715F8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB18210FF2B3000715F8 /* AudioToolbox.framework */; };
 		C994EB1B210FF2DF000715F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB1A210FF2DF000715F8 /* CoreData.framework */; };
 		C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
@@ -266,6 +267,7 @@
 		C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		C981C4651FBF9DCB00AF8593 /* Harmonizer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Harmonizer.entitlements; sourceTree = "<group>"; };
 		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
+		C991E6B82136DD3D00CCFD82 /* harmonizr-dsp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "harmonizr-dsp"; sourceTree = SOURCE_ROOT; };
 		C994EB18210FF2B3000715F8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		C994EB1A210FF2DF000715F8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		C994EB1D21122C8A000715F8 /* PresetModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PresetModel.xcdatamodel; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 		91236D561B08F52D00734C5E /* HarmonizerFramework */ = {
 			isa = PBXGroup;
 			children = (
+				C991E6B82136DD3D00CCFD82 /* harmonizr-dsp */,
 				164896A61C925E0C00AB781D /* Shared */,
 				C94FC87B202C96F60009E742 /* AppIcon.appiconset */,
 				91236D571B08F52D00734C5E /* HarmonizerFramework.h */,
@@ -838,6 +841,7 @@
 			files = (
 				C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */,
 				C9E48D9820DD457C00F36F9A /* Images.xcassets in Resources */,
+				C991E6B92136DD3D00CCFD82 /* harmonizr-dsp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
