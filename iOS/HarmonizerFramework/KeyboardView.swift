@@ -187,6 +187,7 @@ class KeyboardView: UIView {
     
     var points = [CGPoint]()
     
+    @IBInspectable
     var keyOffset = 0 {
         didSet {
             if (keyOffset < 0)
@@ -301,6 +302,8 @@ class KeyboardView: UIView {
             marker.opacity = 0.6
             ix += 1
         }
+        
+        containerLayer.position.x = -CGFloat(keyOffset) * spacing
         
     }
     

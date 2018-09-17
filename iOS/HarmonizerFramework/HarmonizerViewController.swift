@@ -139,6 +139,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         voicesView.delegate = self
         keyboardView.delegate = self
         
+        keyboardView.keyOffset = 28
+        
         presetController = PresetController()
         
         auPoller(T: 0.1)

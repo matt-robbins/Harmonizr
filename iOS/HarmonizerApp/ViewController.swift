@@ -61,6 +61,10 @@ class ViewController: UIViewController {
         }
     }
     
+    override func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
+        return [.bottom,.top,.left,.right]
+    }
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
