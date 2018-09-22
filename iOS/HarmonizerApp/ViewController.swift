@@ -51,6 +51,7 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool)
     {
+        audioEngine.start()
         if audioEngine.bluetoothAudioConnected()
         {
             let explain = "There will be significant delay. For the best experience, please connect wired headphones or an external audio device."
@@ -116,6 +117,7 @@ class ViewController: UIViewController {
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
 	}
     
     @objc private func appMovedToBackground()
@@ -124,6 +126,11 @@ class ViewController: UIViewController {
         {
             self.audioEngine.stop()
         }
+    }
+    
+    @objc private func appMovedToForeground()
+    {
+        self.audioEngine.start()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

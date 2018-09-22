@@ -426,6 +426,10 @@ class KeyboardView: UIView {
             }
         }
     }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        allNotesOff()
+    }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?)
     {
