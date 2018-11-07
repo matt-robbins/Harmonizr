@@ -58,6 +58,11 @@ class PresetController: NSObject {
             {
                 fields.append(f as! String)
             }
+            
+            for i in 0 ..< 144
+            {
+                fields.append("interval_\(i)")
+            }
         }
     }
     
@@ -194,7 +199,11 @@ class PresetController: NSObject {
         }
         for key in fields {
             let p = audioUnit!.parameterTree?.value(forKey: key) as? AUParameter
-            p?.value = state![key] as! Float
+            let v = state![key]
+            if (v != nil)
+            {
+                p?.value = state![key] as! Float
+            }
         }
     }
     

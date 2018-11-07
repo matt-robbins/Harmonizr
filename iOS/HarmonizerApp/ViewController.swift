@@ -118,6 +118,21 @@ class ViewController: UIViewController {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        
+        let tut = defaults?.bool(forKey: "wantsTutorial")
+        if (tut == true)
+        {
+            defaults?.set(false,forKey: "wantsTutorial")
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "tutorialOverlay")
+            //self.addChildViewController(vc!)
+            
+            let window = UIApplication.shared.keyWindow
+            window!.addSubview(vc!.view)
+            //vc!.didMove(toParentViewController: self)
+        }
+        
 	}
     
     @objc private func appMovedToBackground()

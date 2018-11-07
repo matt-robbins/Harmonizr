@@ -8,6 +8,8 @@
 import UIKit
 import CoreAudioKit
 import os
+import Foundation
+import AVFoundation
 
 public var globalAudioUnit: AUv3Harmonizer?
 
@@ -17,6 +19,9 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     
     var navController: UINavigationController?
     var harmViewController: HarmonizerViewController?
+    
+    var midiClient: MIDIClientRef = MIDIClientRef()
+    var midiOutput: MIDIPortRef = MIDIPortRef()
     
     public var audioUnit: AUv3Harmonizer? {
         didSet {
@@ -45,6 +50,8 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         UINavigationBar.appearance().barStyle = .black
         UINavigationBar.appearance().backgroundColor = UIColor.darkGray
         
+//        MIDIClientCreate("HarmonizrOutput" as CFString, nil, nil, &midiClient);
+//        MIDIOutputPortCreate(midiClient, "Harmonizr_Output" as CFString, &midiOutput);
     }
 
     override public func didReceiveMemoryWarning() {

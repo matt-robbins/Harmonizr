@@ -50,8 +50,8 @@ class Key: CATextLayer {
         backgroundColor = UIColor.white.cgColor
         foregroundColor = UIColor.darkGray.cgColor
         shadowColor = tintColor
-        cornerRadius = 2
-        borderWidth = 2
+        cornerRadius = 4
+        borderWidth = 1
         borderColor = UIColor.darkGray.cgColor
         shadowOffset = CGSize(width: 0, height: 0)
         shadowRadius = 8
@@ -257,13 +257,14 @@ class KeyboardView: UIView {
         
         containerLayer.bounds = layer.bounds
         
+        let top = CGFloat(-2)
         spacing = layer.frame.width / CGFloat(n_visible)
         
         if (wkeys.count < 1 || bkeys.count < 1) { return }
         
         for i in 0...wkeys.count-1
         {
-            wkeys[i].frame = CGRect(x: CGFloat(i) * spacing, y: 0, width: spacing, height: layer.frame.height)
+            wkeys[i].frame = CGRect(x: CGFloat(i) * spacing, y: top, width: spacing, height: layer.frame.height)
             wkeys[i].fontSize = min(14, wkeys[i].frame.width / 4)
         }
         
@@ -285,7 +286,7 @@ class KeyboardView: UIView {
             default:
                 offset += 0
             }
-            bkeys[i].frame = CGRect(x: CGFloat(1 + k + s + 7 * oct) * spacing - offset, y: 0, width: bkwidth, height: layer.frame.height*3/5)
+            bkeys[i].frame = CGRect(x: CGFloat(1 + k + s + 7 * oct) * spacing - offset, y: top, width: bkwidth, height: layer.frame.height*3/5)
         }
         
         var ix = 0

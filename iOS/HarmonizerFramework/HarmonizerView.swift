@@ -34,6 +34,124 @@ class VerticallyCenteredTextLayer : CATextLayer {
         super.draw(in: ctx)
         ctx.restoreGState()
     }
+    
+    override func hitTest(_ p: CGPoint) -> CALayer? {
+        return nil
+    }
+}
+
+class GhostLayer : CALayer {
+    override func hitTest(_ p: CGPoint) -> CALayer? {
+        return nil
+    }
+}
+
+class GlowButton2: CALayer {
+    var textLayer: VerticallyCenteredTextLayer = VerticallyCenteredTextLayer()
+    var glowLayer: GhostLayer = GhostLayer()
+    
+    var keycenter: Int = 0
+    var tintColor = UIColor.orange.cgColor {
+        didSet {
+            glowLayer.shadowColor = tintColor
+            if (isSelected)
+            {
+                borderColor = tintColor
+            }
+        }
+    }
+    
+    var string: String? = "" {
+        didSet {
+            textLayer.string = string
+        }
+    }
+    
+    override init(layer: Any)
+    {
+        self.isSelected = false
+        super.init(layer: layer)
+    }
+    
+    override init() {
+        self.isSelected = false
+        super.init()
+        configure()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.isSelected = false
+        super.init(coder: aDecoder)
+        
+        // set other operations after super.init if required
+        configure()
+    }
+    
+    func configure() {
+        textLayer.contentsScale = UIScreen.main.scale
+        backgroundColor = UIColor.clear.cgColor
+        masksToBounds = false
+        
+        textLayer.fontSize = 14
+        textLayer.alignmentMode = kCAAlignmentCenter
+        textLayer.foregroundColor = UIColor.black.cgColor
+        textLayer.backgroundColor = UIColor.white.cgColor
+        textLayer.borderColor = tintColor
+        textLayer.borderWidth = 0
+        
+        glowLayer.opacity = 0.5
+        glowLayer.backgroundColor = UIColor.gray.cgColor
+        glowLayer.shadowRadius = 8
+        glowLayer.shadowColor = tintColor
+        glowLayer.shadowOffset = CGSize(width: 0, height: 0)
+        
+        self.addSublayer(glowLayer)
+        self.addSublayer(textLayer)
+    }
+    
+    override func layoutSublayers() {
+        
+        var inset = 2
+//        if (isSelected)
+//        {
+//            inset = 4
+//        }
+        textLayer.frame = self.bounds.insetBy(dx: CGFloat(inset), dy: CGFloat(inset))
+        
+        glowLayer.frame = self.bounds
+        
+        glowLayer.cornerRadius = 5
+        textLayer.cornerRadius = 3
+        glowLayer.zPosition = 0.0
+        textLayer.zPosition = 1.0
+    }
+    
+    var isSelected: Bool {
+        didSet {
+            CATransaction.begin()
+            
+            if ( isSelected ) {
+                CATransaction.setAnimationDuration(0.05)
+                self.glowLayer.backgroundColor = tintColor
+                self.glowLayer.shadowColor = tintColor
+                self.glowLayer.shadowOpacity = 1.0
+                self.glowLayer.opacity = 1.0
+                self.textLayer.borderWidth = 1
+                self.textLayer.borderColor = tintColor
+                self.zPosition = 1.0
+            }
+            else {
+                CATransaction.setAnimationDuration(0.2)
+                self.textLayer.borderWidth = 0
+                self.glowLayer.backgroundColor = UIColor.gray.cgColor
+                self.glowLayer.shadowOpacity = 0.0
+                self.glowLayer.opacity = 0.5
+                self.zPosition = 0.0
+            }
+            //layoutSublayers()
+            CATransaction.commit()
+        }
+    }
 }
 
 class GlowButton: VerticallyCenteredTextLayer {
@@ -44,24 +162,30 @@ class GlowButton: VerticallyCenteredTextLayer {
             shadowColor = tintColor
             if (isSelected)
             {
-                borderColor = tintColor
+                backgroundColor = tintColor
             }
         }
     }
+    
+    var textLayer: VerticallyCenteredTextLayer?
     
     func configure() {
         fontSize = 14
         contentsScale = UIScreen.main.scale
         alignmentMode = kCAAlignmentCenter
-        backgroundColor = UIColor.white.cgColor
+        backgroundColor = UIColor.darkGray.cgColor
         foregroundColor = UIColor.black.cgColor
         shadowColor = tintColor
-        cornerRadius = 4
-        borderWidth = 4
+        cornerRadius = 5
+        borderWidth = 0.5
         borderColor = UIColor.darkGray.cgColor
         shadowOffset = CGSize(width: 0, height: 0)
         shadowRadius = 8
         masksToBounds = false
+        
+        textLayer = VerticallyCenteredTextLayer()
+        textLayer!.fontSize = 14
+        self.addSublayer(textLayer!)
     }
 
     override init(layer: Any)
@@ -91,12 +215,16 @@ class GlowButton: VerticallyCenteredTextLayer {
             if ( isSelected && isEnabled ) {
                 CATransaction.setAnimationDuration(0.05)
                 self.borderColor = tintColor
+                self.borderWidth = 3
                 self.shadowOpacity = 1.0
+                self.zPosition = 1.0
             }
             else {
                 CATransaction.setAnimationDuration(0.2)
                 self.borderColor = UIColor.darkGray.cgColor
+                self.borderWidth = 0.5
                 self.shadowOpacity = 0.0
+                self.zPosition = 0.0
             }
             CATransaction.commit()
         }
@@ -126,7 +254,8 @@ class HarmonizerView: UIView {
     var volumeStart: Float = 0.0
     var currGain: Float = 0.0
     
-    var keybuttons = [GlowButton]()
+    var keybuttons = [GlowButton2]()
+    var glow_layers = [CALayer]()
 
     var containerLayer = CALayer()
     //var keysLayer = CALayer()
@@ -151,19 +280,21 @@ class HarmonizerView: UIView {
         {
             return
         }
-        for j in 0...n-1 {
+        for j in 0...11 {
             CATransaction.begin()
             if (j % 12 == curr_note)
             {
                 CATransaction.setAnimationDuration(0.05)
-                keybuttons[j].shadowColor = UIColor.red.cgColor
-                keybuttons[j].shadowOpacity = 1.0
+                glow_layers[j].opacity = 1.0
+//                keybuttons[j].shadowColor = UIColor.red.cgColor
+//                keybuttons[j].shadowOpacity = 1.0
             }
             else
             {
                 CATransaction.setAnimationDuration(1.0)
-                keybuttons[j].shadowOpacity = 0.0
-                keybuttons[j].shadowColor = tintColor.cgColor
+                glow_layers[j].opacity = 0.0
+//                keybuttons[j].shadowOpacity = 0.0
+//                keybuttons[j].shadowColor = tintColor.cgColor
             }
             CATransaction.commit()
         }
@@ -173,6 +304,10 @@ class HarmonizerView: UIView {
     
     func setSelectedKeycenter(_ keycenter: Float)
     {
+        if (Int(keycenter) == currentKey)
+        {
+            return
+        }
         let new_key = Int(keycenter)
         var root = new_key % 12
         let quality = new_key / 12
@@ -210,8 +345,10 @@ class HarmonizerView: UIView {
                 keybuttons[key].isSelected = false
             }
         }
-        
-        keybuttons[new_key].isSelected = true
+        if (!keybuttons[new_key].isSelected)
+        {
+            keybuttons[new_key].isSelected = true
+        }
         currentKey = new_key
     }
     
@@ -222,7 +359,7 @@ class HarmonizerView: UIView {
         containerLayer.name = "container"
         containerLayer.anchorPoint = CGPoint.zero
         containerLayer.frame = CGRect(origin: CGPoint.zero, size: layer.bounds.size)
-        containerLayer.backgroundColor = UIColor(white: 0.1, alpha: 1.0).cgColor
+        containerLayer.backgroundColor = UIColor(white: 0.0, alpha: 0.0).cgColor
         containerLayer.bounds = containerLayer.frame
         containerLayer.contentsScale = scale
         layer.addSublayer(containerLayer)
@@ -243,14 +380,33 @@ class HarmonizerView: UIView {
         glowAnimation.autoreverses = false
         glowAnimation.repeatCount = 1
         
+        for j in 0...11
+        {
+            let glow = CALayer()
+            
+            glow.backgroundColor = UIColor.red.cgColor
+            glow.shadowColor = UIColor.red.cgColor
+            glow.shadowRadius = 8
+            glow.shadowOffset = CGSize(width: 0, height: 0)
+            glow.cornerRadius = 4
+            glow.shadowOpacity = 1.0
+            glow.opacity = 0.0
+            glow.name = "glow_\(j)"
+            
+            glow_layers.append(glow)
+            containerLayer.addSublayer(glow)
+        }
+        
         for j in 0...2
-        {            
+        {
             for i in 0...11
             {
-                let keyLayer = GlowButton()
+                let keyLayer = GlowButton2()
                 keyLayer.tintColor = tintColor.cgColor
                 keyLayer.contentsScale = UIScreen.main.scale
                 let blackkeys = [1,3,6,8,10]
+                
+                //keyLayer.mask!.frame = keyLayer.frame
                 
                 if (j == 0)
                 {
@@ -265,8 +421,8 @@ class HarmonizerView: UIView {
                     keyLayer.string = "7"
                 }
                 
-                keyLayer.fontSize = 18
-                keyLayer.alignmentMode = kCAAlignmentCenter
+//                keyLayer.fontSize = 18
+//                keyLayer.alignmentMode = kCAAlignmentCenter
                 
                 var bri = 1.0
 
@@ -274,8 +430,8 @@ class HarmonizerView: UIView {
                     bri = 0.0
                 }
                 
-                keyLayer.backgroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(bri), alpha: 1.0).cgColor
-                keyLayer.foregroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(1-bri), alpha: 1.0).cgColor
+                keyLayer.textLayer.backgroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(bri), alpha: 1.0).cgColor
+                keyLayer.textLayer.foregroundColor = UIColor(hue: CGFloat(0), saturation: CGFloat(0), brightness: CGFloat(1-bri), alpha: 1.0).cgColor
                 
                 keyLayer.keycenter = 12*j + i
                 keybuttons.append(keyLayer)
@@ -303,33 +459,46 @@ class HarmonizerView: UIView {
             //containerLayer.frame = layer.frame
             
             let spacing = containerLayer.frame.width / 12
-            let keywidth = spacing * 0.95
+            let keywidth = spacing
             let keyoffset = (spacing - keywidth)/2
             
-            var vspacing = layer.frame.height/3.2
-            var keyheight = vspacing * 0.95
+            var vspacing = layer.frame.height/3
+            var keyheight = vspacing * 1.0
             
             if (keyheight > keywidth)
             {
                 keyheight = keywidth
-                vspacing = keyheight * 1.05
+                vspacing = keyheight
             }
             
             // let maxheight = 3.2 * vspacing
             let maxheight = containerLayer.frame.height
             
             let blackkeys = [1,3,6,8,10]
+            
+            let boffset = keyheight * 0.0
+            
+            for j in 0...11
+            {
+                let height = blackkeys.contains(j) ? 0 : boffset
+                glow_layers[j].frame = CGRect(x:CGFloat(j) * spacing + keyoffset, y: maxheight - 3*vspacing, width: keywidth, height: 3*vspacing)
+            }
+            
+            
             for j in 0...2 {
+                
                 for i in 0...11 {
                     var height = CGFloat(j + 1) * vspacing
                     if blackkeys.contains(i)
                     {
-                        height = height + keyheight * 0.1
+                        height = height + boffset
                     }
                     
                     keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + keyoffset, y: maxheight - height, width: keywidth, height: keyheight)
                     
-                    keybuttons[j*12 + i].fontSize = min(14, keyheight * 0.5)
+                    keybuttons[j*12 + i].textLayer.fontSize = min(14, keyheight * 0.5)
+                    
+                    //keybuttons[j*12 + i].mask!.frame = keybuttons[j*12 + i].bounds
                 }
             }
             
@@ -359,7 +528,7 @@ class HarmonizerView: UIView {
         
         delegate?.harmonizerView(self, touchIsDown: true)
         
-        let key = containerLayer.hitTest(pointOfTouch!) as? GlowButton
+        let key = containerLayer.hitTest(pointOfTouch!) as? GlowButton2
         if (key != nil)
         {
             self.setSelectedKeycenter(Float(key!.keycenter))
@@ -371,8 +540,8 @@ class HarmonizerView: UIView {
         
         let p = touches.first?.location(in: self)
         let old_p = touches.first?.previousLocation(in: self)
-        let key = containerLayer.hitTest(p!) as? GlowButton
-        let old_key = containerLayer.hitTest(old_p!) as? GlowButton
+        let key = containerLayer.hitTest(p!) as? GlowButton2
+        let old_key = containerLayer.hitTest(old_p!) as? GlowButton2
         
         if (key != nil && key != old_key)
         {

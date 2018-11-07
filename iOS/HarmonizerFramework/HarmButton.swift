@@ -20,7 +20,7 @@ class HarmButton: UIButton {
     
     @IBInspectable var keycenter: Int = 0
     
-    @IBInspectable var cornerRadius: CGFloat = 0 {
+    @IBInspectable var cornerRadius: CGFloat = 6 {
         didSet {
             layer.cornerRadius = cornerRadius
         }
@@ -36,7 +36,7 @@ class HarmButton: UIButton {
         }
     }
     
-    @IBInspectable var borderWidth: CGFloat = 4
+    @IBInspectable var borderWidth: CGFloat = 3
     @IBInspectable var shadowRadius: CGFloat = 8
     
     func enableBorder(_ border: Bool)
@@ -74,7 +74,7 @@ class HarmButton: UIButton {
         
         //setTitleColor(.white, for: .disabled)
         layer.shadowColor = highlightColor
-        layer.cornerRadius = 4
+        layer.cornerRadius = cornerRadius
         layer.borderWidth = borderWidth
         layer.borderColor = UIColor.darkGray.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 0)

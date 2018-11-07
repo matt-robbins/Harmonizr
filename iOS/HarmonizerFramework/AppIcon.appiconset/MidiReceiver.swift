@@ -8,7 +8,6 @@
 import Foundation
 import AVFoundation
 
-
 class MidiReceiver : NSObject {
     
     private var midiClient = MIDIClientRef()
@@ -52,10 +51,16 @@ class MidiReceiver : NSObject {
             if status != noErr {
                 print("error creating input port %d", status)
             }
+            
+//            status = MIDIOutputPortCreate(midiClient, "Harmonizer.output" as CFString, &outputPort)
+//            if status != noErr {
+//                print("error creating output port %d", status)
+//            }
         }
         
         midiConnect()
     }
+    
     func observeNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(midiNetworkChanged(notification:)),
@@ -102,6 +107,7 @@ class MidiReceiver : NSObject {
             }
         }
     }
+    
     func enableNetwork() {
         MIDINetworkSession.default().isEnabled = true
         MIDINetworkSession.default().connectionPolicy = .anyone
@@ -312,6 +318,17 @@ class MidiReceiver : NSObject {
                 print("oh crap! couldn't connect", status)
             }
         }
+        
+        let N = MIDIGetNumberOfDestinations()
+        for ix in 0...N-1 {
+            let dst = MIDIGetDestination(ix)
+            let status = MIDIPortConnectSource(dst, outputPort, nil)
+            
+            if status != noErr {
+                print("oh crap! couldn't connect output port", status)
+            }
+        }
+        
     }
 }
 
