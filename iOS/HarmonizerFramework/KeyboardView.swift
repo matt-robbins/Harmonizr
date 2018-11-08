@@ -231,6 +231,7 @@ class KeyboardView: UIView {
                 wkeys.append(keyLayer)
                 keyLayer.zPosition = 0.0
             }
+            
             containerLayer.addSublayer(keyLayer)
         }
         

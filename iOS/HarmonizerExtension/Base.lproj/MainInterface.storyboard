@@ -626,11 +626,11 @@
                                         <rect key="frame" x="0.0" y="28" width="812" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TCx-Kz-0lH" id="Wu4-FD-BoY">
-                                            <rect key="frame" x="44" y="0.0" width="686" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="730" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Auto-Harmony" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oRE-pz-P4J">
-                                                    <rect key="frame" x="20" y="0.0" width="666" height="43.666666666666664"/>
+                                                    <rect key="frame" x="64" y="0.0" width="666" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -643,7 +643,7 @@
                                         <rect key="frame" x="0.0" y="72" width="812" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aOH-sd-zyc" id="jGb-w4-K6h">
-                                            <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="812" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Glide Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aqP-z1-z99">
@@ -890,7 +890,7 @@
                                         <rect key="frame" x="0.0" y="408" width="812" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Jri-g7-k4B" id="7AE-PC-c2z">
-                                            <rect key="frame" x="0.0" y="0.0" width="812" height="43.666666666666664"/>
+                                            <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Keyboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uji-ZC-5Vr">
@@ -918,6 +918,57 @@
                                         </tableViewCellContentView>
                                         <viewLayoutGuide key="safeArea" id="7so-Zx-uQi"/>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="XU0-xE-NeT">
+                                        <rect key="frame" x="0.0" y="452" width="812" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XU0-xE-NeT" id="bRz-Aa-8k6">
+                                            <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Touch Points" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tsy-LW-ydt" userLabel="Label">
+                                                    <rect key="frame" x="8" y="11.333333333333336" width="145.33333333333334" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EiU-k1-2gb" userLabel="Show Keyboard Switch">
+                                                    <rect key="frame" x="755" y="6.3333333333333321" width="51" height="30.999999999999996"/>
+                                                    <color key="onTintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <connections>
+                                                        <action selector="legatoSwitch:" destination="z7q-ka-Sfk" eventType="valueChanged" id="zZZ-8T-MlN"/>
+                                                        <action selector="showTouch:" destination="z7q-ka-Sfk" eventType="valueChanged" id="VjX-84-fgN"/>
+                                                        <action selector="toggleKeyboard:" destination="z7q-ka-Sfk" eventType="valueChanged" id="Npj-RJ-iyz"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Tsy-LW-ydt" secondAttribute="trailingMargin" id="C6P-ke-uWB"/>
+                                                <constraint firstItem="Tsy-LW-ydt" firstAttribute="leading" secondItem="bRz-Aa-8k6" secondAttribute="leadingMargin" id="DX3-lp-Dhe"/>
+                                                <constraint firstItem="Tsy-LW-ydt" firstAttribute="centerY" secondItem="bRz-Aa-8k6" secondAttribute="centerY" id="DuP-e6-slS"/>
+                                                <constraint firstItem="EiU-k1-2gb" firstAttribute="centerY" secondItem="bRz-Aa-8k6" secondAttribute="centerY" id="WhX-l8-WTB"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="EiU-k1-2gb" secondAttribute="trailing" id="l9r-wS-de0"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <viewLayoutGuide key="safeArea" id="mJi-e9-MJH"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="100" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="dQb-WA-PuR" style="IBUITableViewCellStyleDefault" id="W0y-zk-gLa">
+                                        <rect key="frame" x="0.0" y="496" width="812" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W0y-zk-gLa" id="OBk-fg-Ana">
+                                            <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="About Harmonizr (Web)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dQb-WA-PuR">
+                                                    <rect key="frame" x="20" y="0.0" width="684" height="43.666666666666664"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <viewLayoutGuide key="safeArea" id="gxX-qR-4Te"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -927,6 +978,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="aboutLink" destination="W0y-zk-gLa" id="h8F-qC-A8S"/>
                         <outlet property="corrLabel" destination="1EA-NK-srQ" id="yp8-Ak-fdu"/>
                         <outlet property="corrStepper" destination="FNT-SN-Epg" id="piy-bn-RdR"/>
                         <outlet property="drySwitch" destination="LHa-T7-DLq" id="lCy-xg-qHW"/>
@@ -934,6 +986,7 @@
                         <outlet property="levelLabel" destination="1se-Po-KtR" id="61g-z4-VZ1"/>
                         <outlet property="levelStepper" destination="mqa-OJ-dKI" id="og8-kN-n1e"/>
                         <outlet property="showKeyboardSwitch" destination="qGR-nZ-Lnc" id="fjB-7W-tKd"/>
+                        <outlet property="showTouchSwitch" destination="EiU-k1-2gb" id="0be-Ic-LTw"/>
                         <outlet property="speedSlider" destination="fpu-fI-xVO" id="8Ra-uT-qFO"/>
                         <outlet property="threshLabel" destination="lNg-A9-ScM" id="Iw2-Qb-f43"/>
                         <outlet property="threshStepper" destination="CFV-fm-Nap" id="CzV-BT-GJf"/>

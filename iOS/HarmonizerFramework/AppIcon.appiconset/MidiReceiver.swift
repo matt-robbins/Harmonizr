@@ -320,7 +320,7 @@ class MidiReceiver : NSObject {
         }
         
         let N = MIDIGetNumberOfDestinations()
-        for ix in 0...N-1 {
+        for ix in 0...N {
             let dst = MIDIGetDestination(ix)
             let status = MIDIPortConnectSource(dst, outputPort, nil)
             

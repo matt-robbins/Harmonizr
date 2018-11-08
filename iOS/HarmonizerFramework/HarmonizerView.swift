@@ -185,6 +185,7 @@ class GlowButton: VerticallyCenteredTextLayer {
         
         textLayer = VerticallyCenteredTextLayer()
         textLayer!.fontSize = 14
+        textLayer!.opacity = 0.9
         self.addSublayer(textLayer!)
     }
 
@@ -456,7 +457,6 @@ class HarmonizerView: UIView {
             CATransaction.setDisableActions(true)
             
             containerLayer.bounds = layer.bounds
-            //containerLayer.frame = layer.frame
             
             let spacing = containerLayer.frame.width / 12
             let keywidth = spacing
@@ -480,10 +480,9 @@ class HarmonizerView: UIView {
             
             for j in 0...11
             {
-                let height = blackkeys.contains(j) ? 0 : boffset
+                //let height = blackkeys.contains(j) ? 0 : boffset
                 glow_layers[j].frame = CGRect(x:CGFloat(j) * spacing + keyoffset, y: maxheight - 3*vspacing, width: keywidth, height: 3*vspacing)
             }
-            
             
             for j in 0...2 {
                 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class ConfigListViewController: UITableViewController {
     
@@ -45,7 +46,9 @@ class ConfigListViewController: UITableViewController {
     @IBOutlet weak var tuningLabel: UILabel!
     
     @IBOutlet weak var showKeyboardSwitch: UISwitch!
+    @IBOutlet weak var aboutLink: UITableViewCell!
     
+    @IBOutlet weak var showTouchSwitch: UISwitch!
     var defaults: UserDefaults?
     
     override func viewDidLoad() {
@@ -89,6 +92,7 @@ class ConfigListViewController: UITableViewController {
         defaults = UserDefaults(suiteName: "group.harmonizr.extension")
         
         showKeyboardSwitch.isOn = (defaults?.bool(forKey: "showMidiKeyboard"))!
+        showTouchSwitch.isOn = (defaults?.bool(forKey: "showTouch"))!
     }
     
     override func didReceiveMemoryWarning() {
@@ -107,12 +111,18 @@ class ConfigListViewController: UITableViewController {
      */
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         if (indexPath.section == 0)
         {
             if (indexPath.row == 0)
             {
                 self.performSegue(withIdentifier: "showHarmony", sender: self)
             }
+        }
+        if (indexPath.section == 1 && indexPath.row == 2)
+        {
+            let svc = SFSafariViewController(url: URL(string: "http://www.harmonizr.com/help")!)
+            present(svc, animated: true, completion: nil)
         }
     }
     
@@ -145,12 +155,16 @@ class ConfigListViewController: UITableViewController {
         threshLabel.text = "\(threshParameter!.value)"
     }
     @IBAction func setSpeed(_ sender: UISlider) {
-        speedParameter!.value = AUValue(sender.value)
+        speedParameter!.value = pow(2, -5*(1-AUValue(sender.value)))
     }
     @IBAction func toggleKeyboard(_ sender: UISwitch) {
-        
         defaults?.set(sender.isOn, forKey: "showMidiKeyboard")
     }
+    
+    @IBAction func showTouch(_ sender: UISwitch) {
+        defaults?.set(sender.isOn, forKey: "showTouch")
+    }
+    
 }
 
 
