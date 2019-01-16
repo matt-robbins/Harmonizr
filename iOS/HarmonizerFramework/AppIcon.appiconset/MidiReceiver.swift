@@ -319,15 +319,15 @@ class MidiReceiver : NSObject {
             }
         }
         
-        let N = MIDIGetNumberOfDestinations()
-        for ix in 0...N {
-            let dst = MIDIGetDestination(ix)
-            let status = MIDIPortConnectSource(dst, outputPort, nil)
-            
-            if status != noErr {
-                print("oh crap! couldn't connect output port", status)
-            }
-        }
+//        let N = MIDIGetNumberOfDestinations()
+//        for ix in 0 ..< N {
+//            let dst = MIDIGetDestination(ix)
+//            let status = MIDIPortConnectSource(dst, outputPort, nil)
+//
+//            if status != noErr {
+//                print("oh crap! couldn't connect output port", status)
+//            }
+//        }
         
     }
 }

@@ -931,13 +931,12 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EiU-k1-2gb" userLabel="Show Keyboard Switch">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EiU-k1-2gb">
                                                     <rect key="frame" x="755" y="6.3333333333333321" width="51" height="30.999999999999996"/>
                                                     <color key="onTintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
                                                         <action selector="legatoSwitch:" destination="z7q-ka-Sfk" eventType="valueChanged" id="zZZ-8T-MlN"/>
                                                         <action selector="showTouch:" destination="z7q-ka-Sfk" eventType="valueChanged" id="VjX-84-fgN"/>
-                                                        <action selector="toggleKeyboard:" destination="z7q-ka-Sfk" eventType="valueChanged" id="Npj-RJ-iyz"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>

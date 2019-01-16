@@ -118,9 +118,6 @@ class TouchWindow: UIWindow {
                 break
             }
         }
-        
-        
-        
     }
 }
 
@@ -160,6 +157,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults?.set(true,forKey: "showMidiKeyboard")
             defaults?.set(0, forKey: "presetIndex")
         }
-        
     }
 }

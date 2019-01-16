@@ -50,8 +50,8 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         UINavigationBar.appearance().barStyle = .black
         UINavigationBar.appearance().backgroundColor = UIColor.darkGray
         
-//        MIDIClientCreate("HarmonizrOutput" as CFString, nil, nil, &midiClient);
-//        MIDIOutputPortCreate(midiClient, "Harmonizr_Output" as CFString, &midiOutput);
+        MIDIClientCreate("HarmonizrOutput" as CFString, nil, nil, &midiClient);
+        MIDIOutputPortCreate(midiClient, "Harmonizr_Output" as CFString, &midiOutput);
     }
 
     override public func didReceiveMemoryWarning() {
