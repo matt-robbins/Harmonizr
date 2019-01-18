@@ -1,13 +1,18 @@
 /*
 	<samplecode>
 		<abstract>
-			A DSPKernel subclass implementing the realtime signal processing portion of the FilterDemo audio unit.
+			A DSPKernel subclass implementing the realtime signal processing algorithm.
 		</abstract>
 	</samplecode>
 */
 
-#ifndef FilterDSPKernel_hpp
-#define FilterDSPKernel_hpp
+#ifndef HarmonizerDSPKernel_hpp
+#define HarmonizerDSPKernel_hpp
+
+
+#import <vector>
+#import <cmath>
+#import <sys/time.h>
 
 #ifdef __APPLE__
 #import "DSPKernel.hpp"
@@ -22,11 +27,21 @@ typedef AudioTimeStamp timestamp_t;
 
 typedef AUMIDIEvent midi_event_t;
 
-#endif
+#else
+#include "kiss_fft.h"
+#import <algorithm>
+#include <android/log.h>
+typedef int32_t frame_count_t;
+typedef int32_t param_address_t;
+typedef float param_value_t;
+typedef float timestamp_t;
 
-#import <vector>
-#import <cmath>
-#import <sys/time.h>
+template <typename T>
+T clamp(T input, T low, T high) {
+    return std::min(std::max(input, low), high);
+}
+
+#endif
 
 template <typename T> int sgn(T val) {
     return (T(0) < val) - (val < T(0));
@@ -115,6 +130,18 @@ enum {
     HarmParamInterval
 };
 
+enum {
+    HarmPresetChords=0,
+    HarmPresetDiatonic,
+    HarmPresetChromatic,
+    HarmPresetBarbershop,
+    HarmPresetMIDI,
+    HarmPresetBohemian,
+    HarmPresetBass,
+    HarmPreset4ths,
+    HarmPresetModes
+};
+
 static inline double squared(double x) {
     return x * x;
 }
@@ -153,7 +180,7 @@ public:
         fprintf(stderr,"**** init with %d channels! at %f Hz\n", n_channels, inSampleRate);
 		
 		sampleRate = float(inSampleRate);
-        
+#ifdef __APPLE__
         fft_s = vDSP_create_fftsetup(11, 2);
         
         fft_in.realp = (float *) calloc(2048, sizeof(float));
@@ -167,6 +194,14 @@ public:
         
         fft_buf.realp = (float *) calloc(2048, sizeof(float));
         fft_buf.imagp = (float *) calloc(2048, sizeof(float));
+
+#else
+        fft_s = kiss_fft_alloc(2048,0,NULL,0);
+        ifft_s = kiss_fft_alloc(2048,1,NULL,0);
+        fft_in = (kiss_fft_cpx *) calloc(2048, sizeof(kiss_fft_cpx));
+        fft_out = (kiss_fft_cpx *) calloc(2048, sizeof(kiss_fft_cpx));
+        fft_out2 = (kiss_fft_cpx *) calloc(2048, sizeof(kiss_fft_cpx));
+#endif
         
         ncbuf = 4096;
         cbuf = (float *) calloc(ncbuf + 3, sizeof(float));
@@ -288,13 +323,21 @@ public:
         triads[TRIAD_OCT].r2 = 2.0;
         
         memset(midinotes, 0, 128 * sizeof(int));
+
+        int chords_intervals[] = {0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
+                           0,3,7,12, -1,2,6,11, 1,5,10,13, 0,4,9,12, -1,3,8,11, -1,2,7,10, 1,6,9,13, 0,5,8,12, 0,4,7,11, 0,3,6,10, 0,5,9,14, 1,4,8,13, // minor
+                           0,4,10,12, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+        };
+        for (int i = 0; i < 144; i++)
+        {
+            setParameter(HarmParamInterval+i,(float) chords_intervals[i]);
+        }
         
 	}
     
     void fini() {
+#ifdef __APPLE__
         vDSP_destroy_fftsetup(fft_s);
-        delete grain_window;
-        delete grains;
         free(fft_in.realp);
         free(fft_in.imagp);
         free(fft_out.realp);
@@ -303,6 +346,17 @@ public:
         free(fft_out2.imagp);
         free(fft_buf.realp);
         free(fft_buf.imagp);
+#else
+        kiss_fft_free(fft_s);
+        free(fft_in);
+        free(fft_out);
+        free(fft_out2);
+        free(fft_buf);
+#endif
+
+        delete grain_window;
+        delete grains;
+
         free(cbuf);
         free(voices);
         
@@ -352,6 +406,8 @@ public:
     {
         return v[0] * (1 - a) + v[1] * a;
     }
+    
+    bof!
 	
 	void setParameter(param_address_t address, param_value_t value) {
         switch (address) {
@@ -374,6 +430,7 @@ public:
                 break;
             case HarmParamMidi:
                 midi_enable = (int) clamp(value,0.f,1.f);
+                printf("set midi_enable to %d\n", midi_enable);
                 break;
             case HarmParamMidiLink:
                 midi_link = (int) clamp(value,0.f,1.f);
@@ -476,30 +533,151 @@ public:
         }
 	}
 
+    void setBuffers(float ** in, float ** out) {
+
+        for (int k = 0; k < n_channels; k++)
+        {
+            in_buffers[k] = in[k];
+            out_buffers[k] = out[k];
+        }
+    }
+
+
+    void setPreset(int preset_ix_)
+    {
+        int chords_intervals[] = {
+                0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
+                0,3,7,12, -1,2,6,11, 1,5,10,13, 0,4,9,12, -1,3,8,11, -1,2,7,10, 1,6,9,13, 0,5,8,12, 0,4,7,11, 0,3,6,10, 0,5,9,14, 1,4,8,13, // minor
+                0,4,10,12, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+        };
+        int diatonic_intervals[] = {
+                0,4,7,12, -1,3,6,11, 0,5,10,12, 1,4,9,13, 0,3,8,12, 0,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,12, 1,2,6,13, 0,1,5,12, // major
+                0,3,7,12, -1,2,6,11, 0,5,10,12, 0,4,9,12, -1,3,8,11, -2,2,7,10, 1,6,9,13, 0,5,8,12, -1,4,7,11, 0,3,6,10, 2,5,9,14, 1,4,8,13, // minor
+                0,4,7,10, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+        };
+        int chromatic_intervals[] = {
+                0,4,7,12, 0,3,6,12, 0,3,7,12, 0,3,9,12, 0,3,8,12, 0,4,7,12, 0,3,9,12, 0,5,9,12, 0,4,8,12, 0,5,8,12, 0,4,7,12, 0,3,6,12, // major
+                0,3,7,12, 0,4,7,12, 0,3,9,12, 0,4,9,12, 0,3,8,12, 0,3,7,12, 0,6,9,12, 0,4,7,12, 0,4,7,12, 0,3,6,12, 0,5,9,12, 0,3,7,12, // minor
+                0,4,7,12, 0,3,9,12, 0,2,8,12, 0,4,7,12, 0,3,6,12, 0,5,7,12, 0,4,6,12, 0,3,5,12, 0,2,4,12, 0,3,7,12, 0,2,6,12, 0,1,5,12, //dom
+        };
+        int barbershop_intervals[] = {
+                0,4,7,12, 0,3,5,9, 0,3,5,9, 0,3,6,9, 0,3,8,12, 0,2,6,9, 0,3,5,9, 0,5,9,12, 0,3,6,9, 0,3,5,9, 0,3,6,9, 0,3,6,8, // major
+                0,3,7,12, 0,4,7,10, 0,3,5,9, 0,4,9,12, 0,3,6,8, 0,3,7,9, 0,3,6,8, 0,5,8,12, 0,4,7,10, 0,3,6,10, 0,4,7,10, 0,3,6,8, // minor
+                0,4,7,10, 0,3,6,9, 0,3,5,9, 0,3,6,9, 0,3,6,8, 0,2,6,9, 0,3,5,9, 0,3,5,9, 0,2,4,8, 0,3,6,9, 0,2,6,9, 0,4,7,10 //dom
+        };
+        int justmidi_intervals[] = {
+                0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
+                0,3,7,12, -1,2,6,11, 1,5,10,13, 0,4,9,12, -1,3,8,11, -1,2,7,10, 1,6,9,13, 0,5,8,12, 0,4,7,11, 0,3,6,10, 0,5,9,14, 1,4,8,13, // minor
+                0,4,10,12, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+        };
+
+        int bohemian_intervals[] = {};
+        int bass_intervals[] = {};
+        int fourths_intervals[] = {};
+        int modes_intervals[] = {};
+
+        int * intervals = chords_intervals;
+
+
+        preset_ix = preset_ix_;
+        switch (preset_ix_)
+        {
+            case HarmPresetChords:
+                intervals = chords_intervals;
+                setParameter(HarmParamNvoices,4);
+                setParameter(HarmParamInversion,3);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,-1);
+                break;
+            case HarmPresetDiatonic:
+                intervals = diatonic_intervals;
+                setParameter(HarmParamNvoices,4);
+                setParameter(HarmParamInversion,3);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,-1);
+                break;
+            case HarmPresetChromatic:
+                intervals = chromatic_intervals;
+                setParameter(HarmParamNvoices,4);
+                setParameter(HarmParamInversion,3);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,-1);
+                break;
+            case HarmPresetBarbershop:
+                intervals = barbershop_intervals;
+                setParameter(HarmParamNvoices,4);
+                setParameter(HarmParamInversion,2);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,-1);
+                break;
+            case HarmPresetMIDI:
+                intervals = chords_intervals;
+                setParameter(HarmParamNvoices,1);
+                setParameter(HarmParamInversion,0);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,-1);
+                break;
+            case HarmPresetBohemian:
+                intervals = chords_intervals;
+                break;
+            case HarmPresetBass:
+                setParameter(HarmParamNvoices,1);
+                setParameter(HarmParamInversion,1);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,0);
+                intervals = chords_intervals;
+                break;
+            case HarmPreset4ths:
+                setParameter(HarmParamNvoices,1);
+                setParameter(HarmParamInversion,1);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,0);
+                intervals = chords_intervals;
+                break;
+            case HarmPresetModes:
+                setParameter(HarmParamNvoices,4);
+                setParameter(HarmParamInversion,3);
+                setParameter(HarmParamAuto,0);
+                setParameter(HarmParamTriad,-1);
+                intervals = chords_intervals;
+                break;
+            default:
+                preset_ix = 0;
+                return;
+        }
+
+        for (int i = 0; i < 144; i++)
+        {
+            setParameter(HarmParamInterval+i,(float) intervals[i]);
+        }
+
+    }
+    int getPreset()
+    {
+        return preset_ix;
+    }
+
+#ifdef __APPLE__
+
 	void startRamp(AUParameterAddress address, AUValue value, AUAudioFrameCount duration) override {
         return;
 	}
-	
-#ifdef __APPLE__
-    
+
 	void setBuffers(AudioBufferList* inBufferList, AudioBufferList* outBufferList) {
-        
+
         for (int k = 0; k < n_channels; k++)
         {
             in_buffers[k] = (float*) inBufferList->mBuffers[k].mData;
             out_buffers[k] = (float*) outBufferList->mBuffers[k].mData;
         }
-        
-	}
-    
-#else
-    
-#endif
+
+    }
     
     virtual void handleMIDIEvent(midi_event_t const& midiEvent) override {
         if (midiEvent.length != 3) return;
         uint8_t status = midiEvent.data[0] & 0xF0;
         uint8_t channel = midiEvent.data[0] & 0x0F; // works in omni mode.
+        
         if (channel != 0)
             return;
         
@@ -538,8 +716,17 @@ public:
             }
         }
     }
-    
+
+#else
+
+#endif
+
+#ifdef __APPLE__
 	void process(frame_count_t frameCount, frame_count_t bufferOffset) override {
+#else
+    void process(frame_count_t frameCount, frame_count_t bufferOffset) {
+#endif
+
 		int channelCount = n_channels;
         sample_count += frameCount;
         
@@ -640,8 +827,8 @@ public:
                     continue;
                 }
                 
-//                if (voices[vix].midinote == -1 || (vix > n_auto && !midi_enable))
-//                    continue;
+                if (vix > n_auto && !midi_enable)
+                    continue;
                 
                 float unvoiced_offset = 0;
 //                if (!voiced && vix > 5)
@@ -761,7 +948,8 @@ public:
             
 		}
 	}
-    
+
+#ifdef __APPLE__
     float estimate_pitch(int start_ix)
     {
         memset(fft_in.realp, 0, nfft * sizeof(float));
@@ -832,6 +1020,81 @@ public:
         
         return Tsrt[nmed/2];
     }
+
+#else
+    float estimate_pitch(int start_ix) {
+        memset(fft_in, 0, nfft * sizeof(kiss_fft_cpx));
+
+        for (int k = 0; k < maxT; k++) {
+            int ix = (start_ix + k) & cmask;
+            fft_in[k].r = cbuf[ix];
+        }
+
+        kiss_fft(fft_s, fft_in, fft_out);
+
+        //memset(fft_in, 0, nfft * sizeof(kiss_fft_cpx));
+
+        for (int k = maxT; k < 2 * maxT; k++) {
+            int ix = (start_ix + k) & cmask;
+            fft_in[k].r = cbuf[ix];
+        }
+
+        kiss_fft(fft_s, fft_in, fft_out2);
+
+        // conjugate small window and correlate with large window
+        for (int k = 0; k < nfft; k++) {
+            float r1, c1, r2, c2;
+            r1 = fft_out[k].r;
+            c1 = -fft_out[k].i;
+            r2 = fft_out2[k].r;
+            c2 = fft_out2[k].i;
+
+            fft_in[k].r = r1 * r2 - c1 * c2;
+            fft_in[k].i = r1 * c2 + r2 * c1;
+        }
+        // inverse transform
+        kiss_fft(ifft_s, fft_in, fft_out);
+
+        float sumsq_ = fft_out[0].r / nfft;
+        float sumsq = sumsq_;
+
+        float df, cmdf, cmdf1, cmdf2, sum = 0;
+
+        float period = 0.0;
+
+        cmdf2 = cmdf1 = cmdf = 1;
+        for (int k = 1; k < maxT; k++) {
+            int ix1 = (start_ix + k) & cmask;
+            int ix2 = (start_ix + k + maxT) & cmask;
+
+            sumsq -= cbuf[ix1] * cbuf[ix1];
+            sumsq += cbuf[ix2] * cbuf[ix2];
+
+            df = sumsq + sumsq_ - 2 * fft_out[k].r / nfft;
+            sum += df;
+            cmdf2 = cmdf1;
+            cmdf1 = cmdf;
+            cmdf = (df * k) / sum;
+
+            if (k > 0 && cmdf2 > cmdf1 && cmdf1 < cmdf && cmdf1 < threshold && k > 20) {
+                period = (float) (k - 1) + 0.5 * (cmdf2 - cmdf) / (cmdf2 + cmdf - 2 * cmdf1);
+                break;
+            }
+        }
+
+        Tbuf[Tix++] = period;
+
+        if (Tix >= nmed)
+            Tix = 0;
+
+        memcpy(Tsrt, Tbuf, nmed * sizeof(float));
+
+        std::sort(Tsrt, Tsrt+nmed);
+
+        return Tsrt[nmed / 2];
+    }
+
+#endif
     
     void findmark (void)
     {
@@ -888,6 +1151,11 @@ public:
         int min_ix = -1;
         midi_changed_sample_num = sample_count;
         midi_changed = 1;
+        
+        if (!midi_enable)
+        {
+            return;
+        }
         
         if (!midi_legato)
         {
@@ -974,9 +1242,12 @@ public:
         }
         if (n == 0)
             return;
-        
+
+#ifdef __APPLE__
         vDSP_vsort(midinotes, (vDSP_Length) n, 1);
-        
+#else
+        std::sort(midinotes, midinotes + n);
+#endif
         for (int j = 0; j < n; j++)
         {
             // ignore doubles
@@ -1248,8 +1519,13 @@ private:
 	//std::vector<FilterState> channelStates;
     int nfft = 2048;
     int l2nfft = 11;
+#ifdef __APPLE__
     FFTSetup fft_s;
     DSPSplitComplex fft_in, fft_out, fft_out2, fft_buf;
+#else
+    kiss_fft_cfg fft_s, ifft_s;
+    kiss_fft_cpx *fft_in, *fft_out, *fft_out2, *fft_buf;
+#endif
     float * cbuf;
     int ncbuf = 4096;
     int cix = 0;
@@ -1291,7 +1567,7 @@ private:
     int midi_legato = 0;
     int auto_enable = 1;
     int midi_link = 1;
-    int n_auto = 4;
+    int n_auto = 3;
     int triad = -1;
     float interval_table[48];
     int interval_offsets[144];
@@ -1312,18 +1588,22 @@ private:
     unsigned int midi_changed_sample_num = 0;
     unsigned int midi_changed = 1;
 
+    int preset_ix = 0;
+
 //    AudioBufferList* inBufferListPtr = nullptr;
 //    AudioBufferList* outBufferListPtr = nullptr;
-    
-    float ** in_buffers;
-    float ** out_buffers;
 
 public:
+
+    float ** in_buffers;
+    float ** out_buffers;
 
     float note_number = -1.0;
     float midi_note_number;
     int voice_notes[4];
     int root_key = 0;
+
+    std::string preset_names[9] = {"Chords","Diatonic","Chromatic","Barbershop","JustMidi","Bohemian?","Bass!","4ths","Modes"};
 };
 
 #endif /* FilterDSPKernel_hpp */
