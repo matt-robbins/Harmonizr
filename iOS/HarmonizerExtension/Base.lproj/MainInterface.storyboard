@@ -626,11 +626,11 @@
                                         <rect key="frame" x="0.0" y="28" width="812" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TCx-Kz-0lH" id="Wu4-FD-BoY">
-                                            <rect key="frame" x="44" y="0.0" width="686" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="730" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Auto-Harmony" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oRE-pz-P4J">
-                                                    <rect key="frame" x="20" y="0.0" width="666" height="43.666666666666664"/>
+                                                    <rect key="frame" x="64" y="0.0" width="666" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -865,7 +865,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7hT-wE-7Xd">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7hT-wE-7Xd">
                                                     <rect key="frame" x="655" y="6.3333333333333321" width="51" height="30.999999999999996"/>
                                                     <color key="onTintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
@@ -890,7 +890,7 @@
                                         <rect key="frame" x="0.0" y="408" width="812" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Jri-g7-k4B" id="7AE-PC-c2z">
-                                            <rect key="frame" x="0.0" y="0.0" width="812" height="43.666666666666664"/>
+                                            <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Keyboard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uji-ZC-5Vr">
@@ -903,7 +903,6 @@
                                                     <rect key="frame" x="755" y="6.3333333333333321" width="51" height="30.999999999999996"/>
                                                     <color key="onTintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
-                                                        <action selector="legatoSwitch:" destination="z7q-ka-Sfk" eventType="valueChanged" id="FoR-3K-aV5"/>
                                                         <action selector="toggleKeyboard:" destination="z7q-ka-Sfk" eventType="valueChanged" id="xZV-aY-CGD"/>
                                                     </connections>
                                                 </switch>
@@ -916,13 +915,12 @@
                                                 <constraint firstItem="qGR-nZ-Lnc" firstAttribute="centerY" secondItem="7AE-PC-c2z" secondAttribute="centerY" id="w7f-qg-Gcy"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <viewLayoutGuide key="safeArea" id="7so-Zx-uQi"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="XU0-xE-NeT">
                                         <rect key="frame" x="0.0" y="452" width="812" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XU0-xE-NeT" id="bRz-Aa-8k6">
-                                            <rect key="frame" x="0.0" y="0.0" width="812" height="43.666666666666664"/>
+                                            <rect key="frame" x="44" y="0.0" width="724" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Touch Points" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tsy-LW-ydt" userLabel="Label">
@@ -981,7 +979,7 @@
                         <outlet property="corrLabel" destination="1EA-NK-srQ" id="yp8-Ak-fdu"/>
                         <outlet property="corrStepper" destination="FNT-SN-Epg" id="piy-bn-RdR"/>
                         <outlet property="drySwitch" destination="LHa-T7-DLq" id="lCy-xg-qHW"/>
-                        <outlet property="legatoSwitch" destination="qGR-nZ-Lnc" id="TKo-7B-Qv4"/>
+                        <outlet property="legatoSwitch" destination="7hT-wE-7Xd" id="bcy-L5-Nhn"/>
                         <outlet property="levelLabel" destination="1se-Po-KtR" id="61g-z4-VZ1"/>
                         <outlet property="levelStepper" destination="mqa-OJ-dKI" id="og8-kN-n1e"/>
                         <outlet property="showKeyboardSwitch" destination="qGR-nZ-Lnc" id="fjB-7W-tKd"/>

@@ -85,6 +85,7 @@ class ConfigListViewController: UITableViewController {
         levelLabel.text = "\(Int(levelStepper.value)) %"
         
         drySwitch.isOn = dryMixParameter!.value > 0.5
+        
         legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
         
         speedSlider.value = speedParameter!.value
