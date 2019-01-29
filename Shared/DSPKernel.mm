@@ -6,9 +6,12 @@
 	Utility code to manage scheduled parameters in an audio unit implementation.
 */
 
-#import "DSPKernel.hpp"
+#import "../harmonizr-dsp/DSPKernel.hpp"
 
 void DSPKernel::handleOneEvent(AURenderEvent const *event) {
+    
+    AUMIDIEvent e;
+    
 	switch (event->head.eventType) {
 		case AURenderEventParameter:
 		case AURenderEventParameterRamp: {
@@ -19,7 +22,17 @@ void DSPKernel::handleOneEvent(AURenderEvent const *event) {
 		}
 			
 		case AURenderEventMIDI:
-			handleMIDIEvent(event->MIDI);
+            
+            e = event->MIDI;
+            if ((e.data[0] & 0xF0) == 0xC0)
+            {
+                program_change = e.data[1];
+                dispatch_semaphore_signal(sem);
+            }
+            else
+            {
+                handleMIDIEvent(event->MIDI);
+            }
 			break;
 		
 		default:

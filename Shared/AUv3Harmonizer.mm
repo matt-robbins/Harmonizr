@@ -170,6 +170,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 @property AUAudioUnitBus *outputBus;
 @property AUAudioUnitBusArray *inputBusArray;
 @property AUAudioUnitBusArray *outputBusArray;
+@property AUMIDIOutputEventBlock outputEvents;
+
 
 @end
 
@@ -177,6 +179,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	// C++ members need to be ivars; they would be copied on access if they were properties.
     HarmonizerDSPKernel  _kernel;
     BufferedInputBus _inputBus;
+    dispatch_semaphore_t _sem;
     
     AUAudioUnitPreset   *_currentPreset;
     NSInteger           _currentFactoryPresetIndex;
@@ -292,6 +295,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                                                                          min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
                                                                 valueStrings:nil dependentParameters:nil];
+    AUParameter *stereoParam = [AUParameterTree createParameterWithIdentifier:@"stereo_mode" name:@"Stereo Mode"
+                                                                      address:HarmParamStereo
+                                                                          min:0 max:2 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+                                                                 valueStrings:@[@"Normal",@"Mono",@"Split"] dependentParameters:nil];
     
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
     
@@ -311,6 +319,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:speedParam];
     [params addObject:tuningParam];
     [params addObject:threshParam];
+    [params addObject:stereoParam];
         
     for (int k = 0; k < 144; k++)
     {
@@ -342,7 +351,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     speedParam.value = 1;
     tuningParam.value = 440.0;
     threshParam.value = 0.2;
+    stereoParam.value = 0;
     
+    _sem = dispatch_semaphore_create(0);
+    _kernel.sem = _sem;
+        
     _kernel.setParameter(HarmParamKeycenter, keycenterParam.value);
     _kernel.setParameter(HarmParamInversion, inversionParam.value);
     _kernel.setParameter(HarmParamNvoices, nvoicesParam.value);
@@ -350,6 +363,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.setParameter(HarmParamMidi, midiParam.value);
     _kernel.setParameter(HarmParamTriad, triadParam.value);
     _kernel.setParameter(HarmParamBypass, bypassParam.value);
+    _kernel.setParameter(HarmParamStereo, stereoParam.value);
     
 //    for (int k = 0; k < 144; k++)
 //    {
@@ -371,7 +385,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 	// Create the input and output bus arrays.
 	_inputBusArray  = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeInput busses: @[_inputBus.bus]];
 	_outputBusArray = [[AUAudioUnitBusArray alloc] initWithAudioUnit:self busType:AUAudioUnitBusTypeOutput busses: @[_outputBus]];
-
+    
 	// Make a local pointer to the kernel to avoid capturing self.
 	__block HarmonizerDSPKernel *filterKernel = &_kernel;
 
@@ -439,6 +453,37 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
         return NO;
     }
+    
+    if (@available(iOS 11.0, *)) {
+        if (self.MIDIOutputEventBlock) {
+            _outputEvents = self.MIDIOutputEventBlock;
+            
+        } else {
+            _outputEvents = nil;
+        }
+    } else {
+        _outputEvents = nil;
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0 * NSEC_PER_SEC));
+        while (true)
+        {
+            long result = dispatch_semaphore_wait(self->_kernel.sem, timeout);
+            
+            if (result == 0)
+            {
+                NSLog(@"signal received!\n");
+                if (self.delegate)
+                {
+                    NSLog(@"programChange!\n");
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.delegate programChange:self->_kernel.program_change];
+                    });
+                }
+            }
+        }
+    });
 	
 	_inputBus.allocateRenderResources(self.maximumFramesToRender);
 	
@@ -465,6 +510,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     // Specify captured objects are mutable.
 	__block HarmonizerDSPKernel *state = &_kernel;
 	__block BufferedInputBus *input = &_inputBus;
+    __block AUMIDIOutputEventBlock output_block = _outputEvents;
     
     return ^AUAudioUnitStatus(
 			 AudioUnitRenderActionFlags *actionFlags,
@@ -507,6 +553,19 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 		
 		state->setBuffers(inAudioBufferList, outAudioBufferList);
 		state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
+        
+        if (output_block)
+        {
+            uint8_t bytes[3];
+            bytes[0] = 0x90;
+            bytes[1] = 60;
+            bytes[2] = 100;
+            output_block(AUEventSampleTimeImmediate, 0, 3, bytes);
+            bytes[0] = 0x80;
+            bytes[1] = 60;
+            bytes[2] = 100;
+            output_block(AUEventSampleTimeImmediate, 0, 3, bytes);
+        }
         
 		return noErr;
 	};

@@ -12,7 +12,7 @@ import os
 
 //public var globalAudioUnit: AUv3Harmonizer?
 
-class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate {
+class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate, HarmonizerDelegate {
     
     // MARK: Properties
 
@@ -271,7 +271,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
                                           execute: requestWorkItem)
 		})
         
-        
+        audioUnit?.delegate = self
         //configController!.audioUnit = self.audioUnit
 //        configController!.presetController = self.presetController
 //
@@ -422,6 +422,11 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
                 syncView()
             }
         }
+    }
+    
+    func programChange(_ program: Int32) {
+        self.presetController?.selectPreset(preset: Int(program))
+        syncView()
     }
     
     func ShowMainView() {

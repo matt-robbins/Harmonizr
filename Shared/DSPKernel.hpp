@@ -47,6 +47,9 @@ public:
 	virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {}
 	
 	void processWithEvents(AudioTimeStamp const* timestamp, AUAudioFrameCount frameCount, AURenderEvent const* events);
+        
+    dispatch_semaphore_t sem;
+    int program_num;
 
 private:
 	void handleOneEvent(AURenderEvent const* event);

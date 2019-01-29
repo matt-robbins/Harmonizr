@@ -83,6 +83,7 @@
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
 		C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
+		C9D1959421FFC604006ADB10 /* AudioUnit-BridgingHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */; };
 		C9D2F8FE2071A5FA000783B2 /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */; };
 		C9D2F8FF2071A5FA000783B2 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */; };
 		C9D2F9002071A5FA000783B2 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F8FD2071A5FA000783B2 /* CoreMIDI.framework */; };
@@ -270,6 +271,7 @@
 		C99BB9CC2138D64A00D32324 /* DSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
 		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C9B61479211BD49600396B8D /* PresetListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListViewController.swift; sourceTree = "<group>"; };
+		C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AudioUnit-BridgingHeader.h"; sourceTree = "<group>"; };
 		C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		C9D2F8FD2071A5FA000783B2 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
@@ -349,6 +351,7 @@
 				C99BB9CC2138D64A00D32324 /* DSPKernel.mm */,
 				92AA8D5F1B1D25E6002C3CA1 /* Harmonizer.h */,
 				91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */,
+				C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */,
 				C99BB9C62138D50F00D32324 /* HarmonizerDSPKernel.hpp */,
 				92A9E2D61B1CF79900AC811E /* ParameterRamper.hpp */,
 			);
@@ -593,6 +596,7 @@
 			files = (
 				91236D581B08F52D00734C5E /* HarmonizerFramework.h in Headers */,
 				C99BB9C72138D51000D32324 /* HarmonizerDSPKernel.hpp in Headers */,
+				C9D1959421FFC604006ADB10 /* AudioUnit-BridgingHeader.h in Headers */,
 				92AA8D601B1D28D6002C3CA1 /* Harmonizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1197,6 +1201,7 @@
 				PRODUCT_NAME = HarmonizerFramework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1253,6 +1258,7 @@
 				PRODUCT_NAME = HarmonizerFramework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1310,6 +1316,7 @@
 				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/matt/code/audioUnitExamples/Harmonizr/Shared/AudioUnit-BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1357,6 +1364,7 @@
 				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/matt/code/audioUnitExamples/Harmonizr/Shared/AudioUnit-BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

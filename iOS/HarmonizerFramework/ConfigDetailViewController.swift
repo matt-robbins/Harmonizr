@@ -26,12 +26,14 @@ class ConfigListViewController: UITableViewController {
     var dryMixParameter: AUParameter?
     var tuningParameter: AUParameter?
     var threshParameter: AUParameter?
+    var stereoParameter: AUParameter?
     
     @IBOutlet weak var speedSlider: UISlider!
     
     @IBOutlet weak var drySwitch: UISwitch!
     @IBOutlet weak var legatoSwitch: UISwitch!
     
+    @IBOutlet weak var stereoModeLabel: UILabel!
     
     @IBOutlet weak var threshStepper: UIStepper!
     
@@ -73,6 +75,7 @@ class ConfigListViewController: UITableViewController {
         
         tuningParameter = paramTree.value(forKey: "tuning") as? AUParameter
         threshParameter = paramTree.value(forKey: "threshold") as? AUParameter
+        stereoParameter = paramTree.value(forKey: "stereo_mode") as? AUParameter
         
         threshLabel.text = "\(threshParameter!.value)"
         
@@ -94,6 +97,8 @@ class ConfigListViewController: UITableViewController {
         
         showKeyboardSwitch.isOn = (defaults?.bool(forKey: "showMidiKeyboard"))!
         showTouchSwitch.isOn = (defaults?.bool(forKey: "showTouch"))!
+        
+        stereoModeLabel.text = stereoParameter?.valueStrings?[Int(stereoParameter?.value ?? 0)]
     }
     
     override func didReceiveMemoryWarning() {
@@ -118,6 +123,19 @@ class ConfigListViewController: UITableViewController {
             if (indexPath.row == 0)
             {
                 self.performSegue(withIdentifier: "showHarmony", sender: self)
+            }
+            
+            if (indexPath.row == 8)
+            {
+                if (stereoParameter?.maxValue == stereoParameter?.value)
+                {
+                    stereoParameter?.value = 0
+                }
+                else
+                {
+                    stereoParameter?.value = (stereoParameter?.value ?? 0) + 1
+                }
+                stereoModeLabel.text = stereoParameter?.valueStrings?[Int(stereoParameter?.value ?? 0)]
             }
         }
         if (indexPath.section == 1 && indexPath.row == 2)

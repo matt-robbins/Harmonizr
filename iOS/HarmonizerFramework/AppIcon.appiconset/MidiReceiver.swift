@@ -162,6 +162,7 @@ class MidiReceiver : NSObject {
             
         case 0xC0:
             print("Program Change. Channel \(channel) program \(d1)")
+            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
             
         case 0xD0: // mono aftertouch
             self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)

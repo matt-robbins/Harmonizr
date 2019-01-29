@@ -11,6 +11,13 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+@protocol HarmonizerDelegate <NSObject>
+
+@optional
+- (void)programChange:(int)program;
+
+@end
+
 @interface AUv3Harmonizer : AUAudioUnit
 
 - (NSArray *) fields;
@@ -19,6 +26,7 @@
 - (int) addMidiNote:(int)note_number vel:(int)velocity;
 - (int) remMidiNote:(int)note_number;
 - (float) getCurrentKeycenter;
+@property (nonatomic, weak) id<HarmonizerDelegate> delegate;
 @end
 
 #endif /* FilterDemo_h */
