@@ -466,11 +466,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0 * NSEC_PER_SEC));
+        
         while (true)
         {
+            dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0 * NSEC_PER_SEC));
             long result = dispatch_semaphore_wait(self->_kernel.sem, timeout);
-            
+
             if (result == 0)
             {
                 NSLog(@"signal received!\n");
