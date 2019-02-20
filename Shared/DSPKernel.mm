@@ -40,13 +40,28 @@ void DSPKernel::handleOneEvent(AURenderEvent const *event) {
 	}
 }
 
-void DSPKernel::performAllSimultaneousEvents(AUEventSampleTime now, AURenderEvent const *&event) {
+void DSPKernel::sendMIDIOutput(AUEventSampleTime now, AUMIDIOutputEventBlock midiOut)
+{
+    for (int k = 0; k < n_output_events; k++)
+    {
+        //printf("%x %x %x\n", output_events[k].data[0],output_events[k].data[1],output_events[k].data[2]);
+        midiOut(now, 0, output_events[k].length, output_events[k].data);
+    }
+    n_output_events = 0;
+}
+
+void DSPKernel::performAllSimultaneousEvents(AUEventSampleTime now, AURenderEvent const *&event, AUMIDIOutputEventBlock midiOut) {
 	do {
 		handleOneEvent(event);
+        
+        if (event->head.eventType == AURenderEventMIDI && midiOut)
+        {
+            midiOut(now, 0, event->MIDI.length, event->MIDI.data);
+        }
 
 		// Go to next event.
 		event = event->head.next;
-		
+        
 		// While event is not null and is simultaneous.
 	} while (event && event->head.eventSampleTime == now);
 }
@@ -55,7 +70,7 @@ void DSPKernel::performAllSimultaneousEvents(AUEventSampleTime now, AURenderEven
 	This function handles the event list processing and rendering loop for you.
 	Call it inside your internalRenderBlock.
 */
-void DSPKernel::processWithEvents(AudioTimeStamp const *timestamp, AUAudioFrameCount frameCount, AURenderEvent const *events) {
+void DSPKernel::processWithEvents(AudioTimeStamp const *timestamp, AUAudioFrameCount frameCount, AURenderEvent const *events, AUMIDIOutputEventBlock midiOut) {
 
 	AUEventSampleTime now = AUEventSampleTime(timestamp->mSampleTime);
     static AUEventSampleTime then = 0;
@@ -72,6 +87,7 @@ void DSPKernel::processWithEvents(AudioTimeStamp const *timestamp, AUAudioFrameC
 		if (event == nullptr) {
 			AUAudioFrameCount const bufferOffset = frameCount - framesRemaining;
 			process(framesRemaining, bufferOffset);
+            sendMIDIOutput(now, midiOut);
 			return;
 		}
 
@@ -81,6 +97,7 @@ void DSPKernel::processWithEvents(AudioTimeStamp const *timestamp, AUAudioFrameC
 		if (framesThisSegment > 0) {
 			AUAudioFrameCount const bufferOffset = frameCount - framesRemaining;
 			process(framesThisSegment, bufferOffset);
+            sendMIDIOutput(now, midiOut);
 							
 			// Advance frames.
 			framesRemaining -= framesThisSegment;
@@ -89,7 +106,7 @@ void DSPKernel::processWithEvents(AudioTimeStamp const *timestamp, AUAudioFrameC
 			now += AUEventSampleTime(framesThisSegment);
 		}
 		
-		performAllSimultaneousEvents(now, event);
+		performAllSimultaneousEvents(now, event, midiOut);
 	}
 }
 

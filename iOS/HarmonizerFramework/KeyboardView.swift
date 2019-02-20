@@ -119,6 +119,8 @@ class Key: CATextLayer {
     
     var isSelected: Bool {
         didSet {
+            if (isSelected == oldValue) { return }
+            
             toggleActive(isSelected, color: tintColor)
         }
     }
@@ -162,7 +164,7 @@ class KeyboardView: UIView {
     }
     var wkeys = [Key]()
     var bkeys = [Key]()
-    var keys = [Key]()
+    public var keys = [Key]()
     var markers = [Marker]()
     
     var markKey = 1

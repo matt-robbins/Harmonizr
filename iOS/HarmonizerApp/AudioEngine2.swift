@@ -32,6 +32,11 @@ class AudioEngine2: NSObject {
     var reverbUnit: AUAudioUnit?
     var outputUnit: AudioUnit?
     
+    private let midiOutBlock: AUMIDIOutputEventBlock = { (sampleTime, cable, length, data ) in
+        // This block will be called every render cycle and will receive MIDI events
+        return noErr
+    }
+    
     override init() {
         
         #if os(iOS)
@@ -212,6 +217,10 @@ class AudioEngine2: NSObject {
 
             self.harmUnitNode = avAudioUnit
             self.harmUnit = avAudioUnit.auAudioUnit
+            if (self.harmUnit?.midiOutputNames.count ?? 0 > 0)
+            {
+                self.harmUnit?.midiOutputEventBlock = self.midiOutBlock
+            }
             
             //self.harmUnit?.currentPreset = self.harmUnit?.factoryPresets?[0]
             

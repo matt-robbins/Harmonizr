@@ -23,6 +23,7 @@
 - (NSArray *) fields;
 - (float) getCurrentNote;
 - (NSArray *) getNotes;
+- (NSArray *) getKeysDown;
 - (int) addMidiNote:(int)note_number vel:(int)velocity;
 - (int) remMidiNote:(int)note_number;
 - (float) getCurrentKeycenter;

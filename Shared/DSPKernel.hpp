@@ -46,7 +46,7 @@ public:
 	// Override to handle MIDI events.
 	virtual void handleMIDIEvent(AUMIDIEvent const& midiEvent) {}
 	
-	void processWithEvents(AudioTimeStamp const* timestamp, AUAudioFrameCount frameCount, AURenderEvent const* events);
+	void processWithEvents(AudioTimeStamp const* timestamp, AUAudioFrameCount frameCount, AURenderEvent const* events, AUMIDIOutputEventBlock midiOut);
         
     dispatch_semaphore_t sem;
     int program_num;

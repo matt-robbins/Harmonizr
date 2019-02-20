@@ -8,6 +8,17 @@
 import Foundation
 import AVFoundation
 
+//extension MIDIPacket {
+//    var dataBytes: [UInt8] {
+//        mutating get {
+//            return withUnsafePointer(&data) { tuplePointer in
+//                let elementPointer = UnsafePointer<UInt8>(tuplePointer)
+//                return (0..<Int(length)).map { elementPointer[$0] }
+//            }
+//        }
+//    }
+//}
+
 class MidiReceiver : NSObject {
     
     private var midiClient = MIDIClientRef()
@@ -17,11 +28,12 @@ class MidiReceiver : NSObject {
     private var inputPort = MIDIPortRef()
     private var noteBlock: AUScheduleMIDIEventBlock
     
-    let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
+    let cbytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 256)
+    let ccmd = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
     
     internal init?(audioUnit: AUAudioUnit?) {
         guard audioUnit != nil else { return nil }
-        guard let theNoteBlock = audioUnit!.scheduleMIDIEventBlock else { print("Blam! schedule"); return nil }
+        guard let theNoteBlock = audioUnit!.scheduleMIDIEventBlock else { return nil }
         
         noteBlock = theNoteBlock
         super.init()
@@ -130,45 +142,42 @@ class MidiReceiver : NSObject {
         }
     }
     
-    func handle(_ packet:MIDIPacket) {
+    func handle(_ packet: MIDIPacket) {
         
         let status = packet.data.0
-        let d1 = packet.data.1
-        //let d2 = packet.data.2
         let rawStatus = status & 0xF0 // without channel
-        let channel = status & 0x0F
+        //let channel = status & 0x0F
         
-        cbytes[0] = packet.data.0
-        cbytes[1] = packet.data.1
-        cbytes[2] = packet.data.2
+        // copy the packet to get the data bytes layed out in memory the right way.
+        var p = packet
+        
+        withUnsafeMutablePointer(to: &p.data) {
+            $0.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout.size(ofValue: packet.data)) {
+                dataPtr in // `dataPtr` is an `UnsafeMutablePointer<UInt8>`
+                
+                for i in 0..<Int(packet.length) {
+                    print(dataPtr[i])
+                    cbytes[i] = dataPtr[i]
+                }
+            }
+        }
+        
+        ccmd[0] = status
         
         switch rawStatus {
             
-        case 0x80:
-            //print("Note off. Channel \(channel) note \(d1) velocity \(d2)")
-            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-            // forward to sampler
+        //status values: note off, note on, poly aftertouch, control, program change, mono aftertouch, pitch bend
+        case 0x80, 0x90, 0xA0, 0xB0, 0xC0, 0xD0, 0xE0:
+            var ix = 1
             
-        case 0x90:
-            //print("Note on. Channel \(channel) note \(d1) velocity \(d2)")
-            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-            // forward to sampler
-            
-        case 0xA0: // poly aftertouch
-            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-            
-        case 0xB0: // control
-            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-            
-        case 0xC0:
-            print("Program Change. Channel \(channel) program \(d1)")
-            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-            
-        case 0xD0: // mono aftertouch
-            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
-            
-        case 0xE0: // pitch bend
-            self.noteBlock(AUEventSampleTimeImmediate, 0, 3, cbytes)
+            // handle "running status" in packets, where status bytes may be omitted for transmitting many messages with the same status
+            while (ix + 1 < packet.length)
+            {
+                ccmd[1] = cbytes[ix]
+                ccmd[2] = cbytes[ix+1]
+                self.noteBlock(AUEventSampleTimeImmediate, 0, 3, ccmd)
+                ix += 2
+            }
             
         default:
             return

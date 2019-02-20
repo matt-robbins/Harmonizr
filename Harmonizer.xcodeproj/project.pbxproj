@@ -79,6 +79,7 @@
 		C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C99BB9C72138D51000D32324 /* HarmonizerDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C99BB9C62138D50F00D32324 /* HarmonizerDSPKernel.hpp */; };
 		C99BB9CD2138D64A00D32324 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99BB9CC2138D64A00D32324 /* DSPKernel.mm */; };
+		C9A1E35F2203B3350080CF3F /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */; };
 		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
 		C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
@@ -269,6 +270,7 @@
 		C99BB9CA2138D64A00D32324 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
 		C99BB9CB2138D64A00D32324 /* DSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DSPKernel.hpp; sourceTree = "<group>"; };
 		C99BB9CC2138D64A00D32324 /* DSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
+		C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSPKernel.hpp; path = "harmonizr-dsp/DSPKernel.hpp"; sourceTree = SOURCE_ROOT; };
 		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C9B61479211BD49600396B8D /* PresetListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListViewController.swift; sourceTree = "<group>"; };
 		C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AudioUnit-BridgingHeader.h"; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				C99BB9CA2138D64A00D32324 /* BufferedAudioBus.hpp */,
 				C99BB9CB2138D64A00D32324 /* DSPKernel.hpp */,
 				C99BB9CC2138D64A00D32324 /* DSPKernel.mm */,
+				C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */,
 				92AA8D5F1B1D25E6002C3CA1 /* Harmonizer.h */,
 				91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */,
 				C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */,
@@ -595,6 +598,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				91236D581B08F52D00734C5E /* HarmonizerFramework.h in Headers */,
+				C9A1E35F2203B3350080CF3F /* DSPKernel.hpp in Headers */,
 				C99BB9C72138D51000D32324 /* HarmonizerDSPKernel.hpp in Headers */,
 				C9D1959421FFC604006ADB10 /* AudioUnit-BridgingHeader.h in Headers */,
 				92AA8D601B1D28D6002C3CA1 /* Harmonizer.h in Headers */,
@@ -1082,7 +1086,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1132,7 +1136,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
@@ -1193,7 +1197,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerFramework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1251,7 +1255,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerFramework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.HarmonizerFramework;
@@ -1308,7 +1312,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1357,7 +1361,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;

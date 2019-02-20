@@ -170,7 +170,6 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 @property AUAudioUnitBus *outputBus;
 @property AUAudioUnitBusArray *inputBusArray;
 @property AUAudioUnitBusArray *outputBusArray;
-@property AUMIDIOutputEventBlock outputEvents;
 
 
 @end
@@ -183,6 +182,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     AUAudioUnitPreset   *_currentPreset;
     NSInteger           _currentFactoryPresetIndex;
+    NSMutableArray<NSNumber *> *keysDown;
     NSArray<AUAudioUnitPreset *> *_presets;
 }
 @synthesize parameterTree = _parameterTree;
@@ -413,6 +413,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     // set default preset as current
     self.currentPreset = _presets.firstObject;
+    
+    keysDown = [[NSMutableArray alloc] initWithCapacity: 128];
+    for (int k =0; k < 128; k++)
+    {
+        [keysDown addObject:[NSNumber numberWithBool:0]];
+    }
 
 	return self;
 }
@@ -454,17 +460,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         return NO;
     }
     
-    if (@available(iOS 11.0, *)) {
-        if (self.MIDIOutputEventBlock) {
-            _outputEvents = self.MIDIOutputEventBlock;
-            
-        } else {
-            _outputEvents = nil;
-        }
-    } else {
-        _outputEvents = nil;
-    }
-    
+    // start thread to listen for patch change events and update UI
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         while (true)
@@ -502,6 +498,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 #pragma mark - AUAudioUnit (AUAudioUnitImplementation)
 
+- (NSArray<NSString *>*) MIDIOutputNames
+{
+    return @[@"midiOut"];
+}
+
 - (AUInternalRenderBlock)internalRenderBlock {
 	/*
 		Capture in locals to avoid ObjC member lookups. If "self" is captured in
@@ -511,7 +512,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     // Specify captured objects are mutable.
 	__block HarmonizerDSPKernel *state = &_kernel;
 	__block BufferedInputBus *input = &_inputBus;
-    __block AUMIDIOutputEventBlock output_block = _outputEvents;
+    __block AUMIDIOutputEventBlock output_block = self.MIDIOutputEventBlock;
     
     return ^AUAudioUnitStatus(
 			 AudioUnitRenderActionFlags *actionFlags,
@@ -553,20 +554,20 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 		}
 		
 		state->setBuffers(inAudioBufferList, outAudioBufferList);
-		state->processWithEvents(timestamp, frameCount, realtimeEventListHead);
+		state->processWithEvents(timestamp, frameCount, realtimeEventListHead, output_block);
         
-        if (output_block)
-        {
-            uint8_t bytes[3];
-            bytes[0] = 0x90;
-            bytes[1] = 60;
-            bytes[2] = 100;
-            output_block(AUEventSampleTimeImmediate, 0, 3, bytes);
-            bytes[0] = 0x80;
-            bytes[1] = 60;
-            bytes[2] = 100;
-            output_block(AUEventSampleTimeImmediate, 0, 3, bytes);
-        }
+//        if (output_block)
+//        {
+//            uint8_t bytes[3];
+//            bytes[0] = 0x90;
+//            bytes[1] = 60;
+//            bytes[2] = 100;
+//            output_block(AUEventSampleTimeImmediate, 0, 3, bytes);
+//            bytes[0] = 0x80;
+//            bytes[1] = 60;
+//            bytes[2] = 100;
+//            output_block(AUEventSampleTimeImmediate, 0, 3, bytes);
+//        }
         
 		return noErr;
 	};
@@ -662,6 +663,15 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     }
     
     return output;
+}
+
+- (NSArray *) getKeysDown {
+    for (int k = 0; k < 128; k++)
+    {
+        [keysDown replaceObjectAtIndex:k withObject:[NSNumber numberWithBool:_kernel.keys_down[k]]];
+    }
+    
+    return keysDown;
 }
 
 - (NSArray *) fields

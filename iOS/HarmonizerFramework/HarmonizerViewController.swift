@@ -115,6 +115,13 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         for n in notes! {
             int_notes.append((n as? Int)!)
         }
+        
+        let keys = audioUnit.getKeysDown()!
+        
+        for k in 0 ..< keys.count
+        {
+            keyboardView!.keys[k].isSelected = (keys[k] as! Bool)
+        }
 
         keyboardView.setCurrentNote(int_notes)
         // update visible keycenter based on computed value from midi
@@ -143,7 +150,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         
         presetController = PresetController()
         
-        auPoller(T: 0.1)
+        auPoller(T: 0.05)
 		//configController = self.storyboard?.instantiateViewController(withIdentifier: "detailsNavigator") as? ConfigNavigationController
         
         saveController = self.storyboard?.instantiateViewController(withIdentifier: "saveController") as? PresetSaveViewController
