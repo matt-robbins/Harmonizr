@@ -12,6 +12,7 @@ import os
 
 //public var globalAudioUnit: AUv3Harmonizer?
 
+
 class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate, HarmonizerDelegate {
     
     // MARK: Properties
@@ -20,6 +21,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     @IBOutlet weak var voicesView: HarmonizerVoicesView!
     
     @IBOutlet weak var keyboardView: KeyboardView!
+    @IBOutlet weak var recordButton: HarmButton!
     
     @IBOutlet weak var keyboardStack: UIStackView!
     @IBOutlet weak var midiButton: HarmButton!
@@ -46,6 +48,9 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
 		When this view controller is instantiated within the app, its
         audio unit is created independently, and passed to the view controller here.
 	*/
+    
+    public var recordingDelegate: RecordingDelegate?
+    
     public var audioUnit: AUv3Harmonizer? {
         didSet {
 			/*
@@ -415,6 +420,9 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         syncView()
     }
     
+    @IBAction func toggleRecording(_ sender: Any) {
+        recordingDelegate!.didToggleRecording(true)
+    }
     
     @IBAction func setPreset(_ sender: HarmButton) {
         for b in presetFavorites {

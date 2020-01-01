@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		164896A51C925D1600AB781D /* FilterDemoViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 164896A41C925D1600AB781D /* FilterDemoViewController_Internal.h */; };
-		164896AD1C925F1E00AB781D /* FilterDemo.h in Headers */ = {isa = PBXBuildFile; fileRef = 164896A91C925F1E00AB781D /* FilterDemo.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		164896AE1C925F1E00AB781D /* FilterDemo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 164896AA1C925F1E00AB781D /* FilterDemo.mm */; };
 		1654C7771C7CFE7700C43BF4 /* FilterDemoViewController+AUAudioUnitFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86961B9F52DB007C9389 /* FilterDemoViewController+AUAudioUnitFactory.m */; };
 		30C0135B1C6D303D00F7E9B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30C0135A1C6D303D00F7E9B4 /* Images.xcassets */; };
 		91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D0F1B08F42B00734C5E /* AppDelegate.swift */; };
@@ -71,9 +69,14 @@
 		C971B43720FA92A40070F477 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43620FA92A40070F477 /* LabelButton.swift */; };
 		C971B43920FE2F710070F477 /* PresetSaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43820FE2F710070F477 /* PresetSaveViewController.swift */; };
 		C971B43B2100CECC0070F477 /* HarmonizrMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */; };
+		C97B07E322275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */; };
+		C97B07E422275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */; };
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
+		C980DB4723077725009BFE25 /* vorbis_lpc.c in Sources */ = {isa = PBXBuildFile; fileRef = C980DB4523077725009BFE25 /* vorbis_lpc.c */; };
+		C980DB4823077725009BFE25 /* vorbis_lpc.c in Sources */ = {isa = PBXBuildFile; fileRef = C980DB4523077725009BFE25 /* vorbis_lpc.c */; };
+		C980DB4923077725009BFE25 /* vorbis_lpc.h in Headers */ = {isa = PBXBuildFile; fileRef = C980DB4623077725009BFE25 /* vorbis_lpc.h */; };
 		C994EB19210FF2B3000715F8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB18210FF2B3000715F8 /* AudioToolbox.framework */; };
 		C994EB1B210FF2DF000715F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB1A210FF2DF000715F8 /* CoreData.framework */; };
 		C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
@@ -81,6 +84,7 @@
 		C99BB9CD2138D64A00D32324 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99BB9CC2138D64A00D32324 /* DSPKernel.mm */; };
 		C9A1E35F2203B3350080CF3F /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */; };
 		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
+		C9B549AC2306DF9800E48112 /* TestAudioData.h in Headers */ = {isa = PBXBuildFile; fileRef = C9B549AB2306DF9800E48112 /* TestAudioData.h */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
 		C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
@@ -194,9 +198,6 @@
 /* Begin PBXFileReference section */
 		164896A31C9259D400AB781D /* FilterDemoViewController+AUAudioUnitFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FilterDemoViewController+AUAudioUnitFactory.h"; sourceTree = "<group>"; };
 		164896A41C925D1600AB781D /* FilterDemoViewController_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterDemoViewController_Internal.h; sourceTree = "<group>"; };
-		164896A91C925F1E00AB781D /* FilterDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterDemo.h; sourceTree = "<group>"; };
-		164896AA1C925F1E00AB781D /* FilterDemo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FilterDemo.mm; sourceTree = "<group>"; };
-		164896AB1C925F1E00AB781D /* FilterDSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FilterDSPKernel.hpp; sourceTree = "<group>"; };
 		164896AC1C925F1E00AB781D /* ParameterRamper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParameterRamper.hpp; sourceTree = "<group>"; };
 		30C0135A1C6D303D00F7E9B4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3E8E032C1B16387D0011624B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -259,7 +260,10 @@
 		C971B43620FA92A40070F477 /* LabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
 		C971B43820FE2F710070F477 /* PresetSaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetSaveViewController.swift; sourceTree = "<group>"; };
 		C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonizrMainViewController.swift; sourceTree = "<group>"; };
+		C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiSettingsTableViewController.swift; sourceTree = "<group>"; };
 		C97F1B7F20D41121001C26E1 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
+		C980DB4523077725009BFE25 /* vorbis_lpc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vorbis_lpc.c; sourceTree = "<group>"; };
+		C980DB4623077725009BFE25 /* vorbis_lpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vorbis_lpc.h; sourceTree = "<group>"; };
 		C981C4631FBF9DCB00AF8593 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		C981C4651FBF9DCB00AF8593 /* Harmonizer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Harmonizer.entitlements; sourceTree = "<group>"; };
 		C98E37B31F965FEA0007BD91 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.0.sdk/System/Library/Frameworks/CoreMIDI.framework; sourceTree = DEVELOPER_DIR; };
@@ -272,6 +276,7 @@
 		C99BB9CC2138D64A00D32324 /* DSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
 		C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSPKernel.hpp; path = "harmonizr-dsp/DSPKernel.hpp"; sourceTree = SOURCE_ROOT; };
 		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
+		C9B549AB2306DF9800E48112 /* TestAudioData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestAudioData.h; sourceTree = "<group>"; };
 		C9B61479211BD49600396B8D /* PresetListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListViewController.swift; sourceTree = "<group>"; };
 		C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AudioUnit-BridgingHeader.h"; sourceTree = "<group>"; };
 		C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -356,6 +361,9 @@
 				91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */,
 				C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */,
 				C99BB9C62138D50F00D32324 /* HarmonizerDSPKernel.hpp */,
+				C980DB4523077725009BFE25 /* vorbis_lpc.c */,
+				C980DB4623077725009BFE25 /* vorbis_lpc.h */,
+				C9B549AB2306DF9800E48112 /* TestAudioData.h */,
 				92A9E2D61B1CF79900AC811E /* ParameterRamper.hpp */,
 			);
 			name = Shared;
@@ -365,9 +373,6 @@
 		164896A81C925F1E00AB781D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				164896A91C925F1E00AB781D /* FilterDemo.h */,
-				164896AA1C925F1E00AB781D /* FilterDemo.mm */,
-				164896AB1C925F1E00AB781D /* FilterDSPKernel.hpp */,
 				164896AC1C925F1E00AB781D /* ParameterRamper.hpp */,
 			);
 			name = Shared;
@@ -428,6 +433,7 @@
 				C93163511FBCE81D00EE1762 /* HarmButton.swift */,
 				C96F204E20DC066700F43D90 /* ConfigNavigationController.swift */,
 				C96F204C20DB042800F43D90 /* ConfigDetailViewController.swift */,
+				C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */,
 				C96F204420D85CF200F43D90 /* HarmPageViewController.swift */,
 				C91216C2206998D200E6BB57 /* PresetController.swift */,
 				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
@@ -602,6 +608,7 @@
 				C99BB9C72138D51000D32324 /* HarmonizerDSPKernel.hpp in Headers */,
 				C9D1959421FFC604006ADB10 /* AudioUnit-BridgingHeader.h in Headers */,
 				92AA8D601B1D28D6002C3CA1 /* Harmonizer.h in Headers */,
+				C980DB4923077725009BFE25 /* vorbis_lpc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,8 +619,8 @@
 				92FF86A21B9F5B7B007C9389 /* FilterDemoViewController.h in Headers */,
 				164896A51C925D1600AB781D /* FilterDemoViewController_Internal.h in Headers */,
 				92FF86831B9F4EDA007C9389 /* FilterDemoFramework.h in Headers */,
-				164896AD1C925F1E00AB781D /* FilterDemo.h in Headers */,
 				92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */,
+				C9B549AC2306DF9800E48112 /* TestAudioData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,7 +753,7 @@
 					91236D0C1B08F42B00734C5E = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = CK78RPQ2FV;
-						LastSwiftMigration = 0930;
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -804,6 +811,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -895,6 +903,7 @@
 				C946818E2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
 				C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */,
+				C980DB4723077725009BFE25 /* vorbis_lpc.c in Sources */,
 				C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,
 				C96F203C20D7D3B200F43D90 /* BaseView.swift in Sources */,
@@ -924,8 +933,10 @@
 				C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */,
 				C96F204920DB02E400F43D90 /* HarmParameterTableView.swift in Sources */,
 				C946818F2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
+				C980DB4823077725009BFE25 /* vorbis_lpc.c in Sources */,
 				C91216C3206998D200E6BB57 /* PresetController.swift in Sources */,
 				C96F204320D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
+				C97B07E322275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */,
 				C96F203D20D7D3B200F43D90 /* BaseView.swift in Sources */,
 				C96F204D20DB042800F43D90 /* ConfigDetailViewController.swift in Sources */,
 				C96F204B20DB032B00F43D90 /* HarmParameterTableViewCell.swift in Sources */,
@@ -938,6 +949,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
+				C97B07E422275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */,
 				C94681902190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */,
 				91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */,
@@ -970,7 +982,6 @@
 			files = (
 				92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */,
 				92FF86A31B9F5B7B007C9389 /* FilterDemoViewController.m in Sources */,
-				164896AE1C925F1E00AB781D /* FilterDemo.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

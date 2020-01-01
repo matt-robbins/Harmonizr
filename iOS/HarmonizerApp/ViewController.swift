@@ -12,7 +12,9 @@ import AudioToolbox
 import AVFoundation
 import HarmonizerFramework
 
-class ViewController: UIViewController {
+
+
+class ViewController: UIViewController, RecordingDelegate {
     // MARK: Properties
 
     @IBOutlet weak var reverbButton: UIButton!
@@ -28,7 +30,6 @@ class ViewController: UIViewController {
     @IBOutlet var auContainerView: UIView!
 
 	/// The audio playback engine.
-	//var playEngine: SimplePlayEngine!
     var audioEngine: AudioEngine2!
     var harmUnit: AUAudioUnit!
 
@@ -177,6 +178,7 @@ class ViewController: UIViewController {
 
             auContainerView.addSubview(view)
             harmonizerViewController.didMove(toParentViewController: self)
+            harmonizerViewController!.recordingDelegate = self
         }
 	}
 	
@@ -273,5 +275,10 @@ class ViewController: UIViewController {
                 self.present(alert, animated: true)
             }
         }
+    }
+    
+    func didToggleRecording(_ onOff:Bool)
+    {
+        audioEngine.startRecording()
     }
 }

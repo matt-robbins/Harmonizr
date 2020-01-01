@@ -31,7 +31,7 @@ class ConfigListViewController: UITableViewController {
     @IBOutlet weak var speedSlider: UISlider!
     
     @IBOutlet weak var drySwitch: UISwitch!
-    @IBOutlet weak var legatoSwitch: UISwitch!
+    //@IBOutlet weak var legatoSwitch: UISwitch!
     
     @IBOutlet weak var stereoModeLabel: UILabel!
     
@@ -89,7 +89,7 @@ class ConfigListViewController: UITableViewController {
         
         drySwitch.isOn = dryMixParameter!.value > 0.5
         
-        legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
+        //legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
         
         speedSlider.value = speedParameter!.value
         
@@ -152,9 +152,9 @@ class ConfigListViewController: UITableViewController {
         dryMixParameter!.value = sender.isOn ? 1 : 0
     }
     
-    @IBAction func legatoSwitch(_ sender: UISwitch) {
-        midiLegatoParameter!.value = sender.isOn ? 1 : 0
-    }
+//    @IBAction func legatoSwitch(_ sender: UISwitch) {
+//        midiLegatoParameter!.value = sender.isOn ? 1 : 0
+//    }
     
     @IBAction func harmonyLevel(_ sender: UIStepper) {
         hgainParameter!.value = AUValue(sender.value / 100)

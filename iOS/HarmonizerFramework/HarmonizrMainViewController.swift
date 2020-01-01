@@ -13,6 +13,11 @@ import AVFoundation
 
 public var globalAudioUnit: AUv3Harmonizer?
 
+public protocol RecordingDelegate {
+
+    func didToggleRecording(_ onOff:Bool)
+}
+
 public class HarmonizrMainViewController: AUViewController, UINavigationControllerDelegate {
 
     @IBOutlet var containerView: UIView!
@@ -22,6 +27,12 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     
     var midiClient: MIDIClientRef = MIDIClientRef()
     var midiOutput: MIDIPortRef = MIDIPortRef()
+    public var recordingDelegate: RecordingDelegate?
+    {
+        didSet {
+            harmViewController!.recordingDelegate = recordingDelegate
+        }
+    }
     
     public var audioUnit: AUv3Harmonizer? {
         didSet {

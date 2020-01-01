@@ -122,6 +122,36 @@ class AudioEngine2: NSObject {
         }
         return false
     }
+    
+    public func startRecording() {
+        print("starting!")
+        var audioFile: AVAudioFile?
+        let url = URL(fileURLWithPath: "~/file.aac")
+        do {
+            audioFile = try AVAudioFile(forWriting: url, settings: [AVFormatIDKey: kAudioFormatMPEG4AAC])
+        }
+        catch {
+            print("failed to open file")
+        }
+        engine.mainMixerNode.removeTap(onBus: 0)
+        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil)
+        {
+            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+            print(time)
+            do {
+                try audioFile?.write(from: buffer)
+            }
+            catch
+            {
+                print("couldn't write to audio file.")
+            }
+            
+        }
+    }
+    public func finishRecording()
+    {
+        engine.mainMixerNode.removeTap(onBus: 0)
+    }
 
     @objc func handleRouteChange(_ notification: Notification) {
         

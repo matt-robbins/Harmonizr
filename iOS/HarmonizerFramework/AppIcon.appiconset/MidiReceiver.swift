@@ -19,6 +19,17 @@ import AVFoundation
 //    }
 //}
 
+//status values: note off, note on, poly aftertouch, control, program change, mono aftertouch, pitch bend
+enum MIDIStatus: UInt8 {
+    case noteOff = 0x80
+    case noteOn = 0x90
+    case polyAftertouch = 0xA0
+    case controlChange = 0xB0
+    case programChange = 0xC0
+    case monoAftertouch = 0xD0
+    case pitchBend = 0xE0
+}
+
 class MidiReceiver : NSObject {
     
     private var midiClient = MIDIClientRef()
@@ -145,7 +156,7 @@ class MidiReceiver : NSObject {
     func handle(_ packet: MIDIPacket) {
         
         let status = packet.data.0
-        let rawStatus = status & 0xF0 // without channel
+        let rawStatus: MIDIStatus = MIDIStatus(rawValue: status & 0xF0) ?? MIDIStatus.noteOff // without channel
         //let channel = status & 0x0F
         
         // copy the packet to get the data bytes layed out in memory the right way.
@@ -166,8 +177,7 @@ class MidiReceiver : NSObject {
         
         switch rawStatus {
             
-        //status values: note off, note on, poly aftertouch, control, program change, mono aftertouch, pitch bend
-        case 0x80, 0x90, 0xA0, 0xB0, 0xC0, 0xD0, 0xE0:
+        case .noteOn, .noteOff, .polyAftertouch, .controlChange, .programChange, .monoAftertouch, .pitchBend:
             var ix = 1
             
             // handle "running status" in packets, where status bytes may be omitted for transmitting many messages with the same status
@@ -178,9 +188,6 @@ class MidiReceiver : NSObject {
                 self.noteBlock(AUEventSampleTimeImmediate, 0, 3, ccmd)
                 ix += 2
             }
-            
-        default:
-            return
         }
     }
     
