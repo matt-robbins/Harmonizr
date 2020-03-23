@@ -35,6 +35,8 @@ class FilesTableViewController: UITableViewController {
             }
         }
         
+        tableView.bounces = true
+        
         contents = getFileListByDate()
         count = contents?.count ?? 0
     }
@@ -56,22 +58,16 @@ class FilesTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "file", for: indexPath) as! FilesTableViewCell
 
         // Configure the cell...
+//        cell.textLabel?.text = contents?[indexPath.row] ?? "???"
+//        if #available(iOS 13.0, *) {
+//            cell.imageView?.image = UIImage(systemName: "play")
+//        } else {
+//            // Fallback on earlier versions
+//        }
         cell.recordingURL = recordingURL
         cell.parentController = self
         cell.file = contents?[indexPath.row] ?? "??"
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        do {
-            let player = try AVAudioPlayer(contentsOf: recordingURL.appendingPathComponent(contents?[indexPath.row] ?? ""))
-            print("playing!")
-            player.play()
-        }
-        catch {
-            print(error.localizedDescription)
-        }
     }
     
     // Override to support conditional editing of the table view.

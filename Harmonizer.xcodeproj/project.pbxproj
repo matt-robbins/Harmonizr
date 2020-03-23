@@ -45,6 +45,7 @@
 		92FF86A41B9F5B7B007C9389 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
 		92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF86A51B9F5D42007C9389 /* FilterView.h */; };
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
+		C902E6D4242956DE008CC016 /* MainMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */; };
 		C91216C3206998D200E6BB57 /* PresetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91216C2206998D200E6BB57 /* PresetController.swift */; };
 		C92AB161205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */; };
 		C92AB162205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */; };
@@ -245,6 +246,7 @@
 		92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterDemoViewController.xib; sourceTree = "<group>"; };
 		92FF86A51B9F5D42007C9389 /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
 		92FF86A61B9F5D42007C9389 /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
+		C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuTableViewController.swift; sourceTree = "<group>"; };
 		C91216C2206998D200E6BB57 /* PresetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetController.swift; sourceTree = "<group>"; };
 		C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonizerVoicesView.swift; sourceTree = "<group>"; };
 		C93163511FBCE81D00EE1762 /* HarmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmButton.swift; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 			children = (
 				91236D0F1B08F42B00734C5E /* AppDelegate.swift */,
 				91236D111B08F42B00734C5E /* ViewController.swift */,
+				C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */,
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
 				C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */,
@@ -916,6 +919,7 @@
 				C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,
 				C96F203C20D7D3B200F43D90 /* BaseView.swift in Sources */,
+				C902E6D4242956DE008CC016 /* MainMenuTableViewController.swift in Sources */,
 				C9A4430A2428438800D4BB52 /* FilesTableViewController.swift in Sources */,
 				91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */,
 				C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */,

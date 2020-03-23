@@ -14,7 +14,6 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
     let playButton = UIButton()
     let shareButton = UIButton()
     let nameLabel = UILabel()
-    let stackView = UIStackView()
     var recordingURL:URL!
     var audioPlayer:AVAudioPlayer? = nil
     var parentController:UITableViewController? = nil
@@ -28,16 +27,24 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.contentView.backgroundColor = UIColor.black
+        self.contentView.isOpaque = true
+            
+        self.selectionStyle = .none
         
         let viewsDict = [
             "name": nameLabel,
-            "stack": stackView,
             "play": playButton,
+            "share": shareButton
         ]
         
         for v in viewsDict.values {
             v.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(v)
         }
+        
+        playButton.adjustsImageWhenHighlighted = true
+        shareButton.adjustsImageWhenHighlighted = true
         
         if #available(iOS 13.0, *) {
             playButton.setImage(UIImage(systemName: "play"), for: .normal)
@@ -53,32 +60,23 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
         playButton.addTarget(self, action: #selector(self.play(_:)), for: .touchDown)
         shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchDown)
         
-        contentView.addSubview(stackView)
-        
-        stackView.alignment = .fill
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.isUserInteractionEnabled = true
-        
-        //contentView.addSubview(playButton)
-        let spacerView = UIView()
-        spacerView.isUserInteractionEnabled = true
-        stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(playButton)
-        stackView.addArrangedSubview(spacerView)
-        stackView.addArrangedSubview(shareButton)
-        
         contentView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-[stack]-|", options: [], metrics: nil, views: viewsDict as [String : Any]))
+            withVisualFormat: "V:|-[name]-|", options: [], metrics: nil, views: viewsDict as [String : Any]))
         contentView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-[stack]-|", options: [], metrics: nil, views: viewsDict as [String : Any]))
+        withVisualFormat: "V:|-[play]-|", options: [], metrics: nil, views: viewsDict as [String : Any]))
+        contentView.addConstraints(NSLayoutConstraint.constraints(
+        withVisualFormat: "V:|-[share]-|", options: [], metrics: nil, views: viewsDict as [String : Any]))
+        contentView.addConstraints(NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|-[name]", options: [], metrics: nil, views: viewsDict as [String : Any]))
+        contentView.addConstraints(NSLayoutConstraint.constraints(
+            withVisualFormat: "H:[play]-[share]-|", options: [], metrics: nil, views: viewsDict as [String : Any]))
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        //super.setSelected(selected, animated: animated)
-        print("selected")
-        // Configure the view for the selected state
-    }
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//        print("selected")
+//        // Configure the view for the selected state
+//    }
     
     @objc func play(_ sender: UIButton) {
         if (audioPlayer?.isPlaying ?? false)

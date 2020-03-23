@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Harmonizr-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Harmonizer" customModuleProvider="target" sceneMemberID="viewController">
@@ -30,57 +30,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Esp-En-WMd"/>
                     </view>
-                    <navigationItem key="navigationItem" id="gyg-hz-lcU">
-                        <leftBarButtonItems>
-                            <barButtonItem id="IrA-bn-cW2">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" restorationIdentifier="ReverbButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="J0v-IL-F6q" userLabel="Reverb Button">
-                                    <rect key="frame" x="60" y="0.0" width="57" height="32"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <gestureRecognizers/>
-                                    <state key="normal" title="Reverb"/>
-                                    <connections>
-                                        <segue destination="n4r-Op-aTt" kind="show" identifier="mainToReverb" id="Hc3-ao-6AB"/>
-                                    </connections>
-                                </button>
-                            </barButtonItem>
-                            <barButtonItem id="DrD-Kf-lme">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Cih-zX-Fed">
-                                    <rect key="frame" x="125" y="5" width="60" height="22"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="Input" image="mic.fill" catalog="system"/>
-                                    <connections>
-                                        <segue destination="Yet-wN-pz8" kind="show" id="Fwq-W2-Ii0"/>
-                                    </connections>
-                                </button>
-                            </barButtonItem>
-                            <barButtonItem id="dww-ii-zW8">
-                                <button key="customView" opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="awX-J2-WjW" userLabel="Bluetooth Button">
-                                    <rect key="frame" x="193" y="0.0" width="79" height="32"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="Bluetooth"/>
-                                    <connections>
-                                        <action selector="openBluetoothMenu:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0rU-n1-tgt"/>
-                                    </connections>
-                                </button>
-                            </barButtonItem>
-                        </leftBarButtonItems>
+                    <navigationItem key="navigationItem" title="Harmonizr" id="gyg-hz-lcU">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="gear" catalog="system" id="3k1-Ca-JSy">
+                            <connections>
+                                <segue destination="QA1-1r-Uhc" kind="show" identifier="mainMenu" id="5eW-yD-vo8"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem title="BG" id="ISb-uK-bAN">
-                                <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Hep-lK-PlI" userLabel="BackgroundSwitch">
-                                    <rect key="frame" x="701" y="0.66666666666666785" width="51" height="31"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="onTintColor" red="1" green="0.37824237820000001" blue="0.36724547010000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <connections>
-                                        <action selector="toggleBackgroundMode:" destination="BYZ-38-t0r" eventType="valueChanged" id="wnU-Hz-iOE"/>
-                                    </connections>
-                                </switch>
-                            </barButtonItem>
-                            <barButtonItem title="Files" image="folder" catalog="system" id="F7h-jW-lom">
+                            <barButtonItem title="Files" image="folder" catalog="system" springLoaded="YES" id="F7h-jW-lom">
                                 <connections>
                                     <segue destination="INx-aE-yF9" kind="show" identifier="mainToFiles" id="OgI-ka-g8h"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Record" image="mic.circle.fill" catalog="system" id="67S-AJ-Txs">
+                            <barButtonItem title="Record" image="circle.fill" catalog="system" springLoaded="YES" id="67S-AJ-Txs">
+                                <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="recordToggle:" destination="BYZ-38-t0r" id="kL8-ak-oUA"/>
                                 </connections>
@@ -89,8 +52,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="auContainerView" destination="oZU-Ig-hQr" id="gDh-WB-t3u"/>
-                        <outlet property="bgSwitch" destination="Hep-lK-PlI" id="PuQ-5E-dhS"/>
-                        <outlet property="playButton" destination="awX-J2-WjW" id="yBe-iR-A9Z"/>
+                        <outlet property="folderButton" destination="F7h-jW-lom" id="080-Ha-flq"/>
                         <outlet property="recordButton" destination="67S-AJ-Txs" id="6ob-nM-te6"/>
                     </connections>
                 </viewController>
@@ -111,16 +73,16 @@
         <!--Reverb-->
         <scene sceneID="t9P-R6-5hi">
             <objects>
-                <viewController title="Reverb" automaticallyAdjustsScrollViewInsets="NO" id="n4r-Op-aTt" customClass="ReverbViewController" customModule="Harmonizer" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="reverbController" title="Reverb" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="n4r-Op-aTt" customClass="ReverbViewController" customModule="Harmonizer" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c7m-dc-X4X" customClass="BaseView" customModule="Harmonizer" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <stackView contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wtv-0h-TN6">
-                                <rect key="frame" x="44" y="32" width="724" height="343"/>
+                                <rect key="frame" x="44" y="0.0" width="724" height="375"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Eqq-wI-7Qq" userLabel="Preset Table">
-                                        <rect key="frame" x="0.0" y="0.0" width="724" height="169"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="724" height="184.66666666666666"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="presetCell" textLabel="j3V-jY-OoL" style="IBUITableViewCellStyleDefault" id="CXo-dr-GMR" customClass="HarmTableViewCell" customModule="Harmonizer" customModuleProvider="target">
@@ -143,7 +105,7 @@
                                         </prototypes>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FBJ-Nd-Vby">
-                                        <rect key="frame" x="0.0" y="179" width="724" height="164"/>
+                                        <rect key="frame" x="0.0" y="194.66666666666663" width="724" height="180.33333333333337"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReverbParameterTableCell" id="PlM-7T-6Ee" customClass="AUParameterTableViewCell" customModule="Harmonizer" customModuleProvider="target">
@@ -202,6 +164,7 @@
                         <viewLayoutGuide key="safeArea" id="BEA-Ic-Jxq"/>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="NCc-yc-du1"/>
                     <connections>
                         <outlet property="paramTable" destination="FBJ-Nd-Vby" id="Fhl-Oy-yY6"/>
                         <outlet property="presetTable" destination="Eqq-wI-7Qq" id="CcB-HX-VoS"/>
@@ -209,21 +172,29 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mm6-zP-yY1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1380" y="4"/>
+            <point key="canvasLocation" x="1517" y="4"/>
         </scene>
         <!--Files Table View Controller-->
         <scene sceneID="xqQ-dT-THL">
             <objects>
-                <tableViewController id="INx-aE-yF9" customClass="FilesTableViewController" customModule="Harmonizer" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ceg-BM-YYU">
+                <tableViewController storyboardIdentifier="filesController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="INx-aE-yF9" customClass="FilesTableViewController" customModule="Harmonizer" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ceg-BM-YYU">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="center" restorationIdentifier="file" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="file" id="NJV-Va-zyF" customClass="FilesTableViewCell" customModule="Harmonizer" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="basic" id="Rod-T0-at0">
                                 <rect key="frame" x="0.0" y="28" width="812" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NJV-Va-zyF" id="ub9-uL-nvz">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rod-T0-at0" id="fsn-76-Edc">
+                                    <rect key="frame" x="44" y="0.0" width="724" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="file" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="file" focusStyle="custom" id="NJV-Va-zyF" customClass="FilesTableViewCell" customModule="Harmonizer" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="71.666667938232422" width="812" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NJV-Va-zyF" id="ub9-uL-nvz">
                                     <rect key="frame" x="44" y="0.0" width="724" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
@@ -243,16 +214,16 @@
         <!--Input-->
         <scene sceneID="EEr-ls-vpQ">
             <objects>
-                <viewController title="Input" id="Yet-wN-pz8" customClass="InputViewController" customModule="Harmonizer" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="inputController" title="Input" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Yet-wN-pz8" customClass="InputViewController" customModule="Harmonizer" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6uL-9n-cvH" customClass="BaseView" customModule="Harmonizer" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZTC-rM-39F">
-                                <rect key="frame" x="44" y="32" width="724" height="343"/>
+                                <rect key="frame" x="44" y="0.0" width="724" height="375"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EZH-Er-j1p">
-                                        <rect key="frame" x="0.0" y="0.0" width="724" height="343"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="724" height="375"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="OCy-6v-C3v" style="IBUITableViewCellStyleDefault" id="Mex-5A-gdu" customClass="HarmTableViewCell" customModule="Harmonizer" customModuleProvider="target">
@@ -328,13 +299,53 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="iYJ-yf-zIu"/>
                     </view>
+                    <navigationItem key="navigationItem" id="KQ7-t6-fMB"/>
                     <connections>
                         <outlet property="inputTable" destination="EZH-Er-j1p" id="Xcg-mw-52g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JXi-zP-5dA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="720" y="975"/>
+            <point key="canvasLocation" x="1413" y="1754"/>
+        </scene>
+        <!--Main Menu Table View Controller-->
+        <scene sceneID="quK-Du-5F7">
+            <objects>
+                <tableViewController id="QA1-1r-Uhc" customClass="MainMenuTableViewController" customModule="Harmonizer" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ppk-4U-WTi">
+                        <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="basic" textLabel="2m6-0B-2l6" style="IBUITableViewCellStyleDefault" id="ve0-NV-PlO">
+                                <rect key="frame" x="0.0" y="28" width="812" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ve0-NV-PlO" id="3f0-55-0sz">
+                                    <rect key="frame" x="44" y="0.0" width="697" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2m6-0B-2l6">
+                                            <rect key="frame" x="16" y="0.0" width="673" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="QA1-1r-Uhc" id="6eG-8f-uwA"/>
+                            <outlet property="delegate" destination="QA1-1r-Uhc" id="rGy-qT-Dnc"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="8gO-bi-VH8"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h21-vu-Utq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="643" y="1623"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="quA-NB-YvU">
@@ -371,9 +382,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="circle.fill" catalog="system" width="64" height="60"/>
         <image name="folder" catalog="system" width="64" height="46"/>
-        <image name="mic.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="mic.fill" catalog="system" width="54" height="64"/>
+        <image name="gear" catalog="system" width="64" height="58"/>
     </resources>
     <color key="tintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

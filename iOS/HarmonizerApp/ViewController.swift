@@ -21,6 +21,7 @@ class ViewController: UIViewController, RecordingDelegate {
     @IBOutlet var playButton: UIButton!
     @IBOutlet weak var bgSwitch: UISwitch!
     @IBOutlet weak var recordButton: UIBarButtonItem!
+    @IBOutlet weak var folderButton: UIBarButtonItem!
     
     /// Container for our custom view.
     @IBOutlet var auContainerView: UIView!
@@ -134,7 +135,9 @@ class ViewController: UIViewController, RecordingDelegate {
     
     @objc private func appMovedToBackground()
     {
-        if (!bgSwitch.isOn)
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        let bgmode = defaults?.bool(forKey: "bgModeEnable") ?? false
+        if (!bgmode)
         {
             self.audioEngine.stop()
         }
@@ -152,7 +155,13 @@ class ViewController: UIViewController, RecordingDelegate {
         }
         if (segue.identifier == "mainToFiles")
         {
+            folderButton.tintColor = self.view.tintColor
             let vc = segue.destination as! FilesTableViewController
+            vc.audioEngine = audioEngine
+        }
+        if (segue.identifier == "mainMenu")
+        {
+            let vc = segue.destination as! MainMenuTableViewController
             vc.audioEngine = audioEngine
         }
     }
@@ -162,7 +171,7 @@ class ViewController: UIViewController, RecordingDelegate {
         /*
 			Locate the app extension's bundle, in the app bundle's PlugIns
 			subdirectory. Load its MainInterface storyboard, and obtain the
-            `FilterDemoViewController` from that.
+            viewController from that.
         */
         let builtInPlugInsURL = Bundle.main.builtInPlugInsURL!
         let pluginURL = builtInPlugInsURL.appendingPathComponent("HarmonizerExtension.appex")
@@ -239,7 +248,8 @@ class ViewController: UIViewController, RecordingDelegate {
         {
             audioEngine.finishRecording()
             if #available(iOS 13.0, *) {
-                recordButton.image = UIImage(systemName: "mic")
+                recordButton.image = UIImage(systemName: "circle.fill")
+                folderButton.tintColor = .yellow
             } else {
                 recordButton.title = "recording..."
             }
@@ -247,56 +257,17 @@ class ViewController: UIViewController, RecordingDelegate {
         else
         {
             if #available(iOS 13.0, *) {
-                recordButton.image = UIImage(systemName: "pause")
+                recordButton.image = UIImage(systemName: "pause.circle.fill")
             } else {
                 recordButton.title = "record"
             }
             audioEngine.startRecording()
         }
     }
-    /// Handles Play/Stop button touches.
-    @IBAction func openBluetoothMenu(_ sender: AnyObject?) {
-		//let isPlaying = playEngine.togglePlay()
-        
-        btMidiViewController = CABTMIDICentralViewController()
-        navController = UINavigationController(rootViewController: btMidiViewController)
-        
-        navController.navigationBar.tintColor! = view.tintColor
-        
-        btMidiViewController.navigationItem.rightBarButtonItem =
-            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ViewController.dismissPopover))
-        
-        btMidiViewController.view.backgroundColor = UIColor.black
-//        navController.modalPresentationStyle = UIModalPresentationStyle.popover
-//        navController.navigationBar
-        
-        self.present(navController, animated: false, completion: nil)
-	}
     
     @IBAction func toggleBackgroundMode(_ sender: UISwitch)
     {
-        let explain = "Background mode allows Harmonizr to run while you're using other apps, " +
-            "such as MIDI controllers, or if you want to use Harmonizr as an Inter-App Audio effect.  " +
-            "Leaving Backround mode on will decrease battery life."
-        if (sender === bgSwitch)
-        {
-            if (sender.isOn)
-            {
-                let alert = UIAlertController(title: "Background Mode On", message: explain, preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-                
-                self.present(alert, animated: true)
-            }
-            else
-            {
-                let alert = UIAlertController(title: "Background Mode Off", message: explain, preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-                
-                self.present(alert, animated: true)
-            }
-        }
+        
     }
     
     func didToggleRecording(_ onOff:Bool)
