@@ -24,6 +24,7 @@ class ConfigListViewController: UITableViewController {
     var hgainParameter: AUParameter?
     var vgainParameter: AUParameter?
     var dryMixParameter: AUParameter?
+    var synthParameter: AUParameter?
     var tuningParameter: AUParameter?
     var threshParameter: AUParameter?
     var stereoParameter: AUParameter?
@@ -31,7 +32,7 @@ class ConfigListViewController: UITableViewController {
     @IBOutlet weak var speedSlider: UISlider!
     
     @IBOutlet weak var drySwitch: UISwitch!
-    //@IBOutlet weak var legatoSwitch: UISwitch!
+    @IBOutlet weak var synthSwitch: UISwitch!
     
     @IBOutlet weak var stereoModeLabel: UILabel!
     
@@ -72,6 +73,7 @@ class ConfigListViewController: UITableViewController {
         hgainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
         dryMixParameter = paramTree.value(forKey: "dry_mix") as? AUParameter
+        synthParameter = paramTree.value(forKey: "synth_enable") as? AUParameter
         
         tuningParameter = paramTree.value(forKey: "tuning") as? AUParameter
         threshParameter = paramTree.value(forKey: "threshold") as? AUParameter
@@ -150,6 +152,10 @@ class ConfigListViewController: UITableViewController {
     }
     @IBAction func drySwitch(_ sender: UISwitch) {
         dryMixParameter!.value = sender.isOn ? 1 : 0
+    }
+    
+    @IBAction func synthSwitch(_ sender: UISwitch) {
+        synthParameter!.value = sender.isOn ? 1 : 0
     }
     
 //    @IBAction func legatoSwitch(_ sender: UISwitch) {

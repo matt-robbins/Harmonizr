@@ -50,6 +50,8 @@ public:
         
     dispatch_semaphore_t sem;
     int program_num;
+    int cc;
+    int cc_num;
 
 private:
 	void handleOneEvent(AURenderEvent const* event);

@@ -77,6 +77,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     var autoParameter: AUParameter?
     var midiParameter: AUParameter?
     var midiLinkParameter: AUParameter?
+    var midiPCParameter: AUParameter?
     var triadParameter: AUParameter?
     var bypassParameter: AUParameter?
     var speedParameter: AUParameter?
@@ -252,13 +253,13 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
 	func connectViewWithAU() {
         
         guard let paramTree = audioUnit?.parameterTree else { return }
-        
         keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
         inversionParameter = paramTree.value(forKey: "inversion") as? AUParameter
         nvoicesParameter = paramTree.value(forKey: "nvoices") as? AUParameter
         autoParameter = paramTree.value(forKey: "auto") as? AUParameter
         midiParameter = paramTree.value(forKey: "midi") as? AUParameter
         midiLinkParameter = paramTree.value(forKey: "midi_link") as? AUParameter
+        midiParameter = paramTree.value(forKey: "midi_rx_pc") as? AUParameter
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
         bypassParameter = paramTree.value(forKey: "bypass") as? AUParameter
         speedParameter = paramTree.value(forKey: "speed") as? AUParameter
@@ -307,8 +308,9 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             
             enableKeyboard(midiButton.isSelected)
             
+            //print(audioUnit?.getCurrentInversion())
             voicesView.autoTuneVoice1 = autoButton.isSelected
-            voicesView.setSelectedVoices(Int(nvoicesParameter!.value), inversion: Int(inversionParameter!.value))
+            voicesView.setSelectedVoices(Int(audioUnit?.getCurrentNumVoices() ?? 0), inversion: Int(audioUnit?.getCurrentInversion() ?? 0))
             
             voicesView.alpha = dryButton.isSelected ? 0.5 : 1.0
             
@@ -440,8 +442,17 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     }
     
     func programChange(_ program: Int32) {
+//        if ((midiPCParameter?.value ?? 0) < AUValue(1.0))
+//        {
+//            return
+//        }
         self.presetController?.selectPreset(preset: Int(program))
         syncView()
+    }
+    
+    func ccValue(_ value: Int32, forCc cc: Int32) {
+        syncView()
+        print(self.inversionParameter?.value)
     }
     
     func ShowMainView() {

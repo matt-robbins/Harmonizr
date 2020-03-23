@@ -70,7 +70,6 @@
 		C971B43920FE2F710070F477 /* PresetSaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43820FE2F710070F477 /* PresetSaveViewController.swift */; };
 		C971B43B2100CECC0070F477 /* HarmonizrMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */; };
 		C97B07E322275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */; };
-		C97B07E422275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */; };
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
@@ -83,9 +82,13 @@
 		C99BB9C72138D51000D32324 /* HarmonizerDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C99BB9C62138D50F00D32324 /* HarmonizerDSPKernel.hpp */; };
 		C99BB9CD2138D64A00D32324 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99BB9CC2138D64A00D32324 /* DSPKernel.mm */; };
 		C9A1E35F2203B3350080CF3F /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */; };
+		C9A4430A2428438800D4BB52 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A443092428438800D4BB52 /* FilesTableViewController.swift */; };
+		C9A4430C24290D2400D4BB52 /* FilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */; };
 		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
 		C9B549AC2306DF9800E48112 /* TestAudioData.h in Headers */ = {isa = PBXBuildFile; fileRef = C9B549AB2306DF9800E48112 /* TestAudioData.h */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
+		C9C69F8924202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */; };
+		C9C69F8A24202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */; };
 		C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9D1959421FFC604006ADB10 /* AudioUnit-BridgingHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */; };
@@ -275,9 +278,12 @@
 		C99BB9CB2138D64A00D32324 /* DSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DSPKernel.hpp; sourceTree = "<group>"; };
 		C99BB9CC2138D64A00D32324 /* DSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
 		C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSPKernel.hpp; path = "harmonizr-dsp/DSPKernel.hpp"; sourceTree = SOURCE_ROOT; };
+		C9A443092428438800D4BB52 /* FilesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableViewController.swift; sourceTree = "<group>"; };
+		C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableViewCell.swift; sourceTree = "<group>"; };
 		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C9B549AB2306DF9800E48112 /* TestAudioData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestAudioData.h; sourceTree = "<group>"; };
 		C9B61479211BD49600396B8D /* PresetListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListViewController.swift; sourceTree = "<group>"; };
+		C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AudioUnit-BridgingHeader.h"; sourceTree = "<group>"; };
 		C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
@@ -411,6 +417,8 @@
 				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
+				C9A443092428438800D4BB52 /* FilesTableViewController.swift */,
+				C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */,
 				C96F203B20D7D3B200F43D90 /* BaseView.swift */,
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
 				91236D1B1B08F42B00734C5E /* Info.plist */,
@@ -434,6 +442,7 @@
 				C96F204E20DC066700F43D90 /* ConfigNavigationController.swift */,
 				C96F204C20DB042800F43D90 /* ConfigDetailViewController.swift */,
 				C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */,
+				C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */,
 				C96F204420D85CF200F43D90 /* HarmPageViewController.swift */,
 				C91216C2206998D200E6BB57 /* PresetController.swift */,
 				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
@@ -748,7 +757,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					91236D0C1B08F42B00734C5E = {
 						CreatedOnToolsVersion = 7.0;
@@ -808,10 +817,9 @@
 			};
 			buildConfigurationList = 91D3DA0F1B023C03008FFFBB /* Build configuration list for PBXProject "Harmonizer" */;
 			compatibilityVersion = "Xcode 6.3";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -904,9 +912,11 @@
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
 				C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */,
 				C980DB4723077725009BFE25 /* vorbis_lpc.c in Sources */,
+				C9A4430C24290D2400D4BB52 /* FilesTableViewCell.swift in Sources */,
 				C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,
 				C96F203C20D7D3B200F43D90 /* BaseView.swift in Sources */,
+				C9A4430A2428438800D4BB52 /* FilesTableViewController.swift in Sources */,
 				91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */,
 				C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */,
 			);
@@ -919,6 +929,7 @@
 				C971B43920FE2F710070F477 /* PresetSaveViewController.swift in Sources */,
 				91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */,
 				C99BB9CD2138D64A00D32324 /* DSPKernel.mm in Sources */,
+				C9C69F8924202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */,
 				C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */,
 				C93163531FBCE9A400EE1762 /* HarmButton.swift in Sources */,
 				C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */,
@@ -949,9 +960,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
-				C97B07E422275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */,
 				C94681902190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */,
+				C9C69F8A24202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */,
 				91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */,
 				C92AB162205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,
 			);
@@ -1078,6 +1089,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1099,6 +1111,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.5;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
@@ -1134,6 +1147,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1149,6 +1163,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
 				PRODUCT_NAME = Harmonizer;
@@ -1180,7 +1195,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1244,7 +1259,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1304,6 +1319,7 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1325,6 +1341,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.5;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
@@ -1359,6 +1376,7 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1374,6 +1392,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
 				PRODUCT_NAME = HarmonizerExtension;
@@ -1391,6 +1410,7 @@
 		91D3DA101B023C03008FFFBB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1426,6 +1446,7 @@
 		91D3DA111B023C03008FFFBB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1481,6 +1502,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1533,6 +1555,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1578,6 +1601,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1629,6 +1653,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

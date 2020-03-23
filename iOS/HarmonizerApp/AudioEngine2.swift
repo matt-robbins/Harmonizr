@@ -31,6 +31,7 @@ class AudioEngine2: NSObject {
     var harmUnit: AUAudioUnit?
     var reverbUnit: AUAudioUnit?
     var outputUnit: AudioUnit?
+    private var recording_flag = false
     
     private let midiOutBlock: AUMIDIOutputEventBlock = { (sampleTime, cable, length, data ) in
         // This block will be called every render cycle and will receive MIDI events
@@ -126,18 +127,49 @@ class AudioEngine2: NSObject {
     public func startRecording() {
         print("starting!")
         var audioFile: AVAudioFile?
-        let url = URL(fileURLWithPath: "~/file.aac")
+        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        let recordingURL = DocumentsDirectory.appendingPathComponent("recordings")
+        print(recordingURL.absoluteString)
+        
+        var count = 0
+        if !FileManager.default.fileExists(atPath: recordingURL.path) {
+            do {
+                try FileManager.default.createDirectory(atPath: recordingURL.path, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print(error.localizedDescription);
+            }
+        }
+        
         do {
-            audioFile = try AVAudioFile(forWriting: url, settings: [AVFormatIDKey: kAudioFormatMPEG4AAC])
+            try count = FileManager.default.contentsOfDirectory(atPath: recordingURL.path).count
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        
+        let url = recordingURL.appendingPathComponent("\(harmUnit?.currentPreset?.name ?? "file")-\(count).aac")
+        print(url)
+        //let url = URL(fileURLWithPath: "~/file.aac")
+        let format = engine.mainMixerNode.outputFormat(forBus: 0)
+        do {
+            let settings = [
+                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                AVSampleRateKey: format.settings[AVSampleRateKey],
+                AVNumberOfChannelsKey: format.settings[AVNumberOfChannelsKey],
+                AVLinearPCMBitDepthKey: 16,
+                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+            ]
+            audioFile = try AVAudioFile(forWriting: url, settings: settings as [String : Any])
         }
         catch {
-            print("failed to open file")
+            print("failed to open file", error.localizedDescription)
         }
+        recording_flag = true
         engine.mainMixerNode.removeTap(onBus: 0)
         engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil)
         {
             (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-            print(time)
+            //print(time)
             do {
                 try audioFile?.write(from: buffer)
             }
@@ -148,9 +180,14 @@ class AudioEngine2: NSObject {
             
         }
     }
+    public func isRecording() -> Bool
+    {
+        return recording_flag
+    }
     public func finishRecording()
     {
         engine.mainMixerNode.removeTap(onBus: 0)
+        recording_flag = false
     }
 
     @objc func handleRouteChange(_ notification: Notification) {

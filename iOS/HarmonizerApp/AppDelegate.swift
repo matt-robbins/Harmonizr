@@ -156,6 +156,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             defaults?.set(true,forKey: "showMidiKeyboard")
             defaults?.set(0, forKey: "presetIndex")
+            defaults?.set(16, forKey: "MIDIKeycenterCC")
+            defaults?.set(17, forKey: "MIDIKeyqualityCC")
+            defaults?.set(true, forKey: "MIDIRecPC")
+            defaults?.set(false, forKey: "MIDISendNotesMel")
+            defaults?.set(false, forKey: "MIDISendNotesHarm")
         }
     }
 }

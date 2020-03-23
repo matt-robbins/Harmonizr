@@ -45,6 +45,8 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         }
     }
     
+    var keys = ["z","x","c","v","a","s","d","f","q","w","e","r"]
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,6 +89,53 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.frame = (view.superview?.bounds)!
+    }
+    
+    //MARK: - Keyboard Input
+    
+    override public var keyCommands: [UIKeyCommand]? {
+        
+        var cmds = [UIKeyCommand]()
+                
+        let kcenters = ["C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B"]
+        
+        for k in 0...keys.count-1 {
+            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "\(kcenters[k]) Major"))
+            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [.control], action: #selector(keyboardInput), discoverabilityTitle: "\(kcenters[k]) Minor"))
+            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [.shift], action: #selector(keyboardInput), discoverabilityTitle: "\(kcenters[k]) Dominant"))
+        }
+        
+        cmds.append(UIKeyCommand(input: "1", modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Solo"))
+        
+        return cmds
+    }
+    
+    @objc func keyboardInput(sender: UIKeyCommand)
+    {
+        //print(sender.input ?? "?", sender.modifierFlags)
+        //audioUnit?.parameterTree.parameter(withAddress: "keycenter").set
+        
+        let kP = audioUnit?.parameterTree?.value(forKey: "keycenter") as? AUParameter
+        let sP = audioUnit?.parameterTree?.value(forKey: "nvoices") as? AUParameter
+        
+        if (sender.input == "1")
+        {
+            sP?.value = 0
+            return
+        }
+        
+        let kc = keys.index(of: sender.input ?? "z") ?? 0
+        var kq = 0
+        if (sender.modifierFlags.contains(.control))
+        {
+            kq = 1
+        }
+        if (sender.modifierFlags.contains(.shift))
+        {
+            kq = 2
+        }
+        sP?.value = 4
+        kP?.value = Float(kc + 12 * kq)
     }
     
     //MARK: - Navigation

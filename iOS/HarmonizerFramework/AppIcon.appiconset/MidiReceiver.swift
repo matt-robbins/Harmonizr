@@ -167,7 +167,7 @@ class MidiReceiver : NSObject {
                 dataPtr in // `dataPtr` is an `UnsafeMutablePointer<UInt8>`
                 
                 for i in 0..<Int(packet.length) {
-                    print(dataPtr[i])
+                    //print(dataPtr[i])
                     cbytes[i] = dataPtr[i]
                 }
             }
@@ -177,9 +177,12 @@ class MidiReceiver : NSObject {
         
         switch rawStatus {
             
-        case .noteOn, .noteOff, .polyAftertouch, .controlChange, .programChange, .monoAftertouch, .pitchBend:
-            var ix = 1
+        case .programChange:
+            ccmd[1] = cbytes[1];
+            self.noteBlock(AUEventSampleTimeImmediate, 0, 2, ccmd)
             
+        case .noteOn, .noteOff, .polyAftertouch, .controlChange, .monoAftertouch, .pitchBend:
+            var ix = 1
             // handle "running status" in packets, where status bytes may be omitted for transmitting many messages with the same status
             while (ix + 1 < packet.length)
             {

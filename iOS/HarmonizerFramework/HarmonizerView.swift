@@ -442,6 +442,7 @@ class HarmonizerView: UIView {
         }
         
         layer.contentsScale = scale
+        setSelectedKeycenter(0)
     }
     
 	/*

@@ -26,13 +26,23 @@ void DSPKernel::handleOneEvent(AURenderEvent const *event) {
             e = event->MIDI;
             if ((e.data[0] & 0xF0) == 0xC0)
             {
+                pc_flag = 1;
                 program_change = e.data[1];
                 dispatch_semaphore_signal(sem);
             }
             else
             {
                 handleMIDIEvent(event->MIDI);
+                
+                if ((e.data[0] & 0xF0) == 0xB0)
+                {
+                    cc_num = e.data[1];
+                    cc_val = e.data[2];
+                    cc_flag = 1;
+                    dispatch_semaphore_signal(sem);
+                }
             }
+            
 			break;
 		
 		default:

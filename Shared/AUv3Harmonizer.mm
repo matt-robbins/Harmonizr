@@ -201,105 +201,178 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     AUParameter *keycenterIntervals[144];
     
     AUParameter *keycenterParam = [AUParameterTree createParameterWithIdentifier:@"keycenter" name:@"Key Center"
-            address:HarmParamKeycenter
-            min:0 max:47 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
+        address:HarmParamKeycenter
+        min:0 max:47 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *inversionParam = [AUParameterTree createParameterWithIdentifier:@"inversion" name:@"Inversion"
-            address:HarmParamInversion
-            min:0 max:3 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
+        address:HarmParamInversion
+        min:0 max:3 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *nvoicesParam = [AUParameterTree createParameterWithIdentifier:@"nvoices" name:@"Voices"
-            address:HarmParamNvoices
-            min:1 max:4 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
+        address:HarmParamNvoices
+        min:1 max:4 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
 
     AUParameter *autoParam = [AUParameterTree createParameterWithIdentifier:@"auto" name:@"Autotune"
-             address:HarmParamAuto
-             min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-             valueStrings:nil dependentParameters:nil];
+        address:HarmParamAuto
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *autoStrengthParam = [AUParameterTree createParameterWithIdentifier:@"auto_strength" name:@"Autotune Strength"
-                                                                    address:HarmParamAutoStrength
-                                                                        min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
-                                                                      flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                               valueStrings:nil dependentParameters:nil];
+        address:HarmParamAutoStrength
+        min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *midiParam = [AUParameterTree createParameterWithIdentifier:@"midi" name:@"Midi"
-            address:HarmParamMidi
-            min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
+        address:HarmParamMidi
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *midiLinkParam = [AUParameterTree createParameterWithIdentifier:@"midi_link" name:@"Midi Link"
-            address:HarmParamMidiLink
-                min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-              flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-       valueStrings:nil dependentParameters:nil];
-    
+        address:HarmParamMidiLink
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+
     AUParameter *midiLegatoParam = [AUParameterTree createParameterWithIdentifier:@"midi_legato" name:@"Midi Legato"
-                                                                        address:HarmParamMidiLegato
-                                                                            min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-                                                                          flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                                   valueStrings:nil dependentParameters:nil];
+        address:HarmParamMidiLegato
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *keycenterCCParam = [AUParameterTree createParameterWithIdentifier:@"keycenter_cc" name:@"Keycenter CC"
+        address:HarmParamMidiKeyCC
+        min:0 max:127 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *keycenterCcOffsetParam = [AUParameterTree createParameterWithIdentifier:@"keycenter_cc_offset" name:@"Keycenter CC Value Offset"
+        address:HarmParamMidiKeyCcOffset
+        min:0 max:127 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *keyqualityCCParam = [AUParameterTree createParameterWithIdentifier:@"keyquality_cc" name:@"Key Quality (Maj/Mi/7) CC"
+        address:HarmParamMidiQualCC
+        min:0 max:127 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *keyqualityCcOffsetParam = [AUParameterTree createParameterWithIdentifier:@"keyquality_cc_offset" name:@"Key quality CC Value Offset"
+        address:HarmParamMidiQualCcOffset
+        min:0 max:127 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *nvoicesCCParam = [AUParameterTree createParameterWithIdentifier:@"nvoices_cc" name:@"Voice Count CC"
+        address:HarmParamMidiNvoiceCC
+        min:0 max:127 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *nvoicesCcRangeParam = [AUParameterTree createParameterWithIdentifier:@"nvoices_cc_range" name:@"Voice Count CC Mode"
+        address:HarmParamMidiNvoiceCcRange
+        min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:@[@"Normalized",@"Literal"] dependentParameters:nil];
+    
+    AUParameter *inversionCCParam = [AUParameterTree createParameterWithIdentifier:@"inversion_cc" name:@"Inversion CC"
+        address:HarmParamMidiInvCC
+        min:0 max:127 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *inversionCcRangeParam = [AUParameterTree createParameterWithIdentifier:@"inversion_cc_range" name:@"Inversion CC Mode"
+        address:HarmParamMidiInvCcRange
+        min:0 max:1 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:@[@"Normalized",@"Literal"] dependentParameters:nil];
+    
+    AUParameter *midiPCParam = [AUParameterTree createParameterWithIdentifier:@"midi_rx_pc" name:@"Recieve MIDI Program Change"
+        address:HarmParamMidiPC
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *midiMelOutParam = [AUParameterTree createParameterWithIdentifier:@"midi_tx_mel" name:@"Transmit MIDI melody"
+        address:HarmParamMidiMelOut
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *midiHarmOutParam = [AUParameterTree createParameterWithIdentifier:@"midi_tx_harm" name:@"Transmit MIDI harmony"
+        address:HarmParamMidiHarmOut
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *bypassParam = [AUParameterTree createParameterWithIdentifier:@"bypass" name:@"Bypass"
-            address:HarmParamBypass
-            min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
+        address:HarmParamBypass
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *triadParam = [AUParameterTree createParameterWithIdentifier:@"triad" name:@"Triad"
-            address:HarmParamTriad
-         min:-1 max:30 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-         valueStrings:nil dependentParameters:nil];
+        address:HarmParamTriad
+        min:-1 max:30 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *hgainParam = [AUParameterTree createParameterWithIdentifier:@"h_gain" name:@"Harmony Gain"
-         address:HarmParamHgain
-             min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
-           flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-            valueStrings:nil dependentParameters:nil];
+        address:HarmParamHgain
+        min:0 max:1 unit:kAudioUnitParameterUnit_LinearGain unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *vgainParam = [AUParameterTree createParameterWithIdentifier:@"v_gain" name:@"Voice Gain"
-                                                                     address:HarmParamVgain
-                                                                         min:0 max:2 unit:kAudioUnitParameterUnit_Percent unitName:nil
-                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                                valueStrings:nil dependentParameters:nil];
+        address:HarmParamVgain
+        min:0 max:2 unit:kAudioUnitParameterUnit_LinearGain unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *dryMixParam = [AUParameterTree createParameterWithIdentifier:@"dry_mix" name:@"Dry Mix"
-                                                                     address:HarmParamDryMix
-                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
-                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                                valueStrings:nil dependentParameters:nil];
+        address:HarmParamDryMix
+        min:0 max:1 unit:kAudioUnitParameterUnit_LinearGain unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *speedParam = [AUParameterTree createParameterWithIdentifier:@"speed" name:@"Speed"
-                                                                     address:HarmParamSpeed
-                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
-                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                                valueStrings:nil dependentParameters:nil];
+        address:HarmParamSpeed
+        min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     AUParameter *tuningParam = [AUParameterTree createParameterWithIdentifier:@"tuning" name:@"Tuning"
-                                                                      address:HarmParamTuning
-                                                                          min:400 max:500 unit:kAudioUnitParameterUnit_Hertz unitName:nil
-                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                                 valueStrings:nil dependentParameters:nil];
+        address:HarmParamTuning
+        min:400 max:500 unit:kAudioUnitParameterUnit_Hertz unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
 
     AUParameter *threshParam = [AUParameterTree createParameterWithIdentifier:@"threshold" name:@"Threshold"
-                                                                     address:HarmParamThreshold
-                                                                         min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
-                                                                       flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                                valueStrings:nil dependentParameters:nil];
+        address:HarmParamThreshold
+        min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
     AUParameter *stereoParam = [AUParameterTree createParameterWithIdentifier:@"stereo_mode" name:@"Stereo Mode"
-                                                                      address:HarmParamStereo
-                                                                          min:0 max:2 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-                                                                        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-                                                                 valueStrings:@[@"Normal",@"Mono",@"Split"] dependentParameters:nil];
+        address:HarmParamStereo
+        min:0 max:2 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:@[@"Normal",@"Mono",@"Split"] dependentParameters:nil];
+    
+    AUParameter *synthParam = [AUParameterTree createParameterWithIdentifier:@"synth_enable" name:@"VowelMatch Synth"
+        address:HarmParamSynth
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
     
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
     
@@ -311,6 +384,17 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:midiParam];
     [params addObject:midiLinkParam];
     [params addObject:midiLegatoParam];
+    [params addObject:keycenterCCParam];
+    [params addObject:keycenterCcOffsetParam];
+    [params addObject:keyqualityCCParam];
+    [params addObject:keyqualityCcOffsetParam];
+    [params addObject:inversionCCParam];
+    [params addObject:inversionCcRangeParam];
+    [params addObject:nvoicesCCParam];
+    [params addObject:nvoicesCcRangeParam];
+    [params addObject:midiPCParam];
+    [params addObject:midiMelOutParam];
+    [params addObject:midiHarmOutParam];
     [params addObject:triadParam];
     [params addObject:bypassParam];
     [params addObject:hgainParam];
@@ -320,6 +404,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:tuningParam];
     [params addObject:threshParam];
     [params addObject:stereoParam];
+    [params addObject:synthParam];
         
     for (int k = 0; k < 144; k++)
     {
@@ -352,6 +437,13 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     tuningParam.value = 440.0;
     threshParam.value = 0.2;
     stereoParam.value = 0;
+    synthParam.value = 0;
+    keycenterCCParam.value = 16;
+    keycenterCcOffsetParam.value = 1;
+    keyqualityCCParam.value = 17;
+    keyqualityCcOffsetParam.value = 1;
+    nvoicesCCParam.value = 18;
+    inversionCCParam.value = 19;
     
     _sem = dispatch_semaphore_create(0);
     _kernel.sem = _sem;
@@ -473,10 +565,22 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
                 NSLog(@"signal received!\n");
                 if (self.delegate)
                 {
-                    NSLog(@"programChange!\n");
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate programChange:self->_kernel.program_change];
-                    });
+                    if (self->_kernel.pc_flag)
+                    {
+                        NSLog(@"programChange!\n");
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate programChange:self->_kernel.program_change];
+                        });
+                        self->_kernel.pc_flag = 0;
+                    }
+                    if (self->_kernel.cc_flag)
+                    {
+                        NSLog(@"ccChange!\n");
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate ccValue:self->_kernel.cc_val forCc:self->_kernel.cc_num];
+                        });
+                        self->_kernel.cc_flag = 0;
+                    }
                 }
             }
         }
@@ -702,6 +806,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 - (float) getCurrentKeycenter {
     return _kernel.root_key;
+}
+
+- (float) getCurrentNumVoices {
+    return _kernel.getParameter(HarmParamNvoices);
+}
+
+- (float) getCurrentInversion {
+    return _kernel.getParameter(HarmParamInversion);
 }
 
 @end

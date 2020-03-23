@@ -15,6 +15,7 @@
 
 @optional
 - (void)programChange:(int)program;
+- (void)ccValue:(int)value forCc:(int)cc;
 
 @end
 
@@ -27,6 +28,9 @@
 - (int) addMidiNote:(int)note_number vel:(int)velocity;
 - (int) remMidiNote:(int)note_number;
 - (float) getCurrentKeycenter;
+- (float) getCurrentNumVoices;
+- (float) getCurrentInversion;
+
 @property (nonatomic, weak) id<HarmonizerDelegate> delegate;
 @end
 

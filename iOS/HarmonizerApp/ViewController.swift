@@ -20,12 +20,8 @@ class ViewController: UIViewController, RecordingDelegate {
     @IBOutlet weak var reverbButton: UIButton!
     @IBOutlet var playButton: UIButton!
     @IBOutlet weak var bgSwitch: UISwitch!
-//    @IBOutlet var cutoffSlider: UISlider!
-//    @IBOutlet var resonanceSlider: UISlider!
-//
-//    @IBOutlet var cutoffTextField: UITextField!
-//    @IBOutlet var resonanceTextField: UITextField!
-
+    @IBOutlet weak var recordButton: UIBarButtonItem!
+    
     /// Container for our custom view.
     @IBOutlet var auContainerView: UIView!
 
@@ -154,6 +150,11 @@ class ViewController: UIViewController, RecordingDelegate {
             let vc = segue.destination as! ReverbViewController
             vc.audioUnit = audioEngine.reverbUnit
         }
+        if (segue.identifier == "mainToFiles")
+        {
+            let vc = segue.destination as! FilesTableViewController
+            vc.audioEngine = audioEngine
+        }
     }
     
 	/// Called from `viewDidLoad(_:)` to embed the plug-in's view into the app's view.
@@ -233,7 +234,27 @@ class ViewController: UIViewController, RecordingDelegate {
     
     // MARK: IBActions
 
-	/// Handles Play/Stop button touches.
+    @IBAction func recordToggle(_ sender: Any) {
+        if (audioEngine.isRecording())
+        {
+            audioEngine.finishRecording()
+            if #available(iOS 13.0, *) {
+                recordButton.image = UIImage(systemName: "mic")
+            } else {
+                recordButton.title = "recording..."
+            }
+        }
+        else
+        {
+            if #available(iOS 13.0, *) {
+                recordButton.image = UIImage(systemName: "pause")
+            } else {
+                recordButton.title = "record"
+            }
+            audioEngine.startRecording()
+        }
+    }
+    /// Handles Play/Stop button touches.
     @IBAction func openBluetoothMenu(_ sender: AnyObject?) {
 		//let isPlaying = playEngine.togglePlay()
         
@@ -244,9 +265,10 @@ class ViewController: UIViewController, RecordingDelegate {
         
         btMidiViewController.navigationItem.rightBarButtonItem =
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ViewController.dismissPopover))
-        //navController.navigationBar.barTintColor = UIColor.darkGray
         
-        //navController.modalPresentationStyle = UIModalPresentationStyle.popover
+        btMidiViewController.view.backgroundColor = UIColor.black
+//        navController.modalPresentationStyle = UIModalPresentationStyle.popover
+//        navController.navigationBar
         
         self.present(navController, animated: false, completion: nil)
 	}
@@ -281,4 +303,5 @@ class ViewController: UIViewController, RecordingDelegate {
     {
         audioEngine.startRecording()
     }
+    
 }
