@@ -13,7 +13,7 @@ class FilesTableViewController: UITableViewController {
     var contents:[String]? = nil
     var recordingURL:URL!
     var DocumentsDirectory:URL!
-    var audioEngine:AudioEngine2?
+    //var audioEngine:AudioEngine2?
     
     override func viewDidLoad() {
         super.viewDidLoad()

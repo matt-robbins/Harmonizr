@@ -146,7 +146,7 @@ class Key: CATextLayer {
     }
 }
 
-class Marker: CALayer {
+class MarkerLayer: CALayer {
     override func contains(_ p: CGPoint) -> Bool {
         return false
     }
@@ -165,7 +165,7 @@ class KeyboardView: UIView {
     var wkeys = [Key]()
     var bkeys = [Key]()
     public var keys = [Key]()
-    var markers = [Marker]()
+    var markers = [MarkerLayer]()
     
     var markKey = 1
     {
@@ -239,7 +239,7 @@ class KeyboardView: UIView {
         
         for ix in 0...4
         {
-            let marker = Marker()
+            let marker = MarkerLayer()
             markers.append(marker)
             marker.zPosition = ix == 0 ? 2.0 : 1.5
             containerLayer.addSublayer(marker)

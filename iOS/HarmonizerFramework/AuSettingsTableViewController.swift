@@ -9,9 +9,18 @@ import UIKit
 
 class AuSettingsTableViewController: UITableViewController {
     
-    var settings = ["keycenter_cc", "keycenter_cc_offset","keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
+    var settings = [String]()
+    var presets:[AUAudioUnitPreset]?
     
+    var audioUnit: AUAudioUnit?
     var paramTree: AUParameterTree?
+    
+    var sections = ["Settings","Presets"]
+    
+    func showPresets(_ show: Bool)
+    {
+        sections = show ? ["Settings","Presets"] : ["Settings"]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,57 +31,84 @@ class AuSettingsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        paramTree = globalAudioUnit?.parameterTree
-        settings = []
+        paramTree = audioUnit?.parameterTree
+        presets = audioUnit?.factoryPresets
+        //settings = []
         if (settings.count == 0)
         {
             settings = paramTree?.allParameters.map{ $0.identifier } ?? []
         }
         self.tableView!.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
+        
+        self.tableView!.register(UITableViewCell.self, forCellReuseIdentifier: "basic")
     }
 
     // MARK: - Table view data source
+    
+    // Create a standard header that includes the returned text.
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection
+                                section: Int) -> String? {
+        if (sections.count < 2)
+        {
+            return nil
+        }
+        return sections[section]
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return settings.count
+        switch (sections[section])
+        {
+        case "Settings":
+            return settings.count
+        case "Presets":
+            return presets?.count ?? 0
+        default:
+            return 0
+        }
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let param = paramTree?.value(forKey: settings[indexPath.row]) as? AUParameter
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "midisetting", for: indexPath) as! AuParameterTableViewCell
-        cell.param = param
-        cell.parentTable = self.tableView
-        return cell
-        
-//        else
-//        {
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "basic", for: indexPath)
-//            cell.textLabel?.text = settings[indexPath.row]
-//            cell.accessoryType = false ?? false ? .checkmark : .none
-//            return cell
-//        }
-        
-        
+        if (sections[indexPath.section] == "Settings")
+        {
+            var param = paramTree?.value(forKey: settings[indexPath.row]) as? AUParameter
+            if (param == nil)
+            {
+                param = paramTree?.allParameters.filter{ $0.identifier == settings[indexPath.row] }.first
+            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: "auparameter", for: indexPath) as! AuParameterTableViewCell
+            
+            cell.param = param
+            cell.parentTable = self.tableView
+            cell.selectionStyle = .none
+            return cell
+        }
+        else
+        {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "basic", for: indexPath)
+            cell.textLabel?.text = presets?[indexPath.row].name
+            
+            cell.accessoryType = (audioUnit?.currentPreset?.name == presets?[indexPath.row].name) ? .checkmark : .none
+            cell.selectionStyle = .none
+            return cell
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //values[indexPath.row] = !values[indexPath.row]
         
-//        if (types[indexPath.row] == "bool")
-//        {
-//            let val = defaults?.bool(forKey:defaultNames[indexPath.row]) ?? false
-//            defaults?.set(!val, forKey:defaultNames[indexPath.row])
-//            self.tableView.reloadData()
-//        }
+        if (sections[indexPath.section] == "Presets")
+        {
+            audioUnit?.currentPreset = presets?[indexPath.row]
+            self.tableView.reloadData()
+        }
         
     }
     

@@ -26,18 +26,30 @@ class AuParameterTableViewCell: UITableViewCell {
             {
                 stepCtrl.isHidden = true
                 valueLabel.isHidden = true
+                switchCtrl.isHidden = false
                 switchCtrl.isOn = (param?.value ?? 0.0) > 0.0
             }
             else
             {
                 switchCtrl.isHidden = true
+                valueLabel.isHidden = false
+                stepCtrl.isHidden = false
                 stepCtrl.value = Double(param?.value ?? 0.0)
             }
-            nameLabel.text = param?.displayName
+            nameLabel.text = (param?.displayName ?? param?.identifier)?.capitalized
             
             stepCtrl.minimumValue = Double(param?.minValue ?? 0.0)
             stepCtrl.maximumValue = Double(param?.maxValue ?? 1.0)
-            valueLabel.text = "\(Int(param?.value ?? 0.0))"
+            
+            switch (param?.unit)
+            {
+            case .indexed,.midiController:
+                stepCtrl.stepValue = 1.0
+            default:
+                stepCtrl.stepValue = round((stepCtrl.maximumValue - stepCtrl.minimumValue) * 100) / 10000
+            }
+            setValueLabel()
+            //valueLabel.text = "\(Int(param?.value ?? 0.0))"
         }
     }
     
@@ -94,10 +106,32 @@ class AuParameterTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func setValueLabel()
+    {
+        switch (param!.unit) {
+        case .percent:
+            valueLabel.text = "\(Int(param?.value ?? 0.0))"
+            unitsLabel.text = "%"
+        case .indexed,.midiController:
+            valueLabel.text = "\(Int(param?.value ?? 0.0))"
+        case .decibels:
+            valueLabel.text = "\(param?.value ?? 0.0)"
+            unitsLabel.text = "dB"
+        case .seconds:
+            valueLabel.text = "\(param?.value ?? 0.0)"
+            unitsLabel.text = "S"
+        case .generic:
+            valueLabel.text = "\(param?.value ?? 0.0)"
+        default:
+            valueLabel.text = "\(Int(param?.value ?? 0.0))"
+            unitsLabel.text = ""
+        }
+    }
+    
     @objc func stepperValueChanged(_ sender: UIStepper)
     {
         param?.value = AUValue(stepCtrl.value)
-        valueLabel.text = "\(Int(param?.value ?? 0.0))"
+        setValueLabel()
         //parentTable?.reloadData()
     }
     @objc func switchValueChanged(_ sender: UIStepper)

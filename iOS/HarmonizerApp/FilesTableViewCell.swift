@@ -11,8 +11,8 @@ import AVKit
 
 class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
 
-    let playButton = UIButton()
-    let shareButton = UIButton()
+    let playButton = UIButton(type:.system)
+    let shareButton = UIButton(type:.system)
     let nameLabel = UILabel()
     var recordingURL:URL!
     var audioPlayer:AVAudioPlayer? = nil
@@ -42,7 +42,7 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
             v.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(v)
         }
-        
+        playButton.isUserInteractionEnabled = true
         playButton.adjustsImageWhenHighlighted = true
         shareButton.adjustsImageWhenHighlighted = true
         
@@ -94,7 +94,10 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
         }
         audioPlayer?.play()
         if #available(iOS 13.0, *) {
-            playButton.setImage(UIImage(systemName: "pause"), for: .normal)
+            UIView.transition(with: playButton, duration: 0.2, options: .transitionFlipFromRight, animations: {
+                self.playButton.setImage(UIImage(systemName: "pause"), for: .normal)
+            }, completion: nil)
+            //playButton.setImage(UIImage(systemName: "pause"), for: .normal)
         } else {
             playButton.setTitle("pause", for: .normal)
         }
@@ -112,7 +115,10 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
     {
         print("finished!")
         if #available(iOS 13.0, *) {
-            playButton.setImage(UIImage(systemName: "play"), for: .normal)
+            UIView.transition(with: playButton, duration: 0.2, options: .transitionFlipFromLeft, animations: {
+                self.playButton.setImage(UIImage(systemName: "play"), for: .normal)
+            }, completion: nil)
+            //playButton.setImage(UIImage(systemName: "play"), for: .normal)
         } else {
             playButton.setTitle("play", for: .normal)
         }

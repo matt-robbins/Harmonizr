@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yGs-Vs-2Vg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yGs-Vs-2Vg">
     <device id="retina5_9" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,47 +13,47 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Harmonizer" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="BaseView" customModule="Harmonizer" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="UIImageView">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZU-Ig-hQr">
-                                <rect key="frame" x="44" y="32" width="724" height="322"/>
+                                <rect key="frame" x="44" y="32" width="724" height="290"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="oZU-Ig-hQr" secondAttribute="height" multiplier="1.8:1" priority="995" id="3yb-Na-QpH"/>
+                                </constraints>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="trailing" secondItem="Esp-En-WMd" secondAttribute="trailing" id="3CG-D4-SRu"/>
-                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="Esp-En-WMd" secondAttribute="top" id="72v-5b-4e7"/>
+                            <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="Esp-En-WMd" secondAttribute="top" priority="999" id="72v-5b-4e7"/>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="bottom" secondItem="Esp-En-WMd" secondAttribute="bottom" id="QTb-8t-2mh"/>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="leading" secondItem="Esp-En-WMd" secondAttribute="leading" id="l9U-5f-B4m"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Esp-En-WMd"/>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Harmonizr" id="gyg-hz-lcU">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="gear" catalog="system" id="3k1-Ca-JSy">
                             <connections>
                                 <segue destination="QA1-1r-Uhc" kind="show" identifier="mainMenu" id="5eW-yD-vo8"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem title="Files" image="folder" catalog="system" springLoaded="YES" id="F7h-jW-lom">
-                                <connections>
-                                    <segue destination="INx-aE-yF9" kind="show" identifier="mainToFiles" id="OgI-ka-g8h"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Record" image="circle.fill" catalog="system" springLoaded="YES" id="67S-AJ-Txs">
-                                <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <action selector="recordToggle:" destination="BYZ-38-t0r" id="kL8-ak-oUA"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="ScreenRecord" image="video.fill" catalog="system" id="4jq-8J-1xt">
+                            <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="screenRecordToggle:" destination="BYZ-38-t0r" id="b5s-ub-sWz"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="auAspectConstraint" destination="3yb-Na-QpH" id="aGp-4a-aoa"/>
                         <outlet property="auContainerView" destination="oZU-Ig-hQr" id="gDh-WB-t3u"/>
-                        <outlet property="folderButton" destination="F7h-jW-lom" id="080-Ha-flq"/>
-                        <outlet property="recordButton" destination="67S-AJ-Txs" id="6ob-nM-te6"/>
+                        <outlet property="auTopConstraint" destination="72v-5b-4e7" id="kri-jk-KXH"/>
+                        <outlet property="baseView" destination="8bC-Xf-vdC" id="0aR-jG-Ram"/>
+                        <outlet property="navBar" destination="gyg-hz-lcU" id="Yh1-mR-bSj"/>
+                        <outlet property="screenRecordButton" destination="4jq-8J-1xt" id="Qqh-HK-0Mn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -174,10 +174,10 @@
             </objects>
             <point key="canvasLocation" x="1517" y="4"/>
         </scene>
-        <!--Files Table View Controller-->
+        <!--Recordings-->
         <scene sceneID="xqQ-dT-THL">
             <objects>
-                <tableViewController storyboardIdentifier="filesController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="INx-aE-yF9" customClass="FilesTableViewController" customModule="Harmonizer" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="filesController" title="Recordings" useStoryboardIdentifierAsRestorationIdentifier="YES" id="INx-aE-yF9" customClass="FilesTableViewController" customModule="Harmonizer" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ceg-BM-YYU">
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -381,10 +381,9 @@
             <point key="canvasLocation" x="21" y="926"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="circle.fill" catalog="system" width="64" height="60"/>
-        <image name="folder" catalog="system" width="64" height="46"/>
-        <image name="gear" catalog="system" width="64" height="58"/>
-    </resources>
     <color key="tintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+    <resources>
+        <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="video.fill" catalog="system" width="128" height="82"/>
+    </resources>
 </document>

@@ -405,7 +405,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:threshParam];
     [params addObject:stereoParam];
     [params addObject:synthParam];
-        
+            
     for (int k = 0; k < 144; k++)
     {
         NSString *identifier = [NSString stringWithFormat:@"interval_%d", k];
@@ -418,6 +418,10 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         
         [params addObject: keycenterIntervals[k]];
     }
+    
+//    AUParameterGroup *intervals = [AUParameterTree createGroupWithIdentifier:@"intervals" name:@"Auto-Harmony" children:iparams];
+//
+//    [params addObject:intervals];
     
 	// Initialize default parameter values.
     keycenterParam.value = 5;

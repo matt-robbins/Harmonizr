@@ -13,9 +13,11 @@ import AVFoundation
 
 public var globalAudioUnit: AUv3Harmonizer?
 
-public protocol RecordingDelegate {
-
-    func didToggleRecording(_ onOff:Bool)
+public protocol InterfaceDelegate {
+    func didToggleRecording(_ onOff:Bool) -> Bool
+    func getReverbUnit() -> AUAudioUnit?
+    func getInputViewController() -> UIViewController?
+    func showNavBar(_ show:Bool)
 }
 
 public class HarmonizrMainViewController: AUViewController, UINavigationControllerDelegate {
@@ -27,10 +29,10 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     
     var midiClient: MIDIClientRef = MIDIClientRef()
     var midiOutput: MIDIPortRef = MIDIPortRef()
-    public var recordingDelegate: RecordingDelegate?
+    public var interfaceDelegate: InterfaceDelegate?
     {
         didSet {
-            harmViewController!.recordingDelegate = recordingDelegate
+            harmViewController!.interfaceDelegate = interfaceDelegate
         }
     }
     
@@ -88,7 +90,12 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.frame = (view.superview?.bounds)!
+        containerView.frame = (view.superview?.bounds)!
+    }
+    
+    public func getVideoView() -> UIView?
+    {
+        return harmViewController?.getVideoView()
     }
     
     //MARK: - Keyboard Input
@@ -105,7 +112,13 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
             cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [.shift], action: #selector(keyboardInput), discoverabilityTitle: "\(kcenters[k]) Dominant"))
         }
         
-        cmds.append(UIKeyCommand(input: "1", modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Solo"))
+        cmds.append(UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Decrease Number of Voices"))
+        
+        cmds.append(UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Increase Number of Voices"))
+        
+        cmds.append(UIKeyCommand(input: UIKeyInputUpArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Raise Inversion"))
+        
+        cmds.append(UIKeyCommand(input: UIKeyInputDownArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Lower Inversion"))
         
         return cmds
     }
@@ -117,25 +130,33 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         
         let kP = audioUnit?.parameterTree?.value(forKey: "keycenter") as? AUParameter
         let sP = audioUnit?.parameterTree?.value(forKey: "nvoices") as? AUParameter
-        
-        if (sender.input == "1")
+        let iP = audioUnit?.parameterTree?.value(forKey: "inversion") as? AUParameter
+        switch (sender.input)
         {
-            sP?.value = 0
-            return
+        case UIKeyInputLeftArrow:
+            sP?.value = (sP?.value ?? 1.0) - 1.0
+        case UIKeyInputRightArrow:
+            sP?.value = (sP?.value ?? 1.0) + 1.0
+        case UIKeyInputUpArrow:
+            iP?.value = (iP?.value ?? 1.0) + 1.0
+        case UIKeyInputDownArrow:
+            iP?.value = (iP?.value ?? 1.0) - 1.0
+        default:
+            let kc = keys.index(of: sender.input ?? "z") ?? 0
+            var kq = 0
+            if (sender.modifierFlags.contains(.control))
+            {
+                kq = 1
+            }
+            if (sender.modifierFlags.contains(.shift))
+            {
+                kq = 2
+            }
+            sP?.value = 4
+            kP?.value = Float(kc + 12 * kq)
         }
         
-        let kc = keys.index(of: sender.input ?? "z") ?? 0
-        var kq = 0
-        if (sender.modifierFlags.contains(.control))
-        {
-            kq = 1
-        }
-        if (sender.modifierFlags.contains(.shift))
-        {
-            kq = 2
-        }
-        sP?.value = 4
-        kP?.value = Float(kc + 12 * kq)
+        harmViewController?.syncView()
     }
     
     //MARK: - Navigation

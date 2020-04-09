@@ -47,15 +47,24 @@
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
 		C902E6D4242956DE008CC016 /* MainMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */; };
 		C91216C3206998D200E6BB57 /* PresetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91216C2206998D200E6BB57 /* PresetController.swift */; };
+		C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */; };
+		C9280B56243A8D06002C9ED3 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A443092428438800D4BB52 /* FilesTableViewController.swift */; };
+		C9280B57243A8D63002C9ED3 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A443092428438800D4BB52 /* FilesTableViewController.swift */; };
+		C9280B58243A8D67002C9ED3 /* FilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */; };
 		C92AB161205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */; };
 		C92AB162205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */; };
 		C93163531FBCE9A400EE1762 /* HarmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163511FBCE81D00EE1762 /* HarmButton.swift */; };
+		C93FE6D4243B8CE20068B036 /* ItunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */; };
+		C93FE6D6243B8DC00068B036 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93FE6D5243B8DC00068B036 /* SplashViewController.swift */; };
 		C946818E2190F2B10055AA80 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946818D2190F2B10055AA80 /* MidiReceiver.swift */; };
 		C946818F2190F2B10055AA80 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946818D2190F2B10055AA80 /* MidiReceiver.swift */; };
 		C94681902190F2B10055AA80 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946818D2190F2B10055AA80 /* MidiReceiver.swift */; };
 		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
 		C94FC87C202C96F70009E742 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */; };
+		C9657D11243BABBC00D4EAEE /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9657D10243BABBC00D4EAEE /* midi.png */; };
+		C9657D12243BABBC00D4EAEE /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9657D10243BABBC00D4EAEE /* midi.png */; };
+		C96ED35D24312ED10059BBB8 /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96ED35C24312ED10059BBB8 /* AUParameterTableViewCell.swift */; };
 		C96F203C20D7D3B200F43D90 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F203B20D7D3B200F43D90 /* BaseView.swift */; };
 		C96F203D20D7D3B200F43D90 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F203B20D7D3B200F43D90 /* BaseView.swift */; };
 		C96F204220D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */; };
@@ -65,12 +74,12 @@
 		C96F204720D9C1CC00F43D90 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30C0135A1C6D303D00F7E9B4 /* Images.xcassets */; };
 		C96F204920DB02E400F43D90 /* HarmParameterTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */; };
 		C96F204B20DB032B00F43D90 /* HarmParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204A20DB032B00F43D90 /* HarmParameterTableViewCell.swift */; };
-		C96F204D20DB042800F43D90 /* ConfigDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204C20DB042800F43D90 /* ConfigDetailViewController.swift */; };
+		C96F204D20DB042800F43D90 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204C20DB042800F43D90 /* SettingsViewController.swift */; };
 		C96F204F20DC066700F43D90 /* ConfigNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96F204E20DC066700F43D90 /* ConfigNavigationController.swift */; };
 		C971B43720FA92A40070F477 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43620FA92A40070F477 /* LabelButton.swift */; };
 		C971B43920FE2F710070F477 /* PresetSaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43820FE2F710070F477 /* PresetSaveViewController.swift */; };
 		C971B43B2100CECC0070F477 /* HarmonizrMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */; };
-		C97B07E322275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */; };
+		C97B07E322275B7F002FAB96 /* AuSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B07E222275B7F002FAB96 /* AuSettingsTableViewController.swift */; };
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
@@ -83,13 +92,10 @@
 		C99BB9C72138D51000D32324 /* HarmonizerDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C99BB9C62138D50F00D32324 /* HarmonizerDSPKernel.hpp */; };
 		C99BB9CD2138D64A00D32324 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99BB9CC2138D64A00D32324 /* DSPKernel.mm */; };
 		C9A1E35F2203B3350080CF3F /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */; };
-		C9A4430A2428438800D4BB52 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A443092428438800D4BB52 /* FilesTableViewController.swift */; };
-		C9A4430C24290D2400D4BB52 /* FilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */; };
-		C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */; };
 		C9B549AC2306DF9800E48112 /* TestAudioData.h in Headers */ = {isa = PBXBuildFile; fileRef = C9B549AB2306DF9800E48112 /* TestAudioData.h */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
-		C9C69F8924202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */; };
-		C9C69F8A24202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */; };
+		C9C69F8924202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */; };
+		C9C69F8A24202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */; };
 		C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9D1959421FFC604006ADB10 /* AudioUnit-BridgingHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */; };
@@ -251,21 +257,25 @@
 		C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonizerVoicesView.swift; sourceTree = "<group>"; };
 		C93163511FBCE81D00EE1762 /* HarmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmButton.swift; sourceTree = "<group>"; };
 		C9353FD7210EAD1200AB75D6 /* HarmonizerExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HarmonizerExtension.entitlements; sourceTree = "<group>"; };
+		C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItunesArtwork.png; sourceTree = "<group>"; };
+		C93FE6D5243B8DC00068B036 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		C946818D2190F2B10055AA80 /* MidiReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MidiReceiver.swift; path = AppIcon.appiconset/MidiReceiver.swift; sourceTree = "<group>"; };
 		C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
 		C94FC87B202C96F60009E742 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine2.swift; sourceTree = "<group>"; };
+		C9657D10243BABBC00D4EAEE /* midi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = midi.png; sourceTree = "<group>"; };
+		C96ED35C24312ED10059BBB8 /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C96F203B20D7D3B200F43D90 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmTableViewCell.swift; sourceTree = "<group>"; };
 		C96F204420D85CF200F43D90 /* HarmPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmPageViewController.swift; sourceTree = "<group>"; };
 		C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmParameterTableView.swift; sourceTree = "<group>"; };
 		C96F204A20DB032B00F43D90 /* HarmParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmParameterTableViewCell.swift; sourceTree = "<group>"; };
-		C96F204C20DB042800F43D90 /* ConfigDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigDetailViewController.swift; sourceTree = "<group>"; };
+		C96F204C20DB042800F43D90 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C96F204E20DC066700F43D90 /* ConfigNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigNavigationController.swift; sourceTree = "<group>"; };
 		C971B43620FA92A40070F477 /* LabelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelButton.swift; sourceTree = "<group>"; };
 		C971B43820FE2F710070F477 /* PresetSaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetSaveViewController.swift; sourceTree = "<group>"; };
 		C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonizrMainViewController.swift; sourceTree = "<group>"; };
-		C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiSettingsTableViewController.swift; sourceTree = "<group>"; };
+		C97B07E222275B7F002FAB96 /* AuSettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuSettingsTableViewController.swift; sourceTree = "<group>"; };
 		C97F1B7F20D41121001C26E1 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		C980DB4523077725009BFE25 /* vorbis_lpc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vorbis_lpc.c; sourceTree = "<group>"; };
 		C980DB4623077725009BFE25 /* vorbis_lpc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vorbis_lpc.h; sourceTree = "<group>"; };
@@ -282,10 +292,9 @@
 		C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSPKernel.hpp; path = "harmonizr-dsp/DSPKernel.hpp"; sourceTree = SOURCE_ROOT; };
 		C9A443092428438800D4BB52 /* FilesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableViewController.swift; sourceTree = "<group>"; };
 		C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableViewCell.swift; sourceTree = "<group>"; };
-		C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C9B549AB2306DF9800E48112 /* TestAudioData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestAudioData.h; sourceTree = "<group>"; };
 		C9B61479211BD49600396B8D /* PresetListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetListViewController.swift; sourceTree = "<group>"; };
-		C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidiSettingsTableViewCell.swift; sourceTree = "<group>"; };
+		C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C9D1959321FFC604006ADB10 /* AudioUnit-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AudioUnit-BridgingHeader.h"; sourceTree = "<group>"; };
 		C9D2F8FB2071A5FA000783B2 /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/CoreAudioKit.framework; sourceTree = DEVELOPER_DIR; };
 		C9D2F8FC2071A5FA000783B2 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
@@ -415,15 +424,17 @@
 				C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */,
 				C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */,
 				C9FB18FE1FBC82DD00D36A5F /* ReverbViewController.swift */,
+				C96ED35C24312ED10059BBB8 /* AUParameterTableViewCell.swift */,
 				C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */,
-				C9AFB60E2040C73F007D5D5A /* AUParameterTableViewCell.swift */,
 				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
+				C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */,
 				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
 				C9A443092428438800D4BB52 /* FilesTableViewController.swift */,
 				C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */,
 				C96F203B20D7D3B200F43D90 /* BaseView.swift */,
 				91236D181B08F42B00734C5E /* LaunchScreen.storyboard */,
+				C93FE6D5243B8DC00068B036 /* SplashViewController.swift */,
 				91236D1B1B08F42B00734C5E /* Info.plist */,
 				C97F1B7F20D41121001C26E1 /* ColorTheme.swift */,
 			);
@@ -443,9 +454,9 @@
 				C971B43620FA92A40070F477 /* LabelButton.swift */,
 				C93163511FBCE81D00EE1762 /* HarmButton.swift */,
 				C96F204E20DC066700F43D90 /* ConfigNavigationController.swift */,
-				C96F204C20DB042800F43D90 /* ConfigDetailViewController.swift */,
-				C97B07E222275B7F002FAB96 /* MidiSettingsTableViewController.swift */,
-				C9C69F8824202D30007F1C90 /* MidiSettingsTableViewCell.swift */,
+				C96F204C20DB042800F43D90 /* SettingsViewController.swift */,
+				C97B07E222275B7F002FAB96 /* AuSettingsTableViewController.swift */,
+				C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */,
 				C96F204420D85CF200F43D90 /* HarmPageViewController.swift */,
 				C91216C2206998D200E6BB57 /* PresetController.swift */,
 				C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */,
@@ -454,6 +465,7 @@
 				C9EC31E52065B97D007835AB /* PresetFavoriteViewController.swift */,
 				91A9356A1B1269F100370383 /* HarmonizerView.swift */,
 				C9FA08BC20B315D6003CC2EA /* KeyboardView.swift */,
+				C9657D10243BABBC00D4EAEE /* midi.png */,
 				91236D591B08F52D00734C5E /* Info.plist */,
 				C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */,
 				C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */,
@@ -851,6 +863,7 @@
 				C94FC87C202C96F70009E742 /* AppIcon.appiconset in Resources */,
 				91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */,
 				91236D151B08F42B00734C5E /* Main.storyboard in Resources */,
+				C93FE6D4243B8CE20068B036 /* ItunesArtwork.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -860,6 +873,7 @@
 			files = (
 				C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */,
 				C9E48D9820DD457C00F36F9A /* Images.xcassets in Resources */,
+				C9657D11243BABBC00D4EAEE /* midi.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -869,6 +883,7 @@
 			files = (
 				C96F204720D9C1CC00F43D90 /* Images.xcassets in Resources */,
 				C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */,
+				C9657D12243BABBC00D4EAEE /* midi.png in Resources */,
 				916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -908,19 +923,20 @@
 			files = (
 				C96F204620D8606B00F43D90 /* HarmPageViewController.swift in Sources */,
 				C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */,
+				C9280B58243A8D67002C9ED3 /* FilesTableViewCell.swift in Sources */,
+				C93FE6D6243B8DC00068B036 /* SplashViewController.swift in Sources */,
 				C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
+				C9280B57243A8D63002C9ED3 /* FilesTableViewController.swift in Sources */,
 				C96F204220D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
 				91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */,
 				C946818E2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				91236D121B08F42B00734C5E /* ViewController.swift in Sources */,
-				C9AFB60F2040C73F007D5D5A /* AUParameterTableViewCell.swift in Sources */,
 				C980DB4723077725009BFE25 /* vorbis_lpc.c in Sources */,
-				C9A4430C24290D2400D4BB52 /* FilesTableViewCell.swift in Sources */,
+				C96ED35D24312ED10059BBB8 /* AUParameterTableViewCell.swift in Sources */,
 				C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */,
 				C9FB18FF1FBC82DD00D36A5F /* ReverbViewController.swift in Sources */,
 				C96F203C20D7D3B200F43D90 /* BaseView.swift in Sources */,
 				C902E6D4242956DE008CC016 /* MainMenuTableViewController.swift in Sources */,
-				C9A4430A2428438800D4BB52 /* FilesTableViewController.swift in Sources */,
 				91236D101B08F42B00734C5E /* AppDelegate.swift in Sources */,
 				C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */,
 			);
@@ -933,7 +949,7 @@
 				C971B43920FE2F710070F477 /* PresetSaveViewController.swift in Sources */,
 				91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */,
 				C99BB9CD2138D64A00D32324 /* DSPKernel.mm in Sources */,
-				C9C69F8924202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */,
+				C9C69F8924202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */,
 				C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */,
 				C93163531FBCE9A400EE1762 /* HarmButton.swift in Sources */,
 				C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */,
@@ -945,17 +961,19 @@
 				927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */,
 				C92AB161205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,
 				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
+				C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */,
 				C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */,
 				C96F204920DB02E400F43D90 /* HarmParameterTableView.swift in Sources */,
 				C946818F2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				C980DB4823077725009BFE25 /* vorbis_lpc.c in Sources */,
 				C91216C3206998D200E6BB57 /* PresetController.swift in Sources */,
 				C96F204320D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
-				C97B07E322275B7F002FAB96 /* MidiSettingsTableViewController.swift in Sources */,
+				C97B07E322275B7F002FAB96 /* AuSettingsTableViewController.swift in Sources */,
 				C96F203D20D7D3B200F43D90 /* BaseView.swift in Sources */,
-				C96F204D20DB042800F43D90 /* ConfigDetailViewController.swift in Sources */,
+				C96F204D20DB042800F43D90 /* SettingsViewController.swift in Sources */,
 				C96F204B20DB032B00F43D90 /* HarmParameterTableViewCell.swift in Sources */,
 				91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */,
+				C9280B56243A8D06002C9ED3 /* FilesTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -966,7 +984,7 @@
 				C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
 				C94681902190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */,
-				C9C69F8A24202D30007F1C90 /* MidiSettingsTableViewCell.swift in Sources */,
+				C9C69F8A24202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */,
 				91236D921B09439200734C5E /* HarmonizerViewController+AUAudioUnitFactory.swift in Sources */,
 				C92AB162205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,
 			);
@@ -1093,8 +1111,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1122,6 +1141,7 @@
 				PRODUCT_NAME = Harmonizer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1151,8 +1171,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1173,6 +1194,7 @@
 				PRODUCT_NAME = Harmonizer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1323,8 +1345,9 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1352,6 +1375,7 @@
 				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/matt/code/audioUnitExamples/Harmonizr/Shared/AudioUnit-BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1380,8 +1404,9 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1402,6 +1427,7 @@
 				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/matt/code/audioUnitExamples/Harmonizr/Shared/AudioUnit-BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1442,6 +1468,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_VERSION = 3.0;
 			};
@@ -1477,6 +1504,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};

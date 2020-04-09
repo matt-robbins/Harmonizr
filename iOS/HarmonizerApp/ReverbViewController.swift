@@ -8,23 +8,17 @@
 import Foundation
 import UIKit
 import AudioToolbox
+import HarmonizerFramework
 
 public class ReverbViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     
-    //@IBOutlet weak var presets: UIPickerView!
     @IBOutlet weak var paramTable: UITableView!
-    @IBOutlet weak var doneButton: UIButton!
-    
     @IBOutlet weak var presetTable: UITableView!
     var mixParam: AUParameter?
     var gainParam: AUParameter?
     var audioUnit: AUAudioUnit?
     
     var params = [AUParameter]()
-    
-    @IBAction func done(_ sender: Any) {
-        self.dismiss(animated: false, completion: nil)
-    }
     
     //MARK: UITableView
     

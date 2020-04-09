@@ -92,7 +92,7 @@ class GlowButton2: CALayer {
         backgroundColor = UIColor.clear.cgColor
         masksToBounds = false
         
-        textLayer.fontSize = 14
+        textLayer.fontSize = self.frame.height/5
         textLayer.alignmentMode = kCAAlignmentCenter
         textLayer.foregroundColor = UIColor.black.cgColor
         textLayer.backgroundColor = UIColor.white.cgColor
@@ -111,7 +111,7 @@ class GlowButton2: CALayer {
     
     override func layoutSublayers() {
         
-        var inset = 2
+        let inset = self.bounds.height/20
 //        if (isSelected)
 //        {
 //            inset = 4
@@ -120,8 +120,8 @@ class GlowButton2: CALayer {
         
         glowLayer.frame = self.bounds
         
-        glowLayer.cornerRadius = 5
-        textLayer.cornerRadius = 3
+        glowLayer.cornerRadius = self.bounds.height/10
+        textLayer.cornerRadius = self.bounds.height/20
         glowLayer.zPosition = 0.0
         textLayer.zPosition = 1.0
     }
@@ -136,7 +136,7 @@ class GlowButton2: CALayer {
                 self.glowLayer.shadowColor = tintColor
                 self.glowLayer.shadowOpacity = 1.0
                 self.glowLayer.opacity = 1.0
-                self.textLayer.borderWidth = 1
+                //self.textLayer.borderWidth = self.bounds.width/20
                 self.textLayer.borderColor = tintColor
                 self.zPosition = 1.0
             }
@@ -273,7 +273,7 @@ class HarmonizerView: UIView {
     var currentTriad = -1
     
     func setSelectedNote(_ note: Float) {
-        let n = keybuttons.count
+        //let n = keybuttons.count
         
         let curr_note = Int(round(note))
 
@@ -496,8 +496,9 @@ class HarmonizerView: UIView {
                     
                     keybuttons[j*12 + i].frame = CGRect(x: CGFloat(i) * spacing + keyoffset, y: maxheight - height, width: keywidth, height: keyheight)
                     
-                    keybuttons[j*12 + i].textLayer.fontSize = min(14, keyheight * 0.5)
-                    
+                    keybuttons[j*12 + i].textLayer.fontSize = min(14, keyheight * 0.25)
+//                    keybuttons[j*12 + i].borderWidth = keyheight/20
+//                    keybuttons[j*12 + i].cornerRadius = keyheight/10
                     //keybuttons[j*12 + i].mask!.frame = keybuttons[j*12 + i].bounds
                 }
             }

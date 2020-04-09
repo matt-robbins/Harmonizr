@@ -152,7 +152,7 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
             stepper.maximumValue = 11
             stepper.stepValue = 1
             stepper.value = Double(scaleDegree)
-            degreeLabel = cell?.viewWithTag(101) as! UILabel
+            degreeLabel = cell?.viewWithTag(101) as? UILabel
             degreeLabel.text = "\(degreenames[scaleDegree])"
             
             cell?.textLabel?.isEnabled = !fixedIntervals
@@ -167,7 +167,7 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
             
             cell?.textLabel?.text = "Show/Hear with Key Root"
             
-            rootLabel = cell?.viewWithTag(101) as! UILabel
+            rootLabel = cell?.viewWithTag(101) as? UILabel
             rootLabel.text = "\(keynames[keyRoot])"
             
             let stepper = cell?.viewWithTag(102) as! UIStepper

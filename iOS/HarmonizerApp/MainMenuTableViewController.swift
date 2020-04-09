@@ -14,7 +14,7 @@ enum sectionHeader:Int {
 
 class MainMenuTableViewController: UITableViewController {
 
-    let controllers = ["reverbController","inputController"]
+    let controllers = ["reverbController","inputController","filesController"]
     
     //let images = [UIImage(systemName: "dot.radiowaves.left.and.right"),UIImage(systemName: "mic")]
     var rootViewController:UIViewController!
@@ -61,7 +61,10 @@ class MainMenuTableViewController: UITableViewController {
         switch (sectionHeader(rawValue: indexPath.section))
         {
         case .controllers:
-            guard let vc = self.storyboard?.instantiateViewController(withIdentifier: controllers[indexPath.row]) else { return cell }
+            guard let vc = self.storyboard?.instantiateViewController(withIdentifier: controllers[indexPath.row]) else {
+                return cell
+            }
+            
             cell.accessoryType = .disclosureIndicator
             cell.textLabel?.text = vc.title
         case .bluetooth:
@@ -92,10 +95,10 @@ class MainMenuTableViewController: UITableViewController {
                 self.show(rc, sender: self)
                 return
             }
-            if (vc is FilesTableViewController)
-            {
-                (vc as! FilesTableViewController).audioEngine = audioEngine
-            }
+//            if (vc is FilesTableViewController)
+//            {
+//                (vc as! FilesTableViewController).audioEngine = audioEngine
+//            }
             self.show(vc, sender: self)
             
         case .bluetooth:
@@ -113,17 +116,13 @@ class MainMenuTableViewController: UITableViewController {
             if (bgmode)
             {
                 let alert = UIAlertController(title: "Background Mode On", message: explain, preferredStyle: .alert)
-                
                 alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-                
                 self.present(alert, animated: true)
             }
             else
             {
                 let alert = UIAlertController(title: "Background Mode Off", message: explain, preferredStyle: .alert)
-                
                 alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-                
                 self.present(alert, animated: true)
             }
         

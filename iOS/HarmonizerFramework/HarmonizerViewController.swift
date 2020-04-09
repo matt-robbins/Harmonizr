@@ -23,9 +23,10 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     @IBOutlet weak var keyboardView: KeyboardView!
     @IBOutlet weak var recordButton: HarmButton!
     
+    @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var keyboardStack: UIStackView!
     @IBOutlet weak var midiButton: HarmButton!
-    @IBOutlet weak var autoButton: HarmButton!
+    @IBOutlet weak var videoButton: HarmButton!
     @IBOutlet weak var dryButton: HarmButton!
     @IBOutlet weak var presetButton: LabelButton!
     
@@ -49,7 +50,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         audio unit is created independently, and passed to the view controller here.
 	*/
     
-    public var recordingDelegate: RecordingDelegate?
+    public var interfaceDelegate: InterfaceDelegate?
     
     public var audioUnit: AUv3Harmonizer? {
         didSet {
@@ -70,7 +71,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             globalAudioUnit = audioUnit
         }
     }
-	
+    	
     var keycenterParameter: AUParameter?
     var inversionParameter: AUParameter?
     var nvoicesParameter: AUParameter?
@@ -164,6 +165,16 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         //configController!.viewDelegate = self
         saveController!.presetController = presetController
         
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        let icon = (defaults?.bool(forKey: "recordVideo") ?? false) ? "video.fill" : "circle.fill"
+        
+        if #available(iOSApplicationExtension 13.0, *) {
+            videoButton!.setImage(UIImage(systemName: icon), for: .normal)
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        
         //let _: UIView = configController!.view
         
         //configController!.presetController = presetController
@@ -188,6 +199,11 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         syncView()
+    }
+    
+    func getVideoView() -> UIView
+    {
+        return self.videoView
     }
     
     func checkPresetModified() {
@@ -302,14 +318,13 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         if (audioUnit != nil)
         {
             midiButton.isSelected = (midiParameter!.value == 1)
-            autoButton.isSelected = (autoParameter!.value == 1)
             dryButton.isSelected = (hgainParameter!.value == 0)
             kbdLinkButton.isSelected = (midiLinkParameter!.value == 1)
             
             enableKeyboard(midiButton.isSelected)
             
             //print(audioUnit?.getCurrentInversion())
-            voicesView.autoTuneVoice1 = autoButton.isSelected
+            voicesView.autoTuneVoice1 = (autoParameter?.value ?? 0.0) > 0.5
             voicesView.setSelectedVoices(Int(audioUnit?.getCurrentNumVoices() ?? 0), inversion: Int(audioUnit?.getCurrentInversion() ?? 0))
             
             voicesView.alpha = dryButton.isSelected ? 0.5 : 1.0
@@ -362,12 +377,12 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     //MARK: Actions
     
-    @IBAction func toggleAuto(_ sender: Any) {
-        autoParameter!.value = autoParameter!.value == 0 ? 1 : 0
-        autoButton.isSelected = autoParameter!.value == 1
-        voicesView.autoTuneVoice1 = autoParameter!.value == 1
-        checkPresetModified()
-    }
+//    @IBAction func toggleAuto(_ sender: Any) {
+//        autoParameter!.value = autoParameter!.value == 0 ? 1 : 0
+//        autoButton.isSelected = autoParameter!.value == 1
+//        voicesView.autoTuneVoice1 = autoParameter!.value == 1
+//        checkPresetModified()
+//    }
     
     @IBAction func toggleMidi(_ sender: Any) {
         midiParameter!.value = midiParameter!.value == 0 ? 1 : 0
@@ -423,7 +438,20 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     }
     
     @IBAction func toggleRecording(_ sender: Any) {
-        recordingDelegate!.didToggleRecording(true)
+        let rec = interfaceDelegate?.didToggleRecording(true) ?? false
+        print(rec)
+        let animation = CABasicAnimation(keyPath: "opacity")
+        animation.fromValue = 1
+        animation.toValue = 0
+        animation.autoreverses = true
+        animation.repeatCount = .infinity
+        let iv = videoButton.imageView
+        
+        iv?.layer.removeAllAnimations()
+        if (rec)
+        {
+            iv?.layer.add(animation,forKey:"borderPulse")
+        }
     }
     
     @IBAction func setPreset(_ sender: HarmButton) {
@@ -452,7 +480,6 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     func ccValue(_ value: Int32, forCc cc: Int32) {
         syncView()
-        print(self.inversionParameter?.value)
     }
     
     func ShowMainView() {
@@ -497,6 +524,13 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         else if segue.identifier == "presetList" {
             if let destinationVC = segue.destination as? PresetListViewController {
                 destinationVC.presetController = presetController
+            }
+        }
+        
+        else if segue.identifier == "showSettings" {
+            if let destinationVC = segue.destination as? SettingsViewController {
+                destinationVC.reverbAudioUnit = interfaceDelegate?.getReverbUnit()
+                destinationVC.interfaceDelegate = interfaceDelegate
             }
         }
     }

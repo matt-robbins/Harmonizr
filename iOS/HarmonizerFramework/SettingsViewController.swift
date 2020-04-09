@@ -7,8 +7,9 @@
 
 import UIKit
 import SafariServices
+import CoreAudioKit
 
-class ConfigListViewController: UITableViewController {
+class SettingsViewController: UITableViewController {
     
     var keycenterParameter: AUParameter?
     var inversionParameter: AUParameter?
@@ -43,16 +44,21 @@ class ConfigListViewController: UITableViewController {
     @IBOutlet weak var levelStepper: UIStepper!
     @IBOutlet weak var levelLabel: UILabel!
     
+    @IBOutlet weak var corrSwitch: UISwitch!
     @IBOutlet weak var corrStepper: UIStepper!
     @IBOutlet weak var corrLabel: UILabel!
     
     @IBOutlet weak var tuningLabel: UILabel!
+    @IBOutlet weak var tuningStepper: UIStepper!
     
     @IBOutlet weak var showKeyboardSwitch: UISwitch!
     @IBOutlet weak var aboutLink: UITableViewCell!
     
     @IBOutlet weak var showTouchSwitch: UISwitch!
     var defaults: UserDefaults?
+    
+    var reverbAudioUnit: AUAudioUnit?
+    var interfaceDelegate: InterfaceDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +88,9 @@ class ConfigListViewController: UITableViewController {
         threshLabel.text = "\(threshParameter!.value)"
         
         tuningLabel.text = "\(tuningParameter!.value) Hz"
+        tuningStepper.value = Double(tuningParameter!.value)
         
+        corrSwitch.isOn = autoParameter!.value > 0.5
         corrStepper.value = Double(autoStrengthParameter!.value * 100)
         corrLabel.text = "\(Int(corrStepper.value)) %"
         
@@ -108,42 +116,125 @@ class ConfigListViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    /*
+    
      // MARK: - Navigation
      
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destinationViewController.
      // Pass the selected object to the new view controller.
+        
+        switch segue.identifier {
+        case "showReverb":
+            let vc = segue.destination as! AuSettingsTableViewController
+            vc.settings = ["0","1"]
+            vc.showPresets(true)
+            vc.title = "Reverb Settings"
+            vc.audioUnit = reverbAudioUnit
+        case "showMidi":
+            let vc = segue.destination as! AuSettingsTableViewController
+            vc.title = "MIDI Settings"
+            vc.showPresets(false)
+            vc.settings = ["keycenter_cc", "keycenter_cc_offset","keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
+            vc.audioUnit = globalAudioUnit
+            
+        default:
+            break
+        }
+        
      }
-     */
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+
+        switch (cell.reuseIdentifier)
+        {
+        case "recordMode":
+            let enable = (defaults?.bool(forKey: "recordMode") ?? false)
+            cell.accessoryType = enable ? .checkmark : .none
+        case "recordCamera":
+            let enable = (defaults?.bool(forKey: "cameraEnable") ?? false)
+            cell.accessoryType = enable ? .checkmark : .none
+        case "bgMode":
+            let bgmode = (defaults?.bool(forKey: "bgModeEnable") ?? false)
+            cell.accessoryType = bgmode ? .checkmark : .none
+        default:
+            break
+        }
+        
+        return cell
+    }
+     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if (indexPath.section == 0)
+        let cell = tableView.cellForRow(at: indexPath)
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        
+        switch (cell?.reuseIdentifier)
         {
-            if (indexPath.row == 0)
+        case "showHarmony":
+            self.performSegue(withIdentifier: "showHarmony", sender: self)
+        case "showReverb":
+            self.performSegue(withIdentifier: "showReverb", sender: self)
+        case "showInput":
+            let vc = interfaceDelegate?.getInputViewController()
+            if (vc != nil)
             {
-                self.performSegue(withIdentifier: "showHarmony", sender: self)
+                self.show(vc!, sender: self)
             }
-            
-            if (indexPath.row == 8)
+            break
+        case "showBtMidi":
+            let btMidiViewController = CABTMIDICentralViewController()
+            btMidiViewController.view.backgroundColor = UIColor.black
+
+            self.show(btMidiViewController, sender: self)
+        case "stereoMode":
+            if (stereoParameter?.maxValue == stereoParameter?.value)
             {
-                if (stereoParameter?.maxValue == stereoParameter?.value)
-                {
-                    stereoParameter?.value = 0
-                }
-                else
-                {
-                    stereoParameter?.value = (stereoParameter?.value ?? 0) + 1
-                }
-                stereoModeLabel.text = stereoParameter?.valueStrings?[Int(stereoParameter?.value ?? 0)]
+                stereoParameter?.value = 0
             }
-        }
-        if (indexPath.section == 1 && indexPath.row == 2)
-        {
+            else
+            {
+                stereoParameter?.value = (stereoParameter?.value ?? 0) + 1
+            }
+            stereoModeLabel.text = stereoParameter?.valueStrings?[Int(stereoParameter?.value ?? 0)]
+        case "recordCamera":
+            let enable = !(defaults?.bool(forKey: "cameraEnable") ?? false)
+            defaults?.set(enable, forKey: "cameraEnable")
+            cell?.accessoryType = enable ? .checkmark : .none
+            self.tableView.reloadData()
+        case "aboutLink":
             let svc = SFSafariViewController(url: URL(string: "http://www.harmonizr.com/help")!)
             present(svc, animated: true, completion: nil)
+        case "bgMode":
+            let explain = "Background mode allows Harmonizr to run while you're using other apps, " +
+                    "such as MIDI controllers, or if you want to use Harmonizr as an Inter-App Audio effect.  " +
+                    "Leaving Backround mode on will decrease battery life."
+                
+            
+            let bgmode = !(defaults?.bool(forKey: "bgModeEnable") ?? false)
+            if (bgmode)
+            {
+                let alert = UIAlertController(title: "Background Mode On", message: explain, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+                self.present(alert, animated: true)
+                cell?.accessoryType = .checkmark
+            }
+            else
+            {
+                let alert = UIAlertController(title: "Background Mode Off", message: explain, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+                self.present(alert, animated: true)
+                cell?.accessoryType = .none
+            }
+        
+            
+            defaults?.set(bgmode, forKey: "bgModeEnable")
+            self.tableView.reloadData()
+        default:
+            break;
         }
     }
     
@@ -165,6 +256,9 @@ class ConfigListViewController: UITableViewController {
     @IBAction func harmonyLevel(_ sender: UIStepper) {
         hgainParameter!.value = AUValue(sender.value / 100)
         levelLabel.text = "\(Int(sender.value))%"
+    }
+    @IBAction func corrEnable(_ sender: UISwitch) {
+        autoParameter!.value = sender.isOn ? 1 : 0
     }
     @IBAction func corrStrength(_ sender: UIStepper) {
         autoStrengthParameter!.value = AUValue(sender.value / 100)

@@ -18,10 +18,13 @@ enum tags
 @IBDesignable
 class HarmButton: UIButton {
     
+    var alayer = CALayer()
+    
     @IBInspectable var keycenter: Int = 0
     
     @IBInspectable var cornerRadius: CGFloat = 6 {
         didSet {
+            alayer.cornerRadius = cornerRadius
             layer.cornerRadius = cornerRadius
         }
     }
@@ -30,8 +33,8 @@ class HarmButton: UIButton {
         didSet {
             if (isSelected)
             {
-                layer.borderColor = highlightColor
-                layer.shadowColor = highlightColor
+                alayer.borderColor = highlightColor
+                alayer.shadowColor = highlightColor
             }
         }
     }
@@ -43,13 +46,13 @@ class HarmButton: UIButton {
     {
         if (border)
         {
-            layer.borderWidth = borderWidth
-            layer.shadowRadius = shadowRadius
+            alayer.borderWidth = borderWidth
+            alayer.shadowRadius = shadowRadius
         }
         else
         {
-            layer.borderWidth = 0
-            layer.shadowRadius = 0
+            alayer.borderWidth = 0
+            alayer.shadowRadius = 0
         }
     }
     
@@ -73,16 +76,24 @@ class HarmButton: UIButton {
         }
         
         //setTitleColor(.white, for: .disabled)
-        layer.shadowColor = highlightColor
-        layer.cornerRadius = cornerRadius
-        layer.borderWidth = borderWidth
-        layer.borderColor = UIColor.darkGray.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowRadius = shadowRadius
+        
+        layer.addSublayer(alayer)
+                
+        cornerRadius = frame.height/10
+        borderWidth = frame.height/20
+        alayer.backgroundColor = layer.backgroundColor
+        alayer.shadowColor = highlightColor
+        alayer.cornerRadius = cornerRadius
+        alayer.borderWidth = borderWidth
+        alayer.borderColor = UIColor.darkGray.cgColor
+        alayer.shadowOffset = CGSize(width: 0, height: 0)
+        alayer.shadowRadius = shadowRadius
         layer.masksToBounds = false
-        showsTouchWhenHighlighted = true
+        alayer.masksToBounds = false
+        //showsTouchWhenHighlighted = true
         
         self.titleLabel!.minimumScaleFactor = 0.1
+        isSelected = false
         //self.titleLabel!.adjustsFontSizeToFitWidth = true
     }
     
@@ -109,9 +120,22 @@ class HarmButton: UIButton {
             }
             //let font = titleLabel!.font
             //titleLabel!.font = UIFont(name: (font?.description)!, size: frame.height / 2)
-            
+            if (isHighlighted || isSelected)
+            {
+                cornerRadius = frame.width/10
+                borderWidth = frame.width/15
+            }
+            else
+            {
+                cornerRadius = frame.width/10
+                borderWidth = frame.width/20
+            }
             enableBorder(border)
+            alayer.frame = layer.bounds
+            
+            //configure()
         }
+        
         
         super.layoutSubviews()
     }
@@ -132,31 +156,47 @@ class HarmButton: UIButton {
     
     override var isHighlighted: Bool {
         didSet {
+            CATransaction.begin()
             switch isHighlighted {
             case true:
-                layer.borderColor = highlightColor
-                layer.shadowOpacity = 1.0
+                CATransaction.setAnimationDuration(0.05)
+                alayer.borderColor = highlightColor
+                alayer.borderWidth = frame.width/15
+                alayer.shadowOpacity = 1.0
                 superview?.bringSubview(toFront: self)
             case false:
-                if isSelected { return }
-                layer.borderColor = UIColor.darkGray.cgColor
-                layer.shadowOpacity = 0.0
+                
+                CATransaction.setAnimationDuration(0.2)
+                alayer.borderWidth = frame.width/20
+                if (!isSelected)
+                {
+                    alayer.borderColor = UIColor.darkGray.cgColor
+                    alayer.shadowOpacity = 0.0
+                }
             }
+            CATransaction.commit()
         }
     }
     
     override var isSelected: Bool {
         didSet {
+            alayer.removeAllAnimations()
+            CATransaction.begin()
             switch isSelected {
             case true:
-                layer.shadowColor = highlightColor
-                layer.borderColor = highlightColor
-                layer.shadowOpacity = 1.0
+                CATransaction.setAnimationDuration(0.05)
+                alayer.shadowColor = highlightColor
+                alayer.borderColor = highlightColor
+                alayer.shadowOpacity = 1.0
+                alayer.borderWidth = frame.width/20
                 superview?.bringSubview(toFront: self)
             case false:
-                layer.borderColor = UIColor.darkGray.cgColor
-                layer.shadowOpacity = 0.0
+                CATransaction.setAnimationDuration(0.2)
+                alayer.borderColor = UIColor.darkGray.cgColor
+                alayer.borderWidth = frame.width/20
+                alayer.shadowOpacity = 0.0
             }
+            CATransaction.commit()
         }
     }
     
@@ -170,6 +210,7 @@ class HarmButton: UIButton {
             }
         }
     }
+
     
     public var isBeingPlayed: Bool = false {
         didSet {
@@ -177,8 +218,8 @@ class HarmButton: UIButton {
             case true:
                 //layer.borderColor = UIColor.red.cgColor
                 //setTitleColor(.red, for: UIControlState())
-                layer.shadowColor = UIColor.red.cgColor
-                layer.shadowOpacity = 1.0
+                alayer.shadowColor = UIColor.red.cgColor
+                alayer.shadowOpacity = 1.0
                 superview?.bringSubview(toFront: self)
             case false:
                 isSelected = isSelected && true

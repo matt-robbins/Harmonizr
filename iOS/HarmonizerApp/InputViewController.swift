@@ -16,6 +16,7 @@ import Foundation
 import UIKit
 import AudioToolbox
 import AVFoundation
+import HarmonizerFramework
 
 public class InputViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     

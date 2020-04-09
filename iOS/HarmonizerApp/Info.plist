@@ -47,10 +47,12 @@
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>To use Bluetooth MIDI devices.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Harmonizer would like to be able to record video clips!</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>I need to hear your beautiful voice.  Please use a headset for best results!</string>
-    <key>NSBluetoothAlwaysUsageDescription</key>
-    <string>To use Bluetooth MIDI devices.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -70,6 +72,7 @@
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

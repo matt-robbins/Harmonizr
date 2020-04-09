@@ -38,67 +38,71 @@ class AudioEngine2: NSObject {
         return noErr
     }
     
-    override init() {
-        
+    func setupAudioSession()
+    {
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
         do {
             //try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.mixWithOthers])
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP, .mixWithOthers])
             //try session.setMode(AVAudioSessionModeMeasurement)
-            try session.setPreferredIOBufferDuration(128/44000.0)
-            try session.setPreferredSampleRate(44100.0)
+            try session.setPreferredIOBufferDuration(128/48000.0)
+            try session.setPreferredSampleRate(48000.0)
             try session.setActive(true)
         }
         catch {
             fatalError("Can't configure audio session.")
         }
         #endif
+    }
+    
+    override init() {
         
         super.init()
         
+        setupAudioSession()
+        
         self.reverbUnit = reverbUnitNode.auAudioUnit
         
-        // set up listener for inter-app audio configuration changes, since hte API is ugly, use a semaphore to trigger
+        // set up listener for inter-app audio configuration changes, since the API is ugly, use a semaphore to trigger
         // a thread with access to a proper swift context
-        
-        DispatchQueue.global(qos: .background).async {
-            while true {
-                self.sem.wait()
-                var connected: UInt32 = 0
-                var data_size: UInt32 = 4
-                AudioUnitGetProperty(self.engine.outputNode.audioUnit!, kAudioUnitProperty_IsInterAppConnected, kAudioUnitScope_Global, AudioUnitElement(0), &connected, &data_size)
-                
-                self.engine.stop()
-                
-                do {
-                    try AVAudioSession.sharedInstance().setActive(true)
-                    try self.engine.start()
-                }
-                catch {
-                    print("unable to start Audio Engine!!!: \(error)")
-                }
-            }
-        }
-        
-        let proc: AudioUnitPropertyListenerProc = { (inRefCon, inUnit, inID, inScope, inElement) in
-            let sem = inRefCon.assumingMemoryBound(to: DispatchSemaphore.self).pointee
-            sem.signal()
-        }
-        
-        AudioUnitAddPropertyListener(self.engine.outputNode.audioUnit!,kAudioUnitProperty_IsInterAppConnected, proc,UnsafeMutableRawPointer(&sem))
-        
-        var iaa_desc = AudioComponentDescription()
-        iaa_desc.componentType = kAudioUnitType_RemoteEffect
-        iaa_desc.componentSubType = 0x4861726d /*'Harm'*/
-        iaa_desc.componentManufacturer = 0x4d724678 /*'MrFx'*/
-        iaa_desc.componentFlags = 0
-        iaa_desc.componentFlagsMask = 0
-        
-        AudioOutputUnitPublish(&iaa_desc,"MrFx: Harmonizer" as CFString,1,self.engine.outputNode.audioUnit!)
-    
+        #if os(iOS)
+//        DispatchQueue.global(qos: .background).async {
+//            while true {
+//                self.sem.wait()
+//                var connected: UInt32 = 0
+//                var data_size: UInt32 = 4
+//                AudioUnitGetProperty(self.engine.outputNode.audioUnit!, kAudioUnitProperty_IsInterAppConnected, kAudioUnitScope_Global, AudioUnitElement(0), &connected, &data_size)
+//
+//                self.engine.stop()
+//
+//                do {
+//                    try AVAudioSession.sharedInstance().setActive(true)
+//                    try self.engine.start()
+//                }
+//                catch {
+//                    print("unable to start Audio Engine!!!: \(error)")
+//                }
+//            }
+//        }
+//
+//        let proc: AudioUnitPropertyListenerProc = { (inRefCon, inUnit, inID, inScope, inElement) in
+//            let sem = inRefCon.assumingMemoryBound(to: DispatchSemaphore.self).pointee
+//            sem.signal()
+//        }
+//
+//        AudioUnitAddPropertyListener(self.engine.outputNode.audioUnit!,kAudioUnitProperty_IsInterAppConnected, proc,UnsafeMutableRawPointer(&sem))
+//
+//        var iaa_desc = AudioComponentDescription()
+//        iaa_desc.componentType = kAudioUnitType_RemoteEffect
+//        iaa_desc.componentSubType = 0x4861726d /*'Harm'*/
+//        iaa_desc.componentManufacturer = 0x4d724678 /*'MrFx'*/
+//        iaa_desc.componentFlags = 0
+//        iaa_desc.componentFlagsMask = 0
+//
+//        AudioOutputUnitPublish(&iaa_desc,"MrFx: Harmonizer" as CFString,1,self.engine.outputNode.audioUnit!)
+        #endif
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
-        
 //        NotificationCenter.default.addObserver(forName: NSNotification.Name(String(kAudioComponentInstanceInvalidationNotification)), object: nil, queue: nil) { [weak self] notification in
 //            //guard let strongSelf = self else { return }
 //            /*
@@ -253,7 +257,10 @@ class AudioEngine2: NSObject {
     
     func start()
     {
+        //self.engine.attach(self.harmUnitNode!)
+        //setupAudioSession()
         self.connectNodes()
+        
         do {
             try engine.start()
         }
@@ -265,6 +272,7 @@ class AudioEngine2: NSObject {
     func stop()
     {
         self.engine.stop()
+        //self.engine.detach(self.harmUnitNode!)
     }
     
     func loadComponent(componentDescription: AudioComponentDescription, completionHandler: @escaping ((AUAudioUnit) -> Void))
