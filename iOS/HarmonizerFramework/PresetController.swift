@@ -249,8 +249,6 @@ class PresetController: NSObject {
             print("failed to fetch. \(error), \(error.userInfo)")
         }
         
-        //selectPreset(preset: presetIx)
-        
         if (presets.count == 0)
         {
             generatePresets()
@@ -259,6 +257,7 @@ class PresetController: NSObject {
         }
         
         updateFactoryPresets()
+        selectPreset(preset: presetIx)
     }
     
     func updateFactoryPresets()

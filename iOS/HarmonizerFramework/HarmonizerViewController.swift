@@ -101,11 +101,15 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         }
     }
 
-    var timer = Timer()
+    var updater:CADisplayLink? = nil
     
     func auPoller(T: Float){
         // Scheduling timer to Call the timerFunction
-        timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(timerFunction), userInfo: nil, repeats: true)
+//        timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(timerFunction), userInfo: nil, repeats: true)
+        
+        updater = CADisplayLink(target: self, selector: #selector(timerFunction))
+        updater?.add(to: .current, forMode: .defaultRunLoopMode)
+        updater?.isPaused = false
     }
     
     @objc func timerFunction()
@@ -165,16 +169,22 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         //configController!.viewDelegate = self
         saveController!.presetController = presetController
         
-        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
-        let icon = (defaults?.bool(forKey: "recordVideo") ?? false) ? "video.fill" : "circle.fill"
+        videoButton.isEnabled = (interfaceDelegate != nil)
         
-        if #available(iOSApplicationExtension 13.0, *) {
-            videoButton!.setImage(UIImage(systemName: icon), for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
+        let midiImage = KeyboardView()
+        midiImage.isUserInteractionEnabled = false
+        midiImage.keyOffset = 14
+        midiImage.n_visible = 3
+        midiImage.labels = false
+        midiImage.translatesAutoresizingMaskIntoConstraints = false
+        midiButton.addSubview(midiImage)
         
+        midiImage.centerXAnchor.constraint(equalTo: midiButton.centerXAnchor).isActive = true
+        midiImage.centerYAnchor.constraint(equalTo: midiButton.centerYAnchor).isActive = true
+        midiImage.widthAnchor.constraint(equalTo: midiButton.widthAnchor, multiplier: 0.66).isActive = true
+        midiImage.heightAnchor.constraint(equalTo: midiButton.heightAnchor, multiplier: 0.66).isActive = true
         
+        //midiButton.bringSubview(toFront: midiImage)
         //let _: UIView = configController!.view
         
         //configController!.presetController = presetController
@@ -198,6 +208,14 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        let icon = (defaults?.bool(forKey: "recordVideo") ?? false) ? "video.fill" : "circle.fill"
+        
+        if #available(iOSApplicationExtension 13.0, *) {
+            videoButton!.setImage(UIImage(systemName: icon), for: .normal)
+        } else {
+            // Fallback on earlier versions
+        }
         syncView()
     }
     
@@ -283,9 +301,10 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
         print(hgainParameter!.value)
         presetController!.audioUnit = audioUnit
+        presetController!.restoreState()
         presetController!.loadPresets()
         print("index = \(presetController!.presetIx)")
-        presetController!.restoreState()
+        
         
         //presetState = presetController!.getPreset()
         
@@ -438,20 +457,64 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     }
     
     @IBAction func toggleRecording(_ sender: Any) {
-        let rec = interfaceDelegate?.didToggleRecording(true) ?? false
-        print(rec)
+        
+        if (videoButton.tag == 1)
+        {
+            videoButton.tag = 0
+            let vc = interfaceDelegate?.getFilesViewController()
+            if (vc != nil)
+            {
+                self.show(vc!, sender: self)
+            }
+            if #available(iOSApplicationExtension 13.0, *) {
+                videoButton.setImage(UIImage(systemName: "circle.fill"), for: .normal)
+                videoButton.tintColor = UIColor.red
+            } else {
+                // Fallback on earlier versions
+            }
+            return
+        }
+        
+        
         let animation = CABasicAnimation(keyPath: "opacity")
         animation.fromValue = 1
         animation.toValue = 0
         animation.autoreverses = true
         animation.repeatCount = .infinity
         let iv = videoButton.imageView
-        
         iv?.layer.removeAllAnimations()
-        if (rec)
-        {
+        
+        let rec = interfaceDelegate?.didToggleRecording() ?? .idle
+        print(rec)
+        
+        switch (rec) {
+        case .standby:
             iv?.layer.add(animation,forKey:"borderPulse")
+        case .recording:
+            if #available(iOSApplicationExtension 13.0, *) {
+                videoButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
+            } else {
+                // Fallback on earlier versions
+            }
+        case .idle:
+            if #available(iOSApplicationExtension 13.0, *) {
+                videoButton.setImage(UIImage(systemName: "video.fill"), for: .normal)
+            } else {
+                // Fallback on earlier versions
+            }
         }
+        
+        if (interfaceDelegate?.recordingsAvailable() ?? false)
+        {
+            if #available(iOSApplicationExtension 13.0, *) {
+                videoButton.setImage(UIImage(systemName: "folder"), for: .normal)
+                videoButton.tintColor = UIColor.yellow
+            } else {
+                // Fallback on earlier versions
+            }
+            videoButton.tag = 1
+        }
+
     }
     
     @IBAction func setPreset(_ sender: HarmButton) {

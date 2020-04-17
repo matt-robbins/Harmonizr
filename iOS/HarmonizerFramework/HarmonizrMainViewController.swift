@@ -11,14 +11,16 @@ import os
 import Foundation
 import AVFoundation
 
-public var globalAudioUnit: AUv3Harmonizer?
-
 public protocol InterfaceDelegate {
-    func didToggleRecording(_ onOff:Bool) -> Bool
+    func didToggleRecording() -> recordingState
+    func recordingsAvailable() -> Bool
     func getReverbUnit() -> AUAudioUnit?
     func getInputViewController() -> UIViewController?
+    func getFilesViewController() -> UIViewController?
     func showNavBar(_ show:Bool)
 }
+
+public var globalAudioUnit: AUv3Harmonizer?
 
 public class HarmonizrMainViewController: AUViewController, UINavigationControllerDelegate {
 

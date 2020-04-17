@@ -67,6 +67,8 @@ class Key: CATextLayer {
         let fontSize = self.fontSize
         let yDiff = height - 2*fontSize
         
+//        cornerRadius = frame.width/10.0
+//        borderWidth = frame.width/50.0
         ctx.saveGState()
         ctx.translateBy(x: 0.0, y: yDiff)
         super.draw(in: ctx)
@@ -269,6 +271,8 @@ class KeyboardView: UIView {
         {
             wkeys[i].frame = CGRect(x: CGFloat(i) * spacing, y: top, width: spacing, height: layer.frame.height)
             wkeys[i].fontSize = min(14, wkeys[i].frame.width / 4)
+            wkeys[i].cornerRadius = spacing/10.0
+            wkeys[i].borderWidth = spacing/50.0
         }
         
         for i in 0...bkeys.count-1
@@ -290,6 +294,8 @@ class KeyboardView: UIView {
                 offset += 0
             }
             bkeys[i].frame = CGRect(x: CGFloat(1 + k + s + 7 * oct) * spacing - offset, y: top, width: bkwidth, height: layer.frame.height*3/5)
+            bkeys[i].cornerRadius = spacing/10.0
+            bkeys[i].borderWidth = spacing/50.0
         }
         
         var ix = 0

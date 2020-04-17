@@ -154,7 +154,19 @@ class SettingsViewController: UITableViewController {
             let enable = (defaults?.bool(forKey: "recordMode") ?? false)
             cell.accessoryType = enable ? .checkmark : .none
         case "recordCamera":
-            let enable = (defaults?.bool(forKey: "cameraEnable") ?? false)
+            var enable = (defaults?.bool(forKey: "cameraEnable") ?? false)
+            cell.accessoryType = enable ? .checkmark : .none
+            enable = (defaults?.bool(forKey: "recordVideo") ?? false)
+            cell.isUserInteractionEnabled = enable
+            cell.textLabel?.isEnabled = enable
+        case "showReverb":
+            cell.isUserInteractionEnabled = (reverbAudioUnit != nil)
+            cell.textLabel?.isEnabled = cell.isUserInteractionEnabled
+        case "showInput":
+            cell.isUserInteractionEnabled = (interfaceDelegate?.getInputViewController() != nil)
+            cell.textLabel?.isEnabled = cell.isUserInteractionEnabled
+        case "recordScreen":
+            let enable = (defaults?.bool(forKey: "recordVideo") ?? false)
             cell.accessoryType = enable ? .checkmark : .none
         case "bgMode":
             let bgmode = (defaults?.bool(forKey: "bgModeEnable") ?? false)
@@ -185,6 +197,13 @@ class SettingsViewController: UITableViewController {
                 self.show(vc!, sender: self)
             }
             break
+        case "showFiles":
+            let vc = interfaceDelegate?.getFilesViewController()
+            if (vc != nil)
+            {
+                self.show(vc!, sender: self)
+            }
+            break
         case "showBtMidi":
             let btMidiViewController = CABTMIDICentralViewController()
             btMidiViewController.view.backgroundColor = UIColor.black
@@ -203,6 +222,11 @@ class SettingsViewController: UITableViewController {
         case "recordCamera":
             let enable = !(defaults?.bool(forKey: "cameraEnable") ?? false)
             defaults?.set(enable, forKey: "cameraEnable")
+            cell?.accessoryType = enable ? .checkmark : .none
+            self.tableView.reloadData()
+        case "recordScreen":
+            let enable = !(defaults?.bool(forKey: "recordVideo") ?? false)
+            defaults?.set(enable, forKey: "recordVideo")
             cell?.accessoryType = enable ? .checkmark : .none
             self.tableView.reloadData()
         case "aboutLink":

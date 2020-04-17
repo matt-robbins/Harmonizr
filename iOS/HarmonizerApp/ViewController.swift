@@ -23,6 +23,23 @@ extension UINavigationController {
     }
 }
 
+class PreviewView: UIView {
+    override class var layerClass: AnyClass {
+        return AVCaptureVideoPreviewLayer.self
+    }
+    
+    /// Convenience wrapper to get layer as its statically known type.
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
+        return layer as! AVCaptureVideoPreviewLayer
+    }
+}
+
+class WindowViewController: UIViewController {
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+}
+
 class ViewController: UIViewController, InterfaceDelegate {
     // MARK: Properties
 
@@ -63,7 +80,7 @@ class ViewController: UIViewController, InterfaceDelegate {
     var reverbMixParam: AUParameter?
     
     var previewView: UIView? = nil
-    var recTimeView: UIView? = nil
+    var recTimeView: UILabel? = nil
     
     var recordingMode:Bool = false
     
@@ -71,7 +88,26 @@ class ViewController: UIViewController, InterfaceDelegate {
         
         return recordingMode ? .portrait : .landscapeRight
     }
+    
+    var updater:CADisplayLink? = nil
+    
+    var captureSession = AVCaptureSession()
+    var preview = PreviewView()
 
+    func setupCapture()
+    {
+        captureSession.beginConfiguration()
+        let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                  for: .video, position: .front)
+        guard let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice!),
+            captureSession.canAddInput(videoDeviceInput)
+            else { return }
+        
+        captureSession.addInput(videoDeviceInput)
+        captureSession.commitConfiguration()
+        self.preview.videoPreviewLayer.session = self.captureSession
+    }
+    
     // MARK: View Life Cycle
     
     override func viewDidAppear(_ animated: Bool)
@@ -85,6 +121,7 @@ class ViewController: UIViewController, InterfaceDelegate {
             alert.addAction(UIAlertAction(title: "Gotcha", style: .default, handler: nil))
             self.present(alert, animated: true)
         }
+        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
     }
     
     override func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
@@ -93,13 +130,12 @@ class ViewController: UIViewController, InterfaceDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.setNeedsStatusBarAppearanceUpdate()
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
     }
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-        
-        //self.view.backgroundColor = UIColor.darkGray
 		// Set up the plug-in's custom view.
 		embedPlugInView()
         
@@ -169,6 +205,13 @@ class ViewController: UIViewController, InterfaceDelegate {
 //        edgePan.edges = .left
 //
 //        view.addGestureRecognizer(edgePan)
+        
+        setupCapture()
+        
+        updater = CADisplayLink(target: self, selector: #selector(updateRecordWindow))
+        updater?.add(to: .current, forMode: .defaultRunLoopMode)
+        updater?.isPaused = true
+        
 	}
     
     @objc private func appMovedToBackground()
@@ -194,8 +237,6 @@ class ViewController: UIViewController, InterfaceDelegate {
         if (segue.identifier == "mainToFiles")
         {
             folderButton.tintColor = self.view.tintColor
-            let vc = segue.destination as! FilesTableViewController
-            //vc.audioEngine = audioEngine
         }
         if (segue.identifier == "mainMenu")
         {
@@ -298,76 +339,84 @@ class ViewController: UIViewController, InterfaceDelegate {
         }
     }
     
+    var screenRecordState:recordingState = .idle
+    var screenRecordTime:Date = Date()
     // MARK: IBActions
-
     @IBAction func screenRecordToggle(_ sender: UIBarButtonItem) {
         let screenRecorder = RPScreenRecorder.shared()
-
-        if (!screenRecorder.isRecording)
-        {
-            recordingMode = true
-            
-            
-            //UIViewController.attemptRotationToDeviceOrientation()
-
-            let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
-            
-            screenRecorder.isCameraEnabled = (defaults?.bool(forKey: "cameraEnable") ?? false)
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        
+        switch screenRecordState {
+        case .idle:
             print("camera enabled: \(screenRecorder.isCameraEnabled)")
-            if (screenRecorder.isCameraEnabled)
+            if (defaults?.bool(forKey: "cameraEnable") ?? false)
             {
+                recordingMode = true
                 UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-            }
+                
+                self.preview.isHidden = false
+                self.preview.videoPreviewLayer.videoGravity = .resizeAspectFill
+                self.captureSession.startRunning()
+                if let vview = self.harmonizerViewController.getVideoView()
+                {
+                    self.preview.translatesAutoresizingMaskIntoConstraints = false
+                    //preview.isUserInteractionEnabled = false
+                    self.preview.frame = vview.bounds
+                    vview.addSubview(self.preview)
+                }
+                
+                let tap = UITapGestureRecognizer(target: self, action: #selector(self.videoStop))
+                self.preview.addGestureRecognizer(tap)
+                
+                self.view.bringSubview(toFront: self.auContainerView)
             
-            screenRecorder.startRecording(handler: {
-                (error) in
-                guard error == nil else {
-                    print("count't start recording: \(error?.localizedDescription ?? "??")")
-                    return
-                }
-                
-                self.previewView = screenRecorder.cameraPreviewView
-                if let preview = self.previewView {
-                    
-                    
-                    if let vview = self.harmonizerViewController.getVideoView()
-                    {
-                        preview.translatesAutoresizingMaskIntoConstraints = false
-                        //preview.isUserInteractionEnabled = false
-                        preview.frame = vview.bounds
-                        vview.addSubview(preview)
+//                self.setNeedsStatusBarAppearanceUpdate()
+            }
+            recordingDisplay(true)
+            screenRecordState = .standby
+            break
+        case .standby:
+            if (!screenRecorder.isRecording)
+            {
+                screenRecorder.isCameraEnabled = false
+                screenRecorder.startRecording(handler: {
+                    (error) in
+                    guard error == nil else {
+                        print("count't start recording: \(error?.localizedDescription ?? "??")")
+                        return
                     }
-                    
-                    
-                    let tap = UITapGestureRecognizer(target: self, action: #selector(self.videoStop))
-                    preview.addGestureRecognizer(tap)
-                    
-                    self.view.bringSubview(toFront: self.auContainerView)
-                }
-            })
-        }
-        else
-        {
-            screenRecorder.stopRecording(handler: {
-                (previewController, error) in
+                })
+            }
+            screenRecordTime = Date()
+            screenRecordState = .recording
+            break
+        case .recording:
+            if (screenRecorder.isRecording)
+            {
+                screenRecorder.stopRecording(handler: {
+                    (previewController, error) in
 
-                guard error == nil else {
-                    print("couldn't stop recording: \(error?.localizedDescription ?? "??")")
-                    return
-                }
-                                
-                previewController?.previewControllerDelegate = self
-                self.present(previewController!, animated: true)
-                let presentationController = previewController?.popoverPresentationController
-                presentationController?.barButtonItem = self.screenRecordButton
-                
-                
-                
-                self.recordingMode = false
-                
-                self.setNeedsStatusBarAppearanceUpdate()
-                
-            })
+                    guard error == nil else {
+                        print("couldn't stop recording: \(error?.localizedDescription ?? "??")")
+                        return
+                    }
+                             
+                    previewController?.previewControllerDelegate = self
+                    self.present(previewController!, animated: true)
+                    let presentationController = previewController?.popoverPresentationController
+                    presentationController?.barButtonItem = self.screenRecordButton
+                    self.preview.isHidden = true
+                    self.captureSession.stopRunning()
+
+                    self.recordingMode = false
+
+                    self.setNeedsStatusBarAppearanceUpdate()
+
+                })
+            }
+            recordingDisplay(false)
+            screenRecordState = .idle
+            break
         }
     }
     
@@ -394,14 +443,68 @@ class ViewController: UIViewController, InterfaceDelegate {
         }
     }
     
-    @IBAction func toggleBackgroundMode(_ sender: UISwitch)
+    var newRecording = false
+    
+    @objc func updateRecordWindow()
     {
+        if (audioEngine.isRecording())
+        {
+            let time = audioEngine.getTime()
+            let min = floor(time / 60)
+            let sec = time - (min * 60)
+            recTimeView?.text = String(format: "00:%02.0f:%2.3f", min, sec)
+            return
+        }
         
+        let screenRecorder = RPScreenRecorder.shared()
+        
+        if (screenRecorder.isRecording)
+        {
+            let diff = NSDate().timeIntervalSince(screenRecordTime)
+            let min = floor(diff / 60)
+            let sec = diff - (min * 60)
+            recTimeView?.text = String(format: "00:%02.0f:%2.3f", min, sec)
+        }
+        else
+        {
+            recTimeView?.text = String(format: "00:%02.0f:%2.3f", 0.0, 0.0)
+        }
     }
     
-    func didToggleRecording(_ onOff:Bool) -> Bool
+    func recordingDisplay(_ onOff:Bool)
     {
-        //
+        if (recTimeView != nil)
+        {
+            updater?.isPaused = true
+            recTimeView?.removeFromSuperview()
+            recTimeView = nil
+            recordWindow = nil
+        }
+        if (onOff == false)
+        {
+            return
+        }
+        recordWindow = UIWindow(frame:view.bounds)
+        recordWindow?.rootViewController = WindowViewController()
+        recTimeView = UILabel()
+        recTimeView?.textAlignment = .left
+        recTimeView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        //recTimeView?.layer.opacity = 0.5
+        recTimeView?.layer.cornerRadius = 4
+        
+        recTimeView?.isUserInteractionEnabled = false
+        recordWindow?.isUserInteractionEnabled = false
+        recordWindow?.addSubview(recTimeView!)
+        
+        let centerX = (recordWindow!.bounds.maxX - recordWindow!.bounds.minX)/2
+        let centerY = (recordWindow!.bounds.maxY - recordWindow!.bounds.minY)/2
+        recTimeView?.frame = CGRect(x: CGFloat(centerX - centerX/2), y: CGFloat(0), width: centerX, height: 34)
+        recordWindow?.isHidden = false
+        updater?.isPaused = false
+    }
+    
+    func didToggleRecording() -> recordingState
+    {
         let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
         let video = defaults?.bool(forKey: "recordVideo") ?? false
         
@@ -410,35 +513,30 @@ class ViewController: UIViewController, InterfaceDelegate {
             if (audioEngine.isRecording())
             {
                 audioEngine.finishRecording()
-                recTimeView?.removeFromSuperview()
-                recTimeView = nil
-                return false
+                recordingDisplay(false)
+                newRecording = true
+                return .idle
             }
             else
             {
+                newRecording = false
+                recordingDisplay(true)
                 audioEngine.startRecording()
-                recTimeView = UIView()
-                recTimeView?.backgroundColor = UIColor.black
-                recTimeView?.layer.opacity = 0.5
-                recTimeView?.layer.cornerRadius = 4
                 
-                recTimeView?.isUserInteractionEnabled = false
-                
-                self.view.addSubview(recTimeView!)
-                recTimeView?.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-                recTimeView?.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-                
-                let centerX = (self.view.bounds.maxX - self.view.bounds.minX)/2
-                let centerY = (self.view.bounds.maxY - self.view.bounds.minY)/2
-                recTimeView?.frame = CGRect(x: CGFloat(centerX - centerX/2), y: CGFloat(centerY*3/4), width: centerX, height: centerY/4)
-                return true
+                return .recording
             }
         }
-        
         screenRecordToggle(screenRecordButton)
-        let screenRecorder = RPScreenRecorder.shared()
-        return !screenRecorder.isRecording
+        return screenRecordState
     }
+    
+    func recordingsAvailable() -> Bool
+    {
+        let ret = newRecording
+        newRecording = false
+        return ret
+    }
+    
     func getReverbUnit() -> AUAudioUnit?
     {
         return audioEngine.reverbUnit
@@ -447,6 +545,11 @@ class ViewController: UIViewController, InterfaceDelegate {
     func getInputViewController() -> UIViewController?
     {
         return self.storyboard?.instantiateViewController(withIdentifier: "inputController")
+    }
+    
+    func getFilesViewController() -> UIViewController?
+    {
+        return self.storyboard?.instantiateViewController(withIdentifier: "filesController")
     }
     
     func showNavBar(_ show: Bool) {

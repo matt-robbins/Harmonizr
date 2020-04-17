@@ -46,6 +46,7 @@
 		92FF86A71B9F5D42007C9389 /* FilterView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92FF86A51B9F5D42007C9389 /* FilterView.h */; };
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
 		C902E6D4242956DE008CC016 /* MainMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */; };
+		C90D4BFE244A6A90006C9420 /* InterfaceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93ACE53244A67E1009D6D09 /* InterfaceDelegate.swift */; };
 		C91216C3206998D200E6BB57 /* PresetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91216C2206998D200E6BB57 /* PresetController.swift */; };
 		C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */; };
 		C9280B56243A8D06002C9ED3 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A443092428438800D4BB52 /* FilesTableViewController.swift */; };
@@ -257,6 +258,7 @@
 		C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonizerVoicesView.swift; sourceTree = "<group>"; };
 		C93163511FBCE81D00EE1762 /* HarmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmButton.swift; sourceTree = "<group>"; };
 		C9353FD7210EAD1200AB75D6 /* HarmonizerExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HarmonizerExtension.entitlements; sourceTree = "<group>"; };
+		C93ACE53244A67E1009D6D09 /* InterfaceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceDelegate.swift; sourceTree = "<group>"; };
 		C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItunesArtwork.png; sourceTree = "<group>"; };
 		C93FE6D5243B8DC00068B036 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		C946818D2190F2B10055AA80 /* MidiReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MidiReceiver.swift; path = AppIcon.appiconset/MidiReceiver.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 				C946818D2190F2B10055AA80 /* MidiReceiver.swift */,
 				C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */,
 				9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */,
+				C93ACE53244A67E1009D6D09 /* InterfaceDelegate.swift */,
 				C971B43620FA92A40070F477 /* LabelButton.swift */,
 				C93163511FBCE81D00EE1762 /* HarmButton.swift */,
 				C96F204E20DC066700F43D90 /* ConfigNavigationController.swift */,
@@ -967,6 +970,7 @@
 				C946818F2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				C980DB4823077725009BFE25 /* vorbis_lpc.c in Sources */,
 				C91216C3206998D200E6BB57 /* PresetController.swift in Sources */,
+				C90D4BFE244A6A90006C9420 /* InterfaceDelegate.swift in Sources */,
 				C96F204320D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
 				C97B07E322275B7F002FAB96 /* AuSettingsTableViewController.swift in Sources */,
 				C96F203D20D7D3B200F43D90 /* BaseView.swift in Sources */,

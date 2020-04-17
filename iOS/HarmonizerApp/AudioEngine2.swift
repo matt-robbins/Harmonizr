@@ -33,6 +33,8 @@ class AudioEngine2: NSObject {
     var outputUnit: AudioUnit?
     private var recording_flag = false
     
+    var audioFile: AVAudioFile?
+        
     private let midiOutBlock: AUMIDIOutputEventBlock = { (sampleTime, cable, length, data ) in
         // This block will be called every render cycle and will receive MIDI events
         return noErr
@@ -130,7 +132,7 @@ class AudioEngine2: NSObject {
     
     public func startRecording() {
         print("starting!")
-        var audioFile: AVAudioFile?
+        
         let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
         let recordingURL = DocumentsDirectory.appendingPathComponent("recordings")
         print(recordingURL.absoluteString)
@@ -173,9 +175,8 @@ class AudioEngine2: NSObject {
         engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil)
         {
             (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-            //print(time)
             do {
-                try audioFile?.write(from: buffer)
+                try self.audioFile?.write(from: buffer)
             }
             catch
             {
@@ -183,6 +184,11 @@ class AudioEngine2: NSObject {
             }
             
         }
+    }
+    public func getTime() -> Double
+    {
+        let r = AVAudioSession.sharedInstance().sampleRate
+        return Double(audioFile?.framePosition ?? 0)/r
     }
     public func isRecording() -> Bool
     {
