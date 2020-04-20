@@ -85,7 +85,7 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         if (viewController == navController!.viewControllers.first)
         {
             let vc = viewController as? HarmonizerViewController
-            vc!.presetController!.loadPresets()
+            //vc!.presetController!.loadPresets()
             vc!.syncView()
         }
     }

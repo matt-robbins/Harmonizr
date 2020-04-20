@@ -24,7 +24,6 @@
 		916233C91B127A5000DBD15D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 916233C71B127A5000DBD15D /* MainInterface.storyboard */; };
 		91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A9356A1B1269F100370383 /* HarmonizerView.swift */; };
 		91B6ED7E1B1380220001FCE7 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
-		91E715C41B0AABAB00BD598C /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
 		9228D9AF1BA1EE6F00EDDEA4 /* drumLoop.caf in Resources */ = {isa = PBXBuildFile; fileRef = 91B6ED7C1B137FFF0001FCE7 /* drumLoop.caf */; };
 		923B43DD1BA0F04B0020FBB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 923B43DB1BA0F04B0020FBB4 /* Main.storyboard */; };
 		923B43DE1BA1E51F0020FBB4 /* FilterDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 92FF86A11B9F5B7B007C9389 /* FilterDemoViewController.xib */; };
@@ -47,6 +46,8 @@
 		92FF86A81B9F5D42007C9389 /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FF86A61B9F5D42007C9389 /* FilterView.m */; };
 		C902E6D4242956DE008CC016 /* MainMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */; };
 		C90D4BFE244A6A90006C9420 /* InterfaceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93ACE53244A67E1009D6D09 /* InterfaceDelegate.swift */; };
+		C90D4BFF244B486A006C9420 /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
+		C90D4C00244B486A006C9420 /* HarmonizerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C91216C3206998D200E6BB57 /* PresetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91216C2206998D200E6BB57 /* PresetController.swift */; };
 		C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */; };
 		C9280B56243A8D06002C9ED3 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A443092428438800D4BB52 /* FilesTableViewController.swift */; };
@@ -204,6 +205,17 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C90D4C01244B486A006C9420 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C90D4C00244B486A006C9420 /* HarmonizerFramework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -338,7 +350,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91E715C41B0AABAB00BD598C /* HarmonizerFramework.framework in Frameworks */,
+				C90D4BFF244B486A006C9420 /* HarmonizerFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +712,7 @@
 				91236D731B08F59300734C5E /* Sources */,
 				91236D741B08F59300734C5E /* Frameworks */,
 				91236D751B08F59300734C5E /* Resources */,
+				C90D4C01244B486A006C9420 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1115,7 +1128,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
@@ -1138,7 +1151,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
@@ -1175,7 +1188,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
@@ -1192,7 +1205,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
 				PRODUCT_NAME = Harmonizer;
@@ -1349,7 +1362,7 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
@@ -1372,7 +1385,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
@@ -1408,7 +1421,7 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
@@ -1425,7 +1438,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 1.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
 				PRODUCT_NAME = HarmonizerExtension;

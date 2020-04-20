@@ -158,7 +158,8 @@ class SettingsViewController: UITableViewController {
             cell.accessoryType = enable ? .checkmark : .none
             enable = (defaults?.bool(forKey: "recordVideo") ?? false)
             cell.isUserInteractionEnabled = enable
-            cell.textLabel?.isEnabled = enable
+            cell.contentView.alpha = enable ? 1.0 : 0.5
+            
         case "showReverb":
             cell.isUserInteractionEnabled = (reverbAudioUnit != nil)
             cell.textLabel?.isEnabled = cell.isUserInteractionEnabled

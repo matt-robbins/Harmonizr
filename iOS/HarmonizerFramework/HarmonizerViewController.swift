@@ -103,16 +103,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
 
     var updater:CADisplayLink? = nil
     
-    func auPoller(T: Float){
-        // Scheduling timer to Call the timerFunction
-//        timer = Timer.scheduledTimer(timeInterval: TimeInterval(T), target: self, selector: #selector(timerFunction), userInfo: nil, repeats: true)
-        
-        updater = CADisplayLink(target: self, selector: #selector(timerFunction))
-        updater?.add(to: .current, forMode: .defaultRunLoopMode)
-        updater?.isPaused = false
-    }
-    
-    @objc func timerFunction()
+    @objc func updateDisplay()
     {
         guard let audioUnit = audioUnit else { return }
         
@@ -142,17 +133,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-        
-//        let theme = ThemeManager.currentTheme()
-//        ThemeManager.applyTheme(theme)
-//        
-//        for view in self.view.subviews as [UIView] {
-//            if let btn = view as? UIButton {
-//                btn.titleLabel?.adjustsFontSizeToFitWidth = true
-//            }
-//        }
 		
-		// Respond to changes in the filterView (frequency and/or response changes).
         harmonizerView.delegate = self
         voicesView.delegate = self
         keyboardView.delegate = self
@@ -161,12 +142,11 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         
         presetController = PresetController()
         
-        auPoller(T: 0.05)
-		//configController = self.storyboard?.instantiateViewController(withIdentifier: "detailsNavigator") as? ConfigNavigationController
+        updater = CADisplayLink(target: self, selector: #selector(updateDisplay))
+        updater?.add(to: .current, forMode: .defaultRunLoopMode)
+        updater?.isPaused = false
         
         saveController = self.storyboard?.instantiateViewController(withIdentifier: "saveController") as? PresetSaveViewController
-        
-        //configController!.viewDelegate = self
         saveController!.presetController = presetController
         
         videoButton.isEnabled = (interfaceDelegate != nil)
@@ -183,17 +163,6 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         midiImage.centerYAnchor.constraint(equalTo: midiButton.centerYAnchor).isActive = true
         midiImage.widthAnchor.constraint(equalTo: midiButton.widthAnchor, multiplier: 0.66).isActive = true
         midiImage.heightAnchor.constraint(equalTo: midiButton.heightAnchor, multiplier: 0.66).isActive = true
-        
-        //midiButton.bringSubview(toFront: midiImage)
-        //let _: UIView = configController!.view
-        
-        //configController!.presetController = presetController
-        
-//        self.addChildViewController(self.configController!)
-//
-//        self.containerView.addSubview(configController!.view)
-//
-//        configController!.didMove(toParentViewController: self)
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appResigned), name: Notification.Name.UIApplicationWillResignActive, object: nil)
@@ -302,7 +271,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         print(hgainParameter!.value)
         presetController!.audioUnit = audioUnit
         presetController!.restoreState()
-        presetController!.loadPresets()
+        
+        //presetController!.loadPresets()
         print("index = \(presetController!.presetIx)")
         
         
