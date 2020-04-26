@@ -43,6 +43,10 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     @IBOutlet weak var containerView: UIView!
     @IBOutlet var presetFavorites: [HarmButton]!
     
+    @IBOutlet weak var loopRecButton: HarmButton!
+    @IBOutlet weak var loopStopButton: HarmButton!
+    @IBOutlet weak var loopProgress: UIProgressView!
+    
     private var noteBlock: AUScheduleMIDIEventBlock!
     
     /*
@@ -88,6 +92,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     var intervals = [AUParameter]()
     
+    var loopMode = 0
+    
     var configController: ConfigNavigationController?
     var saveController: PresetSaveViewController?
     var presetController: PresetController?
@@ -128,6 +134,9 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         keyboardView.setCurrentNote(int_notes)
         // update visible keycenter based on computed value from midi
         harmonizerView.setSelectedKeycenter(audioUnit.getCurrentKeycenter())
+        
+        loopProgress.setProgress(audioUnit.getLoopPosition(), animated: false)
+        //print(audioUnit.getLoopPosition())
         return
     }
 
@@ -295,10 +304,10 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
 //
 //        configController!.refresh()
         
-        let theNoteBlock = audioUnit!.scheduleMIDIEventBlock
+        //let theNoteBlock = audioUnit!.scheduleMIDIEventBlock
+        noteBlock = audioUnit!.scheduleMIDIEventBlock
         
-        noteBlock = theNoteBlock
-        
+        audioUnit?.setLoopMode(0)
         syncView()
 	}
     
@@ -499,6 +508,74 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
                 presetModified = false
                 syncView()
             }
+        }
+    }
+    
+    @IBAction func loopStart(_ sender: Any) {
+        switch audioUnit?.getLoopMode() {
+        case 0: // stopped
+            audioUnit?.setLoopMode(1)
+        case 1: // rec
+            audioUnit?.setLoopMode(2)
+        case 2: // play
+            audioUnit?.setLoopMode(3)
+        case 3: // play/rec
+            audioUnit?.setLoopMode(2)
+        case 4: // pause
+            audioUnit?.setLoopMode(2)
+        default:
+            break
+        }
+        syncLoopButtons()
+    }
+    
+    @IBAction func loopStop(_ sender: Any) {
+        switch audioUnit?.getLoopMode() {
+        case 0:
+            break
+        case 1,2,3:
+            audioUnit?.setLoopMode(4)
+        case 4:
+            audioUnit?.setLoopMode(0)
+        default:
+            break
+        }
+        syncLoopButtons()
+    }
+    
+    func syncLoopButtons()
+    {
+        var playImage = "circle.fill"
+        var stopImage = "pause"
+        switch audioUnit?.getLoopMode() {
+        case 0:
+            stopImage = "stop.fill"
+            break
+        case 1:
+            playImage = "play.fill"
+            break
+        case 2:
+            break
+        case 3:
+            playImage = "play.fill"
+        case 4:
+            stopImage = "stop.fill"
+            playImage = "play.fill"
+            break
+        default:
+            break
+        }
+        
+        if #available(iOSApplicationExtension 13.0, *) {
+            loopRecButton.setImage(UIImage(systemName: playImage), for: .normal)
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        if #available(iOSApplicationExtension 13.0, *) {
+            loopStopButton.setImage(UIImage(systemName: stopImage), for: .normal)
+        } else {
+            // Fallback on earlier versions
         }
     }
     

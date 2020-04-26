@@ -84,10 +84,10 @@ class ViewController: UIViewController, InterfaceDelegate {
     
     var recordingMode:Bool = false
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        
-        return recordingMode ? .portrait : .landscapeRight
-    }
+//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+//        
+//        return recordingMode ? .portrait : .landscapeRight
+//    }
     
     var updater:CADisplayLink? = nil
     
@@ -365,8 +365,8 @@ class ViewController: UIViewController, InterfaceDelegate {
                     vview.addSubview(self.preview)
                 }
                 
-                let tap = UITapGestureRecognizer(target: self, action: #selector(self.videoStop))
-                self.preview.addGestureRecognizer(tap)
+//                let tap = UITapGestureRecognizer(target: self, action: #selector(self.videoStop))
+//                self.preview.addGestureRecognizer(tap)
                 
                 self.view.bringSubview(toFront: self.auContainerView)
             

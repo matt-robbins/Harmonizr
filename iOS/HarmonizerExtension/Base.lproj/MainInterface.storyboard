@@ -332,14 +332,45 @@
                                                         <rect key="frame" x="0.0" y="94.5" width="667" height="0.0"/>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yec-WX-anO" userLabel="Harmonizer Stack">
-                                                        <rect key="frame" x="0.0" y="99.5" width="667" height="137"/>
+                                                        <rect key="frame" x="0.0" y="99.5" width="667" height="102"/>
                                                         <subviews>
                                                             <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMY-Zi-giM" customClass="HarmonizerView" customModule="HarmonizerFramework">
-                                                                <rect key="frame" x="0.0" y="0.0" width="667" height="137"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="667" height="102"/>
                                                             </view>
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="yec-WX-anO" secondAttribute="height" multiplier="4:1" priority="500" id="99y-P2-F8a"/>
+                                                        </constraints>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ac2-7R-EMd" userLabel="Loop Stack">
+                                                        <rect key="frame" x="0.0" y="206.5" width="667" height="30"/>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qyX-iC-PAj" userLabel="Loop Record Button" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="0.0" y="0.0" width="55.5" height="30"/>
+                                                                <state key="normal" image="circle.fill" catalog="system"/>
+                                                                <connections>
+                                                                    <action selector="loopStart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G1a-Qw-0dJ"/>
+                                                                </connections>
+                                                            </button>
+                                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="iZM-0o-HVC" userLabel="Loop Progress">
+                                                                <rect key="frame" x="60.5" y="14" width="546" height="2"/>
+                                                            </progressView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wV7-P9-6fT" userLabel="Loop Stop Button" customClass="HarmButton" customModule="HarmonizerFramework">
+                                                                <rect key="frame" x="611.5" y="0.0" width="55.5" height="30"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="30" id="SmG-TT-3a6"/>
+                                                                </constraints>
+                                                                <state key="normal" image="stop.fill" catalog="system"/>
+                                                                <connections>
+                                                                    <action selector="loopStop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="89S-Vq-R9Y"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="wV7-P9-6fT" firstAttribute="top" secondItem="ac2-7R-EMd" secondAttribute="top" id="63q-zl-T1D"/>
+                                                            <constraint firstItem="qyX-iC-PAj" firstAttribute="top" secondItem="ac2-7R-EMd" secondAttribute="top" id="TNK-la-dNo"/>
+                                                            <constraint firstAttribute="bottom" secondItem="wV7-P9-6fT" secondAttribute="bottom" id="jsP-pd-DN1"/>
+                                                            <constraint firstAttribute="bottom" secondItem="qyX-iC-PAj" secondAttribute="bottom" id="xZe-Qa-iph"/>
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="JV1-J5-NPq" userLabel="Keyboard Stack">
@@ -401,15 +432,17 @@
                                                             </stackView>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="JV1-J5-NPq" secondAttribute="height" multiplier="5:1" priority="800" id="OMd-IC-aeZ"/>
+                                                            <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="JV1-J5-NPq" secondAttribute="height" multiplier="5:1" priority="400" id="OMd-IC-aeZ"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
                                                 <constraints>
+                                                    <constraint firstItem="qyX-iC-PAj" firstAttribute="centerX" secondItem="FI4-35-Vte" secondAttribute="centerX" id="07d-Vn-HNn"/>
                                                     <constraint firstItem="ZUr-hM-WhY" firstAttribute="trailing" secondItem="CwY-aX-8vc" secondAttribute="trailing" id="Dhb-0Z-W7r"/>
                                                     <constraint firstItem="ZUr-hM-WhY" firstAttribute="leading" secondItem="CwY-aX-8vc" secondAttribute="leading" id="R6G-dh-OW3"/>
                                                     <constraint firstItem="Jgz-qt-heT" firstAttribute="width" secondItem="12X-sd-e4c" secondAttribute="width" multiplier="7/12" id="dJ9-LF-Qrl"/>
                                                     <constraint firstAttribute="trailing" secondItem="ntn-2t-3Rt" secondAttribute="trailing" id="exw-z1-dh2"/>
+                                                    <constraint firstItem="dLc-dw-1Qg" firstAttribute="centerX" secondItem="wV7-P9-6fT" secondAttribute="centerX" id="gfK-VP-iKM"/>
                                                     <constraint firstItem="ntn-2t-3Rt" firstAttribute="leading" secondItem="12X-sd-e4c" secondAttribute="leading" id="nu5-Um-KJp"/>
                                                 </constraints>
                                             </stackView>
@@ -450,6 +483,9 @@
                         <outlet property="kbdOctPlusButton" destination="LWt-Ah-h6L" id="U8o-5y-6a3"/>
                         <outlet property="keyboardStack" destination="JV1-J5-NPq" id="BJr-07-spt"/>
                         <outlet property="keyboardView" destination="rnK-4r-xXA" id="l5Y-Nj-fRr"/>
+                        <outlet property="loopProgress" destination="iZM-0o-HVC" id="7hv-2a-1Hi"/>
+                        <outlet property="loopRecButton" destination="qyX-iC-PAj" id="V55-d5-Yyv"/>
+                        <outlet property="loopStopButton" destination="wV7-P9-6fT" id="xV9-tS-78a"/>
                         <outlet property="mainView" destination="xJe-bz-bEY" id="duO-7W-UUt"/>
                         <outlet property="midiButton" destination="amN-OU-hHi" id="81E-tH-K3m"/>
                         <outlet property="presetButton" destination="3He-cA-tY7" id="NGb-yI-yRH"/>
@@ -1426,6 +1462,7 @@
         <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="folder" catalog="system" width="128" height="95"/>
         <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="stop.fill" catalog="system" width="128" height="113"/>
         <image name="video.fill" catalog="system" width="128" height="82"/>
     </resources>
 </document>

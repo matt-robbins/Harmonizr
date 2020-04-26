@@ -6,8 +6,8 @@
 	An AUAudioUnit subclass implementing a low-pass filter with resonance. Illustrates parameter management and rendering, including in-place processing and buffer management.
 */
 
-#ifndef FilterDemo_h
-#define FilterDemo_h
+#ifndef Harmonizer_h
+#define Harmonizer_h
 
 #import <AudioToolbox/AudioToolbox.h>
 
@@ -30,8 +30,11 @@
 - (float) getCurrentKeycenter;
 - (float) getCurrentNumVoices;
 - (float) getCurrentInversion;
+- (int) setLoopMode:(int)mode;
+- (int) getLoopMode;
+- (float) getLoopPosition;
 
 @property (nonatomic, weak) id<HarmonizerDelegate> delegate;
 @end
 
-#endif /* FilterDemo_h */
+#endif /* Harmonizer_h */

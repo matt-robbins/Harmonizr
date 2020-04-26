@@ -29,6 +29,14 @@ typedef struct FactoryPresetParameters {
     AUValue intervalValues[144];
 } FactoryPresetParameters;
 
+enum LoopMode {
+    stopped = LoopStopped,
+    rec = LoopRec,
+    play = LoopPlay,
+    playrec = LoopPlayRec,
+    paused = LoopPause
+};
+
 static const FactoryPresetParameters presetParameters[kNumberOfPresets] =
 {
     // Chords
@@ -374,6 +382,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
+    AUParameter *loopParam = [AUParameterTree createParameterWithIdentifier:@"loop_mode" name:@"Looping Mode"
+    address:HarmParamLoop
+    min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+    flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+    valueStrings:@[@"Stop",@"Play",@"play/Rec"] dependentParameters:nil];
+    
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
     
     [params addObject:keycenterParam];
@@ -405,6 +419,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:threshParam];
     [params addObject:stereoParam];
     [params addObject:synthParam];
+    [params addObject:loopParam];
             
     for (int k = 0; k < 144; k++)
     {
@@ -818,6 +833,19 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 - (float) getCurrentInversion {
     return _kernel.getParameter(HarmParamInversion);
+}
+
+- (int) setLoopMode:(int)mode {
+    _kernel.setParameter(HarmParamLoop, (float) mode);
+    return (int) _kernel.getParameter(HarmParamLoop);
+}
+
+- (int) getLoopMode {
+    return _kernel.loop_mode;
+}
+
+- (float) getLoopPosition {
+    return _kernel.loopPosition();
 }
 
 @end
