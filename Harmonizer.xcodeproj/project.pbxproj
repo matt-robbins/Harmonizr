@@ -15,8 +15,6 @@
 		91236D151B08F42B00734C5E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91236D131B08F42B00734C5E /* Main.storyboard */; };
 		91236D1A1B08F42B00734C5E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91236D181B08F42B00734C5E /* LaunchScreen.storyboard */; };
 		91236D581B08F52D00734C5E /* HarmonizerFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 91236D571B08F52D00734C5E /* HarmonizerFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		91236D6A1B08F52E00734C5E /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
-		91236D6B1B08F52E00734C5E /* HarmonizerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		91236D811B08F59300734C5E /* HarmonizerExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 91236D771B08F59300734C5E /* HarmonizerExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		91236D8A1B08F66200734C5E /* SimplePlayEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91236D871B08F66200734C5E /* SimplePlayEngine.swift */; };
 		91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 91236D8D1B08FB0300734C5E /* AUv3Harmonizer.mm */; };
@@ -47,7 +45,6 @@
 		C902E6D4242956DE008CC016 /* MainMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C902E6D3242956DE008CC016 /* MainMenuTableViewController.swift */; };
 		C90D4BFE244A6A90006C9420 /* InterfaceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93ACE53244A67E1009D6D09 /* InterfaceDelegate.swift */; };
 		C90D4BFF244B486A006C9420 /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
-		C90D4C00244B486A006C9420 /* HarmonizerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C91216C3206998D200E6BB57 /* PresetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91216C2206998D200E6BB57 /* PresetController.swift */; };
 		C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */; };
 		C9280B56243A8D06002C9ED3 /* FilesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A443092428438800D4BB52 /* FilesTableViewController.swift */; };
@@ -93,6 +90,8 @@
 		C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C99BB9C72138D51000D32324 /* HarmonizerDSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C99BB9C62138D50F00D32324 /* HarmonizerDSPKernel.hpp */; };
 		C99BB9CD2138D64A00D32324 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = C99BB9CC2138D64A00D32324 /* DSPKernel.mm */; };
+		C9A1427524577A2500BA82C3 /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
+		C9A1427624577A2500BA82C3 /* HarmonizerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C9A1E35F2203B3350080CF3F /* DSPKernel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9A1E35E2203B3350080CF3F /* DSPKernel.hpp */; };
 		C9B549AC2306DF9800E48112 /* TestAudioData.h in Headers */ = {isa = PBXBuildFile; fileRef = C9B549AB2306DF9800E48112 /* TestAudioData.h */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
@@ -161,17 +160,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		91236D6F1B08F52E00734C5E /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				91236D6B1B08F52E00734C5E /* HarmonizerFramework.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		91236D851B08F59300734C5E /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -205,13 +193,13 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C90D4C01244B486A006C9420 /* Embed Frameworks */ = {
+		C9A1427724577A2500BA82C3 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C90D4C00244B486A006C9420 /* HarmonizerFramework.framework in Embed Frameworks */,
+				C9A1427624577A2500BA82C3 /* HarmonizerFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,7 +320,7 @@
 				C9D2F8FF2071A5FA000783B2 /* Accelerate.framework in Frameworks */,
 				C994EB19210FF2B3000715F8 /* AudioToolbox.framework in Frameworks */,
 				C9D2F9002071A5FA000783B2 /* CoreMIDI.framework in Frameworks */,
-				91236D6A1B08F52E00734C5E /* HarmonizerFramework.framework in Frameworks */,
+				C9A1427524577A2500BA82C3 /* HarmonizerFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,8 +661,8 @@
 				91236D091B08F42B00734C5E /* Sources */,
 				91236D0A1B08F42B00734C5E /* Frameworks */,
 				91236D0B1B08F42B00734C5E /* Resources */,
-				91236D6F1B08F52E00734C5E /* Embed Frameworks */,
 				91236D851B08F59300734C5E /* Embed App Extensions */,
+				C9A1427724577A2500BA82C3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -712,7 +700,6 @@
 				91236D731B08F59300734C5E /* Sources */,
 				91236D741B08F59300734C5E /* Frameworks */,
 				91236D751B08F59300734C5E /* Resources */,
-				C90D4C01244B486A006C9420 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1128,9 +1115,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1158,7 +1144,7 @@
 				PRODUCT_NAME = Harmonizer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1188,9 +1174,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1211,7 +1196,7 @@
 				PRODUCT_NAME = Harmonizer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -1316,6 +1301,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1362,9 +1348,8 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1392,7 +1377,7 @@
 				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/matt/code/audioUnitExamples/Harmonizr/Shared/AudioUnit-BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -1421,9 +1406,8 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1444,7 +1428,7 @@
 				PRODUCT_NAME = HarmonizerExtension;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/matt/code/audioUnitExamples/Harmonizr/Shared/AudioUnit-BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

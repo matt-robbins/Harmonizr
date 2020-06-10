@@ -271,7 +271,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         autoParameter = paramTree.value(forKey: "auto") as? AUParameter
         midiParameter = paramTree.value(forKey: "midi") as? AUParameter
         midiLinkParameter = paramTree.value(forKey: "midi_link") as? AUParameter
-        midiParameter = paramTree.value(forKey: "midi_rx_pc") as? AUParameter
+        midiPCParameter = paramTree.value(forKey: "midi_rx_pc") as? AUParameter
         triadParameter = paramTree.value(forKey: "triad") as? AUParameter
         bypassParameter = paramTree.value(forKey: "bypass") as? AUParameter
         speedParameter = paramTree.value(forKey: "speed") as? AUParameter

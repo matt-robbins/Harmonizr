@@ -54,18 +54,18 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        UITableViewCell.appearance().backgroundColor = UIColor.clear
-        UITableView.appearance().backgroundColor = UIColor.clear
-        UITableView.appearance().separatorColor = UIColor.lightGray
-        UITableViewHeaderFooterView.appearance().tintColor = UIColor.darkGray
-        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor.white
-        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).highlightedTextColor = UIColor.lightGray
-        UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor = UIColor.white
-        UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).highlightedTextColor = UIColor.lightGray
-        BaseView.appearance().backgroundColor = UIColor.clear
-        UIPickerView.appearance().backgroundColor = UIColor.clear
-        UINavigationBar.appearance().barStyle = .black
-        UINavigationBar.appearance().backgroundColor = UIColor.darkGray
+//        UITableViewCell.appearance().backgroundColor = UIColor.clear
+//        UITableView.appearance().backgroundColor = UIColor.clear
+//        UITableView.appearance().separatorColor = UIColor.lightGray
+//        UITableViewHeaderFooterView.appearance().tintColor = UIColor.darkGray
+//        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor.white
+//        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).highlightedTextColor = UIColor.lightGray
+//        UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor = UIColor.white
+//        UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).highlightedTextColor = UIColor.lightGray
+//        BaseView.appearance().backgroundColor = UIColor.clear
+//        UIPickerView.appearance().backgroundColor = UIColor.clear
+//        UINavigationBar.appearance().barStyle = .black
+//        UINavigationBar.appearance().backgroundColor = UIColor.darkGray
         
         MIDIClientCreate("HarmonizrOutput" as CFString, nil, nil, &midiClient);
         MIDIOutputPortCreate(midiClient, "Harmonizr_Output" as CFString, &midiOutput);

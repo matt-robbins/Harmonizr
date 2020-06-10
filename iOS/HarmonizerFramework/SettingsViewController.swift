@@ -98,6 +98,7 @@ class SettingsViewController: UITableViewController {
         levelLabel.text = "\(Int(levelStepper.value)) %"
         
         drySwitch.isOn = dryMixParameter!.value > 0.5
+        synthSwitch.isOn = synthParameter!.value > 0.5
         
         //legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
         
@@ -151,14 +152,26 @@ class SettingsViewController: UITableViewController {
         switch (cell.reuseIdentifier)
         {
         case "recordMode":
-            let enable = (defaults?.bool(forKey: "recordMode") ?? false)
-            cell.accessoryType = enable ? .checkmark : .none
-        case "recordCamera":
-            var enable = (defaults?.bool(forKey: "cameraEnable") ?? false)
-            cell.accessoryType = enable ? .checkmark : .none
-            enable = (defaults?.bool(forKey: "recordVideo") ?? false)
-            cell.isUserInteractionEnabled = enable
-            cell.contentView.alpha = enable ? 1.0 : 0.5
+            let camera = (defaults?.bool(forKey: "cameraEnable") ?? false)
+            let video = (defaults?.bool(forKey: "recordVideo") ?? false)
+            var mode = "Audio Only"
+            var imname = "circle.fill"
+            if (video && !camera)
+            {
+                mode = "Screen + Audio"
+                imname = "video"
+            }
+            else if (video && camera)
+            {
+                mode = "Screen + Video"
+                imname = "video.fill"
+            }
+            cell.detailTextLabel?.text = mode
+            if #available(iOSApplicationExtension 13.0, *) {
+                cell.imageView?.image = UIImage(systemName: imname)
+            } else {
+                // Fallback on earlier versions
+            }
             
         case "showReverb":
             cell.isUserInteractionEnabled = (reverbAudioUnit != nil)
@@ -220,16 +233,28 @@ class SettingsViewController: UITableViewController {
                 stereoParameter?.value = (stereoParameter?.value ?? 0) + 1
             }
             stereoModeLabel.text = stereoParameter?.valueStrings?[Int(stereoParameter?.value ?? 0)]
-        case "recordCamera":
-            let enable = !(defaults?.bool(forKey: "cameraEnable") ?? false)
-            defaults?.set(enable, forKey: "cameraEnable")
-            cell?.accessoryType = enable ? .checkmark : .none
+
+        case "recordMode":
+            let screen = defaults?.bool(forKey: "recordVideo") ?? false
+            let camera = defaults?.bool(forKey: "cameraEnable") ?? false
+            
+            if (screen && !camera)
+            {
+                defaults?.set(true, forKey: "cameraEnable")
+            }
+            else if (screen && camera)
+            {
+                defaults?.set(false, forKey: "recordVideo")
+                defaults?.set(false, forKey: "cameraEnable")
+            }
+            else
+            {
+                defaults?.set(true, forKey: "recordVideo")
+                defaults?.set(false, forKey: "cameraEnable")
+            }
+            //cell?.accessoryType = enable ? .checkmark : .none
             self.tableView.reloadData()
-        case "recordScreen":
-            let enable = !(defaults?.bool(forKey: "recordVideo") ?? false)
-            defaults?.set(enable, forKey: "recordVideo")
-            cell?.accessoryType = enable ? .checkmark : .none
-            self.tableView.reloadData()
+            
         case "aboutLink":
             let svc = SFSafariViewController(url: URL(string: "http://www.harmonizr.com/help")!)
             present(svc, animated: true, completion: nil)

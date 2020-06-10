@@ -99,6 +99,11 @@ class ViewController: UIViewController, InterfaceDelegate {
         captureSession.beginConfiguration()
         let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
                                                   for: .video, position: .front)
+        
+        if (videoDevice == nil)
+        {
+            return
+        }
         guard let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice!),
             captureSession.canAddInput(videoDeviceInput)
             else { return }
@@ -156,7 +161,7 @@ class ViewController: UIViewController, InterfaceDelegate {
         componentDescription.componentFlagsMask = 0
                 
         /*
-            Register our `AUAudioUnit` subclass, `AUv3FilterDemo`, to make it able
+            Register our `AUAudioUnit` subclass, to make it able
             to be instantiated via its component description.
 
             Note that this registration is local to this process.

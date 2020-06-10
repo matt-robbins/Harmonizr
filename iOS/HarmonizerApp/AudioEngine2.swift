@@ -48,14 +48,17 @@ class AudioEngine2: NSObject {
             //try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.mixWithOthers])
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP, .mixWithOthers])
             //try session.setMode(AVAudioSessionModeMeasurement)
-            try session.setPreferredIOBufferDuration(128/48000.0)
-            try session.setPreferredSampleRate(48000.0)
+            
+            //try session.setPreferredSampleRate(48000.0)
+            try session.setPreferredIOBufferDuration(128/session.sampleRate)
             try session.setActive(true)
         }
         catch {
             fatalError("Can't configure audio session.")
         }
         #endif
+        
+        print(session.sampleRate)
     }
     
     override init() {
@@ -268,10 +271,11 @@ class AudioEngine2: NSObject {
         self.connectNodes()
         
         do {
+            try AVAudioSession.sharedInstance().setActive(true)
             try engine.start()
         }
         catch {
-            print("eek!")
+            print("eek! \(error)")
         }
     }
     
@@ -285,14 +289,6 @@ class AudioEngine2: NSObject {
     {
         engine.attach(reverbUnitNode)
         
-        //let hwFormat = input.inputFormat(forBus: 0)
-        
-        let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
-        
-        self.engine.connect(self.engine.inputNode, to: self.engine.mainMixerNode, format: stereoFormat)
-        
-        outputUnit = engine.outputNode.audioUnit
-        
         AVAudioUnit.instantiate(with: componentDescription, options: []) { avAudioUnit, error in
             guard let avAudioUnit = avAudioUnit else { return }
 
@@ -302,15 +298,10 @@ class AudioEngine2: NSObject {
             {
                 self.harmUnit?.midiOutputEventBlock = self.midiOutBlock
             }
-            
-            //self.harmUnit?.currentPreset = self.harmUnit?.factoryPresets?[0]
-            
+                        
             self.engine.attach(self.harmUnitNode!)
-
             self.connectNodes()
-
             self.midiReceiver = MidiReceiver.init(audioUnit: self.harmUnit)
-
             completionHandler(self.harmUnit!)
         }
     }
@@ -322,19 +313,24 @@ class AudioEngine2: NSObject {
             return
         }
         
+        let defaultFormat:AVAudioFormat? = nil
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
+        //stereoFormat = nil
         
         self.engine.disconnectNodeInput(self.engine.mainMixerNode)
         self.engine.disconnectNodeInput(self.reverbUnitNode)
         self.engine.disconnectNodeInput(self.harmUnitNode!)
 
         self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: stereoFormat)
+        //self.engine.connect(self.engine.inputNode, to: self.engine.mainMixerNode, format: defaultFormat)
 
+        self.engine.connect(self.reverbUnitNode, to: self.engine.mainMixerNode, format: stereoFormat)
+        //self.engine.connect(self.harmUnitNode!, to: self.engine.mainMixerNode, format: defaultFormat)
         self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: stereoFormat)
         self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
 
-//        self.engine.connect(self.engine.inputNode!, to: self.reverbUnitNode, format: stereoFormat)
-        self.engine.connect(self.reverbUnitNode, to: self.engine.mainMixerNode, format: stereoFormat)
+        //self.engine.connect(self.engine.inputNode, to: self.reverbUnitNode, format: defaultFormat)
+        
     }
     
 }

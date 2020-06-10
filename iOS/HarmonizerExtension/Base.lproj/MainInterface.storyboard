@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xw6-qn-yae">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xw6-qn-yae">
     <device id="retina4_7" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -349,7 +349,7 @@
                                                                 <rect key="frame" x="0.0" y="0.0" width="55.5" height="30"/>
                                                                 <state key="normal" image="circle.fill" catalog="system"/>
                                                                 <connections>
-                                                                    <action selector="loopStart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="G1a-Qw-0dJ"/>
+                                                                    <action selector="loopStart:" destination="BYZ-38-t0r" eventType="touchDown" id="4Jn-Bm-l7E"/>
                                                                 </connections>
                                                             </button>
                                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="iZM-0o-HVC" userLabel="Loop Progress">
@@ -362,7 +362,7 @@
                                                                 </constraints>
                                                                 <state key="normal" image="stop.fill" catalog="system"/>
                                                                 <connections>
-                                                                    <action selector="loopStop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="89S-Vq-R9Y"/>
+                                                                    <action selector="loopStop:" destination="BYZ-38-t0r" eventType="touchDown" id="6s8-Yc-MhL"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -461,7 +461,6 @@
                                 <viewLayoutGuide key="safeArea" id="Cv4-jC-PvG"/>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="R4r-gf-TiO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="57J-TU-RAZ"/>
                             <constraint firstItem="Vf5-SJ-o8q" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" priority="800" id="Gij-ex-HKM"/>
@@ -1165,50 +1164,36 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Recording" id="wz9-MF-yzI">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="recordScreen" textLabel="YHj-nj-F07" imageView="gA7-Aq-1z2" style="IBUITableViewCellStyleDefault" id="w7f-a3-1wX">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="recordMode" textLabel="Px3-3k-6WY" detailTextLabel="kXg-y8-tYR" imageView="dbW-Y1-NPI" style="IBUITableViewCellStyleValue1" id="ayc-oY-awx">
                                         <rect key="frame" x="0.0" y="988" width="667" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w7f-a3-1wX" id="Hwy-fr-cC2">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ayc-oY-awx" id="cXB-Xs-A3N">
                                             <rect key="frame" x="0.0" y="0.0" width="667" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Enable Screen Recording" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YHj-nj-F07">
-                                                    <rect key="frame" x="47" y="0.0" width="612" height="44"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Recording Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Px3-3k-6WY">
+                                                    <rect key="frame" x="47" y="12" width="126" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="circle.fill" catalog="system" id="gA7-Aq-1z2">
-                                                    <rect key="frame" x="10" y="12.5" width="20" height="19"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </imageView>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="recordCamera" textLabel="cUF-YZ-0si" imageView="aoF-R1-0o4" style="IBUITableViewCellStyleDefault" id="rTJ-QG-erT">
-                                        <rect key="frame" x="0.0" y="1032" width="667" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rTJ-QG-erT" id="Lvf-dV-Asa">
-                                            <rect key="frame" x="0.0" y="0.0" width="667" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Enable Camera Recording" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cUF-YZ-0si">
-                                                    <rect key="frame" x="47" y="0.0" width="612" height="44"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="video.fill" catalog="system" id="aoF-R1-0o4">
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="video.fill" catalog="system" id="dbW-Y1-NPI">
                                                     <rect key="frame" x="8" y="14.5" width="24" height="15.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kXg-y8-tYR">
+                                                    <rect key="frame" x="615" y="12" width="44" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="showFiles" textLabel="KG0-07-VAU" imageView="0QV-Ko-bKV" style="IBUITableViewCellStyleDefault" id="Mle-0t-TUN">
-                                        <rect key="frame" x="0.0" y="1076" width="667" height="44"/>
+                                        <rect key="frame" x="0.0" y="1032" width="667" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mle-0t-TUN" id="PHV-oC-lVG">
                                             <rect key="frame" x="0.0" y="0.0" width="648" height="44"/>
