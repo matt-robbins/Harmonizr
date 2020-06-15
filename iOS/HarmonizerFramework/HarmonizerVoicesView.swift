@@ -87,7 +87,7 @@ class HarmonizerVoicesView: UIView {
     override func awakeFromNib() {
         layer.contentsScale = UIScreen.main.scale
         layer.borderColor = UIColor.darkGray.cgColor //UIColor(white: 1.0, alpha: 1.0).cgColor
-        layer.backgroundColor = UIColor.black.cgColor
+        //layer.backgroundColor = UIColor.black.cgColor
         layer.borderWidth = CGFloat(borderWidth)
         layer.cornerRadius = CGFloat(cornerRadius)
         layer.shadowRadius = CGFloat(shadowRadius)

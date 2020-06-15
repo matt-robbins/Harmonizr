@@ -220,7 +220,7 @@ class SettingsViewController: UITableViewController {
             break
         case "showBtMidi":
             let btMidiViewController = CABTMIDICentralViewController()
-            btMidiViewController.view.backgroundColor = UIColor.black
+            //btMidiViewController.view.backgroundColor = UIColor.black
 
             self.show(btMidiViewController, sender: self)
         case "stereoMode":

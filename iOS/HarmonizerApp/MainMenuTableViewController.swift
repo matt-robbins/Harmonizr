@@ -103,7 +103,7 @@ class MainMenuTableViewController: UITableViewController {
             
         case .bluetooth:
             let btMidiViewController = CABTMIDICentralViewController()
-            btMidiViewController.view.backgroundColor = UIColor.black
+            //btMidiViewController.view.backgroundColor = UIColor.black
 
             self.show(btMidiViewController, sender: self)
         case .backgroundmode:

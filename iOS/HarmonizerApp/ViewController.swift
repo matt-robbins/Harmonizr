@@ -494,6 +494,7 @@ class ViewController: UIViewController, InterfaceDelegate {
         recTimeView = UILabel()
         recTimeView?.textAlignment = .left
         recTimeView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        recTimeView?.textColor = UIColor.white
         //recTimeView?.layer.opacity = 0.5
         recTimeView?.layer.cornerRadius = 4
         

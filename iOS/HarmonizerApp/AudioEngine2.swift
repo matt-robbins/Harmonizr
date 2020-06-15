@@ -49,7 +49,7 @@ class AudioEngine2: NSObject {
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP, .mixWithOthers])
             //try session.setMode(AVAudioSessionModeMeasurement)
             
-            //try session.setPreferredSampleRate(48000.0)
+            try session.setPreferredSampleRate(48000.0)
             try session.setPreferredIOBufferDuration(128/session.sampleRate)
             try session.setActive(true)
         }

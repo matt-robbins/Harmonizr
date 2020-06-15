@@ -32,8 +32,8 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.contentView.backgroundColor = UIColor.black
-        self.contentView.isOpaque = true
+//        self.contentView.backgroundColor = UIColor.black
+//        self.contentView.isOpaque = true
             
         self.selectionStyle = .none
         

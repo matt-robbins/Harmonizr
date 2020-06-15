@@ -202,7 +202,7 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
             cell?.textLabel?.text = "row \(indexPath.row)"
         }
         
-        cell?.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
+        //cell?.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
         
         cell?.selectionStyle = .none
         return cell!

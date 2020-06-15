@@ -95,7 +95,7 @@ class AuParameterTableViewCell: UITableViewCell {
         stepCtrl.addTarget(self, action: #selector(self.stepperValueChanged(_:)), for: .valueChanged)
         switchCtrl.addTarget(self, action: #selector(self.switchValueChanged(_:)), for: .valueChanged)
         
-        self.backgroundColor = UIColor.black
+        //self.backgroundColor = UIColor.black
 
     }
 

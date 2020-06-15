@@ -257,9 +257,7 @@ class KeyboardView: UIView {
         super.init(coder: aDecoder)
     }
     
-    override func layoutSublayers(of layer: CALayer) {
-        layer.backgroundColor = UIColor.black.cgColor
-        
+    override func layoutSublayers(of layer: CALayer) {        
         containerLayer.bounds = layer.bounds
         
         let top = CGFloat(-2)

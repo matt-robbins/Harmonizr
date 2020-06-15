@@ -77,7 +77,7 @@ extension PresetListViewController: UITableViewDataSource {
         let p = presetController!.presets[indexPath.row]
         
         cell.textLabel?.text = p.name! + (p.factoryId >= 0 ? " (factory)" : "")
-        cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
+        //cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
         cell.selectionStyle = p.factoryId >= 0 ? .default : .none
         //cell.accessoryView = UISwitch()
         return cell

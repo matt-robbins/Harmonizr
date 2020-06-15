@@ -85,7 +85,7 @@ extension PresetSaveViewController: UITableViewDataSource {
         let p = presetController!.presets.filter { $0.factoryId < 0 }[indexPath.row]
         
         cell.textLabel?.text = p.name! + (p.factoryId >= 0 ? " (factory)" : "")
-        cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
+        //cell.textLabel?.textColor = UILabel.appearance(whenContainedInInstancesOf: [UITableViewCell.self]).textColor
         
         cell.isUserInteractionEnabled = (p.factoryId < 0)
         

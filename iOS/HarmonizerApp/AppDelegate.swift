@@ -136,17 +136,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
-//        UITableViewCell.appearance().backgroundColor = UIColor.clear
-//        UITableView.appearance().backgroundColor = UIColor.clear
-//        UITableView.appearance().separatorColor = UIColor.lightGray
-//        UITableViewHeaderFooterView.appearance().tintColor = UIColor.darkGray
-//        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).textColor = UIColor.white
-//        UILabel.appearance(whenContainedInInstancesOf: [UITableView.self]).highlightedTextColor = UIColor.lightGray
-//        BaseView.appearance().backgroundColor = UIColor.clear
-//        UIPickerView.appearance().backgroundColor = UIColor.clear
-//        UINavigationBar.appearance().barStyle = .black
-//        UINavigationBar.appearance().backgroundColor = UIColor.darkGray
-       // UINavigationBar.appearance().text
         
         let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
         
