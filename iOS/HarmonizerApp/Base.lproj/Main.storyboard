@@ -24,6 +24,7 @@
                                 </constraints>
                             </containerView>
                         </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="trailing" secondItem="Esp-En-WMd" secondAttribute="trailing" id="3CG-D4-SRu"/>
                             <constraint firstItem="oZU-Ig-hQr" firstAttribute="top" secondItem="Esp-En-WMd" secondAttribute="top" priority="999" id="72v-5b-4e7"/>

@@ -81,11 +81,12 @@ class HarmButton: UIButton {
                 
         cornerRadius = frame.height/10
         borderWidth = frame.height/20
-        alayer.backgroundColor = layer.backgroundColor
+        alayer.backgroundColor = UIColor.clear.cgColor //layer.backgroundColor
         alayer.shadowColor = highlightColor
         alayer.cornerRadius = cornerRadius
         alayer.borderWidth = borderWidth
-        alayer.borderColor = UIColor.darkGray.cgColor
+        alayer.opacity = 0.5
+        alayer.borderColor = UIColor.gray.cgColor
         alayer.shadowOffset = CGSize(width: 0, height: 0)
         alayer.shadowRadius = shadowRadius
         layer.masksToBounds = false
@@ -162,6 +163,7 @@ class HarmButton: UIButton {
                 CATransaction.setAnimationDuration(0.05)
                 alayer.borderColor = highlightColor
                 alayer.borderWidth = frame.width/15
+                alayer.opacity = 1.0
                 alayer.shadowOpacity = 1.0
                 superview?.bringSubview(toFront: self)
             case false:
@@ -172,6 +174,7 @@ class HarmButton: UIButton {
                 {
                     alayer.borderColor = UIColor.darkGray.cgColor
                     alayer.shadowOpacity = 0.0
+                    alayer.opacity = 1.0
                 }
             }
             CATransaction.commit()
@@ -188,6 +191,7 @@ class HarmButton: UIButton {
                 alayer.shadowColor = highlightColor
                 alayer.borderColor = highlightColor
                 alayer.shadowOpacity = 1.0
+                alayer.opacity = 1.0
                 alayer.borderWidth = frame.width/20
                 superview?.bringSubview(toFront: self)
             case false:
@@ -195,6 +199,7 @@ class HarmButton: UIButton {
                 alayer.borderColor = UIColor.darkGray.cgColor
                 alayer.borderWidth = frame.width/20
                 alayer.shadowOpacity = 0.0
+                alayer.opacity = 1.0
             }
             CATransaction.commit()
         }
