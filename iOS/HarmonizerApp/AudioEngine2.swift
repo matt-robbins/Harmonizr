@@ -49,7 +49,7 @@ class AudioEngine2: NSObject {
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP, .mixWithOthers])
             //try session.setMode(AVAudioSessionModeMeasurement)
             
-            try session.setPreferredSampleRate(48000.0)
+            try session.setPreferredSampleRate(44100.0)
             try session.setPreferredIOBufferDuration(128/session.sampleRate)
             try session.setActive(true)
         }
@@ -315,7 +315,7 @@ class AudioEngine2: NSObject {
         
         let defaultFormat:AVAudioFormat? = nil
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
-        //stereoFormat = nil
+        //let stereoFormat:AVAudioFormat? = nil
         
         self.engine.disconnectNodeInput(self.engine.mainMixerNode)
         self.engine.disconnectNodeInput(self.reverbUnitNode)
@@ -324,8 +324,8 @@ class AudioEngine2: NSObject {
         self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: stereoFormat)
         //self.engine.connect(self.engine.inputNode, to: self.engine.mainMixerNode, format: defaultFormat)
 
-        self.engine.connect(self.reverbUnitNode, to: self.engine.mainMixerNode, format: stereoFormat)
-        //self.engine.connect(self.harmUnitNode!, to: self.engine.mainMixerNode, format: defaultFormat)
+        self.engine.connect(self.reverbUnitNode, to: self.engine.mainMixerNode, format: defaultFormat)
+        //self.engine.connect(self.harmUnitNode!, to: self.engine.mainMixerNode, format: stereoFormat)
         self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: stereoFormat)
         self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
 

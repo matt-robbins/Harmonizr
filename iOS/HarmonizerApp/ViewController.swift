@@ -425,25 +425,16 @@ class ViewController: UIViewController, InterfaceDelegate {
         }
     }
     
-    
     @IBAction func recordToggle(_ sender: Any) {
         if (audioEngine.isRecording())
         {
             audioEngine.finishRecording()
-            if #available(iOS 13.0, *) {
-                recordButton.image = UIImage(systemName: "circle.fill")
-                folderButton.tintColor = .yellow
-            } else {
-                recordButton.title = "recording..."
-            }
+            recordButton.image = UIImage(named: "circle.fill")
+            folderButton.tintColor = .yellow
         }
         else
         {
-            if #available(iOS 13.0, *) {
-                recordButton.image = UIImage(systemName: "pause.circle.fill")
-            } else {
-                recordButton.title = "record"
-            }
+            recordButton.image = UIImage(named: "pause.fill")
             audioEngine.startRecording()
         }
     }

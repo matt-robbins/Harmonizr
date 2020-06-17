@@ -184,16 +184,28 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         keyboardView.allNotesOff()
     }
     
+    public func setButtonIcon(_ button: UIButton, named: String)
+    {
+        if #available(iOSApplicationExtension 18.0, *) {
+            button.setImage(UIImage(named:named), for: .normal)
+            return
+        }
+        let im = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
+        let inset = button.frame.height/5
+        button.setImage(im, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
-        let icon = (defaults?.bool(forKey: "recordVideo") ?? false) ? "video.fill" : "circle.fill"
+        let icon = "circle.fill" // (defaults?.bool(forKey: "recordVideo") ?? false) ? "video.fill" : "circle.fill"
         
-        if #available(iOSApplicationExtension 13.0, *) {
-            videoButton!.setImage(UIImage(systemName: icon), for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
+        setButtonIcon(videoButton!, named: icon)
+        setButtonIcon(presetEditButton!, named: "gear")
+        //setButtonIcon(midiButton, named: "midilogo")
+        syncLoopButtons()
         syncView()
     }
     
@@ -445,12 +457,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             {
                 self.show(vc!, sender: self)
             }
-            if #available(iOSApplicationExtension 13.0, *) {
-                videoButton.setImage(UIImage(systemName: "circle.fill"), for: .normal)
-                videoButton.tintColor = UIColor.red
-            } else {
-                // Fallback on earlier versions
-            }
+            videoButton.tintColor = UIColor.red
+            setButtonIcon(videoButton, named: "circle.fill")
             return
         }
         
@@ -470,27 +478,15 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         case .standby:
             iv?.layer.add(animation,forKey:"borderPulse")
         case .recording:
-            if #available(iOSApplicationExtension 13.0, *) {
-                videoButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
-            } else {
-                // Fallback on earlier versions
-            }
+            setButtonIcon(videoButton, named: "stop.fill")
         case .idle:
-            if #available(iOSApplicationExtension 13.0, *) {
-                videoButton.setImage(UIImage(systemName: "video.fill"), for: .normal)
-            } else {
-                // Fallback on earlier versions
-            }
+            setButtonIcon(videoButton, named: "circle.fill")
         }
         
         if (interfaceDelegate?.recordingsAvailable() ?? false)
         {
-            if #available(iOSApplicationExtension 13.0, *) {
-                videoButton.setImage(UIImage(systemName: "folder"), for: .normal)
-                videoButton.tintColor = UIColor.yellow
-            } else {
-                // Fallback on earlier versions
-            }
+            videoButton.tintColor = UIColor.yellow
+            setButtonIcon(videoButton, named: "folder")
             videoButton.tag = 1
         }
 
@@ -546,7 +542,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     func syncLoopButtons()
     {
         var playImage = "circle.fill"
-        var stopImage = "pause"
+        var stopImage = "pause.fill"
         switch audioUnit?.getLoopMode() {
         case 0:
             stopImage = "stop.fill"
@@ -566,17 +562,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             break
         }
         
-        if #available(iOSApplicationExtension 13.0, *) {
-            loopRecButton.setImage(UIImage(systemName: playImage), for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        if #available(iOSApplicationExtension 13.0, *) {
-            loopStopButton.setImage(UIImage(systemName: stopImage), for: .normal)
-        } else {
-            // Fallback on earlier versions
-        }
+        setButtonIcon(loopRecButton, named: playImage)
+        setButtonIcon(loopStopButton, named: stopImage)
     }
     
     func programChange(_ program: Int32) {

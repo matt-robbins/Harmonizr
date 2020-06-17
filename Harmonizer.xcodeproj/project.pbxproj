@@ -430,7 +430,6 @@
 				C96F204120D80B7A00F43D90 /* HarmTableViewCell.swift */,
 				C9DFC5E4202F96E900CC776F /* InputViewController.swift */,
 				C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */,
-				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 				91236D131B08F42B00734C5E /* Main.storyboard */,
 				C9A443092428438800D4BB52 /* FilesTableViewController.swift */,
 				C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */,
@@ -439,6 +438,7 @@
 				C93FE6D5243B8DC00068B036 /* SplashViewController.swift */,
 				91236D1B1B08F42B00734C5E /* Info.plist */,
 				C97F1B7F20D41121001C26E1 /* ColorTheme.swift */,
+				30C0135A1C6D303D00F7E9B4 /* Images.xcassets */,
 			);
 			name = HarmonizerApp;
 			path = iOS/HarmonizerApp;

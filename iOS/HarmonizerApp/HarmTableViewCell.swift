@@ -40,7 +40,7 @@ class HarmTableViewCell: UITableViewCell {
 //        let v = UIView()
 //        v.backgroundColor = tintColor
 //        selectedBackgroundView = v
-        
+        print(selected)
         if (selected)
         {
             led.layer.backgroundColor = tintColor.cgColor

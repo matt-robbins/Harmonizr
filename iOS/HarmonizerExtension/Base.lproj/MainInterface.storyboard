@@ -188,7 +188,7 @@
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLc-dw-1Qg">
                                                                                 <rect key="frame" x="187.33333333333334" y="0.0" width="31.333333333333343" height="34"/>
-                                                                                <state key="normal" image="gear" catalog="system">
+                                                                                <state key="normal" image="MIDILogo">
                                                                                     <color key="titleColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 </state>
                                                                                 <userDefinedRuntimeAttributes>
@@ -487,7 +487,7 @@
                         <outlet property="mainView" destination="xJe-bz-bEY" id="duO-7W-UUt"/>
                         <outlet property="midiButton" destination="amN-OU-hHi" id="81E-tH-K3m"/>
                         <outlet property="presetButton" destination="3He-cA-tY7" id="NGb-yI-yRH"/>
-                        <outlet property="presetEditButton" destination="dLc-dw-1Qg" id="RTs-0J-Ld8"/>
+                        <outlet property="presetEditButton" destination="dLc-dw-1Qg" id="iGu-uZ-a5e"/>
                         <outlet property="presetNextButton" destination="g2V-1v-GBz" id="DER-34-tEP"/>
                         <outlet property="presetPrevButton" destination="KBZ-Yy-5cH" id="Nbl-Nx-ivi"/>
                         <outlet property="videoButton" destination="FI4-35-Vte" id="TpS-Vt-RVM"/>
@@ -1442,9 +1442,9 @@
     <color key="tintColor" name="AppTint"/>
     <resources>
         <image name="Logo" width="60" height="60"/>
+        <image name="MIDILogo" width="193" height="190"/>
         <image name="circle.fill" catalog="system" width="128" height="121"/>
         <image name="folder" catalog="system" width="128" height="95"/>
-        <image name="gear" catalog="system" width="128" height="119"/>
         <image name="stop.fill" catalog="system" width="128" height="113"/>
         <image name="video.fill" catalog="system" width="128" height="82"/>
         <namedColor name="AppTint">

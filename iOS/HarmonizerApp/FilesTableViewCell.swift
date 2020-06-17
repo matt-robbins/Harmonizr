@@ -28,6 +28,18 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
             nameLabel.text = file
         }
     }
+    func setButtonIcon(_ button: UIButton, named: String)
+    {
+        if #available(iOSApplicationExtension 18.0, *) {
+            button.setImage(UIImage(named:named), for: .normal)
+            return
+        }
+        let im = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
+        let inset = button.frame.height/5
+        button.setImage(im, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -52,16 +64,20 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
         playButton.adjustsImageWhenHighlighted = true
         shareButton.adjustsImageWhenHighlighted = true
         
-        if #available(iOS 13.0, *) {
-            playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-        } else {
-            playButton.setTitle("play", for: .normal)
-        }
-        if #available(iOS 13.0, *) {
-            shareButton.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        } else {
-            playButton.setTitle("share", for: .normal)
-        }
+        setButtonIcon(playButton, named:"play.fill")
+        setButtonIcon(shareButton, named:"square.and.arrow.up")
+
+        
+//        if #available(iOS 13.0, *) {
+//            playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+//        } else {
+//            playButton.setTitle("play", for: .normal)
+//        }
+//        if #available(iOS 13.0, *) {
+//            shareButton.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+//        } else {
+//            shareButton.setTitle("share", for: .normal)
+//        }
         
         playButton.addTarget(self, action: #selector(self.play(_:)), for: .touchDown)
         shareButton.addTarget(self, action: #selector(self.share(_:)), for: .touchDown)
@@ -137,15 +153,11 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
         audioPlayer?.isMeteringEnabled = true
         audioPlayer?.play()
         updater?.isPaused = false
-        if #available(iOS 13.0, *) {
-            UIView.transition(with: playButton, duration: 0.2, options: .transitionFlipFromRight, animations: {
-                self.playButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
-            }, completion: nil)
-            //playButton.setImage(UIImage(systemName: "pause"), for: .normal)
-        } else {
-            playButton.setTitle("pause", for: .normal)
-        }
         
+        UIView.transition(with: playButton, duration: 0.2, options: .transitionFlipFromRight, animations: {
+            //self.playButton.setImage(UIImage(systemName: "stop.fill"), for: .normal)
+            self.setButtonIcon(self.playButton, named: "stop.fill")
+        }, completion: nil)
     }
     @objc func share(_ sender: UIButton) {
         print("presenting")
@@ -158,14 +170,9 @@ class FilesTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully: Bool)
     {
         print("finished!")
-        if #available(iOS 13.0, *) {
-            UIView.transition(with: playButton, duration: 0.2, options: .transitionFlipFromLeft, animations: {
-                self.playButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-            }, completion: nil)
-            //playButton.setImage(UIImage(systemName: "play"), for: .normal)
-        } else {
-            playButton.setTitle("play", for: .normal)
-        }
+        UIView.transition(with: playButton, duration: 0.2, options: .transitionFlipFromLeft, animations: {
+            self.setButtonIcon(self.playButton,named:"play.fill")
+        }, completion: nil)
     }
 
 }

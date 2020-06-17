@@ -73,6 +73,7 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             
             cell.textLabel?.text = data[indexPath.row].portName
+            cell.imageView?.image = UIImage(named:"circle")
             return cell
         }
         if (indexPath.section == 2)
@@ -205,6 +206,14 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             
             indexPath = IndexPath(row: current_row, section: 0)
             self.inputTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+            
+            do {
+                try session.setActive(false)
+                try session.setActive(true)
+            }
+            catch {
+                print("oopsy!")
+            }
         }
     }
     

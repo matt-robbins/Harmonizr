@@ -155,23 +155,17 @@ class SettingsViewController: UITableViewController {
             let camera = (defaults?.bool(forKey: "cameraEnable") ?? false)
             let video = (defaults?.bool(forKey: "recordVideo") ?? false)
             var mode = "Audio Only"
-            var imname = "circle.fill"
             if (video && !camera)
             {
                 mode = "Screen + Audio"
-                imname = "video"
             }
             else if (video && camera)
             {
                 mode = "Screen + Video"
-                imname = "video.fill"
             }
             cell.detailTextLabel?.text = mode
-            if #available(iOSApplicationExtension 13.0, *) {
-                cell.imageView?.image = UIImage(systemName: imname)
-            } else {
-                // Fallback on earlier versions
-            }
+            
+            cell.imageView?.image = UIImage(named: "circle.fill")?.withRenderingMode(.alwaysTemplate)
             
         case "showReverb":
             cell.isUserInteractionEnabled = (reverbAudioUnit != nil)
