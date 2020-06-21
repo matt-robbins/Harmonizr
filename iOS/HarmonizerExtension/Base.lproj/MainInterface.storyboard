@@ -95,7 +95,7 @@
                                                                             <constraint firstAttribute="height" constant="34" id="3Up-Oq-eyh"/>
                                                                         </constraints>
                                                                         <color key="tintColor" red="1" green="0.14913141730000001" blue="0.0" alpha="0.83054577464788737" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                        <state key="normal" image="video.fill" catalog="system">
+                                                                        <state key="normal" image="circle.fill">
                                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                         </state>
                                                                         <userDefinedRuntimeAttributes>
@@ -346,7 +346,7 @@
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qyX-iC-PAj" userLabel="Loop Record Button" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                 <rect key="frame" x="0.0" y="0.0" width="31.333333333333332" height="30"/>
-                                                                <state key="normal" image="circle.fill" catalog="system"/>
+                                                                <state key="normal" image="circle.fill"/>
                                                                 <connections>
                                                                     <action selector="loopStart:" destination="BYZ-38-t0r" eventType="touchDown" id="4Jn-Bm-l7E"/>
                                                                 </connections>
@@ -359,7 +359,7 @@
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="30" id="SmG-TT-3a6"/>
                                                                 </constraints>
-                                                                <state key="normal" image="stop.fill" catalog="system"/>
+                                                                <state key="normal" image="stop.fill"/>
                                                                 <connections>
                                                                     <action selector="loopStop:" destination="BYZ-38-t0r" eventType="touchDown" id="6s8-Yc-MhL"/>
                                                                 </connections>
@@ -1149,7 +1149,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="About Harmonizr (Web)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LR7-VA-jZR">
-                                                    <rect key="frame" x="15" y="0.0" width="352" height="44"/>
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1171,18 +1171,18 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Recording Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Px3-3k-6WY">
-                                                    <rect key="frame" x="47.333333333333336" y="11.999999999999998" width="125.66666666666667" height="20.333333333333332"/>
+                                                    <rect key="frame" x="48.000000000000007" y="11.999999999999998" width="125.66666666666667" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="video.fill" catalog="system" id="dbW-Y1-NPI">
-                                                    <rect key="frame" x="7.6666666666666661" y="14" width="24.666666666666668" height="15.666666666666666"/>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="circle.fill" id="dbW-Y1-NPI">
+                                                    <rect key="frame" x="16" y="13.333333333333336" width="17" height="17"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kXg-y8-tYR">
-                                                    <rect key="frame" x="323" y="11.999999999999998" width="44" height="20.333333333333332"/>
+                                                    <rect key="frame" x="315" y="11.999999999999998" width="44" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1195,18 +1195,18 @@
                                         <rect key="frame" x="0.0" y="1032" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mle-0t-TUN" id="PHV-oC-lVG">
-                                            <rect key="frame" x="0.0" y="0.0" width="356" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="348" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Audio Recordings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KG0-07-VAU">
-                                                    <rect key="frame" x="47" y="0.0" width="301" height="44"/>
+                                                    <rect key="frame" x="50" y="0.0" width="290" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="folder" catalog="system" id="0QV-Ko-bKV">
-                                                    <rect key="frame" x="8.3333333333333339" y="13.000000000000002" width="23.333333333333332" height="17.666666666666668"/>
+                                                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" image="folder" id="0QV-Ko-bKV">
+                                                    <rect key="frame" x="16" y="14" width="19" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </imageView>
                                             </subviews>
@@ -1443,10 +1443,9 @@
     <resources>
         <image name="Logo" width="60" height="60"/>
         <image name="MIDILogo" width="193" height="190"/>
-        <image name="circle.fill" catalog="system" width="128" height="121"/>
-        <image name="folder" catalog="system" width="128" height="95"/>
-        <image name="stop.fill" catalog="system" width="128" height="113"/>
-        <image name="video.fill" catalog="system" width="128" height="82"/>
+        <image name="circle.fill" width="17" height="17"/>
+        <image name="folder" width="19" height="16"/>
+        <image name="stop.fill" width="14" height="14"/>
         <namedColor name="AppTint">
             <color red="0.0" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

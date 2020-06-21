@@ -326,7 +326,7 @@ class AudioEngine2: NSObject {
 
         self.engine.connect(self.reverbUnitNode, to: self.engine.mainMixerNode, format: defaultFormat)
         //self.engine.connect(self.harmUnitNode!, to: self.engine.mainMixerNode, format: stereoFormat)
-        self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: stereoFormat)
+        self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: defaultFormat)
         self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
 
         //self.engine.connect(self.engine.inputNode, to: self.reverbUnitNode, format: defaultFormat)

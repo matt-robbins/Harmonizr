@@ -207,13 +207,13 @@ public class InputViewController: UIViewController, UITableViewDelegate, UITable
             indexPath = IndexPath(row: current_row, section: 0)
             self.inputTable.selectRow(at: indexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
             
-            do {
-                try session.setActive(false)
-                try session.setActive(true)
-            }
-            catch {
-                print("oopsy!")
-            }
+//            do {
+//                try session.setActive(false)
+//                try session.setActive(true)
+//            }
+//            catch {
+//                print("oopsy!")
+//            }
         }
     }
     
