@@ -6,9 +6,9 @@
 	`FilterDemoViewController` is the app extension's principal class, responsible for creating both the audio unit and its view.
 */
 
-#import "FilterDemoViewController+AUAudioUnitFactory.h"
+#import "HarmonizerViewController+AUAudioUnitFactory.h"
 
-@implementation FilterDemoViewController (AUAudioUnitFactory)
+@implementation HarmonizerViewController (AUAudioUnitFactory)
 
 - (AUv3Harmonizer *) createAudioUnitWithComponentDescription:(AudioComponentDescription) desc error:(NSError **)error {
     self.audioUnit = [[AUv3Harmonizer alloc] initWithComponentDescription:desc error:error];

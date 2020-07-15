@@ -107,6 +107,7 @@ class AudioEngine2: NSObject {
 
         AudioOutputUnitPublish(&iaa_desc,"MrFx: Harmonizer" as CFString,1,self.engine.outputNode.audioUnit!)
         #endif
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: .AVAudioSessionRouteChange, object: AVAudioSession.sharedInstance())
 //        NotificationCenter.default.addObserver(forName: NSNotification.Name(String(kAudioComponentInstanceInvalidationNotification)), object: nil, queue: nil) { [weak self] notification in
 //            //guard let strongSelf = self else { return }
@@ -290,7 +291,11 @@ class AudioEngine2: NSObject {
         engine.attach(reverbUnitNode)
         
         AVAudioUnit.instantiate(with: componentDescription, options: []) { avAudioUnit, error in
-            guard let avAudioUnit = avAudioUnit else { return }
+            guard let avAudioUnit = avAudioUnit else {
+                print("couldn't find audioUnit!")
+                print(componentDescription)
+                return
+            }
 
             self.harmUnitNode = avAudioUnit
             self.harmUnit = avAudioUnit.auAudioUnit
@@ -308,10 +313,10 @@ class AudioEngine2: NSObject {
     
     func connectNodes()
     {
-        if (self.harmUnitNode == nil)
-        {
-            return
-        }
+//        if (self.harmUnitNode == nil)
+//        {
+//            return
+//        }
         
         let defaultFormat:AVAudioFormat? = nil
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
@@ -319,18 +324,24 @@ class AudioEngine2: NSObject {
         
         self.engine.disconnectNodeInput(self.engine.mainMixerNode)
         self.engine.disconnectNodeInput(self.reverbUnitNode)
-        self.engine.disconnectNodeInput(self.harmUnitNode!)
-
+        if (self.harmUnitNode != nil)
+        {
+            self.engine.disconnectNodeInput(self.harmUnitNode!)
+        }
         self.engine.connect(self.engine.mainMixerNode, to: self.engine.outputNode, format: stereoFormat)
         //self.engine.connect(self.engine.inputNode, to: self.engine.mainMixerNode, format: defaultFormat)
 
         self.engine.connect(self.reverbUnitNode, to: self.engine.mainMixerNode, format: stereoFormat)
         //self.engine.connect(self.harmUnitNode!, to: self.engine.mainMixerNode, format: stereoFormat)
-        self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: stereoFormat)
-        self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
-
-        //self.engine.connect(self.engine.inputNode, to: self.reverbUnitNode, format: defaultFormat)
-        
+        if (self.harmUnitNode != nil)
+        {
+            self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: stereoFormat)
+            self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
+        }
+        else
+        {
+            self.engine.connect(self.engine.inputNode, to: self.reverbUnitNode, format: defaultFormat)
+        }
     }
     
 }

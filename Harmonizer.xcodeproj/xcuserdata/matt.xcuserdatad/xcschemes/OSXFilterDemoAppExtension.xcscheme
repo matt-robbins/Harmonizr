@@ -30,7 +30,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "92FF864A1B9A4D97007C9389"
-               BuildableName = "FilterDemo.app"
+               BuildableName = "Harmonizer.app"
                BlueprintName = "OSXFilterDemoApp"
                ReferencedContainer = "container:Harmonizer.xcodeproj">
             </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "92FF864A1B9A4D97007C9389"
-            BuildableName = "FilterDemo.app"
+            BuildableName = "Harmonizer.app"
             BlueprintName = "OSXFilterDemoApp"
             ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>
@@ -93,7 +93,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "92FF864A1B9A4D97007C9389"
-            BuildableName = "FilterDemo.app"
+            BuildableName = "Harmonizer.app"
             BlueprintName = "OSXFilterDemoApp"
             ReferencedContainer = "container:Harmonizer.xcodeproj">
          </BuildableReference>

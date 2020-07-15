@@ -166,7 +166,7 @@ class ViewController: UIViewController, InterfaceDelegate {
 
             Note that this registration is local to this process.
         */
-        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 6)
+        AUAudioUnit.registerSubclass(AUv3Harmonizer.self, as: componentDescription, name:"MrFx: Harmonizer", version: 7)
         
         // diable idle timer
         UIApplication.shared.isIdleTimerDisabled = true
@@ -176,10 +176,8 @@ class ViewController: UIViewController, InterfaceDelegate {
         self.audioEngine.loadComponent(componentDescription: componentDescription, completionHandler: {(audioUnit) in
             self.harmUnit = audioUnit
             //self.getAUView()
-            
             self.harmonizerViewController.audioUnit = self.harmUnit as? AUv3Harmonizer
-            
-            self.audioEngine.start()            
+            self.audioEngine.start()
         })
         
         
@@ -289,21 +287,25 @@ class ViewController: UIViewController, InterfaceDelegate {
     
     func getAUView()
     {
-        harmUnit!.requestViewController { [weak self] viewController in
-            guard let strongSelf = self else { return }
-                    // Only update the view if the view controller has one.
+        self.harmUnit!.requestViewController { viewController in
+            
             guard let viewController = viewController else {
 
-                fatalError("no view!!!")
+                return
             }
-            
-            if let view = viewController.view {
-                strongSelf.harmonizerViewController = viewController as? HarmonizrMainViewController
-                strongSelf.addChildViewController(viewController)
-                view.frame = strongSelf.auContainerView.bounds
+            DispatchQueue.main.async {
+                if let view = viewController.view {
+                    self.harmonizerViewController = viewController as? HarmonizrMainViewController
+                    self.addChildViewController(viewController)
+                    view.frame = self.auContainerView.bounds
+                    
+                    self.auContainerView.addSubview(view)
+                    viewController.didMove(toParentViewController: self)
+                }
                 
-                strongSelf.auContainerView.addSubview(view)
-                viewController.didMove(toParentViewController: self)
+                self.harmonizerViewController.audioUnit = self.harmUnit as? AUv3Harmonizer
+                
+                //self.audioEngine.start()
             }
         }
     }

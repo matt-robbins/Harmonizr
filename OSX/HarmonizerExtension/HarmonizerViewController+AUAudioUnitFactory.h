@@ -7,8 +7,8 @@
 */
 
 #import <CoreAudioKit/AUViewController.h>
-#import <FilterDemoFramework/FilterDemoFramework.h>
+#import <HarmonizerFramework/HarmonizerFramework.h>
 
-@interface FilterDemoViewController (AUAudioUnitFactory) <AUAudioUnitFactory>
+@interface HarmonizerViewController (AUAudioUnitFactory) <AUAudioUnitFactory>
 
 @end

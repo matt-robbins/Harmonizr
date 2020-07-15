@@ -85,8 +85,8 @@ void DSPKernel::processWithEvents(AudioTimeStamp const *timestamp, AUAudioFrameC
 	AUEventSampleTime now = AUEventSampleTime(timestamp->mSampleTime);
     static AUEventSampleTime then = 0;
     //printf("%d frames\n", frameCount);
-    if ((now - then) != frameCount && then != 0)
-        printf("********** %lld\n", now - then);
+//    if ((now - then) != frameCount && then != 0)
+//        printf("********** %lld\n", now - then);
     then = now;
     
 	AUAudioFrameCount framesRemaining = frameCount;

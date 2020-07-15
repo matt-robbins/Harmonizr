@@ -651,8 +651,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 			 AURenderPullInputBlock      pullInputBlock) {
 		AudioUnitRenderActionFlags pullFlags = 0;
 
+        if (frameCount > input->maxFrames) {
+            return kAudioUnitErr_TooManyFramesToProcess;
+        }
+        
 		AUAudioUnitStatus err = input->pullInput(&pullFlags, timestamp, frameCount, 0, pullInputBlock);
 		
+        //fprintf(stderr,"%x\n", pullFlags);
+        
         if (err != 0) { return err; }
 		
 		AudioBufferList *inAudioBufferList = input->mutableAudioBufferList;
