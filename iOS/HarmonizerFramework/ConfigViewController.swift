@@ -108,7 +108,7 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
     KeyboardViewDelegate, KeyboardEditorDelegate, VoicesViewDelegate
 {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 3
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -149,7 +149,7 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
             cell?.textLabel?.isEnabled = !fixedIntervals
             
             let stepper = cell?.viewWithTag(102) as! UIStepper
-            stepper.maximumValue = 11
+            stepper.maximumValue = 12
             stepper.stepValue = 1
             stepper.value = Double(scaleDegree)
             degreeLabel = cell?.viewWithTag(101) as? UILabel
@@ -162,40 +162,40 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
             
             stepper.addTarget(self, action: #selector(self.degreeInc(_:)), for: .valueChanged)
             
-        case 3:
-            cell = tableView.dequeueReusableCell(withIdentifier: "StepperCell", for: indexPath)
-            
-            cell?.textLabel?.text = "Show/Hear with Key Root"
-            
-            rootLabel = cell?.viewWithTag(101) as? UILabel
-            rootLabel.text = "\(keynames[keyRoot])"
-            
-            let stepper = cell?.viewWithTag(102) as! UIStepper
-            stepper.maximumValue = 11
-            stepper.stepValue = 1
-            stepper.value = Double(keyRoot)
-            
-            cell?.textLabel?.isEnabled = !fixedIntervals
-            rootLabel.isEnabled = !fixedIntervals
-            stepper.isEnabled = !fixedIntervals
-            stepper.alpha = fixedIntervals ? 0.5 : 1
-            
-            stepper.addTarget(self, action: #selector(self.rootInc(_:)), for: .valueChanged)
-            
-        case 4:
-            cell = tableView.dequeueReusableCell(withIdentifier: "StepperCell", for: indexPath)
-            
-            cell?.textLabel?.text = "Inversion"
-            
-            inversionLabel = cell?.viewWithTag(101) as? UILabel
-            inversionLabel?.text = ""
-            
-            let stepper = cell?.viewWithTag(102) as! UIStepper
-            stepper.maximumValue = 3
-            stepper.stepValue = 1
-            stepper.value = Double(inversion)
-            
-            stepper.addTarget(self, action: #selector(self.setInversion(_:)), for: .valueChanged)
+//        case 3:
+//            cell = tableView.dequeueReusableCell(withIdentifier: "StepperCell", for: indexPath)
+//
+//            cell?.textLabel?.text = "Show/Hear with Key Root"
+//
+//            rootLabel = cell?.viewWithTag(101) as? UILabel
+//            rootLabel.text = "\(keynames[keyRoot])"
+//
+//            let stepper = cell?.viewWithTag(102) as! UIStepper
+//            stepper.maximumValue = 11
+//            stepper.stepValue = 1
+//            stepper.value = Double(keyRoot)
+//
+//            cell?.textLabel?.isEnabled = !fixedIntervals
+//            rootLabel.isEnabled = !fixedIntervals
+//            stepper.isEnabled = !fixedIntervals
+//            stepper.alpha = fixedIntervals ? 0.5 : 1
+//
+//            stepper.addTarget(self, action: #selector(self.rootInc(_:)), for: .valueChanged)
+//
+//        case 4:
+//            cell = tableView.dequeueReusableCell(withIdentifier: "StepperCell", for: indexPath)
+//
+//            cell?.textLabel?.text = "Inversion"
+//
+//            inversionLabel = cell?.viewWithTag(101) as? UILabel
+//            inversionLabel?.text = ""
+//
+//            let stepper = cell?.viewWithTag(102) as! UIStepper
+//            stepper.maximumValue = 3
+//            stepper.stepValue = 1
+//            stepper.value = Double(inversion)
+//
+//            stepper.addTarget(self, action: #selector(self.setInversion(_:)), for: .valueChanged)
             
         default:
             cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
@@ -232,7 +232,7 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     var keynames = ["C", "C\u{266f}/D\u{266D}", "D", "D\u{266f}/E\u{266D}", "E", "F", "F\u{266f}/G\u{266D}","G", "G\u{266f}/A\u{266D}", "A", "B\u{266D}", "B/C\u{266D}"]
-    var degreenames = ["1", "\u{266f}1", "2", "\u{266f}2", "3", "4", "\u{266f}4","5", "\u{266D}6", "6", "\u{266D}7", "7"]
+    var degreenames = ["1", "\u{266f}1", "2", "\u{266f}2", "3", "4", "\u{266f}4","5", "\u{266D}6", "6", "\u{266D}7", "7","8"]
     var currInterval = 0
     
     var presetNeedsSave: Bool = false {
@@ -266,6 +266,15 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
             keyRoot = Int(keycenter) % 12
             inversion = Int(inversionParam!.value)
             
+            oldKeycenter = Int(keycenter)
+            oldInversion = inversion
+            
+            keyQuality = 0
+            keyRoot = 0
+            inversion = 3
+            keycenterParam?.value = 0
+            inversionParam?.value = 3
+            
             drawKeys()
             
             refresh()
@@ -281,6 +290,9 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
     var unisonOffset = 128
     var maxOffset = 128
     var nc = 4
+    
+    var oldKeycenter = 0
+    var oldInversion = 0
     
     var timer = Timer()
     
@@ -391,6 +403,8 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
     
     public override func viewWillDisappear(_ animated: Bool)
     {
+        keycenterParam?.value = AUValue(oldKeycenter)
+        inversionParam?.value = AUValue(oldInversion)
         super.viewWillDisappear(animated)
         timer.invalidate()
     }
@@ -398,7 +412,6 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
     public func drawKeys()
     {
         keyboardView.base_note = 48 + (keyRoot + scaleDegree) % 12
-        
         keyboardView.harm_voices = []
         
         var harm_voices: Array<Int> = []
@@ -426,9 +439,9 @@ public class ConfigViewController: UIViewController, UITableViewDelegate, UITabl
     {
         guard audioUnit != nil else { return }
         
-        keycenterParam!.value = Float(keyQuality * 12 + keyRoot)
+        keycenterParam!.value = Float(keyQuality * 12 + keyRoot % 12)
         
-        keyboardView.keyOffset = 14
+        keyboardView.keyOffset = 21
         
 //        for k in keyboardView.keys
 //        {

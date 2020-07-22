@@ -54,6 +54,8 @@ class MidiReceiver : NSObject {
     func setupMidi()
     {
         //print (MIDIGetNumberOfSources())
+        MIDINetworkSession.default().isEnabled = true
+        MIDINetworkSession.default().connectionPolicy = .anyone
         
         observeNotifications()
         enableNetwork()

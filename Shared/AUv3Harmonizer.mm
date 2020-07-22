@@ -384,6 +384,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
+    AUParameter *vibParam = [AUParameterTree createParameterWithIdentifier:@"vibrato" name:@"Vibrato Intensity"
+        address:HarmParamVibrato
+        min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
     AUParameter *loopParam = [AUParameterTree createParameterWithIdentifier:@"loop_mode" name:@"Looping Mode"
     address:HarmParamLoop
     min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
@@ -421,6 +427,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:threshParam];
     [params addObject:stereoParam];
     [params addObject:synthParam];
+    [params addObject:vibParam];
     [params addObject:loopParam];
             
     for (int k = 0; k < 144; k++)
@@ -459,6 +466,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     threshParam.value = 0.1;
     stereoParam.value = 0;
     synthParam.value = 0;
+    vibParam.value = 0;
     keycenterCCParam.value = 16;
     keycenterCcOffsetParam.value = 1;
     keyqualityCCParam.value = 17;

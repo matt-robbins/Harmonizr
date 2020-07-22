@@ -26,6 +26,7 @@ class SettingsViewController: UITableViewController {
     var vgainParameter: AUParameter?
     var dryMixParameter: AUParameter?
     var synthParameter: AUParameter?
+    var vibParameter: AUParameter?
     var tuningParameter: AUParameter?
     var threshParameter: AUParameter?
     var stereoParameter: AUParameter?
@@ -35,6 +36,7 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var drySwitch: UISwitch!
     @IBOutlet weak var synthSwitch: UISwitch!
     
+    @IBOutlet weak var vibSwitch: UISwitch!
     @IBOutlet weak var stereoModeLabel: UILabel!
     
     @IBOutlet weak var threshStepper: UIStepper!
@@ -80,7 +82,7 @@ class SettingsViewController: UITableViewController {
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
         dryMixParameter = paramTree.value(forKey: "dry_mix") as? AUParameter
         synthParameter = paramTree.value(forKey: "synth_enable") as? AUParameter
-        
+        vibParameter = paramTree.value(forKey: "vibrato") as? AUParameter
         tuningParameter = paramTree.value(forKey: "tuning") as? AUParameter
         threshParameter = paramTree.value(forKey: "threshold") as? AUParameter
         stereoParameter = paramTree.value(forKey: "stereo_mode") as? AUParameter
@@ -99,7 +101,7 @@ class SettingsViewController: UITableViewController {
         
         drySwitch.isOn = dryMixParameter!.value > 0.5
         synthSwitch.isOn = synthParameter!.value > 0.5
-        
+        vibSwitch.isOn = vibParameter!.value > 0.5
         //legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
         
         speedSlider.value = speedParameter!.value
@@ -293,7 +295,11 @@ class SettingsViewController: UITableViewController {
         synthParameter!.value = sender.isOn ? 1 : 0
     }
     
-//    @IBAction func legatoSwitch(_ sender: UISwitch) {
+    @IBAction func vibSwitch(_ sender: UISwitch) {
+        vibParameter!.value = sender.isOn ? 1 : 0
+    }
+    
+    //    @IBAction func legatoSwitch(_ sender: UISwitch) {
 //        midiLegatoParameter!.value = sender.isOn ? 1 : 0
 //    }
     
