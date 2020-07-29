@@ -97,6 +97,9 @@
 		C9D2F9042071A617000783B2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D2F9032071A617000783B2 /* AVFoundation.framework */; };
 		C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DFC5E4202F96E900CC776F /* InputViewController.swift */; };
 		C9E48D9820DD457C00F36F9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30C0135A1C6D303D00F7E9B4 /* Images.xcassets */; };
+		C9E5192E24CF51C9009AD8EB /* VUMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C939A47C24CA74F10022FC87 /* VUMeter.swift */; };
+		C9E5192F24CF51C9009AD8EB /* VUMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C939A47C24CA74F10022FC87 /* VUMeter.swift */; };
+		C9E5193124CF55D2009AD8EB /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C939A47A24C9E63B0022FC87 /* TutorialViewController.swift */; };
 		C9EC31E62065B97D007835AB /* PresetFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EC31E52065B97D007835AB /* PresetFavoriteViewController.swift */; };
 		C9FA08BD20B315D6003CC2EA /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA08BC20B315D6003CC2EA /* KeyboardView.swift */; };
 		C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FA08BC20B315D6003CC2EA /* KeyboardView.swift */; };
@@ -218,6 +221,8 @@
 		C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmonizerVoicesView.swift; sourceTree = "<group>"; };
 		C93163511FBCE81D00EE1762 /* HarmButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarmButton.swift; sourceTree = "<group>"; };
 		C9353FD7210EAD1200AB75D6 /* HarmonizerExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HarmonizerExtension.entitlements; sourceTree = "<group>"; };
+		C939A47A24C9E63B0022FC87 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		C939A47C24CA74F10022FC87 /* VUMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VUMeter.swift; sourceTree = "<group>"; };
 		C93ACE53244A67E1009D6D09 /* InterfaceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceDelegate.swift; sourceTree = "<group>"; };
 		C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItunesArtwork.png; sourceTree = "<group>"; };
 		C93FE6D5243B8DC00068B036 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -409,6 +414,7 @@
 				164896A61C925E0C00AB781D /* Shared */,
 				C94FC87B202C96F60009E742 /* AppIcon.appiconset */,
 				91236D571B08F52D00734C5E /* HarmonizerFramework.h */,
+				C939A47C24CA74F10022FC87 /* VUMeter.swift */,
 				C946818D2190F2B10055AA80 /* MidiReceiver.swift */,
 				C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */,
 				9152BF241B09567700D8C6A4 /* HarmonizerViewController.swift */,
@@ -432,6 +438,7 @@
 				C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */,
 				C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */,
 				C96F204A20DB032B00F43D90 /* HarmParameterTableViewCell.swift */,
+				C939A47A24C9E63B0022FC87 /* TutorialViewController.swift */,
 				C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */,
 			);
 			name = HarmonizerFramework;
@@ -916,6 +923,7 @@
 				C92AB161205FF47400BEE933 /* HarmonizerVoicesView.swift in Sources */,
 				C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */,
 				C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */,
+				C9E5192E24CF51C9009AD8EB /* VUMeter.swift in Sources */,
 				C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */,
 				C96F204920DB02E400F43D90 /* HarmParameterTableView.swift in Sources */,
 				C946818F2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
@@ -926,6 +934,7 @@
 				C97B07E322275B7F002FAB96 /* AuSettingsTableViewController.swift in Sources */,
 				C96F203D20D7D3B200F43D90 /* BaseView.swift in Sources */,
 				C96F204D20DB042800F43D90 /* SettingsViewController.swift in Sources */,
+				C9E5193124CF55D2009AD8EB /* TutorialViewController.swift in Sources */,
 				C96F204B20DB032B00F43D90 /* HarmParameterTableViewCell.swift in Sources */,
 				91A9356B1B1269F100370383 /* HarmonizerView.swift in Sources */,
 				C9280B56243A8D06002C9ED3 /* FilesTableViewController.swift in Sources */,
@@ -936,6 +945,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9E5192F24CF51C9009AD8EB /* VUMeter.swift in Sources */,
 				C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
 				C94681902190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */,
@@ -1065,7 +1075,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1088,7 +1098,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
@@ -1125,7 +1135,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1142,7 +1152,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerApp/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer;
 				PRODUCT_NAME = Harmonizer;
@@ -1306,7 +1316,7 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1329,7 +1339,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
@@ -1365,7 +1375,7 @@
 				CODE_SIGN_ENTITLEMENTS = HarmonizerExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = CK78RPQ2FV;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -1382,7 +1392,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/HarmonizerExtension/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.Harmonizer.HarmonizerExtension;
 				PRODUCT_NAME = HarmonizerExtension;

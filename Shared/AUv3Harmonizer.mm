@@ -188,6 +188,8 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     BufferedInputBus _inputBus;
     dispatch_semaphore_t _sem;
     
+    bool embedded;
+    
     AUAudioUnitPreset   *_currentPreset;
     NSInteger           _currentFactoryPresetIndex;
     NSMutableArray<NSNumber *> *keysDown;
@@ -797,9 +799,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     NSNumber *n = [NSNumber numberWithInt:_kernel.midi_note_number];
     [output addObject:n];
     
+    int nv = (int) _kernel.getParameter(HarmParamNvoices);
+    
     for (int k = 0; k < 4; k++)
     {
-        NSNumber *n = [NSNumber numberWithInt:_kernel.voice_notes[k]];
+        NSNumber *n = (k < nv) ? [NSNumber numberWithInt:_kernel.voice_notes[k]] : [NSNumber numberWithInt:-1];
         [output addObject:n];
     }
     
@@ -845,6 +849,10 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     return _kernel.root_key;
 }
 
+- (float) getCurrentLevel {
+    return _kernel.rms;
+}
+
 - (float) getCurrentNumVoices {
     return _kernel.getParameter(HarmParamNvoices);
 }
@@ -864,6 +872,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
 - (float) getLoopPosition {
     return _kernel.loopPosition();
+}
+
+- (bool) isEmbedded {
+    return embedded;
+}
+
+- (void) setEmbedded:(bool)embedded {
+    embedded = embedded;
 }
 
 @end

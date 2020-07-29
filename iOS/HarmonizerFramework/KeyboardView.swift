@@ -351,7 +351,7 @@ class KeyboardView: UIView {
         var done = false
         if (cur_pos.y < 0 && start_pos == CGPoint.zero && touches.count == 1)
         {
-            containerLayer.position.y = -20
+            raise()
             start_pos = cur_pos
         }
         
@@ -367,7 +367,7 @@ class KeyboardView: UIView {
             if (cur_pos.y > 0 || !editing)
             {
                 start_pos = CGPoint.zero
-                containerLayer.position.y = 0
+                lower()
                 let off = (containerLayer.position.x + CGFloat(keyOffset) * spacing) / spacing
                 keyOffset -= Int(round(off))
                 done = true
@@ -499,5 +499,15 @@ class KeyboardView: UIView {
     {
         allNotesOff()
         keyOffset += inc
+    }
+    
+    func raise()
+    {
+        containerLayer.position.y = -20
+    }
+    
+    func lower()
+    {
+        containerLayer.position.y = 0
     }
 }

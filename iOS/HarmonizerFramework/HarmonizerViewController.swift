@@ -12,6 +12,16 @@ import os
 
 //public var globalAudioUnit: AUv3Harmonizer?
 
+public enum TutorialSection: CaseIterable {
+    case none
+    case presets
+    case keycenter
+    case voices
+    case loop
+    case keyboard
+    case midi
+    case record
+}
 
 class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, VoicesViewDelegate, KeyboardViewDelegate, HarmonizerDelegate {
     
@@ -21,9 +31,10 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     @IBOutlet weak var voicesView: HarmonizerVoicesView!
     
     @IBOutlet weak var keyboardView: KeyboardView!
-    @IBOutlet weak var recordButton: HarmButton!
     
     @IBOutlet weak var videoView: UIView!
+    @IBOutlet weak var presetsStack: UIStackView!
+    @IBOutlet weak var loopStack: UIStackView!
     @IBOutlet weak var keyboardStack: UIStackView!
     @IBOutlet weak var midiButton: HarmButton!
     @IBOutlet weak var videoButton: HarmButton!
@@ -49,6 +60,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     private var noteBlock: AUScheduleMIDIEventBlock!
     
+    private var midiReciever: MidiReceiver?
+    
     /*
 		When this view controller is instantiated within the app, its
         audio unit is created independently, and passed to the view controller here.
@@ -73,6 +86,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
 			}
             
             globalAudioUnit = audioUnit
+            
+            //if (audioUnit?.componentDescription.componentType)
         }
     }
     	
@@ -177,6 +192,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         notificationCenter.addObserver(self, selector: #selector(appResigned), name: Notification.Name.UIApplicationWillResignActive, object: nil)
         
         connectViewWithAU()
+        tutorial_highlight(.none)
 	}
     
     @objc private func appResigned()
@@ -225,17 +241,60 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         presetModified = !(presetState == d)
     }
     
+    public func tutorial_highlight(_ section: TutorialSection)
+    {
+        var dim = Float(0.2)
+        
+        var views = [TutorialSection: UIView?]()
+        
+        for section in TutorialSection.allCases
+        {
+            switch (section)
+            {
+            case .none:
+                views[section] = nil
+            case .keyboard:
+                views[section] = keyboardStack
+            case .keycenter:
+                views[section] = harmonizerView
+            case .loop:
+                views[section] = loopStack
+            case .presets:
+                views[section] = presetsStack
+            case .voices:
+                views[section] = voicesView
+            case .midi:
+                views[section] = midiButton
+            case .record:
+                views[section] = videoButton
+            }
+        }
+        
+        if (section == .none)
+        {
+            dim = 1.0
+        }
+        UIView.animate(withDuration: 0.5, animations: {
+            for v in views.values {
+                v?.alpha = CGFloat(dim)
+            }
+            views[section]??.alpha = CGFloat(1.0)
+        })
+    }
+    
     //MARK: VoicesViewDelegate
     
     func voicesView(_ view: HarmonizerVoicesView, didChangeInversion inversion: Float)
     {
-        inversionParameter?.value = inversion
+        let old = (inversionParameter?.value ?? 0)
+        inversionParameter?.value = (inversion != old) ? inversion : old
         checkPresetModified()
     }
     
     func voicesView(_ view: HarmonizerVoicesView, didChangeNvoices voices: Float)
     {
-        nvoicesParameter?.value = voices
+        let old = (nvoicesParameter?.value ?? 0)
+        nvoicesParameter?.value = (voices != old) ? voices : old
         checkPresetModified()
     }
     
@@ -275,7 +334,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         been created.
 	*/
 	func connectViewWithAU() {
-        
+        guard let au = audioUnit else { return }
         guard let paramTree = audioUnit?.parameterTree else { return }
         keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
         inversionParameter = paramTree.value(forKey: "inversion") as? AUParameter

@@ -152,6 +152,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults?.set(false, forKey: "MIDISendNotesHarm")
             defaults?.set(true, forKey: "recordVideo")
             defaults?.set(true, forKey: "cameraEnable")
+            defaults?.set(true, forKey: "wantsTutorial")
+            defaults?.set(true, forKey: "init")
         }
     }
 }

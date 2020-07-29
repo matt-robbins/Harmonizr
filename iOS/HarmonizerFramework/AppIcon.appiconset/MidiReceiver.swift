@@ -54,8 +54,6 @@ class MidiReceiver : NSObject {
     func setupMidi()
     {
         //print (MIDIGetNumberOfSources())
-        MIDINetworkSession.default().isEnabled = true
-        MIDINetworkSession.default().connectionPolicy = .anyone
         
         observeNotifications()
         enableNetwork()
@@ -99,38 +97,14 @@ class MidiReceiver : NSObject {
     
     // signifies that other aspects of the session changed, such as the connection list, connection policy
     @objc func midiNetworkChanged(notification:NSNotification) {
-        print("\(#function)")
-        print("\(notification)")
-        if let session = notification.object as? MIDINetworkSession {
-            print("session \(session)")
-            for con in session.connections() {
-                print("con \(con)")
-            }
-            print("isEnabled \(session.isEnabled)")
-            print("sourceEndpoint \(session.sourceEndpoint())")
-            print("destinationEndpoint \(session.destinationEndpoint())")
-            print("networkName \(session.networkName)")
-            print("localName \(session.localName)")
-            
-            if let name = getDeviceName(session.sourceEndpoint()) {
-                print("source name \(name)")
-            }
-            
-            if let name = getDeviceName(session.destinationEndpoint()) {
-                print("destination name \(name)")
-            }
-        }
+        
+//        if let session = notification.object as? MIDINetworkSession {
+//            break
+//        }
     }
     
     @objc func midiNetworkContactsChanged(notification:NSNotification) {
-        print("\(#function)")
-        print("\(notification)")
-        if let session = notification.object as? MIDINetworkSession {
-            print("session \(session)")
-            for con in session.contacts() {
-                print("contact \(con)")
-            }
-        }
+        
     }
     
     func enableNetwork() {

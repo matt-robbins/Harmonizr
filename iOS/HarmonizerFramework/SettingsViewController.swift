@@ -33,7 +33,7 @@ class SettingsViewController: UITableViewController {
     
     @IBOutlet weak var speedSlider: UISlider!
     
-    @IBOutlet weak var drySwitch: UISwitch!
+    @IBOutlet weak var drySlider: UISlider!
     @IBOutlet weak var synthSwitch: UISwitch!
     
     @IBOutlet weak var vibSwitch: UISwitch!
@@ -57,6 +57,8 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var aboutLink: UITableViewCell!
     
     @IBOutlet weak var showTouchSwitch: UISwitch!
+    @IBOutlet weak var showTutorialSwitch: UISwitch!
+    
     var defaults: UserDefaults?
     
     var reverbAudioUnit: AUAudioUnit?
@@ -99,7 +101,8 @@ class SettingsViewController: UITableViewController {
         levelStepper.value = Double(hgainParameter!.value * 100)
         levelLabel.text = "\(Int(levelStepper.value)) %"
         
-        drySwitch.isOn = dryMixParameter!.value > 0.5
+        drySlider.value = dryMixParameter!.value
+        
         synthSwitch.isOn = synthParameter!.value > 0.5
         vibSwitch.isOn = vibParameter!.value > 0.5
         //legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
@@ -111,6 +114,7 @@ class SettingsViewController: UITableViewController {
         showKeyboardSwitch.isOn = (defaults?.bool(forKey: "showMidiKeyboard"))!
         showTouchSwitch.isOn = (defaults?.bool(forKey: "showTouch"))!
         
+        showTutorialSwitch.isOn = !(defaults?.bool(forKey:"doneTutorial"))!
         stereoModeLabel.text = stereoParameter?.valueStrings?[Int(stereoParameter?.value ?? 0)]
     }
     
@@ -287,8 +291,8 @@ class SettingsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         print("accessory: \(indexPath)")
     }
-    @IBAction func drySwitch(_ sender: UISwitch) {
-        dryMixParameter!.value = sender.isOn ? 1 : 0
+    @IBAction func drySlider(_ sender: UISlider) {
+        dryMixParameter!.value = sender.value
     }
     
     @IBAction func synthSwitch(_ sender: UISwitch) {
@@ -334,6 +338,9 @@ class SettingsViewController: UITableViewController {
         defaults?.set(sender.isOn, forKey: "showTouch")
     }
     
+    @IBAction func showTutorial(_ sender: UISwitch) {
+        defaults?.set(!sender.isOn, forKey: "doneTutorial")
+    }
 }
 
 

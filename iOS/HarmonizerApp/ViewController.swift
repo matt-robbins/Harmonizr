@@ -68,7 +68,6 @@ class ViewController: UIViewController, InterfaceDelegate {
 	var parameterObserverToken: AUParameterObserverToken!
 
 	/// Our plug-in's custom view controller. We embed its view into `viewContainer`.
-	//var filterDemoViewController: FilterDemoViewController!
     var harmonizerViewController: HarmonizrMainViewController!
 
     var btMidiViewController: CABTMIDICentralViewController!
@@ -141,6 +140,9 @@ class ViewController: UIViewController, InterfaceDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        defaults?.set(true, forKey: "harmonizrApp")
+        
 		// Set up the plug-in's custom view.
 		embedPlugInView()
         
@@ -189,20 +191,6 @@ class ViewController: UIViewController, InterfaceDelegate {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: Notification.Name.UIApplicationDidEnterBackground, object: nil)
         notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
-        
-        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
-        
-        let tut = defaults?.bool(forKey: "wantsTutorial")
-        if (tut == true)
-        {
-            defaults?.set(false,forKey: "wantsTutorial")
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "tutorialOverlay")
-            //self.addChildViewController(vc!)
-            
-            let window = UIApplication.shared.keyWindow
-            window!.addSubview(vc!.view)
-            //vc!.didMove(toParentViewController: self)
-        }
         
 //        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(screenEdgeSwiped))
 //        edgePan.edges = .left
@@ -262,6 +250,9 @@ class ViewController: UIViewController, InterfaceDelegate {
         let storyboard = UIStoryboard(name: "MainInterface", bundle: appExtensionBundle)
         
         harmonizerViewController = storyboard.instantiateInitialViewController() as? HarmonizrMainViewController
+        if let hvc = harmonizerViewController {
+            hvc.isEmbedded = true
+        }
 //
         // Present the view controller's view.
         constrainPluginView()

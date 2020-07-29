@@ -303,7 +303,7 @@ class AudioEngine2: NSObject {
             {
                 self.harmUnit?.midiOutputEventBlock = self.midiOutBlock
             }
-                        
+            
             self.engine.attach(self.harmUnitNode!)
             self.connectNodes()
             self.midiReceiver = MidiReceiver.init(audioUnit: self.harmUnit)

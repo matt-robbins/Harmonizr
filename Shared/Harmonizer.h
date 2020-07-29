@@ -27,12 +27,15 @@
 - (NSArray *) getKeysDown;
 - (int) addMidiNote:(int)note_number vel:(int)velocity;
 - (int) remMidiNote:(int)note_number;
+- (float) getCurrentLevel;
 - (float) getCurrentKeycenter;
 - (float) getCurrentNumVoices;
 - (float) getCurrentInversion;
 - (int) setLoopMode:(int)mode;
 - (int) getLoopMode;
 - (float) getLoopPosition;
+- (void) setEmbedded:(bool)embedded;
+- (bool) isEmbedded;
 
 @property (nonatomic, weak) id<HarmonizerDelegate> delegate;
 @end

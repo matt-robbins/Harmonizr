@@ -148,10 +148,18 @@ class HarmonizerVoicesView: UIView {
         if (inv < 0) { inv = 0 }
         if (p > 4) { p = 4 }
         if (p < 1) { p = 1 }
+        
+        if (Int(p) == voices && Int(inv) == inversion)
+        {
+            return
+        }
+        
+        self.setSelectedVoices(Int(p), inversion: Int(inv))
+        
         //print(inv)
         delegate?.voicesView(self, didChangeNvoices: Float(p))
         delegate?.voicesView(self, didChangeInversion: Float(inv))
-        self.setSelectedVoices(Int(p), inversion: Int(inv))
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

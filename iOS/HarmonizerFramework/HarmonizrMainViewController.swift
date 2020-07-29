@@ -26,8 +26,10 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
 
     @IBOutlet var containerView: UIView!
     
+    public var isEmbedded = false
     var navController: UINavigationController?
     var harmViewController: HarmonizerViewController?
+    var tutorialViewController: TutorialViewController? = nil
     
     var midiClient: MIDIClientRef = MIDIClientRef()
     var midiOutput: MIDIPortRef = MIDIPortRef()
@@ -46,7 +48,16 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
             {
                 harmViewController?.audioUnit = globalAudioUnit
             }
+            if (tutorialViewController != nil)
+            {
+                tutorialViewController?.audioUnit = globalAudioUnit
+            }
+            if (isEmbedded)
+            {
+                self.tutorialWindow(true)
+            }
         }
+        
     }
     
     var keys = ["z","x","c","v","a","s","d","f","q","w","e","r"]
@@ -69,6 +80,9 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         
         MIDIClientCreate("HarmonizrOutput" as CFString, nil, nil, &midiClient);
         MIDIOutputPortCreate(midiClient, "Harmonizr_Output" as CFString, &midiOutput);
+        
+        tutorialViewController = self.storyboard?.instantiateViewController(withIdentifier: "tutorialOverlay") as? TutorialViewController
+        
     }
 
     override public func didReceiveMemoryWarning() {
@@ -160,6 +174,50 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         
         harmViewController?.syncView()
     }
+    
+    func tutorialWindow(_ onOff:Bool)
+    {
+        if (onOff == false)
+        {
+            return
+        }
+        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+        //defaults?.set(true, forKey: "doneTutorial")
+        if let tut = defaults?.bool(forKey: "doneTutorial")
+        {
+            if (tut == true)
+            {
+                return
+            }
+        }
+        
+        //defaults?.set(true, forKey: "doneTutorial")
+        
+        if let tutViewController = tutorialViewController
+        {
+            //tutViewController.audioUnit = self.audioUnit
+            tutViewController.harmViewController = harmViewController
+            
+            tutViewController.callback = { (param) in
+                
+                tutViewController.view.removeFromSuperview()
+                tutViewController.removeFromParentViewController()
+                self.harmViewController?.tutorial_highlight(.none)
+                self.tutorialViewController = nil
+            }
+            
+            self.addChildViewController(tutViewController)
+            if let hvc = harmViewController
+            {
+                hvc.view.addSubview(tutViewController.view)
+                tutViewController.view.frame = hvc.view.bounds
+            }
+            
+        }
+        
+    }
+    
+    
     
     //MARK: - Navigation
 

@@ -142,8 +142,10 @@ class PresetController: NSObject {
     func saveState()
     {
         let f = stateURL()
-        let s = self.audioUnit!.fullState
-        NSKeyedArchiver.archiveRootObject(s as Any, toFile: f.path)
+        if let s = self.audioUnit?.fullState
+        {
+            NSKeyedArchiver.archiveRootObject(s as Any, toFile: f.path)
+        }
     }
     
     func restoreState()
