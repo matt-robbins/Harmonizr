@@ -202,9 +202,8 @@ class PresetController: NSObject {
         for key in fields {
             let p = audioUnit!.parameterTree?.value(forKey: key) as? AUParameter
             let v = state![key]
-            if (v != nil)
-            {
-                p?.value = state![key] as! Float
+            if (v != nil) {
+                p?.value = v as! Float
             }
         }
     }

@@ -10,7 +10,7 @@ import UIKit
 
 @IBDesignable
 class VUMeter: UIView {
-    var colors = [UIColor.green,UIColor.yellow, UIColor.red]
+    var colors = [UIColor.green, UIColor.yellow, UIColor.red]
     
     override func awakeFromNib()
     {

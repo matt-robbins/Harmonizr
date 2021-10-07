@@ -51,6 +51,7 @@
 		C94738271FAA5C0F002C8B3D /* ConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */; };
 		C94FC87C202C96F70009E742 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C9510F231FD5E9110000BAC8 /* AudioEngine2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */; };
+		C956EE8F25F7AAC00058D499 /* PresetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C956EE8D25F7AAC00058D499 /* PresetTableViewCell.swift */; };
 		C9657D11243BABBC00D4EAEE /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9657D10243BABBC00D4EAEE /* midi.png */; };
 		C9657D12243BABBC00D4EAEE /* midi.png in Resources */ = {isa = PBXBuildFile; fileRef = C9657D10243BABBC00D4EAEE /* midi.png */; };
 		C96ED35D24312ED10059BBB8 /* AUParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96ED35C24312ED10059BBB8 /* AUParameterTableViewCell.swift */; };
@@ -230,6 +231,7 @@
 		C94738261FAA5C0E002C8B3D /* ConfigViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigViewController.swift; sourceTree = "<group>"; };
 		C94FC87B202C96F60009E742 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		C9510F221FD5E9110000BAC8 /* AudioEngine2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine2.swift; sourceTree = "<group>"; };
+		C956EE8D25F7AAC00058D499 /* PresetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetTableViewCell.swift; sourceTree = "<group>"; };
 		C9657D10243BABBC00D4EAEE /* midi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = midi.png; sourceTree = "<group>"; };
 		C96ED35C24312ED10059BBB8 /* AUParameterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUParameterTableViewCell.swift; sourceTree = "<group>"; };
 		C96F203B20D7D3B200F43D90 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 				C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */,
 				C96F204A20DB032B00F43D90 /* HarmParameterTableViewCell.swift */,
 				C939A47A24C9E63B0022FC87 /* TutorialViewController.swift */,
+				C956EE8D25F7AAC00058D499 /* PresetTableViewCell.swift */,
 				C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */,
 			);
 			name = HarmonizerFramework;
@@ -917,6 +920,7 @@
 				C971B43720FA92A40070F477 /* LabelButton.swift in Sources */,
 				C971B43B2100CECC0070F477 /* HarmonizrMainViewController.swift in Sources */,
 				C9FA08BD20B315D6003CC2EA /* KeyboardView.swift in Sources */,
+				C956EE8F25F7AAC00058D499 /* PresetTableViewCell.swift in Sources */,
 				C9EC31E62065B97D007835AB /* PresetFavoriteViewController.swift in Sources */,
 				C96F204F20DC066700F43D90 /* ConfigNavigationController.swift in Sources */,
 				927A95A41B1D4043007C1F90 /* HarmonizerViewController.swift in Sources */,

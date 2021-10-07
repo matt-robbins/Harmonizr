@@ -7,25 +7,32 @@
 
 import UIKit
 
+@IBDesignable
+class Led: UIView {
+    override func awakeFromNib() {
+        layer.backgroundColor = UIColor.darkGray.cgColor
+        layer.shadowColor = tintColor.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 0)
+        layer.shadowRadius = 5
+        layer.cornerRadius = 2.5
+        layer.shadowOpacity = 0.0
+    }
+    
+    func power(on: Bool) {
+        layer.backgroundColor = on ? tintColor.cgColor : UIColor.darkGray.cgColor
+        layer.shadowOpacity = on ? 1.0 : 0.0
+    }
+}
+
 class HarmTableViewCell: UITableViewCell {
 
-    var led = UIView()
+    var led = Led()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
-        led.layer.backgroundColor = UIColor.darkGray.cgColor
-        led.layer.shadowColor = tintColor.cgColor
-        led.layer.shadowOffset = CGSize(width: 0, height: 0)
-        led.layer.shadowRadius = 5
-        led.layer.cornerRadius = 2.5
-        led.layer.shadowOpacity = 0.0
-        
         led.frame = CGRect(x: 0, y: 0, width:5, height:5)
-        
         self.accessoryView = led
-        
         self.selectionStyle = UITableViewCellSelectionStyle.none
     }
     
@@ -41,16 +48,7 @@ class HarmTableViewCell: UITableViewCell {
 //        v.backgroundColor = tintColor
 //        selectedBackgroundView = v
         print(selected)
-        if (selected)
-        {
-            led.layer.backgroundColor = tintColor.cgColor
-            led.layer.shadowOpacity = 1.0
-        }
-        else
-        {
-            led.layer.backgroundColor = UIColor.darkGray.cgColor
-            led.layer.shadowOpacity = 0.0
-        }
+        led.power(on: selected)
         
         // Configure the view for the selected state
     }

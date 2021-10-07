@@ -149,6 +149,8 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
         let iP = audioUnit?.parameterTree?.value(forKey: "inversion") as? AUParameter
         switch (sender.input)
         {
+        case UIKeyCommand.inputPageUp:
+            break
         case UIKeyInputLeftArrow:
             sP?.value = (sP?.value ?? 1.0) - 1.0
         case UIKeyInputRightArrow:
