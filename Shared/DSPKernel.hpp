@@ -50,12 +50,18 @@ public:
         
     dispatch_semaphore_t sem;
     int program_num;
+    int program_change;
     int cc;
     int cc_num;
+    int pc_flag;
+    int cc_val;
+    int cc_flag;
+    int n_output_events;    
 
 private:
 	void handleOneEvent(AURenderEvent const* event);
-	void performAllSimultaneousEvents(AUEventSampleTime now, AURenderEvent const*& event);
+	void performAllSimultaneousEvents(AUEventSampleTime now, AURenderEvent const*& event, AUMIDIOutputEventBlock midiOut);
+    void sendMIDIOutput(AUEventSampleTime now, AUMIDIOutputEventBlock midiOut);
 };
 
 #endif /* DSPKernel_h */
