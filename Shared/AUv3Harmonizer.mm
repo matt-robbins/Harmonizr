@@ -13,7 +13,7 @@
 
 #include <dispatch/dispatch.h>
 
-#pragma mark AUv3FilterDemo (Presets)
+#pragma mark AUv3Harmonizer (Presets)
 
 static const UInt8 kNumberOfPresets = 9;
 static const NSInteger kDefaultFactoryPreset = 0;
