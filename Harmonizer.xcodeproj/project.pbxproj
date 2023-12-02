@@ -38,7 +38,7 @@
 		C93163531FBCE9A400EE1762 /* HarmButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93163511FBCE81D00EE1762 /* HarmButton.swift */; };
 		C93B83572B1A3335007175B2 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B83512B1A3044007175B2 /* Window.cpp */; };
 		C93B83592B1A34DF007175B2 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = C93B83582B1A34DC007175B2 /* DSPKernel.mm */; };
-		C93B835D2B1A3908007175B2 /* HarmonizerDSPKermel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B835A2B1A3656007175B2 /* HarmonizerDSPKermel.cpp */; };
+		C93B835D2B1A3908007175B2 /* HarmonizerDSPKernel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B835A2B1A3656007175B2 /* HarmonizerDSPKernel.cpp */; };
 		C93B835E2B1A3BA9007175B2 /* SimplePitchShifter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B834B2B1A3044007175B2 /* SimplePitchShifter.cpp */; };
 		C93B835F2B1A3BAC007175B2 /* PitchMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B83542B1A3044007175B2 /* PitchMarker.cpp */; };
 		C93B83602B1A3BB0007175B2 /* PitchEstimatorSHS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B83492B1A3044007175B2 /* PitchEstimatorSHS.cpp */; };
@@ -56,6 +56,9 @@
 		C93B836C2B1A3C09007175B2 /* PitchMarker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B83542B1A3044007175B2 /* PitchMarker.cpp */; };
 		C93B836D2B1A3C0D007175B2 /* SimplePitchShifter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B834B2B1A3044007175B2 /* SimplePitchShifter.cpp */; };
 		C93B836E2B1A3C10007175B2 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B83512B1A3044007175B2 /* Window.cpp */; };
+		C93B836F2B1A596C007175B2 /* HarmonizerDSPKernel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B835A2B1A3656007175B2 /* HarmonizerDSPKernel.cpp */; };
+		C93B83712B1A7389007175B2 /* ButterworthFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B83702B1A7389007175B2 /* ButterworthFilter.cpp */; };
+		C93B83722B1A7389007175B2 /* ButterworthFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93B83702B1A7389007175B2 /* ButterworthFilter.cpp */; };
 		C93FE6D4243B8CE20068B036 /* ItunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */; };
 		C93FE6D6243B8DC00068B036 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93FE6D5243B8DC00068B036 /* SplashViewController.swift */; };
 		C946818E2190F2B10055AA80 /* MidiReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = C946818D2190F2B10055AA80 /* MidiReceiver.swift */; };
@@ -225,7 +228,7 @@
 		C93B83462B1A3044007175B2 /* Harmonizer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Harmonizer.hpp; sourceTree = "<group>"; };
 		C93B83482B1A3044007175B2 /* PitchEstimator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PitchEstimator.hpp; sourceTree = "<group>"; };
 		C93B83492B1A3044007175B2 /* PitchEstimatorSHS.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PitchEstimatorSHS.cpp; sourceTree = "<group>"; };
-		C93B834A2B1A3044007175B2 /* ButterworthFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ButterworthFilter.h; sourceTree = "<group>"; };
+		C93B834A2B1A3044007175B2 /* ButterworthFilter.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = ButterworthFilter.hpp; sourceTree = "<group>"; };
 		C93B834B2B1A3044007175B2 /* SimplePitchShifter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SimplePitchShifter.cpp; sourceTree = "<group>"; };
 		C93B834C2B1A3044007175B2 /* CircularAudioBuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CircularAudioBuffer.hpp; sourceTree = "<group>"; };
 		C93B834D2B1A3044007175B2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -237,7 +240,8 @@
 		C93B83542B1A3044007175B2 /* PitchMarker.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PitchMarker.cpp; sourceTree = "<group>"; };
 		C93B83562B1A3044007175B2 /* PitchEstimatorYIN.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PitchEstimatorYIN.cpp; sourceTree = "<group>"; };
 		C93B83582B1A34DC007175B2 /* DSPKernel.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
-		C93B835A2B1A3656007175B2 /* HarmonizerDSPKermel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = HarmonizerDSPKermel.cpp; sourceTree = "<group>"; };
+		C93B835A2B1A3656007175B2 /* HarmonizerDSPKernel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = HarmonizerDSPKernel.cpp; sourceTree = "<group>"; };
+		C93B83702B1A7389007175B2 /* ButterworthFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ButterworthFilter.cpp; sourceTree = "<group>"; };
 		C93FE6D3243B8CE20068B036 /* ItunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItunesArtwork.png; sourceTree = "<group>"; };
 		C93FE6D5243B8DC00068B036 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		C946818D2190F2B10055AA80 /* MidiReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MidiReceiver.swift; path = AppIcon.appiconset/MidiReceiver.swift; sourceTree = "<group>"; };
@@ -538,8 +542,9 @@
 				C93B83442B1A3044007175B2 /* DSPKernel.hpp */,
 				C93B83582B1A34DC007175B2 /* DSPKernel.mm */,
 				C93B833D2B1A3043007175B2 /* HarmonizerDSPKernel.hpp */,
-				C93B835A2B1A3656007175B2 /* HarmonizerDSPKermel.cpp */,
-				C93B834A2B1A3044007175B2 /* ButterworthFilter.h */,
+				C93B835A2B1A3656007175B2 /* HarmonizerDSPKernel.cpp */,
+				C93B834A2B1A3044007175B2 /* ButterworthFilter.hpp */,
+				C93B83702B1A7389007175B2 /* ButterworthFilter.cpp */,
 				C93B83422B1A3044007175B2 /* CircularAudioBuffer.cpp */,
 				C93B834C2B1A3044007175B2 /* CircularAudioBuffer.hpp */,
 				C93B833C2B1A3043007175B2 /* GranularSynth.cpp */,
@@ -838,7 +843,7 @@
 				C93B83632B1A3BBD007175B2 /* Harmonizer.cpp in Sources */,
 				C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */,
 				C9E5192E24CF51C9009AD8EB /* VUMeter.swift in Sources */,
-				C93B835D2B1A3908007175B2 /* HarmonizerDSPKermel.cpp in Sources */,
+				C93B835D2B1A3908007175B2 /* HarmonizerDSPKernel.cpp in Sources */,
 				C93B835E2B1A3BA9007175B2 /* SimplePitchShifter.cpp in Sources */,
 				C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */,
 				C93B83572B1A3335007175B2 /* Window.cpp in Sources */,
@@ -854,6 +859,7 @@
 				C96F204D20DB042800F43D90 /* SettingsViewController.swift in Sources */,
 				C9E5193124CF55D2009AD8EB /* TutorialViewController.swift in Sources */,
 				C93B83592B1A34DF007175B2 /* DSPKernel.mm in Sources */,
+				C93B83712B1A7389007175B2 /* ButterworthFilter.cpp in Sources */,
 				C96F204B20DB032B00F43D90 /* HarmParameterTableViewCell.swift in Sources */,
 				C93B83642B1A3BC0007175B2 /* GranularSynth.cpp in Sources */,
 				C93B835F2B1A3BAC007175B2 /* PitchMarker.cpp in Sources */,
@@ -883,8 +889,10 @@
 				C93B836D2B1A3C0D007175B2 /* SimplePitchShifter.cpp in Sources */,
 				C93B836E2B1A3C10007175B2 /* Window.cpp in Sources */,
 				C93B83692B1A3C01007175B2 /* Looper.cpp in Sources */,
+				C93B836F2B1A596C007175B2 /* HarmonizerDSPKernel.cpp in Sources */,
 				C93B836A2B1A3C04007175B2 /* PitchEstimator.cpp in Sources */,
 				C93B836C2B1A3C09007175B2 /* PitchMarker.cpp in Sources */,
+				C93B83722B1A7389007175B2 /* ButterworthFilter.cpp in Sources */,
 				C93B836B2B1A3C07007175B2 /* PitchEstimatorSHS.cpp in Sources */,
 				C926CA9D2B180B8500C893A7 /* HarmonizerFrameworkTests.mm in Sources */,
 				C93B83662B1A3BE5007175B2 /* CircularAudioBuffer.cpp in Sources */,

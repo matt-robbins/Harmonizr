@@ -171,7 +171,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     return aPreset;
 }
 
-#pragma mark - AUv3FilterDemo : AUAudioUnit
+#pragma mark - AUv3Harmonizer : AUAudioUnit
 
 @interface AUv3Harmonizer ()
 

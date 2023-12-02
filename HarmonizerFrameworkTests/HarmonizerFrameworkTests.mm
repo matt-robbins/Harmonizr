@@ -35,6 +35,7 @@ static float audioValue(int k, float trueT) {
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
     k.init(2, 2, 44100);
+    
     w = new Window(Window::Hann, 64);
     w2 = new Window(Window::Hamm, 1024);
     b = new CircularAudioBuffer(4096);
@@ -45,7 +46,7 @@ static float audioValue(int k, float trueT) {
     trueT = 117.2;
     
     for (int k = 0; k < 5000; k++) {
-        b->insertValue(audioValue(k, trueT));
+        b->pushValue(audioValue(k, trueT));
     }
 }
 
@@ -80,7 +81,7 @@ static float audioValue(int k, float trueT) {
     [self measureBlock:^{
         // Put the code you want to measure the time of here.
         for (int i = 0; i < 10000; i++){
-            b->insertValue(audioValue(i, trueT));
+            b->pushValue(audioValue(i, trueT));
             p->estimate(*b);
         }
     }];
