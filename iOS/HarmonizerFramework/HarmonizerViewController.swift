@@ -215,7 +215,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
+       // let defaults = UserDefaults(suiteName: "group.harmonizr.extension")
         let icon = "circle.fill" // (defaults?.bool(forKey: "recordVideo") ?? false) ? "video.fill" : "circle.fill"
         
         setButtonIcon(videoButton!, named: icon)
@@ -334,7 +334,6 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         been created.
 	*/
 	func connectViewWithAU() {
-        guard let au = audioUnit else { return }
         guard let paramTree = audioUnit?.parameterTree else { return }
         keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
         inversionParameter = paramTree.value(forKey: "inversion") as? AUParameter

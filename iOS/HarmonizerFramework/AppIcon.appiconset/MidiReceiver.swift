@@ -133,7 +133,7 @@ class MidiReceiver : NSObject {
         
         let status = packet.data.0
         let rawStatus: MIDIStatus = MIDIStatus(rawValue: status & 0xF0) ?? MIDIStatus.noteOff // without channel
-        let channel = status & 0x0F
+       // let channel = status & 0x0F
         
         // copy the packet to get the data bytes layed out in memory the right way.
         var p = packet
@@ -178,7 +178,7 @@ class MidiReceiver : NSObject {
             
         // Some aspect of the current MIDISetup has changed.  No data.  Should ignore this  message if messages 2-6 are handled.
         case .msgSetupChanged:
-            let ptr = UnsafeMutablePointer<MIDINotification>(mutating: midiNotification)
+            //let ptr = UnsafeMutablePointer<MIDINotification>(mutating: midiNotification)
             //            let ptr = UnsafeMutablePointer<MIDINotification>(midiNotification)
             //let m = ptr.pointee
             break

@@ -99,7 +99,7 @@ class PresetController: NSObject {
     override init() {
         super.init()
         
-        defaults = UserDefaults()
+        defaults = UserDefaults.standard
         
         if (moc == nil)
         {
@@ -131,34 +131,20 @@ class PresetController: NSObject {
     
     //MARK: preset save/load
     
-    func stateURL() -> URL
-    {
-//        let DocumentsDirectory = FileManager().containerURL()
-        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        let ArchiveURL = DocumentsDirectory.appendingPathComponent("state")
-        return ArchiveURL
-    }
-    
     func saveState()
     {
-        let f = stateURL()
         if let s = self.audioUnit?.fullState
         {
-            NSKeyedArchiver.archiveRootObject(s as Any, toFile: f.path)
+            defaults?.set(s, forKey: "HarmonizrState")
         }
     }
     
     func restoreState()
     {
         loadPresets()
+        let s = defaults?.object(forKey: "HarmonizrState")
         
-        //selectPreset(preset: presetIx)
-        let f = stateURL()
-        let s = NSKeyedUnarchiver.unarchiveObject(withFile: f.path) as? [String: Any]
-        if (s != nil)
-        {
-            self.audioUnit!.fullState = s
-        }
+        self.audioUnit!.fullState = s as? [String: Any]
     }
     
     func saveMoc() {
@@ -291,32 +277,32 @@ class PresetController: NSObject {
     
     func loadOldPresets()
     {
-        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        let presetURL = DocumentsDirectory.appendingPathComponent("presets")
-        NSKeyedArchiver.setClassName("HarmonizerFramework.Preset", for: OldPreset.self)
-        NSKeyedUnarchiver.setClass(OldPreset.self, forClassName: "HarmonizerFramework.Preset")
-        let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL.path) as? [String : Any]
-        if (p != nil)
-        {
-            let oldPresets = p!["presets"] as! [OldPreset]
-            
-            for op in oldPresets {
-                if (!op.isFactory && op.data != nil)
-                {
-                    //print(op.data)
-                    self.audioUnit!.fullState = op.data as? [String: Any]
-                    self.appendPreset(name: op.name!, insert: false)
-                }
-            }
-            
-            do {
-                try FileManager().removeItem(at: presetURL)
-            }
-            catch
-            {
-                print("failed to delete old presets")
-            }
-        }
+//        let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+//        let presetURL = DocumentsDirectory.appendingPathComponent("presets")
+//        NSKeyedArchiver.setClassName("HarmonizerFramework.Preset", for: OldPreset.self)
+//        NSKeyedUnarchiver.setClass(OldPreset.self, forClassName: "HarmonizerFramework.Preset")
+//        let p = NSKeyedUnarchiver.unarchiveObject(withFile: presetURL.path) as? [String : Any]
+//        if (p != nil)
+//        {
+//            let oldPresets = p!["presets"] as! [OldPreset]
+//            
+//            for op in oldPresets {
+//                if (!op.isFactory && op.data != nil)
+//                {
+//                    //print(op.data)
+//                    self.audioUnit!.fullState = op.data as? [String: Any]
+//                    self.appendPreset(name: op.name!, insert: false)
+//                }
+//            }
+//            
+//            do {
+//                try FileManager().removeItem(at: presetURL)
+//            }
+//            catch
+//            {
+//                print("failed to delete old presets")
+//            }
+//        }
     }
     
     func isPresetModified() -> Bool

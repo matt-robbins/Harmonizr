@@ -35,7 +35,7 @@ class VUMeter: UIView {
         let sublayers = layer.sublayers!
         let ledheight = layer.frame.width / 2
         var count = 0
-        let pad: CGFloat = 5
+        //let pad: CGFloat = 5
         for ix in 0...2
         {
             let xpos = layer.frame.width/4

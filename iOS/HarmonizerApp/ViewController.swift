@@ -487,7 +487,7 @@ class ViewController: UIViewController, InterfaceDelegate {
         recordWindow?.addSubview(recTimeView!)
         
         let centerX = (recordWindow!.bounds.maxX - recordWindow!.bounds.minX)/2
-        let centerY = (recordWindow!.bounds.maxY - recordWindow!.bounds.minY)/2
+//        let centerY = (recordWindow!.bounds.maxY - recordWindow!.bounds.minY)/2
         recTimeView?.frame = CGRect(x: CGFloat(centerX - centerX/2), y: CGFloat(0), width: centerX, height: 34)
         recordWindow?.isHidden = false
         updater?.isPaused = false
