@@ -11,6 +11,7 @@
 #import "../harmonizr-dsp/Window.hpp"
 #import "../harmonizr-dsp/CircularAudioBuffer.hpp"
 #import "../harmonizr-dsp/PitchEstimator.hpp"
+#import "../harmonizr-dsp/NoiseGate.hpp"
 #include "TestAudioData.h"
 
 static float audioValue(int k, float trueT) {
@@ -28,6 +29,7 @@ static float audioValue(int k, float trueT) {
     CircularAudioBuffer *b;
     PitchEstimator *p;
     PitchEstimator *p2;
+    NoiseGate *g;
     
     float trueT;
 }
@@ -38,10 +40,12 @@ static float audioValue(int k, float trueT) {
     
     w = new Window(Window::Hann, 64);
     w2 = new Window(Window::Hamm, 1024);
-    b = new CircularAudioBuffer(4096);
+    b = new CircularAudioBuffer(11);
     // int MaxT, int l2nfft, float thresh, int nmed
     p = new PitchEstimatorYIN(500, 11, 0.5, 7);
     p2 = new PitchEstimatorSHS();
+    
+    g = new NoiseGate(-10.0f, 6.f, 48000, 1000);
     
     trueT = 117.2;
     
@@ -57,6 +61,7 @@ static float audioValue(int k, float trueT) {
     delete w2;
     delete b;
     delete p;
+    delete g;
 }
 
 - (void)testPitch {
@@ -64,6 +69,22 @@ static float audioValue(int k, float trueT) {
     for (int k = 0; k < 4; k++)
         T = p->estimate(*b);
     XCTAssert(fabs(T-trueT) < 1.0);
+}
+
+- (void)testGate {
+    for (int k = 0; k < 1000; k++)
+        g->compute_one(0.0);
+    XCTAssert(g->get_gain() < 0.1);
+    for (int k = 0; k < 1000; k++)
+        g->compute_one(1.0);
+    XCTAssert(g->get_gain() > 0.9);
+    for (int k = 0; k < 1000; k++)
+        g->compute_one(0.1);
+    XCTAssert(g->get_gain() > 0.9);
+    for (int k = 0; k < 1000; k++)
+        g->compute_one(0.1);
+    XCTAssert(g->get_gain() < 0.1);
+    
 }
 
 - (void)testWindow {

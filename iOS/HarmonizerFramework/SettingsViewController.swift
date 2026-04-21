@@ -34,9 +34,9 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var speedSlider: UISlider!
     
     @IBOutlet weak var drySlider: UISlider!
-    @IBOutlet weak var synthSwitch: UISwitch!
-    
-    @IBOutlet weak var vibSwitch: UISwitch!
+//    @IBOutlet weak var synthSwitch: UISwitch!
+//    
+//    @IBOutlet weak var vibSwitch: UISwitch!
     @IBOutlet weak var stereoModeLabel: UILabel!
     
     @IBOutlet weak var threshStepper: UIStepper!
@@ -63,11 +63,13 @@ class SettingsViewController: UITableViewController {
     
     var reverbAudioUnit: AUAudioUnit?
     var interfaceDelegate: InterfaceDelegate?
+    var paramTree: AUParameterTree?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         guard let paramTree = globalAudioUnit?.parameterTree else { return }
+        self.paramTree = paramTree
         
         keycenterParameter = paramTree.value(forKey: "keycenter") as? AUParameter
         inversionParameter = paramTree.value(forKey: "inversion") as? AUParameter
@@ -103,8 +105,8 @@ class SettingsViewController: UITableViewController {
         
         drySlider.value = dryMixParameter!.value
         
-        synthSwitch.isOn = synthParameter!.value > 0.5
-        vibSwitch.isOn = vibParameter!.value > 0.5
+//        synthSwitch.isOn = synthParameter!.value > 0.5
+//        vibSwitch.isOn = vibParameter!.value > 0.5
         //legatoSwitch.isOn = midiLegatoParameter!.value > 0.5
         
         speedSlider.value = speedParameter!.value
@@ -142,7 +144,7 @@ class SettingsViewController: UITableViewController {
             let vc = segue.destination as! AuSettingsTableViewController
             vc.title = "MIDI Settings"
             vc.showPresets(false)
-            vc.settings = ["keycenter_cc", "keycenter_cc_offset","keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
+            vc.settings = ["keycenter_cc", "midi_vel_ign", "keycenter_cc_offset","keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
             vc.audioUnit = globalAudioUnit
             
         default:
@@ -157,6 +159,11 @@ class SettingsViewController: UITableViewController {
 
         switch (cell.reuseIdentifier)
         {
+        case "auParam":
+            let cell = cell as? AuParameterTableViewCell
+            cell?.param = paramTree?.value(forKey: cell?.reuseIdentifier ?? "?") as? AUParameter
+            cell?.parentTable = self.tableView
+            cell?.selectionStyle = .none
         case "recordMode":
             let camera = (defaults?.bool(forKey: "cameraEnable") ?? false)
             let video = (defaults?.bool(forKey: "recordVideo") ?? false)
@@ -295,13 +302,13 @@ class SettingsViewController: UITableViewController {
         dryMixParameter!.value = sender.value
     }
     
-    @IBAction func synthSwitch(_ sender: UISwitch) {
-        synthParameter!.value = sender.isOn ? 1 : 0
-    }
-    
-    @IBAction func vibSwitch(_ sender: UISwitch) {
-        vibParameter!.value = sender.isOn ? 1 : 0
-    }
+//    @IBAction func synthSwitch(_ sender: UISwitch) {
+//        synthParameter!.value = sender.isOn ? 1 : 0
+//    }
+//    
+//    @IBAction func vibSwitch(_ sender: UISwitch) {
+//        vibParameter!.value = sender.isOn ? 1 : 0
+//    }
     
     //    @IBAction func legatoSwitch(_ sender: UISwitch) {
 //        midiLegatoParameter!.value = sender.isOn ? 1 : 0

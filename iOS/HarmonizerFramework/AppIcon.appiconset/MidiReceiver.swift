@@ -241,6 +241,8 @@ class MidiReceiver : NSObject {
                 print("errorCode \(m.errorCode)")
             }
             break
+        case .msgInternalStart:
+            print("internal start??")
         }
         
         midiConnect()

@@ -9,6 +9,7 @@
 #import "Harmonizer.h"
 #import <AVFoundation/AVFoundation.h>
 #import "../harmonizr-dsp/HarmonizerDSPKernel.hpp"
+#import "../harmonizr-dsp/Looper.h"
 #import "BufferedAudioBus.hpp"
 
 #include <dispatch/dispatch.h>
@@ -185,6 +186,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 @implementation AUv3Harmonizer {
 	// C++ members need to be ivars; they would be copied on access if they were properties.
     HarmonizerDSPKernel  _kernel;
+    //Looper _looper;
     BufferedInputBus _inputBus;
     dispatch_semaphore_t _sem;
     
@@ -230,15 +232,21 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
 
-    AUParameter *autoParam = [AUParameterTree createParameterWithIdentifier:@"auto" name:@"Autotune"
+    AUParameter *autoParam = [AUParameterTree createParameterWithIdentifier:@"auto" name:@"Pitch Correction"
         address:HarmParamAuto
         min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
-    AUParameter *autoStrengthParam = [AUParameterTree createParameterWithIdentifier:@"auto_strength" name:@"Autotune Strength"
+    AUParameter *autoStrengthParam = [AUParameterTree createParameterWithIdentifier:@"auto_strength" name:@"Correction Amount"
         address:HarmParamAutoStrength
-        min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
+        min:0 max:1 unit:kAudioUnitParameterUnit_Percent unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *gateThreshParam = [AUParameterTree createParameterWithIdentifier:@"gate_thresh" name:@"Gate Threshold"
+        address:HarmParamGateThresh
+        min:-100 max:0 unit:kAudioUnitParameterUnit_Decibels unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
@@ -256,6 +264,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 
     AUParameter *midiLegatoParam = [AUParameterTree createParameterWithIdentifier:@"midi_legato" name:@"Midi Legato"
         address:HarmParamMidiLegato
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *midiVelIgnoreParam = [AUParameterTree createParameterWithIdentifier:@"midi_vel_ign" name:@"Midi Ignore Velocity"
+        address:HarmParamMidiVelIgnore
         min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
@@ -338,7 +352,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
-    AUParameter *hgainParam = [AUParameterTree createParameterWithIdentifier:@"h_gain" name:@"Harmony Gain"
+    AUParameter *hgainParam = [AUParameterTree createParameterWithIdentifier:@"h_gain" name:@"Harmony Level"
         address:HarmParamHgain
         min:0 max:1 unit:kAudioUnitParameterUnit_LinearGain unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
@@ -356,7 +370,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
-    AUParameter *speedParam = [AUParameterTree createParameterWithIdentifier:@"speed" name:@"Speed"
+    AUParameter *speedParam = [AUParameterTree createParameterWithIdentifier:@"speed" name:@"Glide Rate"
         address:HarmParamSpeed
         min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
@@ -405,9 +419,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:nvoicesParam];
     [params addObject:autoParam];
     [params addObject:autoStrengthParam];
+    [params addObject:gateThreshParam];
     [params addObject:midiParam];
     [params addObject:midiLinkParam];
     [params addObject:midiLegatoParam];
+    [params addObject:midiVelIgnoreParam];
     [params addObject:keycenterCCParam];
     [params addObject:keycenterCcOffsetParam];
     [params addObject:keyqualityCCParam];
@@ -455,9 +471,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     nvoicesParam.value = 4;
     autoParam.value = 1;
     autoStrengthParam.value = 0.5;
+    gateThreshParam.value = -40.0;
     midiParam.value = 1;
     midiLinkParam.value = 1;
     midiLegatoParam.value = 0;
+    midiVelIgnoreParam.value = 0;
     triadParam.value = -1;
     bypassParam.value = 0;
     vgainParam.value = 1;
@@ -487,6 +505,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.setParameter(HarmParamTriad, triadParam.value);
     _kernel.setParameter(HarmParamBypass, bypassParam.value);
     _kernel.setParameter(HarmParamStereo, stereoParam.value);
+    _kernel.setParameter(HarmParamMidiVelIgnore, midiVelIgnoreParam.value);
     
 //    for (int k = 0; k < 144; k++)
 //    {
@@ -538,7 +557,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     self.currentPreset = _presets.firstObject;
     
     keysDown = [[NSMutableArray alloc] initWithCapacity: 128];
-    for (int k =0; k < 128; k++)
+    for (int k = 0; k < 128; k++)
     {
         [keysDown addObject:[NSNumber numberWithBool:0]];
     }
@@ -586,11 +605,11 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 //    }
     
     // start thread to listen for patch change events and update UI
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         while (true)
         {
-            dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.0 * NSEC_PER_SEC));
+            dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC));
             long result = dispatch_semaphore_wait(self->_kernel.sem, timeout);
 
             if (result == 0)
@@ -867,7 +886,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 }
 
 - (int) getLoopMode {
-    return _kernel.loop_mode;
+    return _kernel.getLoopMode();
 }
 
 - (float) getLoopPosition {

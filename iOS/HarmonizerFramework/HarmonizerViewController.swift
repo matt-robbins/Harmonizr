@@ -683,7 +683,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         }
         
         else if segue.identifier == "showSettings" {
-            if let destinationVC = segue.destination as? SettingsViewController {
+            if let destinationVC = segue.destination as? SettingsDynamicViewController {
                 destinationVC.reverbAudioUnit = interfaceDelegate?.getReverbUnit()
                 destinationVC.interfaceDelegate = interfaceDelegate
             }

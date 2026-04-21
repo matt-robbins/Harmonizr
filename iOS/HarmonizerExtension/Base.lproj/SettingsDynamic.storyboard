@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="z7q-ka-Sfk">
+    <device id="retina5_5" orientation="landscape" appearance="dark"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Settings-->
+        <scene sceneID="n5G-s5-HVm">
+            <objects>
+                <tableViewController title="Settings" id="z7q-ka-Sfk" customClass="SettingsDynamicViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Uyr-0u-bq3">
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="auparameter" id="fjE-Br-tC9" customClass="AuParameterTableViewCell" customModule="HarmonizerFramework">
+                                <rect key="frame" x="0.0" y="50" width="736" height="51"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fjE-Br-tC9" id="aGS-dc-QpP">
+                                    <rect key="frame" x="0.0" y="0.0" width="736" height="51"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="generic" id="YJW-wY-oxt" userLabel="generic">
+                                <rect key="frame" x="0.0" y="101" width="736" height="51"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YJW-wY-oxt" id="G5t-ew-mh3">
+                                    <rect key="frame" x="0.0" y="0.0" width="736" height="51"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="link" id="Rbp-KP-sRk" customClass="LinkTableViewCell" customModule="HarmonizerFramework">
+                                <rect key="frame" x="0.0" y="152" width="736" height="51"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rbp-KP-sRk" id="3LT-Nj-9Fl">
+                                    <rect key="frame" x="0.0" y="0.0" width="736" height="51"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="z7q-ka-Sfk" id="7Aw-Ih-TLl"/>
+                            <outlet property="delegate" destination="z7q-ka-Sfk" id="L1D-HP-zv4"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <segue destination="iKg-kU-XC4" kind="show" identifier="showHarmony" id="3LO-tO-2Ea"/>
+                        <segue destination="Ky0-Ab-iRn" kind="show" identifier="showReverb" id="62q-UK-CXq"/>
+                        <segue destination="v4V-2e-Eom" kind="show" identifier="showMidi" id="UgP-mA-5dP"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0JS-sF-v0b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-420" y="-1018"/>
+        </scene>
+        <!--configView-->
+        <scene sceneID="Iqt-2B-8et">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="configView" storyboardName="MainInterface" referencedIdentifier="configView" id="iKg-kU-XC4" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gJ7-Kb-YpC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="269" y="-164"/>
+        </scene>
+        <!--reverb_settings-->
+        <scene sceneID="62c-5j-HVo">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="reverb_settings" storyboardName="MainInterface" referencedIdentifier="reverb_settings" id="Ky0-Ab-iRn" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RiL-Z5-tzd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-407" y="68"/>
+        </scene>
+        <!--midi_settings-->
+        <scene sceneID="OsE-WP-zzU">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="midi_settings" storyboardName="MainInterface" referencedIdentifier="midi_settings" id="v4V-2e-Eom" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="6Hh-sl-bIp"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VCA-s7-DdH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1081" y="-164"/>
+        </scene>
+    </scenes>
+    <color key="tintColor" name="AppTint"/>
+    <resources>
+        <namedColor name="AppTint">
+            <color red="0.0" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

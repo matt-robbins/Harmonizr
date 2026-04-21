@@ -55,7 +55,7 @@ class FilesTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "file", for: indexPath) as! FilesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "basic", for: indexPath) as! FilesTableViewCell
 
         // Configure the cell...
 //        cell.textLabel?.text = contents?[indexPath.row] ?? "???"
