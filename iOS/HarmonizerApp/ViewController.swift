@@ -5,7 +5,7 @@
 	Abstract:
 	View controller which registers an AUAudioUnit subclass in-process for easy development, connects sliders and text fields to its parameters, and embeds the audio unit's view into a subview. Uses SimplePlayEngine to audition the effect.
 */
-
+import SwiftUI
 import UIKit
 import ReplayKit
 import CoreAudioKit
@@ -18,9 +18,9 @@ extension UINavigationController {
         return visibleViewController?.supportedInterfaceOrientations ?? super.supportedInterfaceOrientations
     }
 
-    open override var shouldAutorotate: Bool {
-        return visibleViewController?.shouldAutorotate ?? super.shouldAutorotate
-    }
+//    open override var shouldAutorotate: Bool {
+//        return visibleViewController?.shouldAutorotate ?? super.shouldAutorotate
+//    }
 }
 
 class PreviewView: UIView {
@@ -125,7 +125,7 @@ class ViewController: UIViewController, InterfaceDelegate {
             alert.addAction(UIAlertAction(title: "Gotcha", style: .default, handler: nil))
             self.present(alert, animated: true)
         }
-        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
+        //UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
     }
     
     override func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
@@ -134,7 +134,7 @@ class ViewController: UIViewController, InterfaceDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         self.setNeedsStatusBarAppearanceUpdate()
-        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        //UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
     }
     
 	override func viewDidLoad() {

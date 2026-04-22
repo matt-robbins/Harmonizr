@@ -121,7 +121,7 @@ class TouchWindow: UIWindow {
     }
 }
 
-@UIApplicationMain
+//@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Properties
     
