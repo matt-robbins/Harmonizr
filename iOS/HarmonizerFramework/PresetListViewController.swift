@@ -10,8 +10,6 @@ import UIKit
 class PresetListViewController: UIViewController {
 
     @IBOutlet weak var presetTable: UITableView!
-    @IBOutlet weak var marker: UIView!
-    @IBOutlet var favs: [HarmButton]!
     
     var editIx = 0
     var presetController: PresetController? {
@@ -21,44 +19,8 @@ class PresetListViewController: UIViewController {
     
     var editingView: UITextField? = nil
     
-    func reparentView(label: UIView) {
-        let win = favs[0].window!
-        for label in favs {
-            
-            let originalRect = label.convert(label.frame, to: win)
-            label.removeFromSuperview()
-            win.addSubview(label)
-            //win.bringSubview(toFront: label)
-            label.frame = originalRect
-        }
-        
-        presetTable.reloadData()
-        
-        for ix in 0...5 {
-        
-            let cell = presetTable.cellForRow(at: IndexPath(row:ix, section:0)) as! PresetTableViewCell
-            let dst = cell.fav!
-            let label = favs[ix]
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                label.frame = (dst.convert(dst.bounds, to: win))
-            }, completion: {_ in
-                label.removeFromSuperview()
-                dst.addSubview(label)
-                label.frame = dst.bounds
-            })
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //presetTable.register(HarmTableViewCell.self, forCellReuseIdentifier: "Cell")
-        
-        for ix in 0...favs.count-1 {
-            favs[ix].setTitle("\(ix+1)", for: .normal)
-            favs[ix].setTitleColor(.black, for: .normal)
-        }
         
         presetTable.dataSource = self
         presetTable.delegate = self
@@ -85,11 +47,11 @@ class PresetListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool)
     {
-        presetTable.selectRow(at: IndexPath(row: presetController!.presetIx, section: 0), animated: false, scrollPosition: .none)
+        //
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        reparentView(label: favs[0])
+        presetTable.selectRow(at: IndexPath(row: presetController!.presetIx, section: 0), animated: true, scrollPosition: .none)
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,10 +76,8 @@ class PresetListViewController: UIViewController {
         presetTable.isEditing = !presetTable.isEditing
         
         sender.title? = presetTable.isEditing ? "Done" : "Edit"
-        if (!presetTable.isEditing)
-        {
-            updateSelection()
-        }
+        
+        updateSelection()
     }
     
     
@@ -145,7 +105,7 @@ extension PresetListViewController: UITextFieldDelegate {
         //textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
         //textField.selectAll(nil)
         //textField.becomeFirstResponder()
-        UIMenuController.shared.isMenuVisible = false
+        //UIMenuController.shared.isMenuVisible = false
         editingView = textField
         updateSelection(animated: false)
     }
@@ -167,6 +127,24 @@ extension PresetListViewController: UITextFieldDelegate {
     
 }
 
+func animate_show_hide(view: UIView, isHidden: Bool = true) {
+    if (isHidden && !view.isHidden) {
+        UIView.animate(withDuration: 0.3, animations: {
+            view.alpha = 0
+        }) { _ in
+            view.isHidden = true
+        }
+    }
+    else if (!isHidden && view.isHidden) {
+        view.alpha = 0
+        view.isHidden = false
+        UIView.animate(withDuration: 0.25) {
+            view.alpha = 1
+        }
+        
+    }
+}
+
 extension PresetListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
@@ -184,8 +162,16 @@ extension PresetListViewController: UITableViewDataSource {
         cell.name.delegate = self
         cell.name.tag = indexPath.row
         cell.name.textColor = p.factoryId < 0 ? .white : .cyan
-        cell.led.power(on: indexPath.row == presetController!.presetIx)
+        //cell.setSelected(indexPath.row == presetController!.presetIx, animated: true)
         
+        cell.fav.setTitle("\(indexPath.row)", for: .normal)
+        cell.fav.backgroundColor = .yellow
+        cell.fav.setTitleColor(.black, for: .normal)
+        
+        cell.fav.isHidden = indexPath.row > 5
+        
+        //animate_show_hide(view:cell.fav,isHidden:indexPath.row > 5)
+                
         return cell
     }
     
@@ -198,17 +184,18 @@ extension PresetListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-        //updateSelection()
+        updateSelection()
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         editingView?.resignFirstResponder()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "presetListCell2", for: indexPath) as! PresetTableViewCell
 
         let wasSelected = presetController!.presetIx == indexPath.row
         presetController!.selectPreset(preset: indexPath.row)
         
-        tableView.reloadData()
+        //tableView.reloadData()
         //tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
         //tableView.reloadRows(at: [indexPath, IndexPath(row:oldIx,section:0)], with: UITableViewRowAnimation.automatic)
         //self.navigationController!.popViewController(animated: true)
@@ -216,43 +203,15 @@ extension PresetListViewController: UITableViewDataSource {
         if (wasSelected){
             performSegue(withIdentifier: "PresetListToConfigView", sender: self)
         }
-            
-//        let p = presetController!.presets[indexPath.row]
-//
-//        if (p.factoryId >= 0)
-//        {
-//            return
-//        }
         
-//        let alert = UIAlertController(title: "Rename Preset", message: "Rename this preset", preferredStyle: .alert)
-//
-//        let saveAction = UIAlertAction(title: "Save", style: .default) {
-//            [unowned self] action in
-//
-//            guard let textField = alert.textFields?.first,
-//                let nameToSave = textField.text else {
-//                    return
-//            }
-//
-//            self.presetController!.presets[indexPath.row].name = nameToSave
-//            self.presetController!.storePresets()
-//            self.presetTable.reloadData()
-//        }
-//
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .default)
-//
-//        alert.addTextField()
-//        alert.addAction(saveAction)
-//        alert.addAction(cancelAction)
-//
-//        present(alert, animated: true)
+        cell.setSelected(true, animated:true)
     }
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         presetController!.swap(src: sourceIndexPath.row, dst: destinationIndexPath.row)
-        
-        reparentView(label:favs[0])
-        
+
+        tableView.reloadData()
+        updateSelection()
     }
 }
 

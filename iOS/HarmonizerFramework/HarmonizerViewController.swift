@@ -202,15 +202,15 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     
     public func setButtonIcon(_ button: UIButton, named: String)
     {
-        if #available(iOSApplicationExtension 18.0, *) {
+//        if #available(iOSApplicationExtension 18.0, *) {
             button.setImage(UIImage(named:named), for: .normal)
             return
-        }
-        let im = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
-        let inset = button.frame.height/5
-        button.setImage(im, for: .normal)
-        button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
+//        }
+//        let im = UIImage(named: named)?.withRenderingMode(.alwaysTemplate)
+//        let inset = button.frame.height/5
+//        button.setImage(im, for: .normal)
+//        button.imageView?.contentMode = .scaleAspectFit
+//        button.imageEdgeInsets = UIEdgeInsetsMake(inset, inset, inset, inset)
     }
     
     override func viewWillAppear(_ animated: Bool) {

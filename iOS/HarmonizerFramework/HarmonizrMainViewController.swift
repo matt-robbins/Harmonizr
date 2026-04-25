@@ -119,22 +119,20 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     override public var keyCommands: [UIKeyCommand]? {
         
         var cmds = [UIKeyCommand]()
-                
-        let kcenters = ["C","C#/Db","D","D#/Eb","E","F","F#/Gb","G","G#/Ab","A","A#/Bb","B"]
-        
+                        
         for k in 0...keys.count-1 {
-            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "\(kcenters[k]) Major"))
-            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [.control], action: #selector(keyboardInput), discoverabilityTitle: "\(kcenters[k]) Minor"))
-            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [.shift], action: #selector(keyboardInput), discoverabilityTitle: "\(kcenters[k]) Dominant"))
+            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [], action: #selector(keyboardInput)))
+            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [.control], action: #selector(keyboardInput)))
+            cmds.append(UIKeyCommand(input: keys[k], modifierFlags: [.shift], action: #selector(keyboardInput)))
         }
         
-        cmds.append(UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Decrease Number of Voices"))
+        cmds.append(UIKeyCommand(input: UIKeyInputLeftArrow, modifierFlags: [], action: #selector(keyboardInput)))
         
-        cmds.append(UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Increase Number of Voices"))
+        cmds.append(UIKeyCommand(input: UIKeyInputRightArrow, modifierFlags: [], action: #selector(keyboardInput)))
         
-        cmds.append(UIKeyCommand(input: UIKeyInputUpArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Raise Inversion"))
+        cmds.append(UIKeyCommand(input: UIKeyInputUpArrow, modifierFlags: [], action: #selector(keyboardInput)))
         
-        cmds.append(UIKeyCommand(input: UIKeyInputDownArrow, modifierFlags: [], action: #selector(keyboardInput), discoverabilityTitle: "Lower Inversion"))
+        cmds.append(UIKeyCommand(input: UIKeyInputDownArrow, modifierFlags: [], action: #selector(keyboardInput)))
         
         return cmds
     }

@@ -70,7 +70,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="mainView" title="Harmonizer" id="BYZ-38-t0r" customClass="HarmonizerViewController" customModule="HarmonizerFramework" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -461,16 +461,15 @@
                                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="414"/>
                                     </containerView>
                                 </subviews>
-                                <viewLayoutGuide key="safeArea" id="Cv4-jC-PvG"/>
                             </stackView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="dx9-cJ-xfo"/>
+                        <viewLayoutGuide key="safeArea" id="yoI-8Y-86C"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="R4r-gf-TiO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="57J-TU-RAZ"/>
                             <constraint firstItem="Vf5-SJ-o8q" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" priority="800" id="Gij-ex-HKM"/>
                             <constraint firstAttribute="bottom" secondItem="R4r-gf-TiO" secondAttribute="bottom" id="SKS-Rs-0Va"/>
-                            <constraint firstItem="dx9-cJ-xfo" firstAttribute="trailing" secondItem="R4r-gf-TiO" secondAttribute="trailing" priority="800" id="Y5q-rA-9CC"/>
+                            <constraint firstAttribute="trailing" secondItem="R4r-gf-TiO" secondAttribute="trailing" priority="800" id="Y5q-rA-9CC"/>
                             <constraint firstItem="Vf5-SJ-o8q" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" priority="799" id="ap1-4K-4sU"/>
                             <constraint firstItem="R4r-gf-TiO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ax4-cj-DZS"/>
                             <constraint firstItem="R4r-gf-TiO" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="g1j-Ab-R8F"/>
@@ -524,10 +523,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="VcR-bJ-Rzr">
-                                <rect key="frame" x="0.0" y="78" width="736" height="336"/>
+                                <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eab-HT-eal">
-                                        <rect key="frame" x="0.0" y="0.0" width="736" height="201"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="736" height="279"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchCell" id="u1G-Hw-Xu0">
@@ -617,7 +616,7 @@
                                         </prototypes>
                                     </tableView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="hIT-Dp-MKm" userLabel="Keys">
-                                        <rect key="frame" x="0.0" y="206" width="736" height="130"/>
+                                        <rect key="frame" x="0.0" y="284" width="736" height="130"/>
                                         <subviews>
                                             <view clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pL1-SL-kVQ" customClass="KeyboardEditorView" customModule="HarmonizerFramework">
                                                 <rect key="frame" x="0.0" y="0.0" width="736" height="130"/>
@@ -633,19 +632,18 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
-                                <viewLayoutGuide key="safeArea" id="XWV-y1-U1a"/>
                                 <constraints>
                                     <constraint firstItem="eab-HT-eal" firstAttribute="width" secondItem="VcR-bJ-Rzr" secondAttribute="width" id="Qe9-vh-oH2"/>
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="VZC-le-WaV"/>
+                        <viewLayoutGuide key="safeArea" id="gEX-2k-ujU"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="VcR-bJ-Rzr" firstAttribute="leading" secondItem="VZC-le-WaV" secondAttribute="leading" id="Iu2-r3-m0b"/>
-                            <constraint firstItem="VcR-bJ-Rzr" firstAttribute="top" secondItem="VZC-le-WaV" secondAttribute="top" id="M6I-fM-387"/>
-                            <constraint firstItem="VZC-le-WaV" firstAttribute="trailing" secondItem="VcR-bJ-Rzr" secondAttribute="trailing" id="iky-tl-Uo3"/>
-                            <constraint firstItem="VZC-le-WaV" firstAttribute="bottom" secondItem="VcR-bJ-Rzr" secondAttribute="bottom" id="n2h-H6-DPG"/>
+                            <constraint firstItem="VcR-bJ-Rzr" firstAttribute="leading" secondItem="kJz-fs-zvh" secondAttribute="leading" id="Iu2-r3-m0b"/>
+                            <constraint firstItem="VcR-bJ-Rzr" firstAttribute="top" secondItem="kJz-fs-zvh" secondAttribute="top" id="M6I-fM-387"/>
+                            <constraint firstAttribute="trailing" secondItem="VcR-bJ-Rzr" secondAttribute="trailing" id="iky-tl-Uo3"/>
+                            <constraint firstAttribute="bottom" secondItem="VcR-bJ-Rzr" secondAttribute="bottom" id="n2h-H6-DPG"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -789,7 +787,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UKe-eM-3au">
-                                <rect key="frame" x="0.0" y="78" width="736" height="336"/>
+                                <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="presetListCell" textLabel="DcD-8v-Brn" style="IBUITableViewCellStyleDefault" id="pgK-dA-kg3" customClass="HarmTableViewCell" customModule="Harmonizer">
@@ -822,7 +820,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="709.66666666666663" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Az-bV-rBe" userLabel="Favorite">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Az-bV-rBe" userLabel="Favorite" customClass="HarmButton" customModule="HarmonizerFramework">
                                                     <rect key="frame" x="10" y="10.666666666666664" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="Eyj-cq-Ad6"/>
@@ -863,44 +861,13 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" id="ifY-dO-00m" userLabel="fav1" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="248" y="143" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="TYy-Du-Lqn" userLabel="fav2" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="248" y="143" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="5NV-vn-g3v" userLabel="fav3" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="248" y="143" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="OzL-eM-KkW" userLabel="fav4" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="248" y="143" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="fqG-TE-S6S" userLabel="fav5" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="248" y="143" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                            <view contentMode="scaleToFill" id="VEq-L3-8ze" userLabel="fav6" customClass="HarmButton" customModule="HarmonizerFramework">
-                                <rect key="frame" x="248" y="143" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="Rnc-b5-zCj"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="UKe-eM-3au" firstAttribute="leading" secondItem="Rnc-b5-zCj" secondAttribute="leading" id="3SH-Yj-YaF"/>
-                            <constraint firstItem="UKe-eM-3au" firstAttribute="top" secondItem="Rnc-b5-zCj" secondAttribute="top" id="SiB-Ko-9po"/>
-                            <constraint firstItem="Rnc-b5-zCj" firstAttribute="trailing" secondItem="UKe-eM-3au" secondAttribute="trailing" id="WPF-xv-jNv"/>
-                            <constraint firstItem="Rnc-b5-zCj" firstAttribute="bottom" secondItem="UKe-eM-3au" secondAttribute="bottom" id="pRp-5l-wSL"/>
+                            <constraint firstItem="UKe-eM-3au" firstAttribute="leading" secondItem="Sh2-3e-rdT" secondAttribute="leading" id="3SH-Yj-YaF"/>
+                            <constraint firstItem="UKe-eM-3au" firstAttribute="top" secondItem="Sh2-3e-rdT" secondAttribute="top" id="SiB-Ko-9po"/>
+                            <constraint firstAttribute="trailing" secondItem="UKe-eM-3au" secondAttribute="trailing" id="WPF-xv-jNv"/>
+                            <constraint firstAttribute="bottom" secondItem="UKe-eM-3au" secondAttribute="bottom" id="pRp-5l-wSL"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Presets" id="0Uc-o6-SLf">
@@ -919,12 +886,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="presetTable" destination="UKe-eM-3au" id="AV0-gG-moE"/>
-                        <outletCollection property="favs" destination="5NV-vn-g3v" collectionClass="NSMutableArray" id="S2m-or-3Ch"/>
-                        <outletCollection property="favs" destination="ifY-dO-00m" collectionClass="NSMutableArray" id="b5x-is-ggA"/>
-                        <outletCollection property="favs" destination="TYy-Du-Lqn" collectionClass="NSMutableArray" id="p3A-FX-hRj"/>
-                        <outletCollection property="favs" destination="OzL-eM-KkW" collectionClass="NSMutableArray" id="uGo-wb-8Qe"/>
-                        <outletCollection property="favs" destination="fqG-TE-S6S" collectionClass="NSMutableArray" id="4wv-dz-dU1"/>
-                        <outletCollection property="favs" destination="VEq-L3-8ze" collectionClass="NSMutableArray" id="Gs3-SO-Y8w"/>
                         <segue destination="G03-CJ-RWa" kind="show" identifier="PresetListToConfigView" id="qDb-TM-ngn"/>
                     </connections>
                 </viewController>
@@ -935,7 +896,7 @@
         <!--Navigation Controller-->
         <scene sceneID="0cD-YF-mOH">
             <objects>
-                <navigationController storyboardIdentifier="MainNavigation" automaticallyAdjustsScrollViewInsets="NO" id="gbC-CU-RWF" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNavigation" autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="gbC-CU-RWF" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="x7c-BM-3mL">
                         <rect key="frame" x="0.0" y="24" width="736" height="54"/>
@@ -1090,7 +1051,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.21960784310000001" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

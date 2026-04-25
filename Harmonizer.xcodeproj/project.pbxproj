@@ -89,21 +89,19 @@
 		C971B43720FA92A40070F477 /* LabelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43620FA92A40070F477 /* LabelButton.swift */; };
 		C971B43920FE2F710070F477 /* PresetSaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43820FE2F710070F477 /* PresetSaveViewController.swift */; };
 		C971B43B2100CECC0070F477 /* HarmonizrMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971B43A2100CECC0070F477 /* HarmonizrMainViewController.swift */; };
+		C974A7E72F996029007AEB0D /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C97B07E322275B7F002FAB96 /* AuSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97B07E222275B7F002FAB96 /* AuSettingsTableViewController.swift */; };
 		C97F1B8020D41121001C26E1 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97F1B7F20D41121001C26E1 /* ColorTheme.swift */; };
 		C97F1B8220D58260001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C97F1B8320D58261001C26E1 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = C94FC87B202C96F60009E742 /* AppIcon.appiconset */; };
 		C994EB19210FF2B3000715F8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB18210FF2B3000715F8 /* AudioToolbox.framework */; };
 		C994EB1B210FF2DF000715F8 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C994EB1A210FF2DF000715F8 /* CoreData.framework */; };
-		C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C99505202F7DB7150053F3F3 /* NoiseGate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C995051F2F7DB70D0053F3F3 /* NoiseGate.hpp */; };
 		C99505222F7DB87E0053F3F3 /* NoiseGate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C99505212F7DB87B0053F3F3 /* NoiseGate.cpp */; };
 		C99505232F7DB87E0053F3F3 /* NoiseGate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C99505212F7DB87B0053F3F3 /* NoiseGate.cpp */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
 		C9C69F8924202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */; };
 		C9C69F8A24202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */; };
-		C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
-		C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */; };
 		C9CC6BC12F97DBDD00EAB2CA /* HarmonizerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CC6BC02F97DBDD00EAB2CA /* HarmonizerApp.swift */; };
 		C9CC6BC22F97DBDD00EAB2CA /* HarmonizerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CC6BC02F97DBDD00EAB2CA /* HarmonizerApp.swift */; };
 		C9CC6BC32F97DBDD00EAB2CA /* HarmonizerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CC6BC02F97DBDD00EAB2CA /* HarmonizerApp.swift */; };
@@ -443,13 +441,13 @@
 				C9EC31E52065B97D007835AB /* PresetFavoriteViewController.swift */,
 				91A9356A1B1269F100370383 /* HarmonizerView.swift */,
 				C9FA08BC20B315D6003CC2EA /* KeyboardView.swift */,
-				C9657D10243BABBC00D4EAEE /* midi.png */,
-				91236D591B08F52D00734C5E /* Info.plist */,
 				C92AB160205FF47400BEE933 /* HarmonizerVoicesView.swift */,
 				C96F204820DB02E400F43D90 /* HarmParameterTableView.swift */,
 				C96F204A20DB032B00F43D90 /* HarmParameterTableViewCell.swift */,
 				C939A47A24C9E63B0022FC87 /* TutorialViewController.swift */,
 				C956EE8D25F7AAC00058D499 /* PresetTableViewCell.swift */,
+				C9657D10243BABBC00D4EAEE /* midi.png */,
+				91236D591B08F52D00734C5E /* Info.plist */,
 				C994EB1C21122C8A000715F8 /* PresetModel.xcdatamodeld */,
 			);
 			name = HarmonizerFramework;
@@ -838,7 +836,6 @@
 				C9DFC5E5202F96E900CC776F /* InputViewController.swift in Sources */,
 				C9280B58243A8D67002C9ED3 /* FilesTableViewCell.swift in Sources */,
 				C93FE6D6243B8DC00068B036 /* SplashViewController.swift in Sources */,
-				C9C759F9213048F5003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
 				C9280B57243A8D63002C9ED3 /* FilesTableViewController.swift in Sources */,
 				C96F204220D80B7A00F43D90 /* HarmTableViewCell.swift in Sources */,
 				C946818E2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
@@ -862,6 +859,7 @@
 				91236D8E1B08FB0300734C5E /* AUv3Harmonizer.mm in Sources */,
 				C9C69F8924202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */,
 				C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */,
+				C974A7E72F996029007AEB0D /* PresetModel.xcdatamodeld in Sources */,
 				C93163531FBCE9A400EE1762 /* HarmButton.swift in Sources */,
 				C96F204520D85CF200F43D90 /* HarmPageViewController.swift in Sources */,
 				C971B43720FA92A40070F477 /* LabelButton.swift in Sources */,
@@ -883,7 +881,6 @@
 				C95CD9FB2F8E91B500310569 /* AuPresetTableViewController.swift in Sources */,
 				C93B835E2B1A3BA9007175B2 /* SimplePitchShifter.cpp in Sources */,
 				C9532ADF2F87E3C100B44404 /* SUAuParameterView.swift in Sources */,
-				C994EB1E21122C8A000715F8 /* PresetModel.xcdatamodeld in Sources */,
 				C93B83572B1A3335007175B2 /* Window.cpp in Sources */,
 				C96F204920DB02E400F43D90 /* HarmParameterTableView.swift in Sources */,
 				C946818F2190F2B10055AA80 /* MidiReceiver.swift in Sources */,
@@ -914,7 +911,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9E5192F24CF51C9009AD8EB /* VUMeter.swift in Sources */,
-				C9C759F8213048F1003DB1E2 /* PresetModel.xcdatamodeld in Sources */,
 				C94681902190F2B10055AA80 /* MidiReceiver.swift in Sources */,
 				C9FA08BE20B315D6003CC2EA /* KeyboardView.swift in Sources */,
 				C9C69F8A24202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */,

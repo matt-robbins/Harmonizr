@@ -43,7 +43,7 @@ class LabelButton: UIButton {
         
         setTitleColor(.cyan, for: UIControlState())
         setTitleColor(.white, for: .disabled)
-        showsTouchWhenHighlighted = true
+        //showsTouchWhenHighlighted = true
         
         super.layoutSubviews()
     }

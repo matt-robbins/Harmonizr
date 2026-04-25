@@ -103,7 +103,8 @@ class PresetController: NSObject {
         
         if (moc == nil)
         {
-            guard let modelURL = Bundle.main.url(forResource: "PresetModel", withExtension: "momd") else {
+            let bundle = Bundle(for: Preset.self)
+            guard let modelURL = bundle.url(forResource: "PresetModel", withExtension: "momd") else {
                 fatalError("failed to find data model")
             }
             

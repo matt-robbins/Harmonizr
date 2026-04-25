@@ -10,7 +10,7 @@ import UIKit
 class PresetTableViewCell: UITableViewCell {
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var led: Led!
-    @IBOutlet weak var fav: UIView!
+    @IBOutlet weak var fav: HarmButton!
     
     override func awakeFromNib() {
         //fav.setTitleColor(.black, for: .normal)
@@ -26,7 +26,7 @@ class PresetTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         //super.setSelected(selected, animated: animated)
 
-//        self.led.power(on: selected)
+        self.led.power(on: selected)
 //        self.accessoryType = selected ? .disclosureIndicator : .none
 //        self.accessoryView?.tintColor = tintColor
     }
