@@ -246,7 +246,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     
     AUParameter *gateThreshParam = [AUParameterTree createParameterWithIdentifier:@"gate_thresh" name:@"Gate Threshold"
         address:HarmParamGateThresh
-        min:-100 max:0 unit:kAudioUnitParameterUnit_Decibels unitName:nil
+        min:-60 max:0 unit:kAudioUnitParameterUnit_Decibels unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
@@ -382,7 +382,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
 
-    AUParameter *threshParam = [AUParameterTree createParameterWithIdentifier:@"threshold" name:@"Threshold"
+    AUParameter *threshParam = [AUParameterTree createParameterWithIdentifier:@"threshold" name:@"Pitch Detection Threshold"
         address:HarmParamThreshold
         min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
@@ -410,7 +410,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     address:HarmParamLoop
     min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
     flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-    valueStrings:@[@"Stop",@"Play",@"play/Rec"] dependentParameters:nil];
+    valueStrings:@[@"Stop",@"Play",@"Play/Rec"] dependentParameters:nil];
     
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
     

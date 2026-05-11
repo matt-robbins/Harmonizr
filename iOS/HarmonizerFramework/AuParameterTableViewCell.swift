@@ -41,6 +41,8 @@ class AuParameterTableViewCell: UITableViewCell {
             stepCtrl.value = Double(param?.value ?? 0.0)
             sliderCtrl.value = param?.value ?? 0.0
             
+            stepCtrl.stepValue = round((stepCtrl.maximumValue - stepCtrl.minimumValue) * 100) / 10000
+            
             switch (param?.unit)
             {
             case .boolean:
@@ -48,19 +50,22 @@ class AuParameterTableViewCell: UITableViewCell {
                 switchCtrl.isOn = (param?.value ?? 0.0) > 0.0
             case .linearGain:
                 sliderCtrl.isHidden = false
-            case .decibels,.percent:
-                stepCtrl.isHidden = false
                 valueLabel.isHidden = false
-            case .generic:
+            case .decibels:
                 sliderCtrl.isHidden = false
+                stepCtrl.stepValue = 1;
+                valueLabel.isHidden = false
+            case .generic,.percent:
+                sliderCtrl.isHidden = false
+                valueLabel.isHidden = false
                 stepCtrl.stepValue = 0.01;
             case .indexed,.midiController:
                 valueLabel.isHidden = false
                 stepCtrl.isHidden = false
+                stepCtrl.stepValue = 1;
             default:
                 stepCtrl.isHidden = false
                 valueLabel.isHidden = false
-                stepCtrl.stepValue = round((stepCtrl.maximumValue - stepCtrl.minimumValue) * 100) / 10000
             }
             setValueLabel()
             //valueLabel.text = "\(Int(param?.value ?? 0.0))"
@@ -132,17 +137,20 @@ class AuParameterTableViewCell: UITableViewCell {
         let val_2 = Double(Int(val*100))/100.0
         switch (param!.unit) {
         case .percent:
-            valueLabel.text = "\(Int(val))"
+            valueLabel.text = "\(Int(val*100))"
             unitsLabel.text = "%"
         case .midiController:
             valueLabel.text = "\(Int(val))"
+        case .hertz:
+            valueLabel.text = "\(val_2)"
+            unitsLabel.text = "Hz"
         case .decibels:
             valueLabel.text = "\(val_2)"
             unitsLabel.text = "dB"
         case .seconds:
             valueLabel.text = "\(val_2)"
             unitsLabel.text = "S"
-        case .generic:
+        case .generic,.linearGain:
             valueLabel.text = "\(val_2)"
         case .indexed:
             if let st = param?.valueStrings! {
