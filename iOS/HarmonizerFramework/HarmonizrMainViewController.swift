@@ -94,7 +94,9 @@ public class HarmonizrMainViewController: AUViewController, UINavigationControll
     
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool)
     {
-        navController!.setNavigationBarHidden(viewController == navController!.viewControllers.first, animated: animated)
+        //navController!.setNavigationBarHidden(viewController == navController!.viewControllers.first, animated: animated)
+        let hide = viewController == navController!.viewControllers.first
+        navController?.navigationBar.alpha = hide ? 0.0 : 1.0
         
         if (viewController == navController!.viewControllers.first)
         {

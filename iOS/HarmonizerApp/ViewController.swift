@@ -146,8 +146,8 @@ class ViewController: UIViewController, InterfaceDelegate {
 		// Set up the plug-in's custom view.
 		embedPlugInView()
         
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-		self.setNeedsStatusBarAppearanceUpdate()
+//        self.navigationController?.setNavigationBarHidden(true, animated: false)
+//		self.setNeedsStatusBarAppearanceUpdate()
 		/*
 			Register the AU in-process for development/debugging.
 			First, build an AudioComponentDescription matching the one in our 

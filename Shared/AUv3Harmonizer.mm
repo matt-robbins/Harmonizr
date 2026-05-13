@@ -521,7 +521,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _parameterTree = [AUParameterTree createTreeWithChildren:params];
 
 	// Create the input and output busses.
-	_inputBus.init(defaultFormat, 8);
+	_inputBus.initialize(defaultFormat, 8);
     _outputBus = [[AUAudioUnitBus alloc] initWithFormat:defaultFormat error:nil];
 
 	// Create the input and output bus arrays.

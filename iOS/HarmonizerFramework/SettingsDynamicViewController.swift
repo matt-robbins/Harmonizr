@@ -23,6 +23,7 @@ class SettingsDynamicViewController: UITableViewController {
         case link
         case param
         case binary
+        case invbinary
         case other
         case choices
     }
@@ -114,7 +115,7 @@ class SettingsDynamicViewController: UITableViewController {
             [
                 cellDescriptor(type: .binary, name: "showMidiKeyboard", dname: "Show Keyboard"),
                 cellDescriptor(type: .binary, name: "showTouch", dname: "Show Touch Points"),
-                cellDescriptor(type: .binary, name: "doneTutorial", dname: "Show Tutorial On Start"),
+                cellDescriptor(type: .invbinary, name: "doneTutorial", dname: "Show Tutorial On Start"),
                 cellDescriptor(type: .link, name: "about", dname: "About Harmonizr (Web)", action: showWeb),
             ]),
             sectionDescriptor(name: "Recording", cells:
@@ -188,14 +189,18 @@ class SettingsDynamicViewController: UITableViewController {
             cell.selectionStyle = .none
             return cell
             
-        case .binary:
+        case .binary, .invbinary:
             let cell = tableView.dequeueReusableCell(withIdentifier: "generic", for: indexPath)
             cell.contentConfiguration = UIHostingConfiguration {
                 HStack {
                     Text(descriptor.dname ?? descriptor.name)
                 }
             }
-            let check = defaults?.bool(forKey: descriptor.name) ?? false
+            var check = (defaults?.bool(forKey: descriptor.name) ?? false)
+            if (descriptor.type == .invbinary){
+                check.toggle()
+            }
+            
             cell.accessoryType = check ? .checkmark : .none
             
             return cell
@@ -226,11 +231,14 @@ class SettingsDynamicViewController: UITableViewController {
             else {
                 performSegue(withIdentifier: descriptor.name, sender: nil)
             }
-        case .binary:
+        case .binary, .invbinary:
             
-            let val = defaults?.bool(forKey: descriptor.name) ?? false
+            var val = defaults?.bool(forKey: descriptor.name) ?? false
             defaults?.set(!val, forKey: descriptor.name)
-            cell?.accessoryType = !val ? .checkmark : .none
+            if (descriptor.type == .invbinary) {
+                val = !val
+            }
+            cell?.accessoryType = val ? .none : .checkmark
             
             if let action = descriptor.action {
                 action()

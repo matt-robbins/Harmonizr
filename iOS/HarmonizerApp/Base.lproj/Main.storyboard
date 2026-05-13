@@ -253,14 +253,13 @@
                                                 </tableViewCellContentView>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="gainCell" id="cAi-np-ipI" customClass="AUParameterTableViewCell" customModule="Harmonizer" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="152" width="667" height="51"/>
+                                                <rect key="frame" x="0.0" y="152" width="667" height="55"/>
                                                 <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cAi-np-ipI" id="3FH-fR-QXs">
-                                                    <rect key="frame" x="0.0" y="0.0" width="667" height="51"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cAi-np-ipI" translatesAutoresizingMaskIntoConstraints="NO" id="3FH-fR-QXs">
+                                                    <rect key="frame" x="0.0" y="0.0" width="667" height="55"/>
                                                     <subviews>
                                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="WgJ-SA-HFa" userLabel="Value Slider">
-                                                            <rect key="frame" x="20" y="8.5" width="627" height="34"/>
+                                                            <rect key="frame" x="20" y="10" width="627" height="35"/>
                                                             <connections>
                                                                 <action selector="gainChanged:" destination="Yet-wN-pz8" eventType="valueChanged" id="jPf-Mf-2CQ"/>
                                                             </connections>
@@ -268,10 +267,18 @@
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstItem="WgJ-SA-HFa" firstAttribute="leading" secondItem="3FH-fR-QXs" secondAttribute="leading" constant="20" id="Qh6-5m-J1c"/>
+                                                        <constraint firstItem="WgJ-SA-HFa" firstAttribute="top" secondItem="3FH-fR-QXs" secondAttribute="top" constant="10" id="Twd-Ne-QLC"/>
                                                         <constraint firstAttribute="trailing" secondItem="WgJ-SA-HFa" secondAttribute="trailing" constant="20" id="ZFS-e2-mON"/>
+                                                        <constraint firstAttribute="bottom" secondItem="WgJ-SA-HFa" secondAttribute="bottom" constant="10" id="f0s-Y5-mXT"/>
                                                         <constraint firstItem="WgJ-SA-HFa" firstAttribute="centerY" secondItem="3FH-fR-QXs" secondAttribute="centerY" id="iMH-fH-Dkm"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
+                                                <constraints>
+                                                    <constraint firstItem="3FH-fR-QXs" firstAttribute="top" secondItem="cAi-np-ipI" secondAttribute="top" id="5n7-Av-R6G"/>
+                                                    <constraint firstAttribute="trailing" secondItem="3FH-fR-QXs" secondAttribute="trailing" id="Imo-oU-Q0q"/>
+                                                    <constraint firstAttribute="bottom" secondItem="3FH-fR-QXs" secondAttribute="bottom" id="lOv-zG-tY5"/>
+                                                    <constraint firstItem="3FH-fR-QXs" firstAttribute="leading" secondItem="cAi-np-ipI" secondAttribute="leading" id="wdt-5T-9B2"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="valueSlider" destination="WgJ-SA-HFa" id="PGX-va-ZpQ"/>
                                                 </connections>
