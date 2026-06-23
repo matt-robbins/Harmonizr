@@ -12,6 +12,7 @@
 #import "../harmonizr-dsp/CircularAudioBuffer.hpp"
 #import "../harmonizr-dsp/PitchEstimator.hpp"
 #import "../harmonizr-dsp/NoiseGate.hpp"
+#import "../harmonizr-dsp/SpectralProcessor.hpp"
 #include "TestAudioData.h"
 
 static float audioValue(int k, float trueT) {
@@ -30,6 +31,10 @@ static float audioValue(int k, float trueT) {
     PitchEstimator *p;
     PitchEstimator *p2;
     NoiseGate *g;
+    //SpectralProcessor *r;
+    
+    std::vector<SpectralProcessor> freezers;
+
     
     float trueT;
 }
@@ -45,7 +50,12 @@ static float audioValue(int k, float trueT) {
     p = new PitchEstimatorYIN(500, 11, 0.5, 7);
     p2 = new PitchEstimatorSHS();
     
-    g = new NoiseGate(-10.0f, 6.f, 48000, 1000);
+    g = new NoiseGate(-10.0f, 6.f, 10000, 1.0f);
+    
+    
+    //r = new SpectralProcessor(7,4);
+    freezers.reserve(1);
+    freezers.emplace_back(7,4);
     
     trueT = 117.2;
     
@@ -62,6 +72,7 @@ static float audioValue(int k, float trueT) {
     delete b;
     delete p;
     delete g;
+    //delete r;
 }
 
 - (void)testPitch {
@@ -72,17 +83,20 @@ static float audioValue(int k, float trueT) {
 }
 
 - (void)testGate {
-    for (int k = 0; k < 1000; k++)
+    for (int k = 0; k < 10000; k++)
         g->compute_one(0.0);
     XCTAssert(g->get_gain() < 0.1);
-    for (int k = 0; k < 1000; k++)
+    
+    for (int k = 0; k < 10000; k++)
         g->compute_one(1.0);
     XCTAssert(g->get_gain() > 0.9);
-    for (int k = 0; k < 1000; k++)
-        g->compute_one(0.1);
+    
+    for (int k = 0; k < 10000; k++)
+        g->compute_one(0.0);
     XCTAssert(g->get_gain() > 0.9);
-    for (int k = 0; k < 1000; k++)
-        g->compute_one(0.1);
+    
+    for (int k = 0; k < 10000; k++)
+        g->compute_one(0.0);
     XCTAssert(g->get_gain() < 0.1);
     
 }
@@ -106,6 +120,42 @@ static float audioValue(int k, float trueT) {
             p->estimate(*b);
         }
     }];
+}
+
+- (void)testSpectral {
+//    std::vector<SpectralProcessor> freezers = { {7,4}, {7,4}};
+    freezers[0].freeze(true);
+    for (int k = 0; k < 1000; k++) {
+        float x = freezers[0].process_frame((float) sinf(2*M_PI*k/32));
+        std::cout << x << ",";
+    }
+    std::cout << "\n";
+    
+}
+
+- (void)testOlap {
+    int N = 16;
+    OlapAddBuffer ob = {4,N};
+    float data[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    
+    for (int k = 0; k < 40; k++) {
+        float o = ob.olapAdd();
+        int ck = ob.check();
+        switch (ck) {
+            case -1:
+                break;
+            default:
+                memcpy(ob.get_current(), data, N * sizeof(float));
+                break;
+        }
+        std::cout << o << ",";
+    }
+    std::cout << "\n";
+    
+}
+
+- (void)testHarm {
+    
 }
 
 @end

@@ -93,6 +93,7 @@ class SettingsDynamicViewController: UITableViewController {
             [
                 cellDescriptor(type: .link, name: "showHarmony", dname: "Edit Preset"),
                 cellDescriptor(type: .param, name: "gate_thresh"),
+                cellDescriptor(type: .param, name: "algorithm"),
                 cellDescriptor(type: .param, name: "speed"),
                 cellDescriptor(type: .param, name: "h_gain"),
                 cellDescriptor(type: .param, name: "auto"),
@@ -143,7 +144,7 @@ class SettingsDynamicViewController: UITableViewController {
             let vc = segue.destination as! AuSettingsTableViewController
             vc.title = "MIDI Settings"
             vc.showPresets(false)
-            vc.settings = ["keycenter_cc", "midi_vel_ign", "keycenter_cc_offset","keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
+            vc.settings = ["midi_vel_ign", "freeze_cc", "midi_ped_fcn", "midi_ped_inv", "keycenter_cc", "keycenter_cc_offset", "keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
             vc.audioUnit = globalAudioUnit
             
         default:

@@ -324,7 +324,14 @@ class AudioEngine2: NSObject {
         
         let defaultFormat:AVAudioFormat? = nil
         let stereoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate,channels: 2)
+        let monoFormat = AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 1)
         //let stereoFormat:AVAudioFormat? = nil
+        
+//        let channelSelector = AVAudioMixerNode()
+//        self.engine.attach(channelSelector)
+//        self.engine.connect(engine.inputNode, to: channelSelector, format: engine.inputNode.inputFormat(forBus:0))
+//        
+//        channelSelector.destination(forMixer: channelSelector, bus: 0)
         
         self.engine.disconnectNodeInput(self.engine.mainMixerNode)
         self.engine.disconnectNodeInput(self.reverbUnitNode)
@@ -339,7 +346,7 @@ class AudioEngine2: NSObject {
         //self.engine.connect(self.harmUnitNode!, to: self.engine.mainMixerNode, format: stereoFormat)
         if (self.harmUnitNode != nil)
         {
-            self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: stereoFormat)
+            self.engine.connect(self.engine.inputNode, to: self.harmUnitNode!, format: monoFormat)
             self.engine.connect(self.harmUnitNode!, to: self.reverbUnitNode, format: stereoFormat)
         }
         else

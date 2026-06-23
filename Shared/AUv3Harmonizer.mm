@@ -180,7 +180,6 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 @property AUAudioUnitBusArray *inputBusArray;
 @property AUAudioUnitBusArray *outputBusArray;
 
-
 @end
 
 @implementation AUv3Harmonizer {
@@ -200,6 +199,14 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 @synthesize parameterTree = _parameterTree;
 @synthesize factoryPresets = _presets;
 
+- (NSArray<NSNumber *> *)channelCapabilities {
+    return @[
+        @1, @1,   // 1 input, 1 output (e.g., Mono to Mono)
+        @2, @2,   // 2 inputs, 2 outputs (e.g., Stereo to Stereo)
+        @1, @2    // 1 input, 2 outputs (Mono to Stereo)
+    ];
+}
+
 - (instancetype)initWithComponentDescription:(AudioComponentDescription)componentDescription options:(AudioComponentInstantiationOptions)options error:(NSError **)outError {
     self = [super initWithComponentDescription:componentDescription options:options error:outError];
     if (self == nil) { return nil; }
@@ -213,6 +220,7 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     _kernel.init(defaultFormat.channelCount, defaultFormat.channelCount, defaultFormat.sampleRate);
     
     AUParameter *keycenterIntervals[144];
+    //AUParameter *keysDown[128];
     
     AUParameter *keycenterParam = [AUParameterTree createParameterWithIdentifier:@"keycenter" name:@"Key Center"
         address:HarmParamKeycenter
@@ -249,6 +257,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         min:-60 max:0 unit:kAudioUnitParameterUnit_Decibels unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *algorithmParam = [AUParameterTree createParameterWithIdentifier:@"algorithm" name:@"Algorithm"
+        address:HarmParamAlgorithm
+        min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:@[@"PSOLA",@"Interp"] dependentParameters:nil];
     
     AUParameter *midiParam = [AUParameterTree createParameterWithIdentifier:@"midi" name:@"Midi"
         address:HarmParamMidi
@@ -322,6 +336,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:@[@"Normalized",@"Literal"] dependentParameters:nil];
     
+    AUParameter *freezeCCParam = [AUParameterTree createParameterWithIdentifier:@"freeze_cc" name:@"Freeze CC"
+        address:HarmParamMidiFreezeCC
+        min:0 max:127 unit:kAudioUnitParameterUnit_MIDIController unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
     AUParameter *midiPCParam = [AUParameterTree createParameterWithIdentifier:@"midi_rx_pc" name:@"Recieve MIDI Program Change"
         address:HarmParamMidiPC
         min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
@@ -339,6 +359,16 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
+    
+    AUParameter *midiPedalFcnParam = [AUParameterTree createParameterWithIdentifier:@"midi_ped_fcn" name:@"MIDI Pedal Function"
+        address:HarmParamMidiPedalFcn min:0 max:2 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags:kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:@[@"Hold Notes",@"Freeze",@"Both"] dependentParameters:nil];
+    
+    AUParameter *midiPedalInvParam = [AUParameterTree createParameterWithIdentifier:@"midi_ped_inv" name:@"MIDI Pedal Invert"
+        address:HarmParamMidiPedalInv min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags:kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:@[@"Hold Notes",@"Freeze",@"Both"] dependentParameters:nil];
     
     AUParameter *bypassParam = [AUParameterTree createParameterWithIdentifier:@"bypass" name:@"Bypass"
         address:HarmParamBypass
@@ -400,6 +430,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
         valueStrings:nil dependentParameters:nil];
     
+    AUParameter *freezeParam = [AUParameterTree createParameterWithIdentifier:@"freeze" name:@"Spectral Freeze"
+        address:HarmParamFreeze
+        min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:nil dependentParameters:nil];
+    
     AUParameter *vibParam = [AUParameterTree createParameterWithIdentifier:@"vibrato" name:@"Vibrato Intensity"
         address:HarmParamVibrato
         min:0 max:1 unit:kAudioUnitParameterUnit_Generic unitName:nil
@@ -407,12 +443,24 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         valueStrings:nil dependentParameters:nil];
     
     AUParameter *loopParam = [AUParameterTree createParameterWithIdentifier:@"loop_mode" name:@"Looping Mode"
-    address:HarmParamLoop
-    min:0 max:1 unit:kAudioUnitParameterUnit_Indexed unitName:nil
-    flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
-    valueStrings:@[@"Stop",@"Play",@"Play/Rec"] dependentParameters:nil];
+        address:HarmParamLoop
+        min:0 max:2 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+        flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
+        valueStrings:@[@"Stop",@"Play",@"Play/Rec"] dependentParameters:nil];
+    
+//    for (int i = 0; i < 128; i++) {
+//        AUParameter *key = [AUParameterTree createParameterWithIdentifier:[NSString stringWithFormat:@"key_%d", i] name:[NSString stringWithFormat:@"key_%d", i]
+//            address:10000 + i
+//            min:0 max:1 unit:kAudioUnitParameterUnit_Boolean unitName:nil
+//            flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_MeterReadOnly
+//            valueStrings:nil dependentParameters:nil];
+//    }
+    
+    
+    //AUParameterGroup * keysDownParam = [AUParameterTree createGroupWithIdentifier:@"keys" name:@"MIDI Keys Pressed" children:<#(nonnull NSArray<AUParameterNode *> *)#>]
     
     NSMutableArray *params = [NSMutableArray arrayWithCapacity:100];
+    //NSMutableArray *ksparams = [NSMutableArray arrayWithCapacity:144];
     
     [params addObject:keycenterParam];
     [params addObject:inversionParam];
@@ -432,9 +480,12 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:inversionCcRangeParam];
     [params addObject:nvoicesCCParam];
     [params addObject:nvoicesCcRangeParam];
+    [params addObject:freezeCCParam];
     [params addObject:midiPCParam];
     [params addObject:midiMelOutParam];
     [params addObject:midiHarmOutParam];
+    [params addObject:midiPedalFcnParam];
+    [params addObject:midiPedalInvParam];
     [params addObject:triadParam];
     [params addObject:bypassParam];
     [params addObject:hgainParam];
@@ -444,7 +495,9 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     [params addObject:tuningParam];
     [params addObject:threshParam];
     [params addObject:stereoParam];
+    [params addObject:algorithmParam];
     [params addObject:synthParam];
+    [params addObject:freezeParam];
     [params addObject:vibParam];
     [params addObject:loopParam];
             
@@ -454,17 +507,17 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
         NSString *name = [NSString stringWithFormat:@"Interval %d", k];
         keycenterIntervals[k] = [AUParameterTree createParameterWithIdentifier:identifier name:name
             address:HarmParamInterval+k
-            min:1 max:13 unit:kAudioUnitParameterUnit_Indexed unitName:nil
+            min:-24 max:24 unit:kAudioUnitParameterUnit_Indexed unitName:nil
             flags: kAudioUnitParameterFlag_IsReadable | kAudioUnitParameterFlag_IsWritable
                                                                   valueStrings:nil dependentParameters:nil];
         
         [params addObject: keycenterIntervals[k]];
     }
     
-//    AUParameterGroup *intervals = [AUParameterTree createGroupWithIdentifier:@"intervals" name:@"Auto-Harmony" children:iparams];
-//
-//    [params addObject:intervals];
-    
+//    AUParameterGroup *intervals = [AUParameterTree createGroupWithIdentifier:@"intervals" name:@"Auto-Harmony" children:ksparams];
+//    
+//    [params addObject: intervals];
+
 	// Initialize default parameter values.
     keycenterParam.value = 5;
     inversionParam.value = 2;
@@ -484,13 +537,16 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
     speedParam.value = 1;
     tuningParam.value = 440.0;
     threshParam.value = 0.1;
-    stereoParam.value = 0;
+    stereoParam.value = StereoModeNormal;
+    algorithmParam.value = AlgorithmPSOLA;
     synthParam.value = 0;
     vibParam.value = 0;
+    freezeParam.value = 0;
     keycenterCCParam.value = 16;
     keycenterCcOffsetParam.value = 1;
     keyqualityCCParam.value = 17;
     keyqualityCcOffsetParam.value = 1;
+    freezeCCParam.value = 20;
     nvoicesCCParam.value = 18;
     inversionCCParam.value = 19;
     

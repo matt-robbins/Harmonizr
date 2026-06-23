@@ -41,6 +41,8 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     @IBOutlet weak var dryButton: HarmButton!
     @IBOutlet weak var presetButton: LabelButton!
     
+    @IBOutlet weak var freezeButton: HarmButton!
+    
     @IBOutlet weak var kbdLinkButton: HarmButton!
     @IBOutlet weak var kbdOctPlusButton: UIButton!
     @IBOutlet weak var kbdOctMinusButton: UIButton!
@@ -103,6 +105,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     var speedParameter: AUParameter?
     var hgainParameter: AUParameter?
     var vgainParameter: AUParameter?
+    var freezeParameter: AUParameter?
 	var parameterObserverToken: AUParameterObserverToken?
     
     var intervals = [AUParameter]()
@@ -347,6 +350,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         speedParameter = paramTree.value(forKey: "speed") as? AUParameter
         hgainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
+        freezeParameter = paramTree.value(forKey: "freeze") as? AUParameter
         print(hgainParameter!.value)
         presetController!.audioUnit = audioUnit
         presetController!.restoreState()
@@ -388,6 +392,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
             midiButton.isSelected = (midiParameter!.value == 1)
             dryButton.isSelected = (hgainParameter!.value == 0)
             kbdLinkButton.isSelected = (midiLinkParameter!.value == 1)
+            freezeButton.isSelected = (freezeParameter!.value == 1)
             
             enableKeyboard(midiButton.isSelected)
             
@@ -472,6 +477,10 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         checkPresetModified()
         //print(hgainParameter!.value)
         
+    }
+    
+    @IBAction func toggleFreeze(_ sender: Any) {
+        freezeParameter?.value = freezeButton.isSelected ? 1 : 0
     }
     
     @IBAction func savePreset(_ sender: HarmButton) {
@@ -634,6 +643,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
     }
     
     func ccValue(_ value: Int32, forCc cc: Int32) {
+        
         syncView()
     }
     

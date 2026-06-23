@@ -36,6 +36,7 @@
 - (float) getLoopPosition;
 - (void) setEmbedded:(bool)embedded;
 - (bool) isEmbedded;
+// @property (nonatomic, copy, readonly) NSArray<NSNumber *> * channelCapabilities;
 
 @property (nonatomic, weak) id<HarmonizerDelegate> delegate;
 @end

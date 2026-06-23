@@ -9,7 +9,7 @@
 import CoreAudioKit
 import HarmonizerFramework
 
-extension HarmonizrMainViewController: AUAudioUnitFactory {
+extension HarmonizrMainViewController: @retroactive AUAudioUnitFactory {
     /*
         This implements the required `NSExtensionRequestHandling` protocol method.
         Note that this may become unnecessary in the future, if `AUViewController`

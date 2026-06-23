@@ -158,7 +158,7 @@ extension PresetListViewController: UITableViewDataSource {
         let p = presetController!.presets[indexPath.row]
 
         cell.name.text = p.name!
-        cell.name.isUserInteractionEnabled = p.factoryId < 0
+        //cell.name.isUserInteractionEnabled = p.factoryId < 0
         cell.name.delegate = self
         cell.name.tag = indexPath.row
         cell.name.textColor = p.factoryId < 0 ? .white : .cyan
@@ -175,13 +175,6 @@ extension PresetListViewController: UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete)
-        {
-            presetController!.delete(ix: indexPath.row)
-            self.presetTable.deleteRows(at: [indexPath], with: .automatic)
-        }
-    }
     
     func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
         updateSelection()
@@ -217,7 +210,15 @@ extension PresetListViewController: UITableViewDataSource {
 
 extension PresetListViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return .none
+        return (presetController!.presets[indexPath.row].factoryId >= 0) ? .none: .delete
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete)
+        {
+            presetController!.delete(ix: indexPath.row)
+            self.presetTable.deleteRows(at: [indexPath], with: .automatic)
+        }
     }
     
    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
