@@ -13,6 +13,8 @@
 #import "../harmonizr-dsp/PitchEstimator.hpp"
 #import "../harmonizr-dsp/NoiseGate.hpp"
 #import "../harmonizr-dsp/SpectralProcessor.hpp"
+#import "../harmonizr-dsp/IntervalTable.hpp"
+#import "../harmonizr-dsp/Harmonizer.hpp"
 #include "TestAudioData.h"
 
 static float audioValue(int k, float trueT) {
@@ -34,9 +36,14 @@ static float audioValue(int k, float trueT) {
     //SpectralProcessor *r;
     
     std::vector<SpectralProcessor> freezers;
-
+    
+    
+    FFTSetup fft_s;
+    DSPSplitComplex fft_in, fft_out, fft_buf;
     
     float trueT;
+    int l2nfft;
+    int nfft;
 }
 
 - (void)setUp {
@@ -52,7 +59,14 @@ static float audioValue(int k, float trueT) {
     
     g = new NoiseGate(-10.0f, 6.f, 10000, 1.0f);
     
-    
+    l2nfft = 11;
+    nfft = 0x01 << l2nfft;
+    fft_s = vDSP_create_fftsetup(l2nfft, 2);
+
+    fft_alloc(fft_in, nfft);
+    fft_alloc(fft_out, nfft);
+    fft_alloc(fft_buf, nfft);
+
     //r = new SpectralProcessor(7,4);
     freezers.reserve(1);
     freezers.emplace_back(7,4);
@@ -74,6 +88,37 @@ static float audioValue(int k, float trueT) {
     delete g;
     //delete r;
 }
+
+- (void) testVoiceCalculations {
+    k.setParameter(HarmParamNvoices, 4.0);
+    k.set_T(400.f);
+    k.setPreset(HarmPresetChords);
+    k.set_voiced(true);
+    k.update_voices();
+    k.update_voices(); // one more to take care of hysteresis
+
+    
+    k.list_intervals();
+}
+
+- (void) testFFTPerformance1 {
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for (int i = 0; i < 10000; i++){
+            vDSP_fft_zopt(fft_s, &fft_in, 1, &fft_out, 1, &fft_buf, l2nfft, FFT_FORWARD);
+        }
+    }];
+}
+
+- (void) testFFTPerformance2 {
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+        for (int i = 0; i < 10000; i++){
+            vDSP_fft_zrip(fft_s, &fft_in, 1, l2nfft, FFT_FORWARD);
+        }
+    }];
+}
+
 
 - (void)testPitch {
     float T = 0;
@@ -154,7 +199,67 @@ static float audioValue(int k, float trueT) {
     
 }
 
+- (void)testStateVariable {
+    StateMemVariable<float> m = {0.0};
+    
+    m.set(2.0);
+    XCTAssert(m.prev() == 0.0);
+    m.set(1.0);
+    XCTAssert(m.prev() == 2.0);
+    XCTAssert(m.value() == 1.0);
+}
+
+- (void)testIntervalTable {
+    int voices = 4;
+    int types = 3;
+    int tet = 12;
+    
+    IntervalTable tab = IntervalTable(voices, types, tet);
+    int chords_intervals[] = {
+        0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
+        0,3,7,12, -1,2,6,11, 1,5,10,13, 0,4,9,12, -1,3,8,11, -1,2,7,10, 1,6,9,13, 0,5,8,12, 0,4,7,11, 0,3,6,10, 0,5,9,14, 1,4,8,13, // minor
+        0,4,10,12, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+    };
+    
+    tab.setAll(chords_intervals, 4*3*12);
+    XCTAssert(tab.getInterval(0,0,2) == 2);
+    tab.setInterval(0,0,2,3);
+    XCTAssert(tab.getInterval(0,0,2) == 3);
+    
+    XCTAssert(tab.getInterval(3,1,2) == 13);
+}
+
+- (void)testIir {
+    IirTracker i {0.99};
+    float t = 20;
+    i.setT(t);
+    for (int k = 0; k < (int) t*5; k++) {
+        float v = i.compute(1.0);
+        std::cout << v << ",";
+        if (v > 0.9) {
+            std::cout << "\ncompleted in " << k << " samples\n";
+            break;
+        }
+    }
+}
+
+- (void)testStateMem {
+    StateMemVariable<float> v=1.0;
+    
+    XCTAssert(v==1.0f);
+    v = 0.f;
+    //std::cout << "current value: " << v.value() << "? " << v << "\n";
+    XCTAssert(v==0.0f);
+    XCTAssert(v.prev()==1.0f);
+    
+    float vv = v;
+    
+    XCTAssert(vv == 0.f);
+}
+
 - (void)testHarm {
+    float T = midi_note_to_T(66,44100);
+    std::cout << "note 66: T=" << T << "\n";
     
 }
 

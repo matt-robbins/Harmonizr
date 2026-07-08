@@ -283,7 +283,7 @@ class HarmonizerView: UIView {
         }
         for j in 0...11 {
             CATransaction.begin()
-            if (j % 12 == curr_note)
+            if (j == curr_note % 12)
             {
                 CATransaction.setAnimationDuration(0.05)
                 glow_layers[j].opacity = 1.0

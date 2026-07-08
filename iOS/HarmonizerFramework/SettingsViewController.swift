@@ -144,7 +144,7 @@ class SettingsViewController: UITableViewController {
             let vc = segue.destination as! AuSettingsTableViewController
             vc.title = "MIDI Settings"
             vc.showPresets(false)
-            vc.settings = ["keycenter_cc", "midi_vel_ign", "keycenter_cc_offset","keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
+            vc.settings = []; // ["midi_vel_ign", "keycenter_cc", "freeze_cc" , "keycenter_cc_offset","keyquality_cc", "keyquality_cc_offset", "nvoices_cc","inversion_cc","midi_rx_pc", "midi_tx_harm","midi_tx_mel"]
             vc.audioUnit = globalAudioUnit
             
         default:

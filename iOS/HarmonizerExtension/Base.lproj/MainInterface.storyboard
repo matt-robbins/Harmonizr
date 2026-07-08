@@ -213,6 +213,9 @@
                                                                                 <rect key="frame" x="0.0" y="0.0" width="61.333333333333336" height="61.333333333333336"/>
                                                                                 <color key="tintColor" systemColor="systemRedColor"/>
                                                                                 <state key="normal" image="Logo"/>
+                                                                                <connections>
+                                                                                    <action selector="toggleFreeze:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RGP-kD-jtp"/>
+                                                                                </connections>
                                                                             </button>
                                                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMf-yw-TXY" userLabel="1" customClass="HarmButton" customModule="HarmonizerFramework">
                                                                                 <rect key="frame" x="61.333333333333314" y="0.0" width="61.333333333333343" height="61.333333333333336"/>
@@ -479,6 +482,7 @@
                     <connections>
                         <outlet property="containerView" destination="Vf5-SJ-o8q" id="jRK-tG-ukz"/>
                         <outlet property="dryButton" destination="c7p-bc-6Zp" id="C5P-lK-Cce"/>
+                        <outlet property="freezeButton" destination="G8Y-lt-TAX" id="Bfa-IN-Z0d"/>
                         <outlet property="harmonizerView" destination="XMY-Zi-giM" id="k3y-fn-p5B"/>
                         <outlet property="kbdLinkButton" destination="fnI-wt-qaD" id="jZW-fY-cMy"/>
                         <outlet property="kbdOctMinusButton" destination="xz3-CX-ccC" id="tBU-Ru-VI4"/>
@@ -857,7 +861,6 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tO5-6C-lST"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="UKe-eM-3au" firstAttribute="leading" secondItem="Sh2-3e-rdT" secondAttribute="leading" id="3SH-Yj-YaF"/>
                             <constraint firstItem="UKe-eM-3au" firstAttribute="top" secondItem="Sh2-3e-rdT" secondAttribute="top" id="SiB-Ko-9po"/>

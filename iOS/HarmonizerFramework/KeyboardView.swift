@@ -472,14 +472,14 @@ class KeyboardView: UIView {
     {
         for ix in 0...markers.count-1
         {
-            markKey = notes[ix]
-            
             let marker = markers[ix]
             
-            if (markKey < 1 || markKey > keys.count - 1) {
+            if (ix >= notes.count || notes[ix] < 1 || notes[ix] >= keys.count) {
                 marker.opacity = 0.0
-                continue
+                continue;
             }
+
+            markKey = notes[ix]
             
             marker.opacity = 0.8
             var center: CGFloat = 0

@@ -865,20 +865,21 @@ static AUAudioUnitPreset* NewAUPreset(NSInteger number, NSString *name)
 #pragma mark -
 
 - (float) getCurrentNote {
-    return _kernel.note_number;
+    return (float) _kernel.midi_note_number;
 }
 
 - (NSArray *) getNotes {
-    NSMutableArray * output = [[NSMutableArray alloc] initWithCapacity: 5];
+    int nv = (int) _kernel.getParameter(HarmParamNvoices);
+
+    NSMutableArray * output = [[NSMutableArray alloc] initWithCapacity: nv + 1];
     
     NSNumber *n = [NSNumber numberWithInt:_kernel.midi_note_number];
     [output addObject:n];
     
-    int nv = (int) _kernel.getParameter(HarmParamNvoices);
     
-    for (int k = 0; k < 4; k++)
+    for (int k = 0; k < nv; k++)
     {
-        NSNumber *n = (k < nv) ? [NSNumber numberWithInt:_kernel.voice_notes[k]] : [NSNumber numberWithInt:-1];
+        NSNumber *n = [NSNumber numberWithInt:_kernel.ui_voice_notes[k]];
         [output addObject:n];
     }
     

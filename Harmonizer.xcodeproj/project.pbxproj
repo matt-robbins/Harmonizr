@@ -26,6 +26,7 @@
 		C9188C3C2FD9C3CC00999C69 /* SpectralProcessor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9188C3B2FD9C3BF00999C69 /* SpectralProcessor.hpp */; };
 		C9188C3E2FD9C3D400999C69 /* SpectralProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9188C3D2FD9C3D100999C69 /* SpectralProcessor.cpp */; };
 		C9188C3F2FD9C3D400999C69 /* SpectralProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9188C3D2FD9C3D100999C69 /* SpectralProcessor.cpp */; };
+		C9188C8F2FEC625600999C69 /* IntervalTable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9188C8E2FEC625100999C69 /* IntervalTable.hpp */; };
 		C918EC6924BF9D0F009A9984 /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
 		C918EC6C24BF9D20009A9984 /* HarmonizerFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; };
 		C918EC6D24BF9D20009A9984 /* HarmonizerFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91236D551B08F52D00734C5E /* HarmonizerFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -102,6 +103,9 @@
 		C99505202F7DB7150053F3F3 /* NoiseGate.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C995051F2F7DB70D0053F3F3 /* NoiseGate.hpp */; };
 		C99505222F7DB87E0053F3F3 /* NoiseGate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C99505212F7DB87B0053F3F3 /* NoiseGate.cpp */; };
 		C99505232F7DB87E0053F3F3 /* NoiseGate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C99505212F7DB87B0053F3F3 /* NoiseGate.cpp */; };
+		C9A3F33D2FFD6B9700FC2521 /* HarmonicNoiseModel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = C9A3F33C2FFD6B8900FC2521 /* HarmonicNoiseModel.hpp */; };
+		C9A3F33F2FFD787600FC2521 /* MinphaseModel.hpp in Sources */ = {isa = PBXBuildFile; fileRef = C9A3F33E2FFD786900FC2521 /* MinphaseModel.hpp */; };
+		C9A3F3402FFD787600FC2521 /* MinphaseModel.hpp in Sources */ = {isa = PBXBuildFile; fileRef = C9A3F33E2FFD786900FC2521 /* MinphaseModel.hpp */; };
 		C9B6147A211BD49600396B8D /* PresetListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B61479211BD49600396B8D /* PresetListViewController.swift */; };
 		C9C69F8924202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */; };
 		C9C69F8A24202D30007F1C90 /* AuParameterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C69F8824202D30007F1C90 /* AuParameterTableViewCell.swift */; };
@@ -221,6 +225,7 @@
 		C91216C2206998D200E6BB57 /* PresetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetController.swift; sourceTree = "<group>"; };
 		C9188C3B2FD9C3BF00999C69 /* SpectralProcessor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SpectralProcessor.hpp; sourceTree = "<group>"; };
 		C9188C3D2FD9C3D100999C69 /* SpectralProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpectralProcessor.cpp; sourceTree = "<group>"; };
+		C9188C8E2FEC625100999C69 /* IntervalTable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IntervalTable.hpp; sourceTree = "<group>"; };
 		C926CA9A2B180B8500C893A7 /* HarmonizerFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HarmonizerFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C926CA9C2B180B8500C893A7 /* HarmonizerFrameworkTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = HarmonizerFrameworkTests.mm; sourceTree = "<group>"; };
 		C926CAA42B180D3600C893A7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.0.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
@@ -291,6 +296,8 @@
 		C995051F2F7DB70D0053F3F3 /* NoiseGate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NoiseGate.hpp; sourceTree = "<group>"; };
 		C99505212F7DB87B0053F3F3 /* NoiseGate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NoiseGate.cpp; sourceTree = "<group>"; };
 		C99BB9CA2138D64A00D32324 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
+		C9A3F33C2FFD6B8900FC2521 /* HarmonicNoiseModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = HarmonicNoiseModel.hpp; sourceTree = "<group>"; };
+		C9A3F33E2FFD786900FC2521 /* MinphaseModel.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = MinphaseModel.hpp; sourceTree = "<group>"; };
 		C9A443092428438800D4BB52 /* FilesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableViewController.swift; sourceTree = "<group>"; };
 		C9A4430B24290D2400D4BB52 /* FilesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesTableViewCell.swift; sourceTree = "<group>"; };
 		C9B549AB2306DF9800E48112 /* TestAudioData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestAudioData.h; sourceTree = "<group>"; };
@@ -576,6 +583,8 @@
 				C93B83582B1A34DC007175B2 /* DSPKernel.mm */,
 				C93B833D2B1A3043007175B2 /* HarmonizerDSPKernel.hpp */,
 				C93B835A2B1A3656007175B2 /* HarmonizerDSPKernel.cpp */,
+				C9A3F33E2FFD786900FC2521 /* MinphaseModel.hpp */,
+				C9A3F33C2FFD6B8900FC2521 /* HarmonicNoiseModel.hpp */,
 				C93B834A2B1A3044007175B2 /* ButterworthFilter.hpp */,
 				C93B83702B1A7389007175B2 /* ButterworthFilter.cpp */,
 				C93B83422B1A3044007175B2 /* CircularAudioBuffer.cpp */,
@@ -584,6 +593,7 @@
 				C93B833B2B1A3043007175B2 /* GranularSynth.hpp */,
 				C93B834F2B1A3044007175B2 /* Harmonizer.cpp */,
 				C93B83462B1A3044007175B2 /* Harmonizer.hpp */,
+				C9188C8E2FEC625100999C69 /* IntervalTable.hpp */,
 				C93B833E2B1A3043007175B2 /* Looper.cpp */,
 				C93B83402B1A3044007175B2 /* Looper.h */,
 				C93B83502B1A3044007175B2 /* PitchEstimator.cpp */,
@@ -634,6 +644,8 @@
 			files = (
 				C9188C3C2FD9C3CC00999C69 /* SpectralProcessor.hpp in Headers */,
 				91236D581B08F52D00734C5E /* HarmonizerFramework.h in Headers */,
+				C9188C8F2FEC625600999C69 /* IntervalTable.hpp in Headers */,
+				C9A3F33D2FFD6B9700FC2521 /* HarmonicNoiseModel.hpp in Headers */,
 				C9D1959421FFC604006ADB10 /* AudioUnit-BridgingHeader.h in Headers */,
 				C99505202F7DB7150053F3F3 /* NoiseGate.hpp in Headers */,
 				92AA8D601B1D28D6002C3CA1 /* Harmonizer.h in Headers */,
@@ -884,6 +896,7 @@
 				C93B83652B1A3BC3007175B2 /* CircularAudioBuffer.cpp in Sources */,
 				C93B83632B1A3BBD007175B2 /* Harmonizer.cpp in Sources */,
 				C9280B55243A8D00002C9ED3 /* FilesTableViewCell.swift in Sources */,
+				C9A3F3402FFD787600FC2521 /* MinphaseModel.hpp in Sources */,
 				C9E5192E24CF51C9009AD8EB /* VUMeter.swift in Sources */,
 				C93B835D2B1A3908007175B2 /* HarmonizerDSPKernel.cpp in Sources */,
 				C95CD9FB2F8E91B500310569 /* AuPresetTableViewController.swift in Sources */,
@@ -939,6 +952,7 @@
 				C93B83692B1A3C01007175B2 /* Looper.cpp in Sources */,
 				C93B836F2B1A596C007175B2 /* HarmonizerDSPKernel.cpp in Sources */,
 				C93B836A2B1A3C04007175B2 /* PitchEstimator.cpp in Sources */,
+				C9A3F33F2FFD787600FC2521 /* MinphaseModel.hpp in Sources */,
 				C93B836C2B1A3C09007175B2 /* PitchMarker.cpp in Sources */,
 				C93B83722B1A7389007175B2 /* ButterworthFilter.cpp in Sources */,
 				C99505232F7DB87E0053F3F3 /* NoiseGate.cpp in Sources */,
@@ -1060,7 +1074,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 1;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1090,7 +1104,7 @@
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1130,7 +1144,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 1;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1201,7 +1215,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				"GCC_OPTIMIZATION_LEVEL[arch=*]" = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1226,7 +1241,10 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "-DDEBUG";
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
+					"-ffast-math",
+					"-DDEBUG",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.HarmonizerFramework;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.mattrobbinsmusic.HarmonizerFramework;
 				PRODUCT_NAME = HarmonizerFramework;
@@ -1235,7 +1253,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "";
@@ -1284,7 +1302,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				"GCC_DYNAMIC_NO_PIC[arch=*]" = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1304,6 +1322,10 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = (
+					"-ffast-math",
+					"$(OTHER_CFLAGS)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mattrobbinsmusic.HarmonizerFramework;
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = com.mattrobbinsmusic.HarmonizerFramework;
 				PRODUCT_NAME = HarmonizerFramework;
@@ -1386,7 +1408,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/matt/code/audioUnitExamples/Harmonizr/Shared/AudioUnit-BridgingHeader.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1567,7 +1589,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
