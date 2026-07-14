@@ -351,7 +351,7 @@ class HarmonizerViewController: AUViewController, HarmonizerViewDelegate, Voices
         hgainParameter = paramTree.value(forKey: "h_gain") as? AUParameter
         vgainParameter = paramTree.value(forKey: "v_gain") as? AUParameter
         freezeParameter = paramTree.value(forKey: "freeze") as? AUParameter
-        print(hgainParameter!.value)
+
         presetController!.audioUnit = audioUnit
         presetController!.restoreState()
         

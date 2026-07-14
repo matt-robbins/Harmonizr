@@ -229,6 +229,27 @@ static float audioValue(int k, float trueT) {
     XCTAssert(tab.getInterval(3,1,2) == 13);
 }
 
+- (void) testMarker {
+    CircularAudioBuffer b = CircularAudioBuffer(12);
+    PitchMarker m = PitchMarker(b);
+    float T = 100.f;
+    float count = 0.f;
+    
+    for (int k = 0; k < 10000; k++) {
+        float v = 0.f;
+        if (++count >= T) {
+            count = 0;
+            v = 1.f;
+        }
+        b.pushValue(v);
+        bool found = m.findMark(T + 5.0,true);
+        if (found) {
+            std::cout << "mark: " << m.mark << ": " << b.valueAtIndexInterp(m.mark-1.f) << ", " << b.valueAtIndexInterp(m.mark) << ", " << b.valueAtIndexInterp(m.mark+1.f) << "\n";
+        }
+    }
+    
+}
+
 - (void)testIir {
     IirTracker i {0.99};
     float t = 20;
@@ -258,9 +279,47 @@ static float audioValue(int k, float trueT) {
 }
 
 - (void)testHarm {
-    float T = midi_note_to_T(66,44100);
+    float fs = 44100.f;
+    float T = midi_note_to_T(69,fs);
     std::cout << "note 66: T=" << T << "\n";
     
+    int chords_intervals[] = {
+        0,4,7,12, -1,3,6,11, 2,5,10,14, 1,4,9,13, 0,3,8,12, -1,2,7,11, 1,6,10,13, 0,5,9,12, -1,4,8,11, 0,3,7,10, 2,6,9,14, 1,5,8,13, // major
+        0,3,7,12, -1,2,6,11, 1,5,10,13, 0,4,9,12, -1,3,8,11, -1,2,7,10, 1,6,9,13, 0,5,8,12, 0,4,7,11, 0,3,6,10, 0,5,9,14, 1,4,8,13, // minor
+        0,4,10,12, -1,3,9,11, -2,2,8,10, 1,4,7,9, 0,3,6,8, 2,5,7,11, 1,4,6,10, 0,3,5,9, -1,2,4,8, 1,3,7,10, 0,2,6,9, -1,1,5,8, //dom
+    };
+    
+    auto h = Harmonizer(12, 16, 1000, fs);
+    h.setAutoIntervals(chords_intervals, sizeof(chords_intervals)/sizeof(int));
+    h.setRootKey(0);
+    h.setInversion(2);
+    h.setAutoVoiceCount(1);
+    
+    std::vector<float> output = {};
+    std::size_t L = fs*3;
+    output.resize(L);
+    
+    float counter = 0.f;
+        
+    for (int k = 0; k < L; k++) {
+        
+        float data = 0.f;
+        
+        if (k > fs) {
+            counter += 1.f;
+            if (counter >= T) {
+                counter -= T;
+                data = 1.f;
+            }
+        }
+        
+        stereoSample u = h.compute_one(data);
+        output[k] = u.l + u.r;
+    }
+    
+    for (const auto& x : output) {
+        std::cout << x << ", ";
+    }
 }
 
 @end
